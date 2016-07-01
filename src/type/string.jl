@@ -71,16 +71,14 @@ function smartarbstring{P}(x::ArbFloat{P})
 end
 
 function smarterarbstring{P}(x::ArbFloat{P})
+    negative = signbit(x)
     xrad = radius(x)
-    xmid = midpoint(x)
+    xmid = midpoint(abs(x))
+    xlen = length(string(xmid))
     xeps = eps(xmid)
-    digitsToRound =
-      if xrad < xeps
-          0
-      else
-          ceil(Int, log10(Float64(xrad)/Float64(xeps)))
-      end
-    return String(xmid, digitsToRound, UInt(2))
+    digitsToRound = xlen -
+      ifelse(xrad < xeps, 0, ceil(Int, log10(Float64(xrad)/Float64(xeps))))
+    return String(negative ? -xmid : xmid, digitsToRound, UInt(2))
 end
 
 function smartvalue{P}(x::ArbFloat{P})
