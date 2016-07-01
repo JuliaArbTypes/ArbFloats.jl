@@ -70,6 +70,25 @@ function smartarbstring{P}(x::ArbFloat{P})
      ubs
 end
 
+function smartvalue{P}(x::ArbFloat{P})
+    s = smartarbstring(x)
+    ArbFloat{P}(s)
+end
+
+function smartstring{P}(x::ArbFloat{P})
+    s = smartarbstring(x)
+    a = ArbFloat{P}(s)
+    postfix =
+        if (upperbound(x) < a)
+            "-"
+        elseif (lowerbound(x) > a)
+            "+"
+        else
+            "~"
+        end
+    string(s,postfix)
+end
+
 function smarterarbstring{P}(x::ArbFloat{P})
     negative = signbit(x)
     xrad = radius(x)
@@ -83,13 +102,13 @@ function smarterarbstring{P}(x::ArbFloat{P})
     return String(negative ? -xmid : xmid, digitsToRound, UInt(2))
 end
 
-function smartvalue{P}(x::ArbFloat{P})
-    s = smartarbstring(x)
+function smartervalue{P}(x::ArbFloat{P})
+    s = smarterarbstring(x)
     ArbFloat{P}(s)
 end
 
-function smartstring{P}(x::ArbFloat{P})
-    s = smartarbstring(x)
+function smarterstring{P}(x::ArbFloat{P})
+    s = smarterarbstring(x)
     a = ArbFloat{P}(s)
     postfix =
         if (upperbound(x) < a)
