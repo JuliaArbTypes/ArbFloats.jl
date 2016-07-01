@@ -17,13 +17,13 @@ end
 function string{P}(x::ArbFloat{P}, ndigits::Int)
    # n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
    s = String(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
-   s 
+   s
 end
 
 function string{P}(x::ArbFloat{P})
    # n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
    s = String(x,UInt(2)) # midpoint only (within 1ulp), RoundNearest
-   s 
+   s
 end
 
 function stringTrimmed{P}(x::ArbFloat{P}, ndigitsremoved::Int)
@@ -45,14 +45,14 @@ function smartarbstring{P}(x::ArbFloat{P})
      if isexact(x)
         return String(x, digits, UInt(2))
      end
-     
+
      lb, ub = bounds(x)
      lbs = String(lb, digits, UInt(2))
      ubs = String(ub, digits, UInt(2))
      if lbs[end]==ubs[end] && lbs==ubs
          return ubs
      end
-     for i in (digits-2):-2:4 
+     for i in (digits-2):-2:4
          lbs = String(lb, i, UInt(2))
          ubs = String(ub, i, UInt(2))
          if lbs[end]==ubs[end] && lbs==ubs # tests rounding to every other digit position
@@ -70,16 +70,29 @@ function smartarbstring{P}(x::ArbFloat{P})
      ubs
 end
 
+function smarterarbstring{P}(x::ArbFloat{P})
+    xrad = radius(x)
+    xmid = midpoint(x)
+    xeps = eps(xmid)
+    digitsToRound =
+      if xrad < xeps
+          0
+      else
+          ceil(Int, log10(Float64(xrad)/Float64(xeps)))
+      end
+    return String(xmid, digitsToRound, UInt(2))
+end
+
 function smartvalue{P}(x::ArbFloat{P})
     s = smartarbstring(x)
     ArbFloat{P}(s)
-end    
-    
+end
+
 function smartstring{P}(x::ArbFloat{P})
     s = smartarbstring(x)
     a = ArbFloat{P}(s)
-    postfix = 
-        if (upperbound(x) < a)   
+    postfix =
+        if (upperbound(x) < a)
             "-"
         elseif (lowerbound(x) > a)
             "+"
