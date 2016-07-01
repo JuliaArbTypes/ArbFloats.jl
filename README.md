@@ -1,8 +1,9 @@
 ## ArbFloats.jl
+
 ###### Arb available as an extended precision floating point context.
 
 ```ruby
-                                                         Jeffrey Sarnoff © 2016˗May˗26 in New York City
+                                        Jeffrey Sarnoff © 2016˗May˗26 in New York City
 ```
 #####This is for Julia v0.5.
 
@@ -13,7 +14,7 @@ Recommended for use where elementary or special functions are evaluated to obtai
 
 ####Conceptual Background
 
-`Transparency`: a desireable quality that may obtain in the presentation of numerical quantity. Where `transparency` exists, it may well not persist. A diminution of `transparency` increases `opacity`, and vice versa. Presentation of a floating point value either evinces `transparency` or furthers `opacity`.  With `transparent` values, 'looking at a value' is 'looking through to see the knowable value'.  With `opaque` values, 'looking at a value' is 'looking away from' that.  And it is that nonresponsive, nonparticipative engagement of cognitive attention that is the `opaqueness` underlying `opacity`. 
+`Transparency`: a desirable quality that may obtain in the presentation of numerical quantity. Where `transparency` exists, it may well not persist. A diminution of `transparency` increases `opacity`, and vice versa. Presentation of a floating point value either evinces `transparency` or furthers `opacity`.  With `transparent` values, 'looking at a value' is 'looking through to see the knowable value'.  With `opaque` values, 'looking at a value' is 'looking away from' that.  And it is that nonresponsive, nonparticipative engagement of cognitive attention that is the `opaqueness` underlying `opacity`. 
 
 Presented with a `transparent` floating point value, the perceiver is become best informed.  There is no other rendition of that floating point realization which is intrinsically more informing and none which relays the value of that floating point realization more accurately -- none with fewer digits, none with more digits, none of greater magnitude, none of lesser magnitude.
 
@@ -100,11 +101,11 @@ contains, iscontainedby, doesnotcontain, isnotcontainedby, | of interval partial
 
 ```
 ArbFloat values: Arb seen as precisely accurate floats   
-   elevates transparant information over number mumble  
+   elevates transparent information over number mumble  
    each digit shown is an accurate refinement of value  
 
 The least significant digit observable, through show(af) or with string(af),   
-  is smallest transparent _(intrisically non-misleading)_ refinement of value.
+  is smallest transparent _(intrinsically non-misleading)_ refinement of value.
 ```
 
 ArbFloat attributes | nature
