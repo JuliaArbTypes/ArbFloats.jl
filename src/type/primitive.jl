@@ -44,7 +44,7 @@ function copymidpoint{P}(target::ArbFloat{P}, source::ArbFloat{P})
 end
 
 """
-Rounds x to a number of bits equal to the accuracy of x (as indicated by its radius), plus a few guard bits. 
+Rounds x to a number of bits equal to the accuracy of x (as indicated by its radius), plus a few guard bits.
 The resulting ball is guaranteed to contain x, but is more economical if x has less than full accuracy.
 (from arb_trim documentation)
 """
@@ -78,7 +78,7 @@ eps{P}(::Type{ArbFloat{P}}) = ldexp(1.0,-P) # for intertype workings
 function eps{P}(x::ArbFloat{P})   # for intratype workings
     r = radius(x)
     if r == 0
-       ldexp(1.0,-P)*x
+       ldexp(1.0,-P)*abs(x)
     else
        r
     end
