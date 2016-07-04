@@ -126,7 +126,7 @@ for T in (:Float64, :Float32)
   end
 end
 
-function convert{P}(::Type{BigInt}. x::ArbFloat{P})
+function convert{P}(::Type{BigInt}, x::ArbFloat{P})
    z = convert(BigFloat, x)
    return convert(BigInt, z)
 end
