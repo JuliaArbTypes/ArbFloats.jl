@@ -18,7 +18,7 @@ function log_base(x::Real, base::Int)
         end
    return z
 end
-log_base{P}(x::ArbFloat{P}, base::Int) = ArbFloats.log_base(x,base)
+log_base{P}(x::ArbFloat{P}, base::Int) = ArbFloats.logbase(x,base)
 
 """
 position_first_place
