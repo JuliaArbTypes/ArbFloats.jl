@@ -28,7 +28,7 @@ function convert{P,Q}(::Type{ArbFloat{Q}}, a::ArbFloat{P})
     if (Q < P)
         a = round(a, Q, 2)
     end
-    
+
     z = initializer(ArbFloat{Q})
     z.mid_exp  = a.mid_exp
     z.mid_size = a.mid_size
@@ -38,7 +38,7 @@ function convert{P,Q}(::Type{ArbFloat{Q}}, a::ArbFloat{P})
     z.rad_man  = a.rad_man
 
     z
-end    
+end
 
 #
 
@@ -106,14 +106,14 @@ end
 
 convert{P}(::Type{ArbFloat{P}}, x::BigInt)   = convert(ArbFloat{P}, convert(BigFloat,x))
 convert{P}(::Type{ArbFloat{P}}, x::Rational) = convert(ArbFloat{P}, convert(BigFloat,x))
-convert{P,S}(::Type{ArbFloat{P}}, x::Irrational{S}) = 
+convert{P,S}(::Type{ArbFloat{P}}, x::Irrational{S}) =
     convert(ArbFloat{P}, convert(BigFloat,x))
 
 
 
 convert{P}(::Type{ArbFloat{P}}, y::ArbFloat{P}) = y
 
-for T in (:Float64, :Float32, :Int128, :Int64, :Int32, :Int16)
+for T in (:Float64, :Float32)
   @eval begin
     function convert{P}(::Type{$T}, x::ArbFloat{P})
       s = smartarbstring(x)
@@ -127,6 +127,17 @@ for T in (:Float64, :Float32, :Int128, :Int64, :Int32, :Int16)
 end
 
 
+for T in (:Int128, :Int64, :Int32, :Int16)
+  @eval begin
+    function convert{P}(::Type{$T}, x::ArbFloat{P})
+      z = convert(BigInt, x)
+      convert(($T), z)
+    end
+  end
+end
+
+
+
 #=
 function convert{I<:Integer,P}(::Type{I}, x::ArbFloat{P})
     s = smartarbstring(x)
@@ -134,24 +145,24 @@ function convert{I<:Integer,P}(::Type{I}, x::ArbFloat{P})
 end
 =#
 
-for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16, 
-          :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}), 
+for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16,
+          :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),
           :String)
   @eval convert(::Type{ArbFloat}, x::$T) = convert(ArbFloat{precision(ArbFloat)}, x)
-end  
+end
 
 
 # Promotion
-for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16, 
-          :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}), 
+for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16,
+          :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),
           :String)
   @eval promote_rule{P}(::Type{ArbFloat{P}}, ::Type{$T}) = ArbFloat{P}
-end  
+end
 
 promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigFloat}) = BigFloat
 promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigInt}) = ArbFloat{P}
 promote_rule{P}(::Type{ArbFloat{P}}, ::Type{Rational{BigInt}}) = Rational{BigInt}
 
-promote_rule{P,Q}(::Type{ArbFloat{P}}, ::Type{ArbFloat{Q}}) = 
+promote_rule{P,Q}(::Type{ArbFloat{P}}, ::Type{ArbFloat{Q}}) =
     ifelse(P>Q, ArbFloat{P}, ArbFloat{Q})
 
