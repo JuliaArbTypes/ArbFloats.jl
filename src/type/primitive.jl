@@ -74,6 +74,21 @@ function decompose{P}(x::ArbFloat{P})
 end
 
 #=
+julia> a=a/60
+0.516666666666666379793574294166982543878341733194830405778
+
+julia> setprecision(BigFloat,precision(a));b=convert(BigFloat,a); Float64(eps(b))
+1.5930919111324523e-58
+
+julia> ulp2(midpoint(a)),ulp10(midpoint(a))
+(1.5930919111324523e-58,1.0e-57)
+
+julia> ldexp(0.5,1-precision(a))
+1.5930919111324523e-58
+
+julia> ulp2(midpoint(a)),ulp10(midpoint(a))
+(5.0978941156238473e-57,1.0e-55)
+
 julia> setprecision(BigFloat,precision(a));b=convert(BigFloat,a); Float64(eps(b))
 5.0978941156238473e-57
 
@@ -81,30 +96,27 @@ julia> ldexp(0.5,6-precision(a))
 5.0978941156238473e-57
 =#
 
-eps{P}(::Type{ArbFloat{P}}) = ldexp(1.0,-P) # for intertype workings
+eps{P}(::Type{ArbFloat{P}}) = ldexp(0.5,1-P) # for intertype workings
 function eps{P}(x::ArbFloat{P})   # for intratype workings
-    r = radius(x)
-    if r == 0
-       ldexp(1.0,-P)*abs(x)
-    else
-       r
-    end
+    m = midpoint(x)
+    ep = if m == zero(ArbFloat{P})
+             eps(ArbFloat{P})
+         else
+             ulp(midpoint(x))
+         end
+    return ep
 end
 
 """Similar to eps(x), epsilon(ArbFloat(x)) adjusts for the uncertainty as given by the radius.
    This function is limited to values within the range of Float64.
 """
 function epsilon{P}(x::ArbFloat{P})
-  if (radius(x) == 0)
-     return eps(x)
-  end
-  midpoint_fr, midpoint_xp = frexp(eps(convert(Float64,midpoint(x))))
-  radius_fr, radius_xp = frexp(eps(convert(Float64,radius(x))))
-  fr = (midpoint_fr + radius_fr)*0.5
-  xp = midpoint_xp + radius_xp
-  if isodd(xp)
-     fr = fr + 0.25
-  end
-  xp = xp >> 1
-  ldexp(fr,xp)
+    r = radius(x)
+    ep = if r == zero(ArbFloat{P})
+             ulp(midpoint(x))
+         else
+             max( ulp(midpoint(x)), ufp(r) )
+         end
+    return ep
 end
+epsilon(x::Real) = eps(x) # compatible with eps(other types)
