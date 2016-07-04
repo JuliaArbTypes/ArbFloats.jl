@@ -126,12 +126,15 @@ for T in (:Float64, :Float32)
   end
 end
 
-
+function convert{P}(::Type{BigInt}. x::ArbFloat{P})
+   z = convert(BigFloat, x)
+   return convert(BigInt, z)
+end
 for T in (:Int128, :Int64, :Int32, :Int16)
   @eval begin
     function convert{P}(::Type{$T}, x::ArbFloat{P})
       z = convert(BigInt, x)
-      convert(($T), z)
+      return convert(($T), z)
     end
   end
 end
