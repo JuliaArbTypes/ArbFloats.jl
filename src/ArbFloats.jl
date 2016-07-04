@@ -23,18 +23,18 @@ import Base: hash, convert, promote_rule, isa,
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
        ArbFloat512, ArbFloat256, ArbFloat128, ArbFloat64, ArbFloat32, ArbFloat16,
        @ArbFloat,     # converts string form of argument, precision is optional first arg in two arg form
-       midpoint, radius, upperbound, lowerbound, bounds, 
+       midpoint, radius, upperbound, lowerbound, bounds,
        stringCompact, stringAll, stringAllCompact,
        smartvalue, smartstring, showsmart, showallcompact,
-       two, three, four, copymidpoint, copyradius, deepcopyradius, 
+       two, three, four, copymidpoint, copyradius, deepcopyradius,
        epsilon, trim, decompose, isexact, notexact,
        iszero, notzero, nonzero, isone, notone, notinteger,
        ispositive, notpositive, isnegative, notnegative,
        includesAnInteger, excludesIntegers, includesZero, excludesZero,
        includesPositive, excludesPositive, includesNegative, excludesNegative,
-       includesNonpositive,  includesNonnegative, 
+       includesNonpositive,  includesNonnegative,
        notequal, approxeq, ≊,
-       overlap, donotoverlap, 
+       overlap, donotoverlap,
        contains, iscontainedby, doesnotcontain, isnotcontainedby,
        invsqrt, pow, root, tanpi, cotpi, logbase, sincos, sincospi, sinhcosh,
        doublefactorial, risingfactorial, rgamma, agm, polylog,
@@ -75,7 +75,7 @@ macro libflint(sym)
     (:($sym), libflint)
 end
 
-    
+
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 
 include("type/ArfFloat.jl")
@@ -83,6 +83,7 @@ include("type/ArbFloat.jl")
 
 include("type/primitive.jl")
 include("type/predicates.jl")
+include("type/ieeefp.jl")
 include("type/string.jl")
 include("type/convert.jl")
 include("type/compare.jl")
