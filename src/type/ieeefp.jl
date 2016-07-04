@@ -4,7 +4,6 @@ const log10_log2 = log(10)/log(2);
 safe_bits2digs(nbits::Int) = floor(Int, nbits * log2_log10)
 safe_digs2bits(ndigs::Int) = floor(Int, ndigs * log10_log2)
 
-
 """
 logarithm_base(x)
 """
@@ -68,7 +67,7 @@ ufp2{T<:Real}(x::T) = 2.0^pfp2(x)
 ufp2{P}(x::ArbFloat{P}) = 2.0^pfp2(x)
 "ufp10 is unit_first_place in base 10"
 ufp10{T<:Real}(x::T) = 10.0^pfp10(x)
-ufp10{P}(x::ArbFloat{P}) = 2.0^pfp10(x)
+ufp10{P}(x::ArbFloat{P}) = 10.0^pfp10(x)
 
 """
 ulp is unit_last_place
