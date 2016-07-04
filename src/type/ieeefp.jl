@@ -70,33 +70,23 @@ ufp10{T<:Real}(x::T) = 10.0^pfp10(x)
 ufp10{P}(x::ArbFloat{P}) = 10.0^pfp10(x)
 
 """
-ulp is unit_last_place
+ulp   is unit_last_place
+ulp2  is unit_last_place base 2
 """
-function ulp(x::Real, precision::Int, base::Int=2)
-   unitfp = ufp(x, base)
+function ulp2(x::Real, precision::Int)
+   unitfp = ufp2(x, base)
    b = convert(Float64, base)
    twice_u = b^(1-precision)
    return twice_u * unitfp
 end
-function ulp{T<:AbstractFloat}(x::T, base::Int=2)
-    ulp(x, 1+Base.significand_bits(T), base)
-end
-ulp{P}(x::ArbFloat{P}, base::Int=2) = ulp(x, 1+P, base)
-"""ulp2 is unit_last_place base 2"""
-function ulp2(x::Real, precision::Int)
-    unitfp = ufp2(x)
-    twice_u = 2.0^(1-precision)
-    return twice_u * unitfp
-end
-ulp2{T<:AbstractFloat}(x::T) =
-    ulp2(x, 1+Base.significand_bits(T))
-ulp2{P}(x::ArbFloat{P}) = ulp(x, 2)
+ulp2{T<:AbstractFloat}(x::T)  = ulp2(x, 1+Base.significand_bits(T))
+ulp2{P}(x::ArbFloat{P},) = ulp(x, 1+P)
 """ulp10 is unit_last_place base 10"""
-function ulp10(x::Real, precision::Int)
+function ulp10(x::Real, bitprecision::Int)
     unitfp = ufp10(x)
-    twice_u = 10.0^(1-precision)
+    digitprecision = safe_bits2digs(bitprecision)
+    twice_u = 10.0^(1-digitprecision)
     return twice_u * unitfp
 end
-ulp10{T<:AbstractFloat}(x::T) =
-    ulp10( x, safe_bits2digs(1+Base.significand_bits(T)) )
-ulp10{P}(x::ArbFloat{P}) = ulp(x, 10)
+ulp10{T<:AbstractFloat}(x::T) = ulp10( x, (1+Base.significand_bits(T)) )
+ulp10{P}(x::ArbFloat{P}) = ulp10(x, P)

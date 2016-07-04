@@ -73,6 +73,13 @@ function decompose{P}(x::ArbFloat{P})
     n,p,d
 end
 
+#=
+julia> setprecision(BigFloat,precision(a));b=convert(BigFloat,a); Float64(eps(b))
+5.0978941156238473e-57
+
+julia> ldexp(0.5,6-precision(a))
+5.0978941156238473e-57
+=#
 
 eps{P}(::Type{ArbFloat{P}}) = ldexp(1.0,-P) # for intertype workings
 function eps{P}(x::ArbFloat{P})   # for intratype workings
