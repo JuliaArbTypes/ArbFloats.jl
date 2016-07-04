@@ -74,7 +74,7 @@ ulp   is unit_last_place
 ulp2  is unit_last_place base 2
 """
 function ulp2(x::Real, precision::Int)
-   unitfp = ufp2(x, base)
+   unitfp = ufp2(x)
    b = convert(Float64, base)
    twice_u = b^(1-precision)
    return twice_u * unitfp
