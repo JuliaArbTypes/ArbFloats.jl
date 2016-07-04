@@ -8,7 +8,7 @@ safe_digs2bits(ndigs::Int) = floor(Int, ndigs * log10_log2)
 """
 logarithm_base(x)
 """
-function logbase(x::Real, base::Int)
+function log_base(x::Real, base::Int)
    z = if base == 2
            log2(x)
         elseif base == 10
@@ -18,7 +18,7 @@ function logbase(x::Real, base::Int)
         end
    return z
 end
-logbase{P}(x::ArbFloat{P}, base::Int) = ArbFloats.logbase(x,base)
+log_base{P}(x::ArbFloat{P}, base::Int) = ArbFloats.log_base(x,base)
 
 """
 position_first_place
@@ -27,12 +27,12 @@ determine the position of the most significant nonzero bit|digit
 function pfp{T<:Real}(x::T, base::Int=2)
    z = 0 # if x==0.0
    if x != zero(T)
-       z = floor( Int, logbase(abs(x), base) )
+       z = floor( Int, log_base(abs(x), base) )
    end
    return z
 end
 pfp{P}(x::ArbFloat{P}, base::Int=2) =
-    x==zero(ArbFloat{P}) ? 0 : floor( Int, logbase(abs(x), base) )
+    x==zero(ArbFloat{P}) ? 0 : floor( Int, log_base(abs(x), base) )
 """
 binary position_first_place
 determine the position of the most significant nonzero bit
