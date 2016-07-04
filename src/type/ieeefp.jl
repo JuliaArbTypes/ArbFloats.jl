@@ -106,8 +106,3 @@ end
 ulp10{T<:AbstractFloat}(x::T) = ulp10( x, (1+Base.significand_bits(T)) )
 ulp10{P}(x::ArbFloat{P}) = ulp10(x, P)
 ulp10(x::Integer) = ulp10(Float64(x))
-
-ufp(x::Real) = ufp2(x)
-ufp{P}(x::ArbFloat{P}) = ufp2(x)
-ulp(x::Real) = ulp2(x)
-ulp{P}(x::ArbFloat{P}) = ulp2(x)
