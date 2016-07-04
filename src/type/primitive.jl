@@ -102,7 +102,7 @@ function eps{P}(x::ArbFloat{P})   # for intratype workings
     ep = if m == zero(ArbFloat{P})
              eps(ArbFloat{P})
          else
-             ulp(midpoint(x))
+             ulp2(midpoint(x))
          end
     return ep
 end
@@ -113,9 +113,9 @@ end
 function epsilon{P}(x::ArbFloat{P})
     r = radius(x)
     ep = if r == zero(ArbFloat{P})
-             ulp(midpoint(x))
+             ulp2(midpoint(x))
          else
-             max( ulp(midpoint(x)), ufp(r) )
+             max( ulp2(midpoint(x)), ufp2(r) )
          end
     return ep
 end
