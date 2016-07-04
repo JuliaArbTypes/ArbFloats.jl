@@ -80,7 +80,7 @@ function ulp2(x::Real, precision::Int)
    return twice_u * unitfp
 end
 ulp2{T<:AbstractFloat}(x::T)  = ulp2(x, 1+Base.significand_bits(T))
-ulp2{P}(x::ArbFloat{P},) = ulp(x, 1+P)
+ulp2{P}(x::ArbFloat{P},) = ulp2(x, P)
 """ulp10 is unit_last_place base 10"""
 function ulp10(x::Real, bitprecision::Int)
     unitfp = ufp10(x)
