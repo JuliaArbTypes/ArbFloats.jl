@@ -34,7 +34,7 @@ end
 binary position_first_place
 determine the position of the most significant nonzero bit
 """
-pfp2{T<:Real}(x:T) = x==zero(T) ? 0 : floor( Int, log2(abs(x)) )
+pfp2{T<:Real}(x::T) = x==zero(T) ? 0 : floor( Int, log2(abs(x)) )
 """
 decimal position_first_place
 determine the position of the most significant nonzero digit
