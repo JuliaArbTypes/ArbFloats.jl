@@ -57,22 +57,36 @@ function ufp(x::AbstractFloat, base::Int=2)
    b = convert(Float64, base)
    return b^z
 end
-ufp(x::Integer, base::Int=2) = ufp(Float64(x), base)
 function ufp{P}(x::ArbFloat{P}, base::Int=2)
    z = pfp(x, base)
    return Float64(base)^z
 end
+ufp(x::Integer, base::Int=2) = ufp(Float64(x), base)
 "ufp2 is unit_first_place in base 2"
 ufp2{T<:Real}(x::T) = 2.0^pfp2(x)
 ufp2{P}(x::ArbFloat{P}) = 2.0^pfp2(x)
+ufp2(x::Integer) = ufp2(Float64(x))
 "ufp10 is unit_first_place in base 10"
 ufp10{T<:Real}(x::T) = 10.0^pfp10(x)
 ufp10{P}(x::ArbFloat{P}) = 10.0^pfp10(x)
-
+ufp10(x::Integer) = ufp10(Float64(x))
 """
 ulp   is unit_last_place
-ulp2  is unit_last_place base 2
+the float value given by a 1 at the position of
+  the least significant nonzero bit|digit in _x_
 """
+function ulp(x::Real, precision::Int, base::Int)
+   unitfp = ufp2(x)
+   twice_u = 2.0^(1-precision)
+   return twice_u * unitfp
+end
+ulp{T<:AbstractFloat}(x::T, base::Int=2)  =
+    ulp(x, 1+Base.significand_bits(T), base)
+ulp{P}(x::ArbFloat{P}, base::Int=2)  =
+    ulp(x, P, base)
+ulp(x::Integer, base::Int=2) = ulp(Float64(x), base)
+
+"""ulp2  is unit_last_place base 2"""
 function ulp2(x::Real, precision::Int)
    unitfp = ufp2(x)
    twice_u = 2.0^(1-precision)
@@ -80,6 +94,8 @@ function ulp2(x::Real, precision::Int)
 end
 ulp2{T<:AbstractFloat}(x::T)  = ulp2(x, 1+Base.significand_bits(T))
 ulp2{P}(x::ArbFloat{P},) = ulp2(x, P)
+ulp2(x::Integer) = ulp2(Float64(x))
+
 """ulp10 is unit_last_place base 10"""
 function ulp10(x::Real, bitprecision::Int)
     unitfp = ufp10(x)
@@ -89,3 +105,9 @@ function ulp10(x::Real, bitprecision::Int)
 end
 ulp10{T<:AbstractFloat}(x::T) = ulp10( x, (1+Base.significand_bits(T)) )
 ulp10{P}(x::ArbFloat{P}) = ulp10(x, P)
+ulp10(x::Integer) = ulp10(Float64(x))
+
+ufp(x::Real) = ufp2(x)
+ufp{P}(x::ArbFloat{P}) = ufp2(x)
+ulp(x::Real) = ulp2(x)
+ulp{P}(x::ArbFloat{P}) = ulp2(x)
