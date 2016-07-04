@@ -18,6 +18,7 @@ function logbase(x::Real, base::Int)
         end
    return z
 end
+logbase{P}(x::ArbFloat{P}, base::Int) = ArbFloats.logbase(x,base)
 
 """
 position_first_place
@@ -30,16 +31,22 @@ function pfp{T<:Real}(x::T, base::Int=2)
    end
    return z
 end
+pfp{P}(x::ArbFloat{P}, base::Int=2) =
+    x==zero(ArbFloat{P}) ? 0 : floor( Int, logbase(abs(x), base) )
 """
 binary position_first_place
 determine the position of the most significant nonzero bit
 """
 pfp2{T<:Real}(x::T) = x==zero(T) ? 0 : floor( Int, log2(abs(x)) )
+pfp2{P}(x::ArbFloat{P}) =
+    x==zero(ArbFloat{P}) ? 0 : floor( Int, log2(abs(x)) )
 """
 decimal position_first_place
 determine the position of the most significant nonzero digit
 """
 pfp10{T<:Real}(x::T) = x==zero(T) ? 0 : floor( Int, log10(abs(x)) )
+pfp10{P}(x::ArbFloat{P}) =
+    x==zero(ArbFloat{P}) ? 0 : floor( Int, log10(abs(x)) )
 
 """
 ufp is unit_first_place
@@ -52,10 +59,16 @@ function ufp(x::AbstractFloat, base::Int=2)
    return b^z
 end
 ufp(x::Integer, base::Int=2) = ufp(Float64(x), base)
+function ufp{P}(x::ArbFloat{P}, base::Int=2)
+   z = pfp(x, base)
+   return Float64(base)^z
+end
 "ufp2 is unit_first_place in base 2"
 ufp2{T<:Real}(x::T) = 2.0^pfp2(x)
+ufp2{P}(x::ArbFloat{P}) = 2.0^pfp2(x)
 "ufp10 is unit_first_place in base 10"
 ufp10{T<:Real}(x::T) = 10.0^pfp10(x)
+ufp10{P}(x::ArbFloat{P}) = 2.0^pfp10(x)
 
 """
 ulp is unit_last_place
@@ -78,6 +91,7 @@ function ulp2(x::Real, precision::Int)
 end
 ulp2{T<:AbstractFloat}(x::T) =
     ulp2(x, 1+Base.significand_bits(T))
+ulp2{P}(x::ArbFloat{P}) = ulp(x, 2)
 """ulp10 is unit_last_place base 10"""
 function ulp10(x::Real, precision::Int)
     unitfp = ufp10(x)
@@ -86,3 +100,4 @@ function ulp10(x::Real, precision::Int)
 end
 ulp10{T<:AbstractFloat}(x::T) =
     ulp10( x, safe_bits2digs(1+Base.significand_bits(T)) )
+ulp10{P}(x::ArbFloat{P}) = ulp(x, 10)
