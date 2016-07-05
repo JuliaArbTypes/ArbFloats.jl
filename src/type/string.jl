@@ -97,7 +97,7 @@ function smarterarbstring{P}(x::ArbFloat{P})
     zmid = ulp2(xmid)
     arad = ufp2(xrad)
     digitsToRound = xlen -
-      ifelse(xrad < xeps, 0, ceil(Int, log10(Float64(arad)/Float64(zmid)))+1 )
+      ifelse(xrad < zmid, 0, ceil(Int, log10(Float64(arad)/Float64(zmid)))+1 )
       #  if xrad>xeps, must add 1 so the rounding rounds away correct digit count
       #!!check xrad==xeps!!
     return String(negative ? -xmid : xmid, digitsToRound, UInt(2))
