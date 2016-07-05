@@ -1,5 +1,5 @@
-const log2_log10 = log(2)/log(10);
-const log10_log2 = log(10)/log(2);
+const log2_log10 = log(10,2)
+const log10_log2 = log(2,10)
 
 safe_bits2digs(nbits::Int) = floor(Int, nbits * log2_log10)
 safe_digs2bits(ndigs::Int) = floor(Int, ndigs * log10_log2)
