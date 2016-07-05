@@ -89,18 +89,20 @@ function smartstring{P}(x::ArbFloat{P})
     string(s,postfix)
 end
 
-function smarterarbstring{P}(x::ArbFloat{P})
-    negative = signbit(x)
-    xrad = radius(x)
-    xmid = midpoint(abs(x))
-    xlen = length(string(xmid))
-    zmid = ulp2(xmid)
-    arad = ufp2(xrad)
-    digitsToRound = xlen -
-      ifelse(xrad < zmid, 0, ceil(Int, log10(Float64(arad)/Float64(zmid)))+1 )
-      #  if xrad>xeps, must add 1 so the rounding rounds away correct digit count
-      #!!check xrad==xeps!!
-    return String(negative ? -xmid : xmid, digitsToRound, UInt(2))
+function smarterarbstring{P}(af::ArbFloat{P})
+    negative, af  = signbit(af) ? (true, -af) : (false, af)
+    af_rad        = radius(af)
+    af_mid        = midpoint(af)
+    af_strlen     = length(string(af_mid))
+    ulp_af_mid    = ulp2(af_mid)
+    ufp_af_rad    = ufp2(af_rad)
+    
+    digitsToKeep  = af_strlen
+    if ufp_af_rad >= ulp_af_mid
+        digitsToKeep -= trunc(Int, (-)( log(2, ufp10(af_rad)), log(2, ulp10(af_mid)) ))
+    end     
+    af_mid = ifelse( negative, -af_mid, af_mid)
+    return String(af_mid, digitsToKeep, UInt(2))
 end
 
 function smartervalue{P}(x::ArbFloat{P})
