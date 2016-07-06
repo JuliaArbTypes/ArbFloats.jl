@@ -81,14 +81,13 @@ function smarterarbstring{P}(af::ArbFloat{P})
     negative, af  = signbit(af) ? (true, -af) : (false, af)
     af_rad        = radius(af)
     af_mid        = midpoint(af)
-    af_strlen     = length(string(af_mid))
     ulp_af_mid    = ulp2(af_mid)
     ufp_af_rad    = ufp2(af_rad)
-    
-    digitsToKeep  = af_strlen
+
+    digitsToKeep  = digitsRequired(P)
     if ufp_af_rad >= ulp_af_mid
-        digitsToKeep -= trunc(Int, (-)( log(2, ufp10(af_rad)), log(2, ulp10(af_mid)) ))
-    end     
+        digitsToKeep -= ceil(Int, (-)( log(2, ufp10(af_rad)), log(2, ulp10(af_mid)) ))
+    end
     af_mid = ifelse( negative, -af_mid, af_mid)
     return String(af_mid, digitsToKeep, UInt(2))
 end
