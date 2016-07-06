@@ -4,8 +4,8 @@
 type ArbFloat{P}  <: Real     # field and struct names from arb.h 
   mid_exp ::Int               #           fmpz
   mid_size::UInt              #           mp_size_t
-  mid_d1  ::Int               #           mantissa_struct
-  mid_d2  ::Int               #
+  mid_d1  ::UInt              #           mantissa_struct
+  mid_d2  ::UInt              #
   rad_exp ::Int               #           fmpz
   rad_man ::UInt              # 
 end
@@ -48,8 +48,8 @@ const hash_0_arbfloat_lo = hash(zero(UInt), hash_arbfloat_lo)
 #    with identical midpoint significands and identical radial exponents hash equal
 # they are the same value, one is less accurate yet centered about the other
 hash{P}(z::ArbFloat{P}, h::UInt) = 
-    hash(reinterpret(UInt,z.mid_d1)$z.mid_exp, 
-         (h $ hash(reinterpret(UInt,z.mid_d2)$(~reinterpret(UInt,P)), hash_arbfloat_lo) 
+    hash(z.mid_d1$z.mid_exp, 
+         (h $ hash(z.mid_d2$(~reinterpret(UInt,P)), hash_arbfloat_lo) 
             $ hash_0_arbfloat_lo))
             
 # adapted from Nemo
