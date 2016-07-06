@@ -3,8 +3,8 @@
 type ArfFloat{P}  <: Real
   mid_exp::Int # fmpz
   mid_size::UInt # mp_size_t
-  mid_d1::Int # mantissa_struct
-  mid_d2::Int
+  mid_d1::UInt # mantissa_struct
+  mid_d2::UInt
 end
 
 precision{P}(x::ArfFloat{P}) = P
@@ -21,7 +21,7 @@ const hash_arffloat_lo = (UInt === UInt64) ? 0x37e642589da3416a : 0x5d46a6b4
 const hash_0_arffloat_lo = hash(zero(UInt), hash_arffloat_lo)
 hash{P}(z::ArfFloat{P}, h::UInt) = 
     hash(reinterpret(UInt,z.mid_d1)$z.mid_exp, 
-         (h $ hash(reinterpret(UInt,z.mid_d2)$(~reinterpret(UInt,P)), hash_arffloat_lo) $ hash_0_arffloat_lo))
+         (h $ hash(z.mid_d2$(~reinterpret(UInt,P)), hash_arffloat_lo) $ hash_0_arffloat_lo))
 
 
 function clearArfFloat{P}(x::ArfFloat{P})
