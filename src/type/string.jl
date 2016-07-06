@@ -1,7 +1,7 @@
-@inline num_dig(prec) = ceil(Int, prec*0.3010299956639811952137)
+@inline digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639811952137)
 
 function String{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)
-    n = max(1,min(abs(ndigits), num_dig(P)))
+    n = max(1,min(abs(ndigits), digitsRequired(P)))
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, flags)
     s = unsafe_string(cstr)
     ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
@@ -10,7 +10,7 @@ end
 
 function String{P}(x::ArbFloat{P}, flags::UInt)
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt),
-                 &x, num_dig(P), flags)
+                 &x, digitsRequired(P), flags)
     s = unsafe_string(cstr)
     ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
     s
@@ -25,7 +25,7 @@ string{P}(x::ArbFloat{P}) =
     String(x,UInt(2)) # midpoint only (within 1ulp), RoundNearest
 
 function stringTrimmed{P}(x::ArbFloat{P}, ndigitsremoved::Int)
-   n = max(1, num_dig(P) - max(0, ndigitsremoved))
+   n = max(1, digitsRequired(P) - max(0, ndigitsremoved))
    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, UInt(2))
    s = unsafe_string(cstr)
    ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
@@ -37,7 +37,7 @@ end
 =#
 
 function smartarbstring{P}(x::ArbFloat{P})
-     digits = num_dig(P)
+     digits = digitsRequired(P)
      if isexact(x)
         return String(x, digits, UInt(2))
      end
