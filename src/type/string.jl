@@ -1,34 +1,31 @@
+@inline num_dig(prec) = ceil(Int, prec*0.3010299956639811952137)
+
 function String{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)
-   n = max(1,min(abs(ndigits), floor(Int, P*0.3010299956639811952137)))
-   cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, flags)
-   s = unsafe_string(cstr)
-   ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
-   s
+    n = max(1,min(abs(ndigits), num_dig(P)))
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, flags)
+    s = unsafe_string(cstr)
+    ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
+    s
 end
 
 function String{P}(x::ArbFloat{P}, flags::UInt)
-   n = floor(Int, P*0.3010299956639811952137)
-   cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, flags)
-   s = unsafe_string(cstr)
-   ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
-   s
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt),
+                 &x, num_dig(P), flags)
+    s = unsafe_string(cstr)
+    ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
+    s
 end
 
-function string{P}(x::ArbFloat{P}, ndigits::Int)
-   # n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
-   s = String(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
-   s
-end
+# n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
+string{P}(x::ArbFloat{P}, ndigits::Int) =
+    String(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
 
-function string{P}(x::ArbFloat{P})
-   # n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
-   s = String(x,UInt(2)) # midpoint only (within 1ulp), RoundNearest
-   s
-end
+# n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
+string{P}(x::ArbFloat{P}) =
+    String(x,UInt(2)) # midpoint only (within 1ulp), RoundNearest
 
 function stringTrimmed{P}(x::ArbFloat{P}, ndigitsremoved::Int)
-   n = max(0, ndigitsremoved)
-   n = max(1, floor(Int, P*0.3010299956639811952137) - n)
+   n = max(1, num_dig(P) - max(0, ndigitsremoved))
    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, UInt(2))
    s = unsafe_string(cstr)
    ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
@@ -40,8 +37,7 @@ end
 =#
 
 function smartarbstring{P}(x::ArbFloat{P})
-     digits = floor(Int, precision(x)*0.3010299956639811952137)
-
+     digits = num_dig(P)
      if isexact(x)
         return String(x, digits, UInt(2))
      end
@@ -78,15 +74,7 @@ end
 function smartstring{P}(x::ArbFloat{P})
     s = smartarbstring(x)
     a = ArbFloat{P}(s)
-    postfix =
-        if (upperbound(x) < a)
-            "-"
-        elseif (lowerbound(x) > a)
-            "+"
-        else
-            "~"
-        end
-    string(s,postfix)
+    string(s,upperbound(x) < a ? '-' : (lowerbound(x) > a ? '+' : '~'))
 end
 
 function smarterarbstring{P}(af::ArbFloat{P})
@@ -113,20 +101,11 @@ end
 function smarterstring{P}(x::ArbFloat{P})
     s = smarterarbstring(x)
     a = ArbFloat{P}(s)
-    postfix =
-        if (upperbound(x) < a)
-            "-"
-        elseif (lowerbound(x) > a)
-            "+"
-        else
-            "~"
-        end
-    string(s,postfix)
+    string(s,upperbound(x) < a ? '-' : (lowerbound(x) > a ? '+' : '~'))
 end
 
-
 function stringAll{P}(x::ArbFloat{P})
-    string(midpoint(x)," ± ", string(radius(x),17))
+    string(midpoint(x)," ± ", string(radius(x),10))
 end
 
 function stringCompact{P}(x::ArbFloat{P})
@@ -136,4 +115,3 @@ end
 function stringAllCompact{P}(x::ArbFloat{P})
     string(string(midpoint(x),8)," ± ", string(radius(x),5))
 end
-
