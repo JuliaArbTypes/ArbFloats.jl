@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>ArbFloats.jl by JuliaArbTypes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">ArbFloats.jl</h1>
+      <h2 class="project-tagline">extended precision *values* for arithmetic, elementary, and some special functions (25..500 digits)</h2>
+      <a href="https://github.com/JuliaArbTypes/ArbFloats.jl" class="btn">View on GitHub</a>
+      <a href="https://github.com/JuliaArbTypes/ArbFloats.jl/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/JuliaArbTypes/ArbFloats.jl/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="arbfloatsjl" class="anchor" href="#arbfloatsjl" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ArbFloats.jl</h2>
+
+<h6>
+<a id="arb-available-as-an-extended-precision-floating-point-context" class="anchor" href="#arb-available-as-an-extended-precision-floating-point-context" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Arb available as an extended precision floating point context.</h6>
+
+<div class="highlight highlight-source-ruby"><pre>                                                         <span class="pl-c1">Jeffrey</span> <span class="pl-c1">Sarnoff</span> © <span class="pl-c1">2016</span>˗<span class="pl-c1">May</span>˗<span class="pl-c1">26</span> <span class="pl-k">in</span> <span class="pl-c1">New</span> <span class="pl-c1">York</span> <span class="pl-c1">City</span></pre></div>
+
+<h5>
+<a id="this-is-for-julia-v05" class="anchor" href="#this-is-for-julia-v05" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>This is for Julia v0.5.</h5>
+
+<h4>
+<a id="appropriateness" class="anchor" href="#appropriateness" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Appropriateness</h4>
+
+<p>Preferred for extending the precision of floating point computations from 64 bits [17 digits] up to 512 bits [150 digits].<br>
+Recommended for use where elementary or special functions are evaluated to obtain results with up to 250 digits [800 bits].</p>
+
+<h4>
+<a id="conceptual-background" class="anchor" href="#conceptual-background" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conceptual Background</h4>
+
+<p><code>Transparency</code>: a desireable quality that may obtain in the presentation of numerical quantity. Where <code>transparency</code> exists, it may well not persist. A diminution of <code>transparency</code> increases <code>opacity</code>, and vice versa. Presentation of a floating point value either evinces <code>transparency</code> or furthers <code>opacity</code>.  With <code>transparent</code> values, 'looking at a value' is 'looking through to see the knowable value'.  With <code>opaque</code> values, 'looking at a value' is 'looking away from' that.  And it is that nonresponsive, nonparticipative engagement of cognitive attention that is the <code>opaqueness</code> underlying <code>opacity</code>. </p>
+
+<p>Presented with a <code>transparent</code> floating point value, the perceiver is become best informed.  There is no other rendition of that floating point realization which is intrinsically more informing and none which relays the value of that floating point realization more accurately -- none with fewer digits, none with more digits, none of greater magnitude, none of lesser magnitude.</p>
+
+<p>An <code>ArbFloat</code> is an extended precision float architected to evince <code>transparency</code>. It informs without leading or misleading.  An <code>ArbFloat</code>, when viewed, appears as an extended precision floating point value.  When any of the exported arithmetic, elementary or special functions is applied to an <code>ArbFloat</code>, the value transforms as an extended precision floating point interval.</p>
+
+<h3>
+<a id="about-arb" class="anchor" href="#about-arb" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About Arb</h3>
+
+<p>This work is constructed atop a state-of-the-art C library for working with <em>midpoint ± radius</em> intervals, <code>Arb</code>.<br>
+  <code>Arb</code> is designed and written by Fredrik Johansson, who graciously allows Julia to use it under the MIT License.  </p>
+
+<p>The C libraries that this package accesses are some of the shared libraries that Nemo.jl requires and builds when it is installed; and I am calling them directly. Nemo is a computational environment where the most important software for number theory and related work. Julia is used to create a cohesive whole that shares a manner of use.  Fredrik Johansson, William Hart, and Tommy Hoffman have been especially helpful, taking the time to explain details of Arb as I was working on ArbFloats.  </p>
+
+<h6>
+<a id="hint" class="anchor" href="#hint" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hint</h6>
+
+<p>It is a useful fiction to think of <code>ArbFloats</code> as Arb values with a zero radius -- and sometimes they are.  When an <code>ArbFloat</code> has a nonzero radius, the user sees only those digits that <em>don`t care</em>:  the digits which remain after rounding the <code>ArbFloat</code> so that the radius is subsumed (as if 0.0).</p>
+
+<h4>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install</h4>
+
+<div class="highlight highlight-source-julia"><pre>Pkg<span class="pl-k">.</span><span class="pl-c1">clone</span>(<span class="pl-s"><span class="pl-pds">"</span>https://github.com/jsarnoff-juliacon/ArbFloats.jl<span class="pl-pds">"</span></span>)  <span class="pl-c"># requires a recent Julia v0.5.0-dev</span></pre></div>
+
+<h4>
+<a id="use" class="anchor" href="#use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use</h4>
+
+<div class="highlight highlight-source-fsharp"><pre>using ArbFloats
+
+five <span class="pl-k">=</span> ArbFloat(<span class="pl-c1">5</span>)
+<span class="pl-c1">5</span>
+
+e <span class="pl-k">=</span> exp(ArbFloat(<span class="pl-c1">1</span>))
+<span class="pl-c1">2.7182_8182_8459_0452_3536_0287_4713_5266_2</span> ± <span class="pl-c1">4.8148250e-35</span>
+fuzzed<span class="pl-k">_</span>e <span class="pl-k">=</span> tan(atanh(tanh(atan(e))))
+<span class="pl-c1">2.7182_8182_8459_0452_3536_0287_4713_52662</span> ± <span class="pl-c1">7.8836806e-33</span>
+
+bounds(e)
+( <span class="pl-c1">2.7182_8182_8459_0452_3536_0287_4713_52663</span>,
+  <span class="pl-c1">2.7182_8182_8459_0452_3536_0287_4713_52664</span> )
+smartstring(e)
+<span class="pl-c1">2.7182_8182_8459_0452_3536_0287_4713_5266</span>₊
+
+bounds(fuzzed<span class="pl-k">_</span>e)
+( <span class="pl-c1">2.7182_8182_8459_0452_3536_0287_4713_52654</span>,
+  <span class="pl-c1">2.7182_8182_8459_0452_3536_0287_4713_52670</span> )
+smartstring(fuzzed<span class="pl-k">_</span>e)
+<span class="pl-c1">2.7182_8182_8459_0452_3536_0287_4713_527</span>₋
+
+
+# Float32 <span class="pl-k">and</span> ArbFloat32
+# typealias ArbFloat32 ArbFloat<span class="pl-k">{</span><span class="pl-c1">24</span><span class="pl-k">}</span>  # predefined
+setprecision(ArbFloat, <span class="pl-c1">24</span>)
+
+
+fpOneThird <span class="pl-k">=</span> <span class="pl-c1">1.0</span>f0 <span class="pl-k">/</span> <span class="pl-c1">3.0</span>f0
+<span class="pl-c1">0.3333_334</span>f0
+
+oneThird <span class="pl-k">=</span> ArbFloat(<span class="pl-c1">1</span>) <span class="pl-k">/</span> ArbFloat(<span class="pl-c1">3</span>)
+<span class="pl-c1">0.3333_333</span> ± <span class="pl-c1">2.9803_322e-8</span>
+
+# gamma(<span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">3</span>) is <span class="pl-c1">2.6789_3853_4707_7476_3365_5692_9409_7467_7644</span>~
+
+gamma<span class="pl-k">_</span>oneThird <span class="pl-k">=</span> gamma( oneThird )
+<span class="pl-c1">2.6789_380</span>  ± <span class="pl-c1">1.8211887e-6</span>
+
+bounds(gamma<span class="pl-k">_</span>oneThird)
+(<span class="pl-c1">2.6789_360</span>, <span class="pl-c1">2.6789_400</span>)
+
+gamma( fpOneThird )
+<span class="pl-c1">2.6789_384</span>f0</pre></div>
+
+<h2>
+<a id="exports-including-re-exports" class="anchor" href="#exports-including-re-exports" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Exports (including re-exports)</h2>
+
+<table>
+<thead>
+<tr>
+<th>used with Arb and ArbFloat</th>
+<th>nature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>precision, setprecision,</td>
+<td>as with BigFloat</td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr>
+<th>Arb values are intervals</th>
+<th>nature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>midpoint, radius, lowerbound, upperbound, bounds,</td>
+<td>Arb's constituent parts</td>
+</tr>
+<tr>
+<td>isexact, notexact,</td>
+<td>float-y or interval-y</td>
+</tr>
+<tr>
+<td>overlap, donotoverlap,</td>
+<td>of interval suborder</td>
+</tr>
+<tr>
+<td>contains, iscontainedby, doesnotcontain, isnotcontainedby,</td>
+<td>of interval partial order</td>
+</tr>
+</tbody>
+</table>
+
+<div class="highlight highlight-source-lua"><pre>ArbFloat values: Arb seen as precisely accurate floats   
+   elevates transparant information over number mumble  
+   each digit shown is an accurate refinement of value  
+
+The least significant digit observable, through <span class="pl-c1">show</span>(af) <span class="pl-k">or</span> with <span class="pl-c1">string</span>(af),   
+  is smallest transparent <span class="pl-c1">_</span>(intrisically non<span class="pl-k">-</span>misleading)_ refinement of value.</pre></div>
+
+<table>
+<thead>
+<tr>
+<th>ArbFloat attributes</th>
+<th>nature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>isnan, isinf, isfinite, issubnormal, isinteger, notinteger,</td>
+<td>floatingpoint predicates</td>
+</tr>
+<tr>
+<td>iszero, notzero, nonzero, isone, notone,</td>
+<td>number predicates</td>
+</tr>
+<tr>
+<td>ispositive, notpositive, isnegative, notnegative,</td>
+<td>numerical predicates</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>copy, deepcopy, 
+zero, one, eps, epsilon,<br>
+isequal, notequal, isless, 
+(==),(!=),(&lt;),(&lt;=),(&gt;=),(&gt;), 
+approxeq, ≊,<br>
+min, max, minmax, </p>
+
+<p>signbit, sign, flipsign, copysign, abs,<br>
+(+),(-),(*),(/),(),(%),(^),
+inv, sqrt, invsqrt, hypot,<br>
+factorial, doublefactorial, risingfactorial, 
+trunc, round, ceil, floor,   </p>
+
+<p>pow, root, 
+exp, expm1, log, log1p, log2, log10, logbase,<br>
+sin, cos, sincos, sincospi, tan, csc, sec, cot, 
+asin, acos, atan, atan2,<br>
+sinh, cosh, sinhcosh, tanh, csch, sech, coth, 
+asinh, acosh, atanh,  </p>
+
+<p>gamma, lgamma, digamma,<br>
+sinc, zeta, polylog, agm  </p>
+</blockquote>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/JuliaArbTypes/ArbFloats.jl">ArbFloats.jl</a> is maintained by <a href="https://github.com/JuliaArbTypes">JuliaArbTypes</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
