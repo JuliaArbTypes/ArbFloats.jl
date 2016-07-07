@@ -103,14 +103,14 @@ function smarterstring{P}(x::ArbFloat{P})
     string(s,upperbound(x) < a ? '-' : (lowerbound(x) > a ? '+' : '~'))
 end
 
-function stringAll{P}(x::ArbFloat{P})
+function stringall{P}(x::ArbFloat{P})
     string(midpoint(x)," ± ", string(radius(x),10))
 end
 
-function stringCompact{P}(x::ArbFloat{P})
+function stringcompact{P}(x::ArbFloat{P})
     string(x,8)
 end
 
-function stringAllCompact{P}(x::ArbFloat{P})
+function stringallcompact{P}(x::ArbFloat{P})
     string(string(midpoint(x),8)," ± ", string(radius(x),5))
 end

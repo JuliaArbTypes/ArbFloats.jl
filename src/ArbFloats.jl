@@ -24,8 +24,8 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        ArbFloat512, ArbFloat256, ArbFloat128, ArbFloat64, ArbFloat32, ArbFloat16,
        @ArbFloat,     # converts string form of argument, precision is optional first arg in two arg form
        midpoint, radius, upperbound, lowerbound, bounds,
-       stringCompact, stringAll, stringAllCompact,
-       smartvalue, smartstring, showsmart, showallcompact,
+       stringcompact, stringall, stringallcompact, stringpretty,
+       smartvalue, smartstring, showsmart, showallcompact, showpretty,
        two, three, four, copymidpoint, copyradius, deepcopyradius,
        epsilon, trim, decompose, isexact, notexact,
        iszero, notzero, nonzero, isone, notone, notinteger,
