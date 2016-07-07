@@ -207,7 +207,7 @@ showpretty(val::AbstractFloat, prettyFormat...) =
 
 
 function showpretty{T<:Real}(val::T, intGroup::Int, fracGroup::Int, intSep::Char, fltSep::Char)
-    if !prettyfiable(v)
+    if !prettyfiable(val)
        throw(ErrorException("type $T is not supported"))
     end
     showpretty(Base.STDOUT, val, intGroup, fracGroup, intSep, fltSep)
@@ -222,23 +222,23 @@ showpretty(val::Real, prettyFormat...) =
 
 # accept integers and floats
 
-prettyInteger{T<:Signed}(v::T, group::Int, span::Char) =
-    integerString(string(v), group, span)
+prettyInteger{T<:Signed}(val::T, group::Int, span::Char) =
+    integerString(string(val), group, span)
 
-prettyFloat{T<:AbstractFloat}(v::T,
+prettyFloat{T<:AbstractFloat}(val::T,
   intGroup::Int, fracGroup::Int, intSep::Char, fltSep::Char) =
-    prettyFloat(string(v), intGroup, fracGroup, intSep, fltSep)
+    prettyFloat(string(val), intGroup, fracGroup, intSep, fltSep)
 
-prettyFloat{T<:AbstractFloat}(v::T,
+prettyFloat{T<:AbstractFloat}(val::T,
   intGroup::Int, fracGroup::Int, span::Char) =
-    prettyFloat(string(v), intGroup, fracGroup, span, span)
+    prettyFloat(string(val), intGroup, fracGroup, span, span)
 
-prettyFloat{T<:AbstractFloat}(v::T,
+prettyFloat{T<:AbstractFloat}(val::T,
   group::Int, intSep::Char, fltSep::Char) =
-    prettyFloat(string(v), group, intSep, fltSep)
+    prettyFloat(string(val), group, intSep, fltSep)
 
-prettyFloat{T<:AbstractFloat}(v::T,  group::Int, span::Char) =
-    prettyFloat(string(v), group, span, span)
+prettyFloat{T<:AbstractFloat}(val::T,  group::Int, span::Char) =
+    prettyFloat(string(val), group, span, span)
 
 # handle integer and float strings
 
