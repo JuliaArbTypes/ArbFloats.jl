@@ -116,37 +116,37 @@ end
 # show easy-to-read numbers
 
 showpretty(io::IO, val::Signed, group::Int, sep::Char=betweenInts()) =
-    show(io, stringpretty(val, group, sep))
+    print(io, stringpretty(val, group, sep))
 showpretty(io::IO, val::Signed, sep::Char, group::Int=intsSpanned()) =
-    show(io, stringpretty(val, group, sep))
+    print(io, stringpretty(val, group, sep))
 function showpretty(io::IO, val::Signed)
     group, sep = intsSpanned(), betweenInts()
-    show(io, stringpretty(val, group, sep))
+    print(io, stringpretty(val, group, sep))
 end
 
 showpretty{T<:Signed}(io::IO, val::Rational{T}, group::Int, sep::Char=betweenInts()) =
-    string(prettyInteger(val.num, group, sep),"//",prettyInteger(val.den, group, sep))
+    print(io,prettyInteger(val.num, group, sep),"//",prettyInteger(val.den, group, sep))
 showpretty{T<:Signed}(io::IO, val::Rational{T}, sep::Char, group::Int=intsSpanned()) =
-    show(io, stringpretty(val, group, sep))
+    print(io, stringpretty(val, group, sep))
 function showpretty{T<:Signed}(io::IO, val::Rational{T})
     group, sep = intsSpanned(), betweenInts()
-    show(io, stringpretty(val, group, sep))
+    print(io, stringpretty(val, group, sep))
 end
 
 function showpretty(io::IO, val::AbstractFloat)
     group, sep = fltsSpanned(), betweenFlts()
-    show(io, stringpretty(val, group, group, sep, sep))
+    print(io, stringpretty(val, group, group, sep, sep))
 end
 function showpretty(io::IO, val::AbstractFloat, group::Int)
     sep = betweenFlts()
-    show(io, stringpretty(val, group, group, sep, sep))
+    print(io, stringpretty(val, group, group, sep, sep))
 end
 function showpretty(io::IO, val::AbstractFloat, sep::Char)
     group = fltsSpanned()
-    show(io, stringpretty(val, group, group, sep, sep))
+    print(io, stringpretty(val, group, group, sep, sep))
 end
 showpretty(io::IO, val::AbstractFloat, prettyFormat...) =
-    show(io, stringpretty(val, prettyFormat...))
+    print(io, stringpretty(val, prettyFormat...))
 
 
 
@@ -156,7 +156,7 @@ function showpretty(io::IO, val::Real,
        ty = typeof(val)
        throw(ErrorException("type $ty is not supported"))
     end
-    show(io, stringpretty(val, intGroup, fracGroup, intSep, fltSep))
+    print(io, stringpretty(val, intGroup, fracGroup, intSep, fltSep))
 end
 function showpretty(io::IO, val::Real)
     group, sep = fltsSpanned(), betweenFlts()
@@ -171,7 +171,7 @@ function showpretty(io::IO, val::Real, sep::Char)
     showpretty(io, val, group, group, sep, sep)
 end
 showpretty(io::IO, val::Real, prettyFormat...) =
-    show(io, stringpretty(val, prettyFormat...))
+    print(io, stringpretty(val, prettyFormat...))
 
 
 # show on STDOUT
