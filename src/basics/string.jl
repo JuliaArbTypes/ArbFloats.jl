@@ -116,7 +116,7 @@ function smarterstring{P}(x::ArbFloat{P})
         else
             chr = "⨥"
         end
-    elseif
+    else
         if x >= a
             chr = "∔"
         else
