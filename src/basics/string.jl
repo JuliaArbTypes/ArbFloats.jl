@@ -98,32 +98,27 @@ function smartervalue{P}(x::ArbFloat{P})
     ArbFloat{P}(s)
 end
 
-function smarterstring{P}(x::ArbFloat{P})
+function smarterstring{P}(af::ArbFloat{P})
     s = smartarbstring(x)
-    a = ArbFloat{P}(s)
-    chr = "≈"
-    if upperbound(x) - lowerbound(x) > ulp10(x)
-    begin
-        if upperbound(x) <= a
-            if x <= a
-                chr = "-"
-            else
+    sf = ArbFloat{P}(s)
+    lb,ub = bounds(x)
+    rad = radius(x)
+    dia = rad+rad
+    chr = "~"
+    if rad > ulp10(sf)
+      begin
+        if ub <= sf
+            chr = "-"
+        elseif lb >= sf
+            chr = "+"
+        else
+            if sf > af
                 chr = "⨪"
-            end
-        elseif lowerbound(x) >= a
-            if x >= a
-                chr = "+"
-            else
+            elseif sf < af
                 chr = "⨥"
             end
-        else
-            if x >= a
-                chr = "~"
-            else
-                chr = "~"
-            end
         end
-    end
+      end
     end
 
     string(s, chr)
