@@ -113,5 +113,6 @@ function stringcompact{P}(x::ArbFloat{P})
 end
 
 function stringallcompact{P}(x::ArbFloat{P})
-    string(string(midpoint(x),8)," ± ", string(radius(x),5))
+    return (isexact(x) ? string(midpoint(x)) :
+              string(string(midpoint(x),8)," ± ", string(radius(x),10)))
 end
