@@ -103,24 +103,25 @@ function smarterstring{P}(x::ArbFloat{P})
     a = ArbFloat{P}(s)
     chr = "~"
     if upperbound(x) - lowerbound(x) > ulp10(x)
-
-    if upperbound(x) <= a
-        if x <= a
-            chr = "-"
+    begin
+        if upperbound(x) <= a
+            if x <= a
+                chr = "-"
+            else
+                chr = "⨪"
+            end
+        elseif lowerbound(x) >= a
+            if x >= a
+                chr = "+"
+            else
+                chr = "⨥"
+            end
         else
-            chr = "⨪"
-        end
-    elseif lowerbound(x) >= a
-        if x >= a
-            chr = "+"
-        else
-            chr = "⨥"
-        end
-    else
-        if x >= a
-            chr = "∔"
-        else
-            chr = "∸"
+            if x >= a
+                chr = "∔"
+            else
+                chr = "∸"
+            end
         end
     end
     end
