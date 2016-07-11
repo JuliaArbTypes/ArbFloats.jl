@@ -99,9 +99,33 @@ function smartervalue{P}(x::ArbFloat{P})
 end
 
 function smarterstring{P}(x::ArbFloat{P})
-    s = smarterarbstring(x)
+    s = smartarbstring(x)
     a = ArbFloat{P}(s)
-    string(s,upperbound(x) < a ? '-' : (lowerbound(x) > a ? '+' : '~'))
+    chr = "~"
+    if upperbound(x) - lowerbound(x) > ulp10(x)
+
+    if upperbound(x) <= a
+        if x <= a
+            chr = "-"
+        else
+            chr = "⨪"
+        end
+    elseif lowerbound(x) >= a
+        if x >= a
+            chr = "+"
+        else
+            chr = "⨥"
+        end
+    elseif
+        if x >= a
+            chr = "∔"
+        else
+            chr = "∸"
+        end
+    end
+    end
+
+    string(s, chr)
 end
 
 function stringall{P}(x::ArbFloat{P})
