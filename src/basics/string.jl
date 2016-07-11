@@ -87,7 +87,7 @@ function smarterarbstring{P}(af::ArbFloat{P})
     digitsToKeep  = digitsRequired(P)
     if ufp_af_rad >= ulp_af_mid
         digitsToKeep += ceil(Int,
-            (log10(ulp10(upperbound(c))) - log10(ufp10(radius(c)))) - 0.001)
+            (log10(ulp10(upperbound(af))) - log10(ufp10(af_rad))) - 0.001)
     end
     af_mid = ifelse( negative, -af_mid, af_mid)
     return String(af_mid, digitsToKeep, UInt(2))
