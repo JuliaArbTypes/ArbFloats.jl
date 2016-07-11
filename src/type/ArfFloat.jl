@@ -1,10 +1,10 @@
 
             # P is the precision used for this value
 type ArfFloat{P}  <: Real
-  mid_exp::Int # fmpz
-  mid_size::UInt # mp_size_t
-  mid_d1::UInt # mantissa_struct
-  mid_d2::UInt
+  exponent::Int # fmpz
+  words_sgn::UInt # mp_size_t
+  mantissa1::UInt # mantissa_struct
+  mantissa2::UInt
 end
 
 precision{P}(x::ArfFloat{P}) = P
@@ -19,9 +19,9 @@ setprecision(::Type{ArfFloat}, x::Int) = setprecision(ArbFloat, x)
 # a type specific hash function helps the type to 'just work'
 const hash_arffloat_lo = (UInt === UInt64) ? 0x37e642589da3416a : 0x5d46a6b4
 const hash_0_arffloat_lo = hash(zero(UInt), hash_arffloat_lo)
-hash{P}(z::ArfFloat{P}, h::UInt) = 
-    hash(reinterpret(UInt,z.mid_d1)$z.mid_exp, 
-         (h $ hash(z.mid_d2$(~reinterpret(UInt,P)), hash_arffloat_lo) $ hash_0_arffloat_lo))
+hash{P}(z::ArfFloat{P}, h::UInt) =
+    hash(reinterpret(UInt,z.mantissa1)$z.exponent,
+         (h $ hash(z.mantissa2$(~reinterpret(UInt,P)), hash_arffloat_lo) $ hash_0_arffloat_lo))
 
 
 function clearArfFloat{P}(x::ArfFloat{P})

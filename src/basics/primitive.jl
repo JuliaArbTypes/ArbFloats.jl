@@ -23,23 +23,23 @@ end
 
 function copyradius{P}(target::ArbFloat{P}, source::ArbFloat{P})
     z = deepcopy(target)
-    z.rad_exp = source.rad_exp
-    z.rad_man = source.rad_man
+    z.radiusExp = source.radiusExp
+    z.radiusMan = source.radiusMan
     z
 end
 
 function deepcopyradius{P}(target::ArbFloat{P}, source::ArbFloat{P})
-    target.rad_exp = source.rad_exp
-    target.rad_man = source.rad_man
+    target.radiusExp = source.radiusExp
+    target.radiusMan = source.radiusMan
     target
 end
 
 function copymidpoint{P}(target::ArbFloat{P}, source::ArbFloat{P})
     z = deepcopy(target)
-    z.mid_exp = source.mid_exp
-    z.mid_size = source.mid_size
-    z.mid_d1 = source.mid_d1
-    z.mid_d2 = source.mid_d2
+    z.exponent = source.exponent
+    z.words_sgn = source.words_sgn
+    z.mantissa1 = source.mantissa1
+    z.mantissa2 = source.mantissa2
     z
 end
 

@@ -15,10 +15,10 @@ end
 
 function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
     z = initializer(ArfFloat{P})
-    z.mid_exp  = x.mid_exp
-    z.mid_size = x.mid_size
-    z.mid_d1   = x.mid_d1
-    z.mid_d2   = x.mid_d2
+    z.exponent  = x.exponent
+    z.words_sgn = x.words_sgn
+    z.mantissa1   = x.mantissa1
+    z.mantissa2   = x.mantissa2
     z
 end
 
@@ -30,12 +30,12 @@ function convert{P,Q}(::Type{ArbFloat{Q}}, a::ArbFloat{P})
     end
 
     z = initializer(ArbFloat{Q})
-    z.mid_exp  = a.mid_exp
-    z.mid_size = a.mid_size
-    z.mid_d1   = a.mid_d1
-    z.mid_d2   = a.mid_d2
-    z.rad_exp  = a.rad_exp
-    z.rad_man  = a.rad_man
+    z.exponent  = a.exponent
+    z.words_sgn = a.words_sgn
+    z.mantissa1   = a.mantissa1
+    z.mantissa2   = a.mantissa2
+    z.radiusExp  = a.radiusExp
+    z.radiusMan  = a.radiusMan
 
     z
 end
