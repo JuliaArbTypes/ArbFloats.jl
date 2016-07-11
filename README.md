@@ -1,12 +1,12 @@
 ## ArbFloats.jl
 ----
-####           other, sometimes overlapping software development is with [ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl)
+####           other, sometimes overlapping, software development is with [ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl)
 ----
 
 ###### Arb available as an extended precision floating point context.
 
 ```ruby
-                                               Jeffrey Sarnoff © 2016˗May˗26 in New York City
+                                   Jeffrey Sarnoff © 2016˗May˗26 in New York City
 ```
 #####This is for Julia v0.5.
 
