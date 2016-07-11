@@ -1,4 +1,4 @@
-
+#=
             # P is the precision used with the typed occurance
             #
 type ArbFloat{P}  <: Real     # field and struct names from arb.h
@@ -9,6 +9,7 @@ type ArbFloat{P}  <: Real     # field and struct names from arb.h
   radiusExp ::Int               #           fmpz
   radiusMan ::UInt              #
 end
+=#
 
 precision{P}(x::ArbFloat{P}) = P
 precision{P}(::Type{ArbFloat{P}}) = P

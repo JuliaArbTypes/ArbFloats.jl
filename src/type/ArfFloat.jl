@@ -1,4 +1,4 @@
-
+#=
             # P is the precision used for this value
 type ArfFloat{P}  <: Real
   exponent::Int # fmpz
@@ -6,6 +6,7 @@ type ArfFloat{P}  <: Real
   mantissa1::UInt # mantissa_struct
   mantissa2::UInt
 end
+=#
 
 precision{P}(x::ArfFloat{P}) = P
 precision{P}(::Type{ArfFloat{P}}) = P

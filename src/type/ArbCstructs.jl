@@ -4,14 +4,14 @@
 =#
 
 
-type ArbMag
+type MagFloat
     radiusExp::Int
     radiusMan::UInt         ## radius is unsigned (nonnegative), by definition
 end
 
     #       P is the precision in bits as a parameter
     #
-type ArbArf{P}
+type ArfFloat{P}
     exponent ::Int
     words_sgn::Int          ## Int, as words is an offset; lsb holds sign of mantissa
     mantissa1::UInt         ## UInt, as each mantissa word is a subspan of mantissa
@@ -21,7 +21,7 @@ end
 
     #       P is the precision in bits as a parameter
     #
-type ArbArb{P}              ##     ArbArf{P}
+type ArbFloat{P}              ##     ArbArf{P}
     exponent ::Int          ##        exponent
     words_sgn::Int          ##        words_sgn
     mantissa1::UInt         ##        mantissa1
