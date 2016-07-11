@@ -6,7 +6,7 @@ import Base: hash, convert, promote_rule, isa,
     copy, deepcopy,
     zero, one, isinteger, ldexp, frexp, eps,
     isequal, isless, (==),(!=),(<),(<=),(>=),(>), contains,
-    min, max, minmax, 
+    min, max, minmax,
     typemax, typemin, realmax, realmin,
     isnan, isinf, isfinite, issubnormal,
     signbit, sign, flipsign, copysign, abs, inv,
@@ -28,7 +28,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        stringcompact, stringall, stringallcompact, stringpretty,
        smartvalue, smartstring, showsmart, showallcompact, showpretty,
        two, three, four, copymidpoint, copyradius, deepcopyradius,
-       get_emax, get_emin, 
+       get_emax, get_emin,
        epsilon, trim, decompose, isexact, notexact,
        iszero, notzero, nonzero, isone, notone, notinteger,
        ispositive, notpositive, isnegative, notnegative,
@@ -81,12 +81,12 @@ end
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 
 include("support/ReadableNumbers.jl")
-include("support/IEEEfp.jl")
 
 include("type/ArfFloat.jl")
 include("type/ArbFloat.jl")
 
 include("basics/primitive.jl")
+include("basics/IEEEfp.jl")
 include("basics/predicates.jl")
 include("basics/string.jl")
 include("basics/convert.jl")
