@@ -104,7 +104,8 @@ function smarterstring{P}(x::ArbFloat{P})
 end
 
 function stringall{P}(x::ArbFloat{P})
-    string(midpoint(x)," ± ", string(radius(x),10))
+    return (isexact(x) ? string(midpoint(x)) :
+              string(midpoint(x)," ± ", string(radius(x),10)))
 end
 
 function stringcompact{P}(x::ArbFloat{P})
