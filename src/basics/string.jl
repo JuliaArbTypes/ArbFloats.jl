@@ -99,10 +99,10 @@ function smartervalue{P}(x::ArbFloat{P})
 end
 
 function smarterstring{P}(af::ArbFloat{P})
-    s = smartarbstring(x)
+    s = smartarbstring(af)
     sf = ArbFloat{P}(s)
-    lb,ub = bounds(x)
-    rad = radius(x)
+    lb,ub = bounds(af)
+    rad = radius(af)
     dia = rad+rad
     chr = "~"
     if rad > ulp10(sf)
