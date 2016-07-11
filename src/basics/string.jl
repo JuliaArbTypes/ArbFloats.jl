@@ -105,7 +105,8 @@ function smarterstring{P}(af::ArbFloat{P})
     rad = radius(af)
     dia = rad+rad
     chr = "~"
-    begin
+    if !isexact(af)
+      begin
         if ub <= sf
             chr = "-"
         elseif lb >= sf
@@ -117,6 +118,7 @@ function smarterstring{P}(af::ArbFloat{P})
                 chr = "⨥"
             end
         end
+      end
     end
 
     string(s, chr)
