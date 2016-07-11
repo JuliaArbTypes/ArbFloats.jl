@@ -81,17 +81,17 @@ end
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 
 include("support/ReadableNumbers.jl")
+include("support/IEEEfp.jl")
 
 include("type/ArfFloat.jl")
 include("type/ArbFloat.jl")
 
-include("type/primitive.jl")
-include("type/predicates.jl")
-include("type/ieeefp.jl")
-include("type/string.jl")
-include("type/convert.jl")
-include("type/compare.jl")
-include("type/io.jl")
+include("basics/primitive.jl")
+include("basics/predicates.jl")
+include("basics/string.jl")
+include("basics/convert.jl")
+include("basics/compare.jl")
+include("basics/io.jl")
 
 include("math/arith.jl")
 include("math/round.jl")
