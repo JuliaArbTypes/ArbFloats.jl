@@ -77,6 +77,8 @@ function smartstring{P}(x::ArbFloat{P})
     string(s,upperbound(x) < a ? '-' : (lowerbound(x) > a ? '+' : '~'))
 end
 
+
+#=
 function smarterarbstring{P}(af::ArbFloat{P})
     negative, af  = signbit(af) ? (true, -af) : (false, af)
     af_rad        = radius(af)
@@ -123,6 +125,7 @@ function smarterstring{P}(af::ArbFloat{P})
 
     string(s, chr)
 end
+=#
 
 function stringall{P}(x::ArbFloat{P})
     return (isexact(x) ? string(midpoint(x)) :
