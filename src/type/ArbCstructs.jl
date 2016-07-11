@@ -21,7 +21,7 @@ end
 
     #       P is the precision in bits as a parameter
     #
-type ArbFloat{P}              ##     ArbArf{P}
+type ArbFloat{P}            ##     ArbArf{P}
     exponent ::Int          ##        exponent
     words_sgn::Int          ##        words_sgn
     mantissa1::UInt         ##        mantissa1
