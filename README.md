@@ -1,6 +1,6 @@
 ## ArbFloats.jl
 ----
-####           software development is with [ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl)
+####           other, sometimes overlapping software development is with [ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl)
 ----
 
 ###### Arb available as an extended precision floating point context.
