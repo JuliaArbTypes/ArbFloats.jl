@@ -107,6 +107,31 @@ end
 
 bounds{P}(x::ArbFloat{P}) = ( lowerbound(x), upperbound(x) )
 
+
+function upperBound{P}(x::ArbFloat{P}, prec::Int)
+    a = ArfFloat{P}(0,0,0,0)
+    ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
+    z = initializer(ArbFloat{P})
+    ccall(@libarb(arb_get_ubound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, prec)
+    ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
+    ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
+    z
+end
+
+function lowerBound{P}(x::ArbFloat{P}, prec::Int)
+    a = ArfFloat{P}(0,0,0,0)
+    ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
+    z = initializer(ArbFloat{P})
+    ccall(@libarb(arb_get_lbound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, prec)
+    ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
+    ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
+    z
+end
+
+bothBounds{P}(x::ArbFloat{P},prec::Int) = ( lowerBound(x, prec), upperBound(x, prec) )
+
+
+
 function minmax{P}(x::ArbFloat{P}, y::ArbFloat{P})
    x < y ? (x,y) : (y,x)
 end
