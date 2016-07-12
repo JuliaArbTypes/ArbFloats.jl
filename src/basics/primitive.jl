@@ -75,9 +75,21 @@ function frexp{P}(x::ArfFloat{P})
     return significand, exponent
 end
 
+function ldexp{P}(s::ArfFloat{P}, e::Int)
+    z = deepcopy(s)
+    z.exponent = e
+    return z
+end
+
 function frexp{P}(x::ArbFloat{P})
     significand, exponent = frexp(ArfFloat{P}(x))
-    return ArbFloat{P}(significand), ArbFloat{P}(exponent)
+    return ArbFloat{P}(significand), exponent
+end
+
+function ldexp{P}(s::ArbFloat{P}, e::Int)
+    z = deepcopy(s)
+    z.exponent = e
+    return z
 end
 
 function decompose{P}(x::ArbFloat{P})
