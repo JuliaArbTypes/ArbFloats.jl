@@ -69,7 +69,7 @@ function show{P}(io::IO, x::ArfFloat{P})
 end
 
 function show{P}(x::ArfFloat{P})
-    ccall(@libarb(arf_print), Void, (Ptr{ArfFloat{P}), &x )
+    ccall(@libarb(arf_print), Void, (Ptr{ArfFloat{P}},), &x )
     return nothing
 end
 
