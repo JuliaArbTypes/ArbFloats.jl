@@ -86,6 +86,7 @@ include("type/ArbCstructs.jl")
 include("type/MagFloat.jl")
 include("type/ArfFloat.jl")
 include("type/ArbFloat.jl")
+include("type/ArbInterval.jl")
 
 include("basics/primitive.jl")
 include("basics/IEEEfp.jl")
