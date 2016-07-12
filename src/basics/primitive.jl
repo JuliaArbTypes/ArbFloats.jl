@@ -62,6 +62,24 @@ function tidy{P}(x::ArbFloat{P})
     ArbFloat{P}(s)
 end
 
+
+"""
+   x.midpoint -> (significand, exponent)
+                  [0.5,1.0)     2^expo
+   x.radius   -> (radial significand, radial exponent)
+"""
+function frexp{P}(x::ArfFloat{P})
+    exponent    = x.exponent
+    significand = deepcopy(x)
+    significand.exponent = 0
+    return significand, exponent
+end
+
+function frexp{P}(x::ArbFloat{P})
+    significand, exponent = frexp(ArfFloat{P}(x))
+    return ArbFloat{P}(significand), ArbFloat{P}(exponent)
+end
+
 function decompose{P}(x::ArbFloat{P})
     # decompose x as num * 2^pow / den
     # num, pow, den = decompose(x)

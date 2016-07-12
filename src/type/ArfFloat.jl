@@ -36,6 +36,16 @@ function initializer{P}(::Type{ArfFloat{P}})
     z
 end
 
+zero{P}(::Type{ArfFloat{P}) = initalizer(ArfFloat{P})
+
+function one{P}(::Type{ArfFloat{P})
+    z = iniitalizer(ArfFloat{P})
+    z.exponent = 1
+    z.words_sgn = 2
+    z.mantissa1 =  one(UInt) + ((-1 % UInt)>>1)
+    return z
+end
+
 function convert{P}(::Type{BigFloat}, x::ArfFloat{P})
     z = zero(BigFloat)
     ccall(@libarb(arf_get_mpfr), Void, (Ptr{BigFloat}, Ptr{ArfFloat{P}}), &z, &x)
@@ -52,10 +62,11 @@ midpoint{P}(x::ArfFloat{P}) = x
 
 radius{P}(x::ArfFloat{P}) = zero(ArfFloat{P})
 
+#=
 function frexp{P}(x::ArfFloat{P})
    mantissa = initializer(ArfFloat{P})
    exponent = zero(Int64)
    ccall(@libarb(arf_frexp), Void, (Ptr{ArfFloat{P}}, Int64, Ptr{ArfFloat{P}}), &mantissa, exponent, &x)
    mantissa, exponent
 end
-
+=#
