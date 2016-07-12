@@ -38,7 +38,7 @@ end
 
 zero{P}(::Type{ArfFloat{P}}) = initalizer(ArfFloat{P})
 
-function one{P}(::Type{ArfFloat{P})
+function one{P}(::Type{ArfFloat{P}})
     z = iniitalizer(ArfFloat{P})
     z.exponent = 1
     z.words_sgn = 2
