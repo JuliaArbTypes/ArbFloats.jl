@@ -36,7 +36,7 @@ function initializer{P}(::Type{ArfFloat{P}})
     z
 end
 
-zero{P}(::Type{ArfFloat{P}) = initalizer(ArfFloat{P})
+zero{P}(::Type{ArfFloat{P}}) = initalizer(ArfFloat{P})
 
 function one{P}(::Type{ArfFloat{P})
     z = iniitalizer(ArfFloat{P})
