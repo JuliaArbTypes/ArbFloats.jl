@@ -64,7 +64,7 @@ radius{P}(x::ArfFloat{P}) = zero(ArfFloat{P})
 
 
 function show{P}(io::IO, x::ArfFloat{P})
-    ccall(@libarb(arf_fprint), Void, (Ptr{UInt64}, Ptr{ArfFloat{P}), io, &x )
+    ccall(@libarb(arf_fprint), Void, (Ptr{UInt64}, Ptr{ArfFloat{P}}), io, &x)
     return nothing
 end
 
