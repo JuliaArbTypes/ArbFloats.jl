@@ -40,4 +40,4 @@ end # numbers behave
 
 #= end tests =#
 
-end # TestArbFloats
+end # Test ArbFloats
