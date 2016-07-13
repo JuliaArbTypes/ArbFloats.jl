@@ -23,7 +23,7 @@ import Base: hash, convert, promote_rule, isa,
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
        ArbFloat512, ArbFloat256, ArbFloat128, ArbFloat64, ArbFloat32, ArbFloat16,
-       @ArbFloat,     # converts string form of argument, precision is optional first arg in two arg form
+       @ArbFloat,     # converts string form of argument, precision is optional first arg
        midpoint, radius, upperbound, lowerbound, bounds,
        stringcompact, stringall, stringallcompact, stringpretty,
        smartvalue, smartstring, showsmart, showallcompact, showpretty,
@@ -45,42 +45,10 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        MullerKahanChallenge
 
 
-# ensure the requisite libraries are available
-
-isdir(Pkg.dir("Nemo")) || throw(ErrorException("Nemo not found"))
-
-libDir = Pkg.dir("Nemo/local/lib");
-libFiles = readdir(libDir);
-libarb   = joinpath(libDir,libFiles[findfirst([startswith(x,"libarb") for x in libFiles])])
-libflint = joinpath(libDir,libFiles[findfirst([startswith(x,"libflint") for x in libFiles])])
-isfile(libarb)   || throw(ErrorException("libarb not found"))
-isfile(libflint) || throw(ErrorException("libflint not found"))
-
-@static if is_linux() || is_bsd() || is_unix()
-    libarb = String(split(libarb,".so")[1])
-    libflint = String(split(libflint,".so")[1])
-end
-@static if is_apple()
-    libarb = String(split(libarb,".dynlib")[1])
-    libflint = String(split(libflint,".dynlib")[1])
-end
-@static if is_windows()
-    libarb = String(split(libarb,".dll")[1])
-    libflint = String(split(libflint,".dll")[1])
-end
-
-macro libarb(sym)
-    (:($sym), libarb)
-end
-
-macro libflint(sym)
-    (:($sym), libflint)
-end
-
-
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 
-include("support/ReadableNumbers.jl")
+include("support/NemoLibs.jl")                 # for precompiled libraries
+include("support/ReadableNumbers.jl")          # digit subsequence separators
 
 include("type/ArbCstructs.jl")
 include("type/MagFloat.jl")
