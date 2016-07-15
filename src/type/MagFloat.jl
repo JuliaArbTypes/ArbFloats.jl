@@ -23,7 +23,7 @@ function initialize(::Type{MagFloat})
     return z
 end
 
-for (T,M) in ((:UInt, :ui), (:SInt, :si), (:Float64, :d))
+for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
   @eval begin
     function convert(::Type{MagFloat}, x::($T))
         z = MagFloat(zero(Int), zero(UInt64))
