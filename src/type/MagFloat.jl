@@ -16,12 +16,12 @@ end
 @inline finalAction(x::MagFloat) = ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
 
 macro firstAct(z)
-  @quote
+  quote
       firstAction($z)
   end
 end
 macro finalAct(z)
-  @quote
+  quote
       finalizer($z, finalAction)
   end
 end
