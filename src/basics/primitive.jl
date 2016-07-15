@@ -63,35 +63,6 @@ function tidy{P}(x::ArbFloat{P})
 end
 
 
-"""
-   x.midpoint -> (significand, exponent)
-                  [0.5,1.0)     2^expo
-   x.radius   -> (radial significand, radial exponent)
-"""
-function frexp{P}(x::ArfFloat{P})
-    exponent    = x.exponent
-    significand = deepcopy(x)
-    significand.exponent = 0
-    return significand, exponent
-end
-
-function ldexp{P}(s::ArfFloat{P}, e::Int)
-    z = deepcopy(s)
-    z.exponent = e
-    return z
-end
-
-function frexp{P}(x::ArbFloat{P})
-    significand, exponent = frexp(ArfFloat{P}(x))
-    return ArbFloat{P}(significand), exponent
-end
-
-function ldexp{P}(s::ArbFloat{P}, e::Int)
-    z = deepcopy(s)
-    z.exponent = e
-    return z
-end
-
 function decompose{P}(x::ArbFloat{P})
     # decompose x as num * 2^pow / den
     # num, pow, den = decompose(x)
@@ -126,27 +97,3 @@ julia> ldexp(0.5,6-precision(a))
 5.0978941156238473e-57
 =#
 
-eps{P}(::Type{ArbFloat{P}}) = ldexp(0.5,1-P) # for intertype workings
-function eps{P}(x::ArbFloat{P})   # for intratype workings
-    m = midpoint(x)
-    ep = if m == zero(ArbFloat{P})
-             eps(ArbFloat{P})
-         else
-             ulp2(midpoint(x))
-         end
-    return ep
-end
-
-"""Similar to eps(x), epsilon(ArbFloat(x)) adjusts for the uncertainty as given by the radius.
-   This function is limited to values within the range of Float64.
-"""
-function epsilon{P}(x::ArbFloat{P})
-    r = radius(x)
-    ep = if r == zero(ArbFloat{P})
-             ulp2(midpoint(x))
-         else
-             max( ulp2(midpoint(x)), ufp2(r) )
-         end
-    return ep
-end
-epsilon(x::Real) = eps(x) # compatible with eps(other types)

@@ -1,8 +1,47 @@
-const log2_log10 = log(10,2)
-const log10_log2 = log(2,10)
 
-safe_bits2digs(nbits::Int) = floor(Int, nbits * log2_log10)
-safe_digs2bits(ndigs::Int) = floor(Int, ndigs * log10_log2)
+"""
+   x.midpoint -> (significand, exponent)
+                  [0.5,1.0)     2^expo
+   x.radius   -> (radial significand, radial exponent)
+"""
+function frexp{P}(x::ArfFloat{P})
+    exponent    = x.exponent
+    significand = deepcopy(x)
+    significand.exponent = 0
+    return significand, exponent
+end
+
+function ldexp{P}(s::ArfFloat{P}, e::Int)
+    z = deepcopy(s)
+    z.exponent = e
+    return z
+end
+
+function frexp{P}(x::ArbFloat{P})
+    significand, exponent = frexp(ArfFloat{P}(x))
+    return ArbFloat{P}(significand), exponent
+end
+
+function ldexp{P}(s::ArbFloat{P}, e::Int)
+    z = deepcopy(s)
+    z.exponent = e
+    return z
+end
+
+
+
+#=
+const log2_log10 = log(10,2)  # 0.3010299956639812 ~= log(2)/log(10)
+const log10_log2 = log(2,10)  # 3.321928094887362  ~= log(10)/log(2)
+
+lte_bits2digs(nbits::Int) = floor(Int, nbits * log2_log10)
+lte_digs2bits(ndigs::Int) = floor(Int, ndigs * log10_log2)
+=#
+
+lte_bits2digs(nbits::Int) = floor( Int, nbits * 0.3010299956639812 )
+lte_digs2bits(ndigs::Int) = floor( Int, ndigs * 3.321928094887362  )
+gte_bits2digs(nbits::Int)  = ceil( Int, nbits * 0.3010299956639812 )
+gte_digs2bits(ndigs::Int)  = ceil( Int, ndigs * 3.321928094887362  )
 
 """
 logarithm_base(x)
@@ -103,15 +142,24 @@ ulp2(x::Integer) = ulp2(Float64(x))
 """ulp10 is unit_last_place base 10"""
 function ulp10(x::Real, bitprecision::Int)
     unitfp = ufp10(x)
-    digitprecision = safe_bits2digs(bitprecision)
+    digitprecision = lte_bits2digs(bitprecision)
     twice_u = 10.0^(1-digitprecision)
     return twice_u * unitfp
 end
 function ulp10{P}(x::ArbFloat{P})
     unitfp = ufp10(x)
-    digitprecision = safe_bits2digs(P)
+    digitprecision = lte_bits2digs(P)
     twice_u = 10.0^(1-digitprecision)
     return twice_u * unitfp
 end
 ulp10{T<:AbstractFloat}(x::T) = ulp10( x, (1+Base.significand_bits(T)) )
 ulp10(x::Integer) = ulp10(Float64(x))
+
+
+eps{P}(::Type{ArbFloat{P}}) = ldexp(0.5,1-P) # for intertype workings
+function eps{P}(x::ArbFloat{P})              # for intratype workings
+    m = midpoint(x)
+    iszero(m) && return eps(ArbFloat{P})
+    max( ulp2(m), ufp2(radius(x)) )
+end
+
