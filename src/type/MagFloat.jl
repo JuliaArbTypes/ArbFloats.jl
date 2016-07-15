@@ -23,31 +23,16 @@ function initialize(::Type{MagFloat})
     return z
 end
 
-#for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
-#  @eval begin
-    function convert(::Type{MagFloat}, x::UInt)
+for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
+  @eval begin
+    function convert(::Type{MagFloat}, x::($T))
         z = MagFloat(zero(Int), zero(UInt64))
         initial0(z)
-        ccall(@libarb( mag_set_ui ), Void, (Ptr{MagFloat}, Int), &z, x)
+        ccall($(@libarb("mag_set_"*M)), Void, (Ptr{MagFloat}, ($T)), &z, x)
         finalizer(z, finalize)
-        return z
     end
-    function convert(::Type{MagFloat}, x::Int)
-        z = MagFloat(zero(Int), zero(UInt64))
-        initial0(z)
-        ccall(@libarb( mag_set_si ), Void, (Ptr{MagFloat}, Int), &z, x)
-        finalizer(z, finalize)
-        return z        
-    end
-    function convert(::Type{MagFloat}, x::Float64)
-        z = MagFloat(zero(Int), zero(UInt64))
-        initial0(z)
-        ccall(@libarb( mag_set_d ), Void, (Ptr{MagFloat}, Float64), &z, x)
-        finalizer(z, finalize)
-        return z        
-    end
-#  end
-#end
+  end
+end
 
 MagFloat(radius_exponent::Int, radius_mantissa::Int64) =
     MagFloat(radius_exponent, radius_mantissa % UInt64)
@@ -56,10 +41,10 @@ MagFloat(radius_exponent::Int, radius_mantissa::Int32) =
     MagFloat(radius_exponent, UInt64(radius_mantissa % UInt32) )
 
 MagFloat(radius_exponent::Int, radius_mantissa::Float64) =
-    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa)))
+    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa))
 
 MagFloat(radius_exponent::Int, radius_mantissa::Float32) =
-    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa)))
+    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa))
 
 
 MagFloat() = initialize(MagFloat)
@@ -78,14 +63,13 @@ end
 # convert to MagFloat
 
 Error_MagIsNegative() = throw(ErrorException("Magnitudes must be nonnegative."))
-#=
+
 function convert(::Type{MagFloat}, x::Float64)
     signbit(x) && Error_MagIsNegative()
     z = MagFloat()
     ccall(@libarb(mag_set_d), Void, (Ptr{MagFloat}, Ptr{Float64}), &z, &x)
     return z
 end
-=#
 convert(::Type{MagFloat}, x::Float32) = convert(MagFloat, convert(Float64, x))
 convert(::Type{MagFloat}, x::Float16) = convert(MagFloat, convert(Float64, x))
 
@@ -109,12 +93,10 @@ for T in (:UInt128, :UInt32, :UInt16, :UInt8)
     @eval lowerbound(::Type{MagFloat}, x::($T)) = lowerbound(MagFloat, convert(UInt64, x))
 end
 
-#=
 function convert(::Type{MagFloat}, x::Int64)
     signbit(x) && Error_MagIsNegative()
     return convert(MagFloat, reinterpret(UInt64, x))
 end
-=#
 
 for T in (:Int128, :Int32, :Int16, :Int8)
     @eval convert(::Type{MagFloat}, x::($T))  = convert(MagFloat, convert(Int64, x))
@@ -135,9 +117,6 @@ function convert(::Type{Float32}, x::MagFloat)
 end
 
 function convert(::Type{UInt}, x::MagFloat)
-    z = convert(Float64, x)
-    return convert(UInt, convert(UInt64, z))
-end
 
 # promotions
 

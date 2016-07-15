@@ -53,6 +53,23 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
          (h $ hash(z.mantissa2$(~reinterpret(UInt,P)), hash_arbfloat_lo)
             $ hash_0_arbfloat_lo))
 
+
+
+@inline finalize{P}(x::ArbFloat{P}) =  ccall(@libarb(arf_clear), Void, (Ptr{ArbFloat{P}},), &x)
+@inline initial0{P}(x::ArbFloat{P}) =  ccall(@libarb(arfb_init), Void, (Ptr{ArbFloat{P}},), &x)
+
+# initialize and zero a variable of type MagFloat
+function initializer{P}(::Type{ArfFloat{P}})
+    z = ArbFloat{P}(0,0,0,0,0,0)
+    ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &z)
+    initial0(z)
+    finalizer(z, finalize)
+    return z
+end
+
+
+
+
 # adapted from Nemo
 function (==){P}(x::ArbFloat{P}, y::ArbFloat{P})
     return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y))
