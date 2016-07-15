@@ -6,8 +6,8 @@ type ArbFloat{P}  <: Real     # field and struct names from arb.h
   words_sgn::UInt              #           mp_size_t
   mantissa1  ::UInt              #           mantissa_struct
   mantissa2  ::UInt              #
-  radiusExp ::Int               #           fmpz
-  radiusMan ::UInt              #
+  radius_exponent ::Int               #           fmpz
+  radius_mantissa ::UInt              #
 end
 =#
 

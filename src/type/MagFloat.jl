@@ -6,35 +6,56 @@
 
 #=
 type MagFloat
-    radiusExp::Int
-    radiusMan::UInt64
+    radius_exponent :: Int        # exponent
+    radius_mantissa :: UInt64     # mantissa
 end
 =#
 
-MagFloat{T<:Union{Int64,Int32}}(radiusExp::Int, radiusMan::T) =
-    MagFloat(radiusExp, radiusMan % UInt64)
+# initializing a MagFloat sets the value to zero
+@inline initial0(z::MagFloat) = ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
+@inline finalize(x::MagFloat) = ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
 
-function release{T<:MagFloat}(x::T)
-    ccall(@libarb(mag_clear), Void, (Ptr{T}, ), &x)
-    return nothing
-end
-
-function init{T<:MagFloat}(::Type{T})
+# initialize and zero a variable of type MagFloat
+function initialize(::Type{MagFloat})
     z = MagFloat(zero(Int), zero(UInt64))
-    ccall(@libarb(mag_init), Void, (Ptr{T}, ), &z)
-    finalizer(z, release)
+    initial0(z)
+    finalizer(z, finalize)
     return z
 end
 
-MagFloat() = init(MagFloat)
+for T,M in ((:UInt, :ui), (:SInt, :si), (:Float64, :d))
+  @eval begin
+    function convert(::Type{MagFloat}, x::($T))
+        z = MagFloat(zero(Int), zero(UInt64))
+        initial0(z)
+        ccall(@libarb(mag_set_($M), Void, (Ptr{MagFloat}, ($T)), &z, x)
+        finalizer(z, finalize)
+    end
+  end
+end
+
+MagFloat(radius_exponent::Int, radius_mantissa::Int64) =
+    MagFloat(radius_exponent, radius_mantissa % UInt64)
+
+MagFloat(radius_exponent::Int, radius_mantissa::Int32) =
+    MagFloat(radius_exponent, UInt64(radius_mantissa % UInt32) )
+
+MagFloat(radius_exponent::Int, radius_mantissa::Float64) =
+    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa))
+
+MagFloat(radius_exponent::Int, radius_mantissa::Float32) =
+    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa))
+
+
+MagFloat() = initialize(MagFloat)
 
 # define hash so other things work
 const hash_arbmag_lo = (UInt === UInt64) ? 0x29f934c433d9a758 : 0x2578e2ce
 const hash_0_arbmag_lo = hash(zero(UInt), hash_arbmag_lo)
 if UInt===UInt64
-   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt64, z.radiusExp), z.radiusMan )
+   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt64, z.radius_exponent), z.radius_mantissa )
 else
-   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt32, z.radiusExp) % UInt64, z.radiusMan )
+   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt32, z.radius_exponent) % UInt64, z.radius_mantissa )
 end
 
 # conversions
@@ -83,7 +104,7 @@ end
 
 
 
-#convert from MagFloat
+# convert from MagFloat
 
 function convert(::Type{Float64}, x::MagFloat)
     z = ccall(@libarb(mag_get_d), Float64, (Ptr{MagFloat}, ), &x)
@@ -95,6 +116,7 @@ function convert(::Type{Float32}, x::MagFloat)
     return z
 end
 
+function convert(::Type{UInt}, x::MagFloat)
 
 # promotions
 

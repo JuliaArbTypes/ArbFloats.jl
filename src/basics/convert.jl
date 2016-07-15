@@ -34,8 +34,8 @@ function convert{P,Q}(::Type{ArbFloat{Q}}, a::ArbFloat{P})
     z.words_sgn = a.words_sgn
     z.mantissa1   = a.mantissa1
     z.mantissa2   = a.mantissa2
-    z.radiusExp  = a.radiusExp
-    z.radiusMan  = a.radiusMan
+    z.radius_exponent  = a.radius_exponent
+    z.radius_mantissa  = a.radius_mantissa
 
     z
 end
