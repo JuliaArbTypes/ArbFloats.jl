@@ -41,10 +41,10 @@ MagFloat(radius_exponent::Int, radius_mantissa::Int32) =
     MagFloat(radius_exponent, UInt64(radius_mantissa % UInt32) )
 
 MagFloat(radius_exponent::Int, radius_mantissa::Float64) =
-    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa))
+    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa)))
 
 MagFloat(radius_exponent::Int, radius_mantissa::Float32) =
-    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa))
+    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa)))
 
 
 MagFloat() = initialize(MagFloat)
