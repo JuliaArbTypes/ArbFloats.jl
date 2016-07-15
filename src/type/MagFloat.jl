@@ -63,13 +63,14 @@ end
 # convert to MagFloat
 
 Error_MagIsNegative() = throw(ErrorException("Magnitudes must be nonnegative."))
-
+#=
 function convert(::Type{MagFloat}, x::Float64)
     signbit(x) && Error_MagIsNegative()
     z = MagFloat()
     ccall(@libarb(mag_set_d), Void, (Ptr{MagFloat}, Ptr{Float64}), &z, &x)
     return z
 end
+=#
 convert(::Type{MagFloat}, x::Float32) = convert(MagFloat, convert(Float64, x))
 convert(::Type{MagFloat}, x::Float16) = convert(MagFloat, convert(Float64, x))
 
@@ -93,10 +94,12 @@ for T in (:UInt128, :UInt32, :UInt16, :UInt8)
     @eval lowerbound(::Type{MagFloat}, x::($T)) = lowerbound(MagFloat, convert(UInt64, x))
 end
 
+#=
 function convert(::Type{MagFloat}, x::Int64)
     signbit(x) && Error_MagIsNegative()
     return convert(MagFloat, reinterpret(UInt64, x))
 end
+=#
 
 for T in (:Int128, :Int32, :Int16, :Int8)
     @eval convert(::Type{MagFloat}, x::($T))  = convert(MagFloat, convert(Int64, x))
