@@ -12,24 +12,24 @@ end
 =#
 
 # initializing a MagFloat sets the value to zero
-@inline initial0(z::MagFloat) = ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
-@inline finalize(x::MagFloat) = ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
+@inline firstAct(z::MagFloat) = ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
+@inline finalAct(x::MagFloat) = ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
 
 # initialize and zero a variable of type MagFloat
 function initialize(::Type{MagFloat})
     z = MagFloat(zero(Int), zero(UInt64))
-    initial0(z)
-    finalizer(z, finalize)
+    firstAct(z)
+    finalizer(z, finalAct)
     return z
 end
 
 for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
   @eval begin
+    libfn = string("mag_set_",$M)
     function convert(::Type{MagFloat}, x::($T))
-        z = MagFloat(zero(Int), zero(UInt64))
-        initial0(z)
-        ccall($(@libarb("mag_set_"*M)), Void, (Ptr{MagFloat}, ($T)), &z, x)
-        finalizer(z, finalize)
+        z = initialize(MagFloat)
+        ccall((:libarb, libfn), Void, (Ptr{MagFloat}, ($T)), &z, x)
+        return z
     end
   end
 end

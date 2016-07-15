@@ -25,16 +25,20 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
          (h $ hash(z.mantissa2$(~reinterpret(UInt,P)), hash_arffloat_lo) $ hash_0_arffloat_lo))
 
 
-function clearArfFloat{P}(x::ArfFloat{P})
-     ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &x)
-end
+@inline finalize{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &x)
+@inline initial0{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &x)
 
+
+# initialize and zero a variable of type MagFloat
 function initializer{P}(::Type{ArfFloat{P}})
     z = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &z)
-    finalizer(z, clearArfFloat)
-    z
+    initial0(z)
+    finalizer(z, finalize)
+    return z
 end
+
+
 
 zero{P}(::Type{ArfFloat{P}}) = initalizer(ArfFloat{P})
 
