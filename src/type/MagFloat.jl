@@ -117,6 +117,9 @@ function convert(::Type{Float32}, x::MagFloat)
 end
 
 function convert(::Type{UInt}, x::MagFloat)
+    z = convert(Float64, x)
+    return convert(UInt, convert(UInt64, z))
+end
 
 # promotions
 
