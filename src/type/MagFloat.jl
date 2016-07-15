@@ -34,10 +34,24 @@ function initialize(::Type{MagFloat})
     return z
 end
 
+#=
+# how to write
+for (T, postfix) in ((:Int, :int), (:Float64, :fp))
+    @eval  ccall(  ___ )
+end
+# so Julia sees
+ccall( (:convert_from_int, "myClib"), Void, (Ref{ Int     }, ), my_int_va
+ccall( (:convert_from_fp,  "myClib"), Void, (Ref{ Float64 }, ), my_fp_var  )
+# ------- from Yichao Yu, to get
+ccall( (:convert_from_int, "myClib"), Void, (Ref{ Int     }, ), my_int_var )
+# ------- the loop content is written this way
+ccall( ($(QuoteNode(Symbol("convert_from", postfix))), "myClib"),
+Void, (Ref{$T}, ), $(Symbol("my_", postfix, "_var"))
+=#
 
 for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
   @eval begin
-    libfn = string("mag_set_",$M)
+    libfn = string("mag_set_",:($M))
     function convert(::Type{MagFloat}, x::($T))
         z = initialize(MagFloat)
         ccall((:libarb, libfn), Void, (Ptr{MagFloat}, ($T)), &z, x)
