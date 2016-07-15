@@ -23,12 +23,12 @@ function initialize(::Type{MagFloat})
     return z
 end
 
-for T,M in ((:UInt, :ui), (:SInt, :si), (:Float64, :d))
+for (T,M) in ((:UInt, :ui), (:SInt, :si), (:Float64, :d))
   @eval begin
     function convert(::Type{MagFloat}, x::($T))
         z = MagFloat(zero(Int), zero(UInt64))
         initial0(z)
-        ccall(@libarb(mag_set_($M), Void, (Ptr{MagFloat}, ($T)), &z, x)
+        ccall(:(@libarb("mag_set_"*$M), Void, (Ptr{MagFloat}, ($T)), &z, x)
         finalizer(z, finalize)
     end
   end
