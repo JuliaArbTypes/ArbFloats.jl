@@ -23,16 +23,28 @@ function initialize(::Type{MagFloat})
     return z
 end
 
-for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
-  @eval begin
-    function convert(::Type{MagFloat}, x::($T))
+#for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
+#  @eval begin
+    function convert(::Type{MagFloat}, x::UInt)
         z = MagFloat(zero(Int), zero(UInt64))
         initial0(z)
-        ccall(@libarb( Symbol( $(("mag_set_")* string(:($M)))) ), Void, (Ptr{MagFloat}, ($T)), &z, x)
+        ccall(@libarb( mag_set_ui ), Void, (Ptr{MagFloat}, Int), &z, x)
         finalizer(z, finalize)
     end
-  end
-end
+    function convert(::Type{MagFloat}, x::Int)
+        z = MagFloat(zero(Int), zero(UInt64))
+        initial0(z)
+        ccall(@libarb( mag_set_si ), Void, (Ptr{MagFloat}, Int), &z, x)
+        finalizer(z, finalize)
+    end
+    function convert(::Type{MagFloat}, x::Float64)
+        z = MagFloat(zero(Int), zero(UInt64))
+        initial0(z)
+        ccall(@libarb( mag_set_d ), Void, (Ptr{MagFloat}, Float64), &z, x)
+        finalizer(z, finalize)
+    end
+#  end
+#end
 
 MagFloat(radius_exponent::Int, radius_mantissa::Int64) =
     MagFloat(radius_exponent, radius_mantissa % UInt64)
