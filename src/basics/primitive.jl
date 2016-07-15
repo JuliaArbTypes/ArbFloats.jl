@@ -73,27 +73,3 @@ function decompose{P}(x::ArbFloat{P})
     setprecision(BigFloat,bfprec)
     n,p,d
 end
-
-#=
-julia> a=a/60
-0.516666666666666379793574294166982543878341733194830405778
-
-julia> setprecision(BigFloat,precision(a));b=convert(BigFloat,a); Float64(eps(b))
-1.5930919111324523e-58
-
-julia> ulp2(midpoint(a)),ulp10(midpoint(a))
-(1.5930919111324523e-58,1.0e-57)
-
-julia> ldexp(0.5,1-precision(a))
-1.5930919111324523e-58
-
-julia> ulp2(midpoint(a)),ulp10(midpoint(a))
-(5.0978941156238473e-57,1.0e-55)
-
-julia> setprecision(BigFloat,precision(a));b=convert(BigFloat,a); Float64(eps(b))
-5.0978941156238473e-57
-
-julia> ldexp(0.5,6-precision(a))
-5.0978941156238473e-57
-=#
-

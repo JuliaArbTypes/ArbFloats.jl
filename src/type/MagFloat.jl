@@ -53,29 +53,30 @@ convert(::Type{MagFloat}, x::Float32) = convert(MagFloat, convert(Float64, x))
 convert(::Type{MagFloat}, x::Float16) = convert(MagFloat, convert(Float64, x))
 
 #=
-   convertHi returns upper bound of value
-   convertLo returns lower bound of value
+   lowerbound returns upper bound of value
+   upperbound returns lower bound of value
 =#
 
-function convertHi(::Type{MagFloat}, x::UInt64)
+function upperbound(::Type{MagFloat}, x::UInt64)
     z = MagFloat()
     ccall(@libarb(mag_set_ui), Void, (Ptr{MagFloat}, Ptr{UInt64}), &z, &x)
     return z
 end
-function convertLo(::Type{MagFloat}, x::UInt64)
+function lowerbound(::Type{MagFloat}, x::UInt64)
     z = MagFloat()
     ccall(@libarb(mag_set_ui_lower), Void, (Ptr{MagFloat}, Ptr{UInt64}), &z, &x)
     return z
 end
 for T in (:UInt128, :UInt32, :UInt16, :UInt8)
-    @eval convertHi(::Type{MagFloat}, x::($T)) = convertHi(MagFloat, convert(UInt64, x))
-    @eval convertLo(::Type{MagFloat}, x::($T)) = convertLo(MagFloat, convert(UInt64, x))
+    @eval upperbound(::Type{MagFloat}, x::($T)) = upperbound(MagFloat, convert(UInt64, x))
+    @eval lowerbound(::Type{MagFloat}, x::($T)) = lowerbound(MagFloat, convert(UInt64, x))
 end
 
 function convert(::Type{MagFloat}, x::Int64)
     signbit(x) && Error_MagIsNegative()
     return convert(MagFloat, reinterpret(UInt64, x))
 end
+
 for T in (:Int128, :Int32, :Int16, :Int8)
     @eval convert(::Type{MagFloat}, x::($T))  = convert(MagFloat, convert(Int64, x))
 end
