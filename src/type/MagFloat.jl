@@ -30,18 +30,21 @@ end
         initial0(z)
         ccall(@libarb( mag_set_ui ), Void, (Ptr{MagFloat}, Int), &z, x)
         finalizer(z, finalize)
+        return z
     end
     function convert(::Type{MagFloat}, x::Int)
         z = MagFloat(zero(Int), zero(UInt64))
         initial0(z)
         ccall(@libarb( mag_set_si ), Void, (Ptr{MagFloat}, Int), &z, x)
         finalizer(z, finalize)
+        return z        
     end
     function convert(::Type{MagFloat}, x::Float64)
         z = MagFloat(zero(Int), zero(UInt64))
         initial0(z)
         ccall(@libarb( mag_set_d ), Void, (Ptr{MagFloat}, Float64), &z, x)
         finalizer(z, finalize)
+        return z        
     end
 #  end
 #end
