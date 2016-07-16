@@ -15,10 +15,10 @@ end
 
 function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
     z = initializer(ArfFloat{P})
-    z.exponentOf2 = x.exponentOf2
-    z.nwords_sign   = x.nwords_sign
-    z.significand1   = x.significand1
-    z.significand2   = x.significand2
+    z.exponentOf2  = x.exponentOf2
+    z.nwords_sign  = x.nwords_sign
+    z.significand1 = x.significand1
+    z.significand2 = x.significand2
     z
 end
 
