@@ -43,7 +43,6 @@ Void, (Ref{$T}, ), $(Symbol("my_", postfix, "_var"))
 
 for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
   @eval begin
-   # libfn = string("mag_set_",:($M))
     function convert(::Type{MagFloat}, x::($T))
         z = initialize(MagFloat)
         ccall( :($(QuoteNode(Symbol("mag_set_", $M))), "libarb"), Void, (Ptr{$T}, ), &z )
