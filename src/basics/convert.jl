@@ -16,7 +16,7 @@ end
 function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
     z = initializer(ArfFloat{P})
     z.exponentOf2 = x.exponentOf2
-    z.words_sgn   = x.words_sgn
+    z.nwords_sign   = x.nwords_sign
     z.significand1   = x.significand1
     z.significand2   = x.significand2
     z
@@ -31,7 +31,7 @@ function convert{P,Q}(::Type{ArbFloat{Q}}, a::ArbFloat{P})
 
     z = initializer(ArbFloat{Q})
     z.exponentOf2  = a.exponentOf2
-    z.words_sgn = a.words_sgn
+    z.nwords_sign = a.nwords_sign
     z.significand1   = a.significand1
     z.significand2   = a.significand2
     z.radius_exponentOf2  = a.radius_exponentOf2

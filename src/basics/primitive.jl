@@ -37,7 +37,7 @@ end
 function copymidpoint{P}(target::ArbFloat{P}, source::ArbFloat{P})
     z = deepcopy(target)
     z.exponentOf2 = source.exponentOf2
-    z.words_sgn = source.words_sgn
+    z.nwords_sign = source.nwords_sign
     z.significand1 = source.significand1
     z.significand2 = source.significand2
     z

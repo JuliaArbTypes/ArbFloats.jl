@@ -3,7 +3,7 @@
             #
 type ArbFloat{P}  <: Real     # field and struct names from arb.h
   exponentOf2        ::Int    #           fmpz
-  words_sgn          ::UInt   #           mp_size_t
+  nwords_sign          ::UInt   #           mp_size_t
   significand1       ::UInt   #           significand_struct
   significand2       ::UInt   #
   radius_exponentOf2 ::Int    #           fmpz
@@ -19,11 +19,11 @@ precision(m::Module) = precision(Type{Val{Symbol(m)}})
 
 
 # precision is significand precision, significand_bits(FloatNN) + 1, for the hidden bit
-typealias ArbFloat16  ArbFloat{ 11}  # read  2 ? 3 or fewer decimal digits to write the same digits ( 16bit Float)
-typealias ArbFloat32  ArbFloat{ 24}  # read  6 ? 7 or fewer decimal digits to write the same digits ( 32bit Float)
-typealias ArbFloat64  ArbFloat{ 53}  # read 15 ?15 or fewer decimal digits to write the same digits ( 64bit Float)
-typealias ArbFloat128 ArbFloat{113}  # read 33 ?34 or fewer decimal digits to write the same digits (128bit Float)
-typealias ArbFloat256 ArbFloat{237}  # read 71 ?71 or fewer decimal digits to write the same digits (256bit Float)
+typealias ArbFloat16  ArbFloat{ 11}  # read   2 ? 3 or fewer decimal digits to write the same digits ( 16bit Float)
+typealias ArbFloat32  ArbFloat{ 24}  # read   6 ? 7 or fewer decimal digits to write the same digits ( 32bit Float)
+typealias ArbFloat64  ArbFloat{ 53}  # read  15 ?15 or fewer decimal digits to write the same digits ( 64bit Float)
+typealias ArbFloat128 ArbFloat{113}  # read  33 ?34 or fewer decimal digits to write the same digits (128bit Float)
+typealias ArbFloat256 ArbFloat{237}  # read  71 ?71 or fewer decimal digits to write the same digits (256bit Float)
 typealias ArbFloat512 ArbFloat{496}  # read 148?149 or fewer decimal digits to write the same digits (512bit Float)
 
 
@@ -45,7 +45,7 @@ end
 # a type specific hash function helps the type to 'just work'
 const hash_arbfloat_lo = (UInt === UInt64) ? 0x37e642589da3416a : 0x5d46a6b4
 const hash_0_arbfloat_lo = hash(zero(UInt), hash_arbfloat_lo)
-# two values of the same precision
+# two values of the sam  e precision
 #    with identical midpoint significands and identical radial exponentOf2s hash equal
 # they are the same value, one is less accurate yet centered about the other
 hash{P}(z::ArbFloat{P}, h::UInt) =

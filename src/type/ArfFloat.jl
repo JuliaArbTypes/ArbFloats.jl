@@ -2,7 +2,7 @@
             # P is the precision used for this value
 type ArfFloat{P}  <: Real
   exponentOf2::Int # fmpz
-  words_sgn::UInt # mp_size_t
+  nwords_sign::UInt # mp_size_t
   significand1::UInt # significand_struct
   significand2::UInt
 end
@@ -45,7 +45,7 @@ zero{P}(::Type{ArfFloat{P}}) = initalizer(ArfFloat{P})
 function one{P}(::Type{ArfFloat{P}})
     z = iniitalizer(ArfFloat{P})
     z.exponentOf2 = 1
-    z.words_sgn = 2
+    z.nwords_sign = 2
     z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
     return z
 end
