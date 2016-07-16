@@ -2,12 +2,12 @@
             # P is the precision used with the typed occurance
             #
 type ArbFloat{P}  <: Real     # field and struct names from arb.h
-  exponentOf2 ::Int               #           fmpz
-  words_sgn::UInt              #           mp_size_t
-  significand1  ::UInt              #           significand_struct
-  significand2  ::UInt              #
-  radius_exponentOf2 ::Int               #           fmpz
-  radius_significand ::UInt              #
+  exponentOf2        ::Int    #           fmpz
+  words_sgn          ::UInt   #           mp_size_t
+  significand1       ::UInt   #           significand_struct
+  significand2       ::UInt   #
+  radius_exponentOf2 ::Int    #           fmpz
+  radius_significand ::UInt   #
 end
 =#
 
