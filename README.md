@@ -50,7 +50,8 @@ setprecision(ArbFloat, 64);
 ==#
     goodValue = @ArbFloat(1.2345);    wrongValue = ArbFloat(1.2345);
 #       1.234500000000000000                1.2344999999999999307
-
+    ArbFloat("12345")/ArbFloat(1000);        ArbFloat(12345/10000)
+        ArbFloat("1.2345")
 
 
 ```
