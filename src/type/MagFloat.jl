@@ -12,25 +12,17 @@ end
 =#
 
 # initializing a MagFloat sets the value to zero
-@inline firstAction(z::MagFloat) = ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
-@inline finalAction(x::MagFloat) = ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
+#@inline firstAction(z::MagFloat) = ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
+#@inline finalAction(x::MagFloat) = ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
 
-macro firstAct(z)
-  quote
-      firstAction($z)
-  end
-end
-macro finalAct(z)
-  quote
-      finalizer($z, finalAction)
-  end
-end
+firstAct(z::MagFloat) = ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
+finalAct(z::MagFloat) = finalizer(z, ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &z))
 
 # initialize and zero a variable of type MagFloat
 function initialize(::Type{MagFloat})
     z = MagFloat(zero(Int), zero(UInt64))
-    @firstAct(z)
-    @finalAct(z)
+    firstAct(z)
+    finalAct(z)
     return z
 end
 
@@ -51,10 +43,11 @@ Void, (Ref{$T}, ), $(Symbol("my_", postfix, "_var"))
 
 for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
   @eval begin
-    libfn = string("mag_set_",:($M))
+   # libfn = string("mag_set_",:($M))
     function convert(::Type{MagFloat}, x::($T))
         z = initialize(MagFloat)
-        ccall((:libarb, libfn), Void, (Ptr{MagFloat}, ($T)), &z, x)
+        ccall( :($(QuoteNode(Symbol("mag_set_", $M))), "libarb"), Void, (Ptr{$T}, ), &z )
+        #ccall( ($(QuoteNode(Symbol("mag_set_", M))), "libarb"), Void, (Ref{$T}, ), z )
         return z
     end
   end
@@ -67,10 +60,10 @@ MagFloat(radius_exponent::Int, radius_mantissa::Int32) =
     MagFloat(radius_exponent, UInt64(radius_mantissa % UInt32) )
 
 MagFloat(radius_exponent::Int, radius_mantissa::Float64) =
-    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa))
+    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa)) )
 
 MagFloat(radius_exponent::Int, radius_mantissa::Float32) =
-    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa))
+    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa)) )
 
 
 MagFloat() = initialize(MagFloat)
@@ -90,6 +83,7 @@ end
 
 Error_MagIsNegative() = throw(ErrorException("Magnitudes must be nonnegative."))
 
+#=
 function convert(::Type{MagFloat}, x::Float64)
     signbit(x) && Error_MagIsNegative()
     z = MagFloat()
@@ -98,6 +92,7 @@ function convert(::Type{MagFloat}, x::Float64)
 end
 convert(::Type{MagFloat}, x::Float32) = convert(MagFloat, convert(Float64, x))
 convert(::Type{MagFloat}, x::Float16) = convert(MagFloat, convert(Float64, x))
+=#
 
 #=
    lowerbound returns upper bound of value
@@ -119,10 +114,12 @@ for T in (:UInt128, :UInt32, :UInt16, :UInt8)
     @eval lowerbound(::Type{MagFloat}, x::($T)) = lowerbound(MagFloat, convert(UInt64, x))
 end
 
+#=
 function convert(::Type{MagFloat}, x::Int64)
     signbit(x) && Error_MagIsNegative()
     return convert(MagFloat, reinterpret(UInt64, x))
 end
+=#
 
 for T in (:Int128, :Int32, :Int16, :Int8)
     @eval convert(::Type{MagFloat}, x::($T))  = convert(MagFloat, convert(Int64, x))
@@ -142,7 +139,7 @@ function convert(::Type{Float32}, x::MagFloat)
     return z
 end
 
-function convert(::Type{UInt}, x::MagFloat)
+# function convert(::Type{UInt}, x::MagFloat)
 
 # promotions
 

@@ -56,10 +56,10 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
 
 
 @inline finalize{P}(x::ArbFloat{P}) =  ccall(@libarb(arf_clear), Void, (Ptr{ArbFloat{P}},), &x)
-@inline initial0{P}(x::ArbFloat{P}) =  ccall(@libarb(arfb_init), Void, (Ptr{ArbFloat{P}},), &x)
+@inline initial0{P}(x::ArbFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArbFloat{P}},), &x)
 
-# initialize and zero a variable of type MagFloat
-function initializer{P}(::Type{ArfFloat{P}})
+# initialize and zero a variable of type ArbFloat
+function initializer{P}(::Type{ArbFloat{P}})
     z = ArbFloat{P}(0,0,0,0,0,0)
     ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &z)
     initial0(z)
@@ -67,16 +67,7 @@ function initializer{P}(::Type{ArfFloat{P}})
     return z
 end
 
-
-
-
-# adapted from Nemo
-function (==){P}(x::ArbFloat{P}, y::ArbFloat{P})
-    return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y))
-end
-function (!=){P}(x::ArbFloat{P}, y::ArbFloat{P})
-    return Bool(ccall(@libarb(arb_ne), Cint, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y))
-end
+#=
 
 function clearArbFloat{P}(x::ArbFloat{P})
      ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}},), &x)
@@ -89,6 +80,16 @@ function initializer{P}(::Type{ArbFloat{P}})
     z
 end
 
+=#
+
+
+# adapted from Nemo
+function (==){P}(x::ArbFloat{P}, y::ArbFloat{P})
+    return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y))
+end
+function (!=){P}(x::ArbFloat{P}, y::ArbFloat{P})
+    return Bool(ccall(@libarb(arb_ne), Cint, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y))
+end
 
 function midpoint{P}(x::ArbFloat{P})
     z = initializer(ArbFloat{P})

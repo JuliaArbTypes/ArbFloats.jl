@@ -29,7 +29,7 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
 @inline initial0{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &x)
 
 
-# initialize and zero a variable of type MagFloat
+# initialize and zero a variable of type ArfFloat
 function initializer{P}(::Type{ArfFloat{P}})
     z = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &z)
