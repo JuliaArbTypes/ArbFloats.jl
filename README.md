@@ -92,9 +92,9 @@ gamma( fpOneThird )
 
 ## Exports (including re-exports)
 
-used with Arb and ArbFloat | nature
+used with ArbFloat | nature
 ---------------------------|-------
-precision, setprecision,   | as with BigFloat
+precision, setprecision   | as with BigFloat
 
 
 Arb values are intervals | nature
