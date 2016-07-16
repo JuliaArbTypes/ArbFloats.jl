@@ -42,6 +42,18 @@ It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius 
 Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ```
 
+####Use with other Numeric Types
+```julia
+setprecision(ArbFloat, 64);
+#==
+          remember to do this    and       to avoid this
+==#
+    goodValue = @ArbFloat(1.2345);    wrongValue = ArbFloat(1.2345);
+#       1.234500000000000000                1.2344999999999999307
+
+
+
+```
 ####Use
 ```F#
 using ArbFloats
