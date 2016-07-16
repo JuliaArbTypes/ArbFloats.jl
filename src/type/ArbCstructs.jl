@@ -6,28 +6,28 @@
 
 
 type MagFloat
-    radius_exponent::Int
-    radius_mantissa::UInt   ## radius is unsigned (nonnegative), by definition
+    radius_exponentOf2::Int
+    radius_significand::UInt   ## radius is unsigned (nonnegative), by definition
 end
 
     #       P is the precision in bits as a parameter
     #
 type ArfFloat{P}
-    exponent ::Int
-    words_sgn::Int          ## Int, as words is an offset; lsb holds sign of mantissa
-    mantissa1::UInt         ## UInt, as each mantissa word is a subspan of mantissa
-    mantissa2::UInt         ##   the mantissa words are unsigned (sign is in words_sgn)
+    exponentOf2 ::Int
+    words_sgn::Int          ## Int, as words is an offset; lsb holds sign of significand
+    significand1::UInt         ## UInt, as each significand word is a subspan of significand
+    significand2::UInt         ##   the significand words are unsigned (sign is in words_sgn)
 end
 
 
     #       P is the precision in bits as a parameter
     #
 type ArbFloat{P}            ##     ArfFloat{P}
-    exponent ::Int          ##        exponent
+    exponentOf2 ::Int          ##        exponentOf2
     words_sgn::Int          ##        words_sgn
-    mantissa1::UInt         ##        mantissa1
-    mantissa2::UInt         ##        mantissa2
+    significand1::UInt         ##        significand1
+    significand2::UInt         ##        significand2
                             ###    ArbMag{P}
-    radius_exponent::Int    ####      radius_exponent
-    radius_mantissa::UInt   ####      radius_mantissa
+    radius_exponentOf2::Int    ####      radius_exponentOf2
+    radius_significand::UInt   ####      radius_significand
 end

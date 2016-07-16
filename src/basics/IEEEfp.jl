@@ -1,30 +1,30 @@
 
 """
-   x.midpoint -> (significand, exponent)
+   x.midpoint -> (significand, exponentOf2)
                   [0.5,1.0)     2^expo
-   x.radius   -> (radial significand, radial exponent)
+   x.radius   -> (radial significand, radial exponentOf2)
 """
 function frexp{P}(x::ArfFloat{P})
-    exponent    = x.exponent
+    exponentOf2    = x.exponentOf2
     significand = deepcopy(x)
-    significand.exponent = 0
-    return significand, exponent
+    significand.exponentOf2 = 0
+    return significand, exponentOf2
 end
 
 function ldexp{P}(s::ArfFloat{P}, e::Int)
     z = deepcopy(s)
-    z.exponent = e
+    z.exponentOf2 = e
     return z
 end
 
 function frexp{P}(x::ArbFloat{P})
-    significand, exponent = frexp(ArfFloat{P}(x))
-    return ArbFloat{P}(significand), exponent
+    significand, exponentOf2 = frexp(ArfFloat{P}(x))
+    return ArbFloat{P}(significand), exponentOf2
 end
 
 function ldexp{P}(s::ArbFloat{P}, e::Int)
     z = deepcopy(s)
-    z.exponent = e
+    z.exponentOf2 = e
     return z
 end
 

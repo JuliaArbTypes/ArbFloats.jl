@@ -16,7 +16,7 @@
 
 
 #=
-   The two mantissa fields in ArbFloat, mantissa1 and mantissa2, are 64bit types
+   The two significand fields in ArbFloat, significand1 and significand2, are 64bit types
       that cover the second part of the arf struct from the Arb C library.
       In the C arf struct, the second part is a discriminated union of
       two other Arb C library structs, one has 2 mp_limb_t (ulong, UInt64) fields
@@ -56,36 +56,36 @@ typedef struct
 {
     fmpz exp;
     mp_size_t size;
-    mantissa_struct d;
+    significand_struct d;
 }
 arf_struct;
 
 
 typedef union
 {
-    mantissa_noptr_struct noptr;
-    mantissa_ptr_struct ptr;
+    significand_noptr_struct noptr;
+    significand_ptr_struct ptr;
 }
-mantissa_struct;
+significand_struct;
 
 typedef struct
 {
     mp_limb_t d[ARF_NOPTR_LIMBS];
 }
-mantissa_noptr_struct;
+significand_noptr_struct;
 
 typedef struct
 {
     mp_size_t alloc;
     mp_ptr d;
 }
-mantissa_ptr_struct;
+significand_ptr_struct;
 
 =#
 
 #=
     "An arf_struct contains four words:
-       an fmpz exponent (exp),
+       an fmpz exponentOf2 (exp),
        a size field tracking the number of limbs used
          (one bit of this field is also used for the sign of the number),
        and two more words.

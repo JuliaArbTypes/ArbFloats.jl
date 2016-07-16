@@ -283,7 +283,7 @@ function nonnegIntegerString(s::String, group::Int, span::Char)
     n = length(s)
     n==0 && return "0"
 
-    sinteger, sexponent =
+    sinteger, sexponentOf2 =
         if contains(s,"e")
            strsplit(s,"e")
         else
@@ -320,8 +320,8 @@ function nonnegIntegerString(s::String, group::Int, span::Char)
 
     prettystring = convert(String, pretty)
 
-    if length(sexponent) != 0
-       string(prettystring,"e",sexponent)
+    if length(sexponentOf2) != 0
+       string(prettystring,"e",sexponentOf2)
     else
        prettystring
     end
@@ -338,7 +338,7 @@ function integerString(s::String, group::Int, span::Char)
 end
 
 function fractionalString(s::String, group::Int, span::Char)
-    sfrac, sexponent =
+    sfrac, sexponentOf2 =
         if contains(s,"e")
            map(String, split(s,"e"))
         else
@@ -347,8 +347,8 @@ function fractionalString(s::String, group::Int, span::Char)
 
     pretty = reverse(nonnegIntegerString(reverse(sfrac), group, span))
 
-    if length(sexponent) != 0
-       string(pretty,"e",sexponent)
+    if length(sexponentOf2) != 0
+       string(pretty,"e",sexponentOf2)
     else
        pretty
     end

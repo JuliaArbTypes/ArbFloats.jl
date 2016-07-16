@@ -6,8 +6,8 @@
 
 #=
 type MagFloat
-    radius_exponent :: Int        # exponent
-    radius_mantissa :: UInt64     # mantissa
+    radius_exponentOf2 :: Int        # exponentOf2
+    radius_significand :: UInt64     # significand
 end
 =#
 
@@ -53,17 +53,17 @@ for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
   end
 end
 
-MagFloat(radius_exponent::Int, radius_mantissa::Int64) =
-    MagFloat(radius_exponent, radius_mantissa % UInt64)
+MagFloat(radius_exponentOf2::Int, radius_significand::Int64) =
+    MagFloat(radius_exponentOf2, radius_significand % UInt64)
 
-MagFloat(radius_exponent::Int, radius_mantissa::Int32) =
-    MagFloat(radius_exponent, UInt64(radius_mantissa % UInt32) )
+MagFloat(radius_exponentOf2::Int, radius_significand::Int32) =
+    MagFloat(radius_exponentOf2, UInt64(radius_significand % UInt32) )
 
-MagFloat(radius_exponent::Int, radius_mantissa::Float64) =
-    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa)) )
+MagFloat(radius_exponentOf2::Int, radius_significand::Float64) =
+    MagFloat(radius_exponentOf2, convert(UInt64, abs(radius_significand)) )
 
-MagFloat(radius_exponent::Int, radius_mantissa::Float32) =
-    MagFloat(radius_exponent, convert(UInt64, abs(radius_mantissa)) )
+MagFloat(radius_exponentOf2::Int, radius_significand::Float32) =
+    MagFloat(radius_exponentOf2, convert(UInt64, abs(radius_significand)) )
 
 
 MagFloat() = initialize(MagFloat)
@@ -72,9 +72,9 @@ MagFloat() = initialize(MagFloat)
 const hash_arbmag_lo = (UInt === UInt64) ? 0x29f934c433d9a758 : 0x2578e2ce
 const hash_0_arbmag_lo = hash(zero(UInt), hash_arbmag_lo)
 if UInt===UInt64
-   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt64, z.radius_exponent), z.radius_mantissa )
+   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt64, z.radius_exponentOf2), z.radius_significand )
 else
-   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt32, z.radius_exponent) % UInt64, z.radius_mantissa )
+   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt32, z.radius_exponentOf2) % UInt64, z.radius_significand )
 end
 
 # conversions

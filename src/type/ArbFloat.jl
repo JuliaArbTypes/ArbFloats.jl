@@ -2,12 +2,12 @@
             # P is the precision used with the typed occurance
             #
 type ArbFloat{P}  <: Real     # field and struct names from arb.h
-  exponent ::Int               #           fmpz
+  exponentOf2 ::Int               #           fmpz
   words_sgn::UInt              #           mp_size_t
-  mantissa1  ::UInt              #           mantissa_struct
-  mantissa2  ::UInt              #
-  radius_exponent ::Int               #           fmpz
-  radius_mantissa ::UInt              #
+  significand1  ::UInt              #           significand_struct
+  significand2  ::UInt              #
+  radius_exponentOf2 ::Int               #           fmpz
+  radius_significand ::UInt              #
 end
 =#
 
@@ -46,11 +46,11 @@ end
 const hash_arbfloat_lo = (UInt === UInt64) ? 0x37e642589da3416a : 0x5d46a6b4
 const hash_0_arbfloat_lo = hash(zero(UInt), hash_arbfloat_lo)
 # two values of the same precision
-#    with identical midpoint significands and identical radial exponents hash equal
+#    with identical midpoint significands and identical radial exponentOf2s hash equal
 # they are the same value, one is less accurate yet centered about the other
 hash{P}(z::ArbFloat{P}, h::UInt) =
-    hash(z.mantissa1$z.exponent,
-         (h $ hash(z.mantissa2$(~reinterpret(UInt,P)), hash_arbfloat_lo)
+    hash(z.significand1$z.exponentOf2,
+         (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arbfloat_lo)
             $ hash_0_arbfloat_lo))
 
 

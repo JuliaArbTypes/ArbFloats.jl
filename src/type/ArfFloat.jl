@@ -1,10 +1,10 @@
 #=
             # P is the precision used for this value
 type ArfFloat{P}  <: Real
-  exponent::Int # fmpz
+  exponentOf2::Int # fmpz
   words_sgn::UInt # mp_size_t
-  mantissa1::UInt # mantissa_struct
-  mantissa2::UInt
+  significand1::UInt # significand_struct
+  significand2::UInt
 end
 =#
 
@@ -21,8 +21,8 @@ setprecision(::Type{ArfFloat}, x::Int) = setprecision(ArbFloat, x)
 const hash_arffloat_lo = (UInt === UInt64) ? 0x37e642589da3416a : 0x5d46a6b4
 const hash_0_arffloat_lo = hash(zero(UInt), hash_arffloat_lo)
 hash{P}(z::ArfFloat{P}, h::UInt) =
-    hash(reinterpret(UInt,z.mantissa1)$z.exponent,
-         (h $ hash(z.mantissa2$(~reinterpret(UInt,P)), hash_arffloat_lo) $ hash_0_arffloat_lo))
+    hash(reinterpret(UInt,z.significand1)$z.exponentOf2,
+         (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arffloat_lo) $ hash_0_arffloat_lo))
 
 
 @inline finalize{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &x)
@@ -44,9 +44,9 @@ zero{P}(::Type{ArfFloat{P}}) = initalizer(ArfFloat{P})
 
 function one{P}(::Type{ArfFloat{P}})
     z = iniitalizer(ArfFloat{P})
-    z.exponent = 1
+    z.exponentOf2 = 1
     z.words_sgn = 2
-    z.mantissa1 =  one(UInt) + ((-1 % UInt)>>1)
+    z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
     return z
 end
 
@@ -70,9 +70,9 @@ radius{P}(x::ArfFloat{P}) = zero(ArfFloat{P})
 
 #=
 function frexp{P}(x::ArfFloat{P})
-   mantissa = initializer(ArfFloat{P})
-   exponent = zero(Int64)
-   ccall(@libarb(arf_frexp), Void, (Ptr{ArfFloat{P}}, Int64, Ptr{ArfFloat{P}}), &mantissa, exponent, &x)
-   mantissa, exponent
+   significand = initializer(ArfFloat{P})
+   exponentOf2 = zero(Int64)
+   ccall(@libarb(arf_frexp), Void, (Ptr{ArfFloat{P}}, Int64, Ptr{ArfFloat{P}}), &significand, exponentOf2, &x)
+   significand, exponentOf2
 end
 =#
