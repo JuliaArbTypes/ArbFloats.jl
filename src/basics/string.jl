@@ -78,55 +78,6 @@ function smartstring{P}(x::ArbFloat{P})
 end
 
 
-#=
-function smarterarbstring{P}(af::ArbFloat{P})
-    negative, af  = signbit(af) ? (true, -af) : (false, af)
-    af_rad        = radius(af)
-    af_mid        = midpoint(af)
-    ulp_af_mid    = ulp2(af_mid)
-    ufp_af_rad    = ufp2(af_rad)
-
-    digitsToKeep  = digitsRequired(P)
-    if ufp_af_rad >= ulp_af_mid
-        digitsToKeep += ceil(Int,
-            (log10(ulp10(upperbound(af))) - log10(ufp10(af_rad))) - 0.001)
-    end
-    af_mid = ifelse( negative, -af_mid, af_mid)
-    return String(af_mid, digitsToKeep, UInt(2))
-end
-
-function smartervalue{P}(x::ArbFloat{P})
-    s = smarterarbstring(x)
-    ArbFloat{P}(s)
-end
-
-function smarterstring{P}(af::ArbFloat{P})
-    s = smartarbstring(af)
-    sf = ArbFloat{P}(s)
-    lb,ub = bounds(af)
-    rad = radius(af)
-    dia = rad+rad
-    chr = "~"
-    if !isexact(af)
-      begin
-        if ub <= sf
-            chr = "-"
-        elseif lb >= sf
-            chr = "+"
-        else
-            if sf > af
-                chr = "⨪"
-            elseif sf < af
-                chr = "⨥"
-            end
-        end
-      end
-    end
-
-    string(s, chr)
-end
-=#
-
 function stringall{P}(x::ArbFloat{P})
     return (isexact(x) ? string(midpoint(x)) :
               string(midpoint(x)," ± ", string(radius(x),10)))
