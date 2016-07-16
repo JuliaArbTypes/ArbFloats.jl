@@ -5,7 +5,7 @@
    x.radius   -> (radial significand, radial exponentOf2)
 """
 function frexp{P}(x::ArfFloat{P})
-    exponentOf2    = x.exponentOf2
+    exponentOf2 = x.exponentOf2
     significand = deepcopy(x)
     significand.exponentOf2 = 0
     return significand, exponentOf2
