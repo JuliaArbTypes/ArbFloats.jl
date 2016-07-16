@@ -39,7 +39,7 @@ It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius 
 
 ####Install
 ```julia
-Pkg.clone("https://github.com/jsarnoff-juliacon/ArbFloats.jl")  # requires a recent Julia v0.5.0-dev
+Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ```
 
 ####Use
