@@ -1,0 +1,56 @@
+during late June and early July 2016
+
+From Chris Rackauckas:
+
+Quick question though: what's the performance difference between a "pure" double-double or Float128 library vs ArbFloats? I looked at the attached paper and saw how these floats pushed pretty even with QD. Is QD a really good quad-double library? How does this compare to something else, like DoubleDouble.jl or your Float128 library? Curious because that table makes ArbFloats (well, it's underlying library) seem almost like the king of the 64-1000 bit range, i.e. the king of scientific computing (all because of using lookup tables). I am not as familar with the field, are there any competitor algorithms doing as well / close?
+
+My Response:
+
+They are all good questions.  
+Choose an extended precision, 
+   128 bits (double-double's are two Float64s, take 128 bits and use 106ish bits for the significand [mantissa]: 31 digits max )
+   256 bits (quad-double's are four Float64s, take 256 bits and use 212ish bits for the significand [mantissa]: 63 digits max)
+   512 bits (eight Float64s, using 424ish bits for the significand: 127 digits max)
+
+so, really, if you need to have a good deal of confidence in your numerics and want to sleep at night
+
+   128 bits gets you  25  digits
+   256 bits gets you  50  digits
+   512 bits gets you 100 digits
+
+now, the first hurdle (and it looms large) is that to rely on those accuracies the mathematical processing which occurs as input information becomes resultant elucidation must be done so that it is accurate to within 1 of the least significant digit (base 10),
+say, getting log(), cos(), zeta() ... correct to 30, 61, 125 digits respectively (or better).  And that is not easy.  The double-double libraries that you have seen or seen discussed do their arithmetic very accurately and while their elementary function evaluation is reasonably good -- while it is not *very* accurate and it is reasonably accurate.  Reasonably accurate is not what we need.
+
+So to get double-double transcendentals very accurately, one must use some higher internal precision for some of calculation -- when I last wrote something like that I used triple-double routines to generate very accurate double-double evaluands.  That slows down stuff.
+
+Often people choose to favor faster over the more nearly correct.  And if nobody dies and a bad trade is not mistaken for a good one, and the plots in a published paper that are height-encoded by luminance and density encoded by hue do not have brown and blueblack dots where they do not belong, that's alright.
+
+The best (time-tested) heuristic is (Professor William Kahan) where the size of your input elements match the size of your returned values (i.e. both are vectors of Float32) [and if not, use the larger of the two element sizes as the 'matching' size] all the computation that takes inputs into values returned should be done at twice that size (i.e. using Float64).
+
+... if you care ... if the application is to be really trustworthy (while this is not a guarantee, it is strong medicine).  
+
+(part 2)
+
+Is QD a really good quad-double library? How does this compare to something else, like DoubleDouble.jl or your Float128 library? Curious because that table makes ArbFloats (well, it's underlying library) seem almost like the king of the 64-1000 bit range, i.e. the king of scientific computing (all because of using lookup tables). I am not as familar with the field, are there any competitor algorithms doing as well / close?
+
+Fredrik Johansson​'s C library, the "Arb"  in ArbFloats, is based on his own research into the computational structure of numeric calculations in medium precision (generally, that's numbers with 100..1000 digits, and Arb works properly with 12..1200 digits).
+
+Arb seems to be at its best calculating with 50..500 digit floating point numbers.  That C library includes the modifications to GMP's algorithms and revisions of some well known mechanisms which are used to get correct results from evaluating (an approximation to) elementary and special functions at medium and high precision.
+
+In combination, those improvements and his advances in fast enclosure methods working with interval-valued data have given us a very quick, mathematically reliable, and flexible numerical tool.  There are two constraints on the use of Arb: (i) it is not designed to be used for work with numbers that have more than 1230 digits. (ii) it works best with data or other input that is given as points, relatively narrow intervals or as point values with small uncertainties.
+
+The benchmarking I have done most contrasts the performance of Julia's BigFloat (GNU's GMP) with that of our ArbFloats.  With careful benchmarking of exp, log, trig, arctrig, hyptrig, archyptrig, gamma and zeta -- one finds that BigFloat is palpably slower until the precision reaches about 2500 bits, and Arb's average performance continues to exceed BigFloat's up to about 3500 bits of precision.  From what I have noticed, ArbFloat <and now receiving benefit from other perspectives and other's efforts> is and is highly likely to remain the  best choice for basic, elementary, analytic and diffeomorphic mathematical function evaluation with floats of 100..300 digits.
+
+The compare/contrast with doubledouble and qd is that qd is better (the results are more frequently relatively more correct).  If you need transcendentals that consistently give you all save the last two or three bits correctly, do not use doubledouble.  If its all about the arithmetical functions and 100 bit precision does what you need done, use doubledouble.
+
+(part 3)
+
+"... a lot of the arb code (like polynomial multiplication and transcendental functions) is faster than what you would get with generic code over bigfloats anyway. There are places where intervals don't work well, though, due to error bounds blowing up. Solving an equation with an iterative algorithm such as Newton's method is a good example. Ideally, there is an interval solution to the same problem, like the interval Newton iteration, or a floating-point algorithm followed by a validation step (like the acb_poly root finding code). 
+
+                     -- Fredrik Johansson from a thread about using some of Arb through Nemo.jl (Fall 2015)
+
+(David Saunders can tell you what you may want to know about using the interval Newton method)
+
+thanks for your interest,
+
+Jeffrey Sarnoff
