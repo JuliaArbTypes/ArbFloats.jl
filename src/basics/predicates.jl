@@ -4,7 +4,7 @@
 function iszero{P}(x::ArbFloat{P})
     z = ccall(@libarb(arb_is_zero), Int, (Ptr{ArbFloat},), &x)
     z != 0
-end=
+end
 
 iszero{T<:Real}(x::T) = (x == zero(T))
 
