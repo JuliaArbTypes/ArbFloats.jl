@@ -39,22 +39,28 @@ function trunc{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     signbit(x) ? -z : z
 end
 
-function round{T,P}(::Type{T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    z = round(x, sig, base)
-    convert(T, z)
+for T in (:Int16, :Int32, :Int64, :Int128,
+          :UInt16, :UInt32, :UInt64, :UInt128)
+  @eval begin
+    function round{P}(::Type{$T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+        z = round(x, sig, base)
+        convert($T, z)
+    end
+    function ceil{P}(::Type{$T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+        z = ceil(x, sig, base)
+        convert($T, z)
+    end
+    function floor{P}(::Type{$T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+        z = floor(x, sig, base)
+        convert($T, z)
+    end
+    function trunc{P}(::Type{$T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+        z = trunc(x, sig, base)
+        convert($T, z)
+    end
+  end
 end
-function ceil{T,P}(::Type{T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    z = ceil(x, sig, base)
-    convert(T, z)
-end
-function floor{T,P}(::Type{T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    z = floor(x, sig, base)
-    convert(T, z)
-end
-function trunc{T,P}(::Type{T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    z = trunc(x, sig, base)
-    convert(T, z)
-end
+
 
 fld{P}(x::ArbFloat{P}, y::ArbFloat{P}) = convert(Int, floor(x/y))
 cld{P}(x::ArbFloat{P}, y::ArbFloat{P}) = convert(Int, ceil(x/y))
