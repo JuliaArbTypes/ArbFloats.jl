@@ -106,7 +106,7 @@ for (op,cfunc) in ((:^,:arb_pow), (:pow,:arb_pow))
 end
 
 root{P}(x::ArbFloat{P}, y::ArbFloat{P}) = pow(x, inv(y))
-root{P}(x:Integer, y::ArbFloat{P}) = pow(ArbFloat{P}(x), inv(y))
+root{P}(x::Integer, y::ArbFloat{P}) = pow(ArbFloat{P}(x), inv(y))
 function root{P}(x::ArbFloat{P}, y::Integer)
    return
      if y>=0
