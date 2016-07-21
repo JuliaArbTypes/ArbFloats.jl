@@ -61,7 +61,9 @@ function notneginf{P}(x::ArbFloat{P})
 end
 
 
-"""true iff midpoint(x) and radius(x) are zero"""
+"""
+true iff midpoint(x) and radius(x) are zero
+"""
 function iszero{P}(x::ArbFloat{P})
     z = ccall(@libarb(arb_is_zero), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
