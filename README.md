@@ -14,7 +14,7 @@
 
 ####Compatable Packages
 
-DualNumbers, Quaternions,
+Plots, ForwardDiff, DualNumbers, Quaternions
 
 ####Appropriateness 
 
