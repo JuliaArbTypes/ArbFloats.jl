@@ -14,49 +14,49 @@ end
 
 function isnan{P}(x::ArbFloat{P})
     y = ArfFloat{P}(x)
-    z = ccall(@libarb(arf_is_nan), Int, (Ptr{ArfFloat{O}},), &y)
+    z = ccall(@libarb(arf_is_nan), Int, (Ptr{ArfFloat{P}},), &y)
     z != 0
 end
 
 function notnan{P}(x::ArbFloat{P})
     y = ArfFloat{P}(x)
-    z = ccall(@libarb(arf_is_nan), Int, (Ptr{ArfFloat{O}},), &y)
+    z = ccall(@libarb(arf_is_nan), Int, (Ptr{ArfFloat{P}},), &y)
     z == 0
 end
 
 function isinf{P}(x::ArbFloat{P})
     y = ArfFloat{P}(x)
-    z = ccall(@libarb(arf_is_inf), Int, (Ptr{ArfFloat{O}},), &y)
+    z = ccall(@libarb(arf_is_inf), Int, (Ptr{ArfFloat{P}},), &y)
     z != 0
 end
 
 function notinf{P}(x::ArbFloat{P})
     y = ArfFloat{P}(x)
-    z = ccall(@libarb(arf_is_inf), Int, (Ptr{ArfFloat{O}},), &y)
+    z = ccall(@libarb(arf_is_inf), Int, (Ptr{ArfFloat{P}},), &y)
     z == 0
 end
 
 function isposinf{P}(x::ArbFloat{P})
     y = ArfFloat{P}(x)
-    z = ccall(@libarb(arf_is_posinf), Int, (Ptr{ArfFloat{O}},), &y)
+    z = ccall(@libarb(arf_is_posinf), Int, (Ptr{ArfFloat{P}},), &y)
     z != 0
 end
 
 function notposinf{P}(x::ArbFloat{P})
     y = ArfFloat{P}(x)
-    z = ccall(@libarb(arf_is_posinf), Int, (Ptr{ArfFloat{O}},), &y)
+    z = ccall(@libarb(arf_is_posinf), Int, (Ptr{ArfFloat{P}},), &y)
     z == 0
 end
 
 function isneginf{P}(x::ArbFloat{P})
     y = ArfFloat{P}(x)
-    z = ccall(@libarb(arf_is_neginf), Int, (Ptr{ArfFloat{O}},), &y)
+    z = ccall(@libarb(arf_is_neginf), Int, (Ptr{ArfFloat{P}},), &y)
     z != 0
 end
 
 function notneginf{P}(x::ArbFloat{P})
     y = ArfFloat{P}(x)
-    z = ccall(@libarb(arf_is_neginf), Int, (Ptr{ArfFloat{O}},), &y)
+    z = ccall(@libarb(arf_is_neginf), Int, (Ptr{ArfFloat{P}},), &y)
     z == 0
 end
 
@@ -116,13 +116,13 @@ notexact{T<:Integer}(x::T) = false
 
 """true iff midpoint(x) is an integer and radius(x) is zero"""
 function isinteger{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_int), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_int), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
 """true iff midpoint(x) is not an integer or radius(x) is nonzero"""
 function notinteger{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_int), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_int), Int, (Ptr{ArbFloat{P}},), &x)
     z == 0
 end
 
@@ -131,26 +131,26 @@ notinteger{T<:Integer}(x::T) = false
 
 """true iff lowerbound(x) is positive"""
 function ispositive{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_positive), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_positive), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
 """true iff upperbound(x) is negative"""
 function isnegative{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_negative), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_negative), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
 """true iff upperbound(x) is zero or negative"""
 function notpositive{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_nonpositive), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_nonpositive), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 excludesPositive{P}(x::ArbFloat{P}) = notpositive(x)
 
 """true iff lowerbound(x) is zero or positive"""
 function notnegative{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_nonnegative), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_nonnegative), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 excludesNegative{P}(x::ArbFloat{P}) = notnegative(x)
@@ -159,50 +159,50 @@ excludesNegative{P}(x::ArbFloat{P}) = notnegative(x)
 
 """true iff midpoint(x)==midpoint(y) and radius(x)==radius(y)"""
 function isequal{P}(x::ArbFloat{P}, y::ArbFloat{P})
-    z = ccall(@libarb(arb_equal), Int, (Ptr{ArbFloat}, Ptr{ArbFloat}), &x, &y)
+    z = ccall(@libarb(arb_equal), Int, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y)
     z != 0
 end
 
 
 """true iff midpoint(x)!=midpoint(y) or radius(x)!=radius(y)"""
 function notequal{P}(x::ArbFloat{P}, y::ArbFloat{P})
-    z = ccall(@libarb(arb_equal), Int, (Ptr{ArbFloat}, Ptr{ArbFloat}), &x, &y)
+    z = ccall(@libarb(arb_equal), Int, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y)
     z == 0
 end
 
 """true iff x and y have a common point"""
 function overlap{P}(x::ArbFloat{P}, y::ArbFloat{P})
-    z = ccall(@libarb(arb_overlaps), Int, (Ptr{ArbFloat}, Ptr{ArbFloat}), &x, &y)
+    z = ccall(@libarb(arb_overlaps), Int, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y)
     z != 0
 end
 
 """true iff x and y have no common point"""
 function donotoverlap{P}(x::ArbFloat{P}, y::ArbFloat{P})
-    z = ccall(@libarb(arb_overlaps), Int, (Ptr{ArbFloat}, Ptr{ArbFloat}), &x, &y)
+    z = ccall(@libarb(arb_overlaps), Int, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y)
     z == 0
 end
 
 """true iff x spans (covers) all of y"""
 function contains{P}(x::ArbFloat{P}, y::ArbFloat{P})
-    z = ccall(@libarb(arb_contains), Int, (Ptr{ArbFloat}, Ptr{ArbFloat}), &x, &y)
+    z = ccall(@libarb(arb_contains), Int, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y)
     z != 0
 end
 
 """true iff y spans (covers) all of x"""
 function iscontainedby{P}(x::ArbFloat{P}, y::ArbFloat{P})
-    z = ccall(@libarb(arb_contains), Int, (Ptr{ArbFloat}, Ptr{ArbFloat}), &y, &x)
+    z = ccall(@libarb(arb_contains), Int, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &y, &x)
     z != 0
 end
 
 """true iff x does not span (cover) all of y"""
 function doesnotcontain{P}(x::ArbFloat{P}, y::ArbFloat{P})
-    z = ccall(@libarb(arb_contains), Int, (Ptr{ArbFloat}, Ptr{ArbFloat}), &x, &y)
+    z = ccall(@libarb(arb_contains), Int, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y)
     z == 0
 end
 
 """true iff y does not span (cover) all of x"""
 function isnotcontainedby{P}(x::ArbFloat{P}, y::ArbFloat{P})
-    z = ccall(@libarb(arb_contains), Int, (Ptr{ArbFloat}, Ptr{ArbFloat}), &y, &x)
+    z = ccall(@libarb(arb_contains), Int, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &y, &x)
     z == 0
 end
 
@@ -226,48 +226,48 @@ end
 
 """true iff x contains an integer"""
 function includesAnInteger{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_contains_int), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_contains_int), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
 """true iff x does not contain an integer"""
 function excludesIntegers{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_contains_int), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_contains_int), Int, (Ptr{ArbFloat{P}},), &x)
     z == 0
 end
 
 """true iff x contains zero"""
 function includesZero{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_contains_int), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_contains_int), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
 """true iff x does not contain zero"""
 function excludesZero{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_contains_int), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_contains_int), Int, (Ptr{ArbFloat{P}},), &x)
     z == 0
 end
 
 """true iff x contains a positive value"""
 function includesPositive{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_contains_positive), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_contains_positive), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
 """true iff x contains a negative value"""
 function includesNegative{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_contains_negative), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_contains_negative), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
 """true iff x contains a nonpositive value"""
 function includesNonpositive{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_contains_nonpositive), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_contains_nonpositive), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
 """true iff x contains a nonnegative value"""
 function includesNonnegative{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_contains_nonnegative), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_contains_nonnegative), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
