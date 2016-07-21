@@ -29,7 +29,7 @@ for (op,cfunc) in ((:inv, :arb_inv), (:sqrt, :arb_sqrt), (:invsqrt, :arb_rsqrt))
   end
 end
 
-for (op,cfunc) in ((:+,:arb_add), (:-, :arb_sub), (:*, :arb_mul), (:/, :arb_div), (:hypot, :arb_hypot))
+for (op,cfunc) in ((:+,:arb_add), (:-, :arb_sub), (:/, :arb_div), (:hypot, :arb_hypot))
   @eval begin
     function ($op){P}(x::ArbFloat{P}, y::ArbFloat{P})
       z = initializer(ArbFloat{P})
@@ -50,7 +50,7 @@ end
 
 (*){P}(x::ArbFloat{P}, y::ArbFloat{P}, z::ArbFloat{P}) = (x * y) * z
 
-(*){P}(x::Integer, y::ArbFloat{P}, z::ArbFloat{P}) = x * (y * z)
+(*){P,I<:Integer}(x::I, y::ArbFloat{P}, z::ArbFloat{P}) = x * (y * z)
 (*){P}(x::ArbFloat{P}, y::ArbFloat{P}, z::Integer) = (x * y) * z
 (*){P}(x::ArbFloat{P}, y::Integer, z::ArbFloat{P}) = (x * z) * y
 
