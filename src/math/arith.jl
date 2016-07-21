@@ -48,6 +48,30 @@ function (*){P}(x::ArbFloat{P}, y::ArbFloat{P})
     return z
 end
 
+(*){P}(x::ArbFloat{P}, y::ArbFloat{P}, z::ArbFloat{P}) = (x * y) * z
+
+(*){P}(x::Integer, y::ArbFloat{P}, z::ArbFloat{P}) = x * (y * z)
+(*){P}(x::ArbFloat{P}, y::ArbFloat{P}, z::Integer) = (x * y) * z
+(*){P}(x::ArbFloat{P}, y::Integer, z::ArbFloat{P}) = (x * z) * y
+
+(*){P}(x::Real, y::ArbFloat{P}, z::ArbFloat{P}) = x * (y * z)
+(*){P}(x::ArbFloat{P}, y::ArbFloat{P}, z::Real) = (x * y) * z
+(*){P}(x::ArbFloat{P}, y::Real, z::ArbFloat{P}) = (x * z) * y
+
+(+){P}(x::ArbFloat{P}, y::ArbFloat{P}, z::ArbFloat{P}) = (x + y) + z
+
+(+){P}(x::Integer, y::ArbFloat{P}, z::ArbFloat{P}) = x + (y + z)
+(+){P}(x::ArbFloat{P}, y::ArbFloat{P}, z::Integer) = (x + y) + z
+(+){P}(x::ArbFloat{P}, y::Integer, z::ArbFloat{P}) = (x + z) + y
+
+(+){P}(x::Real, y::ArbFloat{P}, z::ArbFloat{P}) = x + (y + z)
+(+){P}(x::ArbFloat{P}, y::ArbFloat{P}, z::Real) = (x + y) + z
+(+){P}(x::ArbFloat{P}, y::Real, z::ArbFloat{P}) = (x + z) + y
+
+(-){P}(x::ArbFloat{P}, y::ArbFloat{P}, z::ArbFloat{P}) = (x - y) - z
+(/){P}(x::ArbFloat{P}, y::ArbFloat{P}, z::ArbFloat{P}) = (x / y) / z
+
+
 for (op,cfunc) in ((:+,:arb_add_si), (:-, :arb_sub_si), (:*, :arb_mul_si), (:/, :arb_div_si))
   @eval begin
     function ($op){P}(x::ArbFloat{P}, y::Int)
