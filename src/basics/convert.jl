@@ -162,6 +162,8 @@ for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16,
   @eval promote_rule{P}(::Type{ArbFloat{P}}, ::Type{$T}) = ArbFloat{P}
 end
 
+float{P}(x::ArbFloat{P}) = convert(Float64, x)
+
 promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigFloat}) = BigFloat
 promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigInt}) = ArbFloat{P}
 promote_rule{P}(::Type{ArbFloat{P}}, ::Type{Rational{BigInt}}) = Rational{BigInt}
