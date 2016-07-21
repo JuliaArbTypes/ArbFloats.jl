@@ -1,8 +1,69 @@
 # one parameter predicates
 
+"""Returns nonzero iff the midpoint and radius of x are both finite floating-point numbers, i.e. not infinities or NaN.""
+function isfinite{P}(x::ArbFloat{P})
+    z = ccall(@libarb(arb_is_finite), Int, (Ptr{ArbFloat{P}},), &x)
+    z != 0
+end
+
+"isnan or isinf"
+function notfinite{P}(x::ArbFloat{P})
+    z = ccall(@libarb(arb_is_finite), Int, (Ptr{ArbFloat{P}},), &x)
+    z == 0
+end
+
+function isnan{P}(x::ArbFloat{P})
+    y = ArfFloat{P}(x)
+    z = ccall(@libarb(arf_is_nan), Int, (Ptr{ArfFloat{O}},), &y)
+    z != 0
+end
+
+function notnan{P}(x::ArbFloat{P})
+    y = ArfFloat{P}(x)
+    z = ccall(@libarb(arf_is_nan), Int, (Ptr{ArfFloat{O}},), &y)
+    z == 0
+end
+
+function isinf{P}(x::ArbFloat{P})
+    y = ArfFloat{P}(x)
+    z = ccall(@libarb(arf_is_inf), Int, (Ptr{ArfFloat{O}},), &y)
+    z != 0
+end
+
+function notinf{P}(x::ArbFloat{P})
+    y = ArfFloat{P}(x)
+    z = ccall(@libarb(arf_is_inf), Int, (Ptr{ArfFloat{O}},), &y)
+    z == 0
+end
+
+function isposinf{P}(x::ArbFloat{P})
+    y = ArfFloat{P}(x)
+    z = ccall(@libarb(arf_is_posinf), Int, (Ptr{ArfFloat{O}},), &y)
+    z != 0
+end
+
+function notposinf{P}(x::ArbFloat{P})
+    y = ArfFloat{P}(x)
+    z = ccall(@libarb(arf_is_posinf), Int, (Ptr{ArfFloat{O}},), &y)
+    z == 0
+end
+
+function isneginf{P}(x::ArbFloat{P})
+    y = ArfFloat{P}(x)
+    z = ccall(@libarb(arf_is_neginf), Int, (Ptr{ArfFloat{O}},), &y)
+    z != 0
+end
+
+function notneginf{P}(x::ArbFloat{P})
+    y = ArfFloat{P}(x)
+    z = ccall(@libarb(arf_is_neginf), Int, (Ptr{ArfFloat{O}},), &y)
+    z == 0
+end
+
+
 """true iff midpoint(x) and radius(x) are zero"""
 function iszero{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_zero), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_zero), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
@@ -10,7 +71,7 @@ iszero{T<:Real}(x::T) = (x == zero(T))
 
 """true iff midpoint(x) or radius(x) are not zero"""
 function notzero{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_zero), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_zero), Int, (Ptr{ArbFloat{P}},), &x)
     z == 0
 end
 
@@ -18,7 +79,7 @@ notzero{T<:Real}(x::T) = (x != zero(T))
 
 """true iff zero is not within [upperbound(x), lowerbound(x)]"""
 function nonzero{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_nonzero), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_nonzero), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
@@ -26,7 +87,7 @@ nonzero{T<:Real}(x::T) = (x != zero(T))
 
 """true iff midpoint(x) is one and radius(x) is zero"""
 function isone{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_one), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_one), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
@@ -34,7 +95,7 @@ isone{T<:Real}(x::T) = (x == one(T))
 
 """true iff midpoint(x) is not one or midpoint(x) is one and radius(x) is nonzero"""
 function notone{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_one), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_one), Int, (Ptr{ArbFloat{P}},), &x)
     z == 0
 end
 
@@ -42,18 +103,17 @@ notone{T<:Real}(x::T) = (x != one(T))
 
 """true iff radius is zero"""
 function isexact{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_exact), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_exact), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
 end
 
-isexact{T<:Integer}(x::T) = true
-
 """true iff radius is nonzero"""
 function notexact{P}(x::ArbFloat{P})
-    z = ccall(@libarb(arb_is_exact), Int, (Ptr{ArbFloat},), &x)
+    z = ccall(@libarb(arb_is_exact), Int, (Ptr{ArbFloat{P}},), &x)
     z == 0
 end
 
+isexact{T<:Integer}(x::T) = true
 notexact{T<:Integer}(x::T) = false
 
 """true iff midpoint(x) is an integer and radius(x) is zero"""
@@ -67,6 +127,9 @@ function notinteger{P}(x::ArbFloat{P})
     z = ccall(@libarb(arb_is_int), Int, (Ptr{ArbFloat},), &x)
     z == 0
 end
+
+isinteger{T<:Integer}(x::T) = true
+notinteger{T<:Integer}(x::T) = false
 
 """true iff lowerbound(x) is positive"""
 function ispositive{P}(x::ArbFloat{P})
