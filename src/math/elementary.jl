@@ -60,7 +60,7 @@ function atan2{P}(a::ArbFloat{P}, b::ArbFloat{P})
     z
 end
 
-for (op,cfunc) in ((:root, :arb_root_ui))
+for (op,cfunc) in ((:root, :arb_root_ui),)
   @eval begin
     function ($op){P}(x::ArbFloat{P}, y::UInt)
       z = initializer(ArbFloat{P})
