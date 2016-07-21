@@ -61,13 +61,13 @@ end
 (-){P}(x::ArbFloat{P}, y::Integer) = (-)(x, convert(ArbFloat{P}, y))
 (*){P}(x::ArbFloat{P}, y::Integer) = (*)(x, convert(ArbFloat{P}, y))
 (/){P}(x::ArbFloat{P}, y::Integer) = (/)(x, convert(ArbFloat{P}, y))
-(^){P}(x::ArbFloat{P}, y::Integer) = (/)(x, convert(ArbFloat{P}, y))
+(^){P}(x::ArbFloat{P}, y::Integer) = (^)(x, convert(ArbFloat{P}, y))
 
 (+){P}(x::Integer, y::ArbFloat{P}) = (+)(convert(ArbFloat{P}, x), y)
 (-){P}(x::Integer, y::ArbFloat{P}) = -((-)(y, convert(ArbFloat{P}, x)))
 (*){P}(x::Integer, y::ArbFloat{P}) = (*)(convert(ArbFloat{P},x), y)
 (/){P}(x::Integer, y::ArbFloat{P}) = (/)(convert(ArbFloat{P},x), y)
-(^){P}(x::ArbFloat{P}, y::Integer) = (/)(x, convert(ArbFloat{P}, y))
+(^){P}(x::Integer, y::ArbFloat{P}) = (^)(convert(ArbFloat{P},x), y)
 
 for (op,cfunc) in ((:addmul,:arb_addmul), (:submul, :arb_submul))
   @eval begin
