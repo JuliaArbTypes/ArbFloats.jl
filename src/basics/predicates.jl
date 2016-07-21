@@ -1,6 +1,6 @@
 # one parameter predicates
 
-"""Returns nonzero iff the midpoint and radius of x are both finite floating-point numbers, i.e. not infinities or NaN.""
+"""Returns nonzero iff the midpoint and radius of x are both finite floating-point numbers, i.e. not infinities or NaN."""
 function isfinite{P}(x::ArbFloat{P})
     z = ccall(@libarb(arb_is_finite), Int, (Ptr{ArbFloat{P}},), &x)
     z != 0
