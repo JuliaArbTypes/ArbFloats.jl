@@ -74,6 +74,30 @@ end
 
 for (op,cfunc) in ((:^,:arb_pow), (:pow,:arb_pow))
   @eval begin
+    function ($op){P}(x::Int, y::ArbFloat{P})
+      xx = ArbFloat{P}(x)
+      z = initializer(ArbFloat{P})
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &xx, &y, P)
+      z
+    end
+    function ($op){P}(x::ArbFloat{P}, y::Int)
+      yy = ArbFloat{P}(y)
+      z = initializer(ArbFloat{P})
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, &yy, P)
+      z
+    end
+    function ($op){P}(x::Integer, y::ArbFloat{P})
+      xx = ArbFloat{P}(x)
+      z = initializer(ArbFloat{P})
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &xx, &y, P)
+      z
+    end
+    function ($op){P}(x::ArbFloat{P}, y::Integer)
+      yy = ArbFloat{P}(y)
+      z = initializer(ArbFloat{P})
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, &yy, P)
+      z
+    end
     function ($op){P}(x::ArbFloat{P}, y::ArbFloat{P})
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, &y, P)
