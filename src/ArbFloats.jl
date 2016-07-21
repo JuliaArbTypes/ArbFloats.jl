@@ -31,6 +31,8 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        two, three, four, copymidpoint, copyradius, deepcopyradius,
        get_emax, get_emin,
        trim, decompose, isexact, notexact,
+       isposinf, isneginf, 
+       notnan, notinf, notposinf, notneginf, notfinite,
        iszero, notzero, nonzero, isone, notone, notinteger,
        ispositive, notpositive, isnegative, notnegative,
        includesAnInteger, excludesIntegers, includesZero, excludesZero,
