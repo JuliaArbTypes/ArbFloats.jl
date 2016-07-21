@@ -6,7 +6,7 @@ function isfinite{P}(x::ArbFloat{P})
     z != 0
 end
 
-"isnan or isinf"
+"""isnan or isinf"""
 function notfinite{P}(x::ArbFloat{P})
     z = ccall(@libarb(arb_is_finite), Int, (Ptr{ArbFloat{P}},), &x)
     z == 0
