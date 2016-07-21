@@ -12,6 +12,10 @@
 ```
 #####This is for Julia v0.5.
 
+####Compatable Packages
+
+DualNumbers, Quaternions,
+
 ####Appropriateness 
 
 Preferred for extending the precision of floating point computations from 64 bits [17 digits] up to 512 bits [150 digits].  
