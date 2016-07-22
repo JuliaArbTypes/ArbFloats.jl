@@ -12,6 +12,7 @@ import Base: hash, convert, promote_rule, isa,
     isnan, isinf, isfinite, issubnormal,
     signbit, sign, flipsign, copysign, abs, inv,
     (+),(-),(*),(/),(\),(%),(^), sqrt, hypot,
+    (.+),(.-),(.*),(./),
     trunc, round, ceil, floor,
     fld, cld, div, mod, rem, divrem, fldmod,
     muladd, fma,
@@ -72,5 +73,5 @@ include("math/round.jl")
 include("math/elementary.jl")
 include("math/constants.jl")
 include("math/special.jl")
-
+include("math/arrayops.jl")
 end # ArbFloats
