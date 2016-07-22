@@ -1,9 +1,11 @@
 
-zero{T<:ArbFloat}(::Type{T}) = initializer(T)
+function zero{P}(::Type{ArbFloat{P}})
+    P = precision(ArbFloat)
+    return initializer(ArbFloat{P})
+end
 function zero(::Type{ArbFloat})
     P = precision(ArbFloat)
-    T = ArbFloat{P}
-    return zero(T)
+    return zero(ArbFloat{P})
 end
 
 function one{P}(::Type{ArbFloat{P}})
