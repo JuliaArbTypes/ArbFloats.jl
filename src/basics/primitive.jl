@@ -1,6 +1,9 @@
 
 zero{T<:ArbFloat}(::Type{T}) = initializer(T)
-zero(::Type{ArbFloat}) = initializer(ArbFloat{precision(ArbFloat)})
+function zero(::Type{ArbFloat})
+    P = precision(ArbFloat)
+    return zero(ArbFloat{P})
+end
 
 function one{T<:ArbFloat}(::Type{T})
     z = initializer(T)
@@ -9,7 +12,10 @@ function one{T<:ArbFloat}(::Type{T})
     z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
     return z
 end
-one(::Type{ArbFloat}) = initializer(ArbFloat{precision(ArbFloat)})
+function one(::Type{ArbFloat})
+    P = precision(ArbFloat)
+    return one(ArbFloat{P})
+end
 
 for (op, i) in ((:two,:2), (:three,:3), (:four, :4))
   @eval begin
