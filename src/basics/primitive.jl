@@ -1,4 +1,17 @@
-for (op, i) in ((:zero,:0), (:one,:1), (:two,:2), (:three,:3), (:four, :4))
+
+zero{T<:ArbFloat}(::Type{T}) = initializer(T)
+zero(::Type{ArbFloat}) = initializer(ArbFloat{precision(ArbFloat)})
+
+function one{T<:ArbFloat}(::Type{T})
+    z = initializer(T)
+    z.exponentOf2 = 1
+    z.nwords_sign = 2
+    z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
+    return z
+end
+one(::Type{ArbFloat}) = initializer(ArbFloat{precision(ArbFloat)})
+
+for (op, i) in ((:two,:2), (:three,:3), (:four, :4))
   @eval begin
     function ($op){P}(::Type{ArbFloat{P}})
         z = initializer(ArbFloat{P})

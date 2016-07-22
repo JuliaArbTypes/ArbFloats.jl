@@ -68,18 +68,6 @@ initializer(::Type{ArbFloat}) = initializer{ArbFloat{precision{ArbFloat}}}
 
 ArbFloat() = initializer(ArbFloat{precision(ArbFloat)})
 
-zero{T<:ArbFloat}(::Type{T}) = initializer(T)
-zero(::Type{ArbFloat}) = initializer(ArbFloat{precision(ArbFloat)})
-
-function one{T<:ArbFloat}(::Type{T})
-    z = initializer(T)
-    z.exponentOf2 = 1
-    z.nwords_sign = 2
-    z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
-    return z
-end
-#zero(::Type{ArbFloat}) = initializer(ArbFloat{precision(ArbFloat)})
-
 
 # adapted from Nemo
 function (==){T<:ArbFloat}(x::T, y::T)
