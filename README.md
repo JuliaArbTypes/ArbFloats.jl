@@ -16,7 +16,7 @@
 
 
 **using ArbFloats # goes anywhere**  
-DualNumbers, ForwardDiff, Plots, Quaternions, others  
+DualNumbers, ForwardDiff, Plots, Quaternions, Roots, others  
 
 **using ArbFloats # goes last!**  
 TaylorSeries, others
