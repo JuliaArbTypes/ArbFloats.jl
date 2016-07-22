@@ -1,6 +1,5 @@
 
 function zero{P}(::Type{ArbFloat{P}})
-    P = precision(ArbFloat)
     return initializer(ArbFloat{P})
 end
 function zero(::Type{ArbFloat})
