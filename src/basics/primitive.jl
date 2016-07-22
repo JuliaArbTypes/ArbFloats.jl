@@ -33,35 +33,29 @@ end
 function copy{T<:ArbFloat}(x::T)
     z = initializer(T)
     ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-    z
+    return z
 end
 
-function deepcopy{P}(x::ArbFloat{P})
-    z = initializer(ArbFloat{P})
+function deepcopy{T<:ArbFloat}(x::T)
+    z = initializer(T)
     ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-    z
+    return z
 end
 
-function copyradius{P}(target::ArbFloat{P}, source::ArbFloat{P})
+function copyradius{T<:ArbFloat}(target::T, source::T)
     z = deepcopy(target)
     z.radius_exponentOf2 = source.radius_exponentOf2
     z.radius_significand = source.radius_significand
-    z
+    return z
 end
 
-function deepcopyradius{P}(target::ArbFloat{P}, source::ArbFloat{P})
-    target.radius_exponentOf2 = source.radius_exponentOf2
-    target.radius_significand = source.radius_significand
-    target
-end
-
-function copymidpoint{P}(target::ArbFloat{P}, source::ArbFloat{P})
+function copymidpoint{T<:ArbFloat}(target::T, source::T)
     z = deepcopy(target)
     z.exponentOf2  = source.exponentOf2
     z.nwords_sign  = source.nwords_sign
     z.significand1 = source.significand1
     z.significand2 = source.significand2
-    z
+    return z
 end
 
 """
@@ -69,28 +63,29 @@ Rounds x to a number of bits equal to the accuracy of x (as indicated by its rad
 The resulting ball is guaranteed to contain x, but is more economical if x has less than full accuracy.
 (from arb_trim documentation)
 """
-function trim{P}(x::ArbFloat{P})
-    z = initializer(ArbFloat{P})
+function trim{T<:ArbFloat}(x::T)
+    z = initializer(T)
     ccall(@libarb(arb_trim), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-    z
+    return z
 end
 
 """
 Rounds x to a clean estimate of x as a point value.
 """
-function tidy{P}(x::ArbFloat{P})
+function tidy{T<:ArbFloat}(x::T)
     s = smartarbstring(x)
-    ArbFloat{P}(s)
+    return (T)(s)
 end
 
 
-function decompose{P}(x::ArbFloat{P})
+function decompose{T<:ArbFloat}(x::T)
     # decompose x as num * 2^pow / den
     # num, pow, den = decompose(x)
+    P = precision(T)
     bfprec=precision(BigFloat)
     setprecision(BigFloat,P)
     bf = convert(BigFloat, x)
     n,p,d = decompose(bf)
     setprecision(BigFloat,bfprec)
-    n,p,d
+    return n,p,d
 end
