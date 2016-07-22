@@ -22,7 +22,7 @@ function string{P}(x::ArbFloat{P}, ndigits::Int)
     if !isinteger(x)
         s = rstrip(s, '0')
     else
-        s = string(split(s, '.')[1],"0")
+        s = split(s, '.')[1]
     end
     return s
 end
@@ -33,7 +33,7 @@ function string{P}(x::ArbFloat{P})
     if !isinteger(x)
         s = rstrip(s, '0')
     else
-        s = string(split(s, '.')[1],"0")
+        s = split(s, '.')[1]
     end
     return s
 end
