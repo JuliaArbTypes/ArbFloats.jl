@@ -17,12 +17,22 @@ function String{P}(x::ArbFloat{P}, flags::UInt)
 end
 
 # n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
-string{P}(x::ArbFloat{P}, ndigits::Int) =
-    String(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
+function string{P}(x::ArbFloat{P}, ndigits::Int)
+    s = String(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
+    if !isinteger(x)
+        s = rstrip(s, '0')
+    end
+    return s
+end
 
 # n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
-string{P}(x::ArbFloat{P}) =
-    String(x,UInt(2)) # midpoint only (within 1ulp), RoundNearest
+function string{P}(x::ArbFloat{P})
+    s = String(x,UInt(2)) # midpoint only (within 1ulp), RoundNearest
+    if !isinteger(x)
+        s = rstrip(s, '0')
+    end
+    return s
+end
 
 function stringTrimmed{P}(x::ArbFloat{P}, ndigitsremoved::Int)
    n = max(1, digitsRequired(P) - max(0, ndigitsremoved))
@@ -39,7 +49,11 @@ end
 function smartarbstring{P}(x::ArbFloat{P})
      digits = digitsRequired(P)
      if isexact(x)
-        return String(x, digits, UInt(2))
+        if isinteger(x)
+            return String(x, digits, UInt(2))
+        else
+            return rstrip(String(x, digits, UInt(2)),'0')
+        end
      end
 
      lb, ub = bounds(x)
