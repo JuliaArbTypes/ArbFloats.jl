@@ -14,11 +14,11 @@
 
 ####Compatable Packages
 
-DualNumbers, ForwardDiff, Plots,  Polynomials, Quaternions, TaylorSeries, many others  
+DualNumbers, ForwardDiff, Plots, Quaternions, TaylorSeries, many others  
 
 **using ArbFloats # goes last!**  
 
-If you have a package that accepts AbstractFloats or Reals and does not "just work" with ArbFloats, please note it as an issue.
+If you have a package that accepts AbstractFloats or Reals and does not "just work" with ArbFloats, please note it as an issue. [Polynomials]
 
 ####Appropriateness 
 
