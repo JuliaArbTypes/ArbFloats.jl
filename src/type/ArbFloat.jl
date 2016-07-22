@@ -30,11 +30,6 @@ precision{P}(::Type{ArbFloat{P}}) = P
 precision(::Type{Type{Val{:ArbFloats}}}) = precision(ArbFloat)
 precision(m::Module) = precision(Type{Val{Symbol(m)}})
 
-
-
-
-
-
 # a type specific hash function helps the type to 'just work'
 const hash_arbfloat_lo = (UInt === UInt64) ? 0x37e642589da3416a : 0x5d46a6b4
 const hash_0_arbfloat_lo = hash(zero(UInt), hash_arbfloat_lo)

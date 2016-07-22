@@ -10,11 +10,8 @@ end
 
 precision{P}(x::ArfFloat{P}) = P
 precision{P}(::Type{ArfFloat{P}}) = P
-
 precision(::Type{ArfFloat}) = ArbFloatPrecision[1]
 setprecision(::Type{ArfFloat}, x::Int) = setprecision(ArbFloat, x)
-
-
 
 
 # a type specific hash function helps the type to 'just work'
@@ -27,7 +24,6 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
 @inline finalize{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &x)
 @inline initial0{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &x)
 
-
 # initialize and zero a variable of type ArfFloat
 function initializer{T<:ArfFloat}(::Type{T})
     P = precision(T)
@@ -37,7 +33,7 @@ function initializer{T<:ArfFloat}(::Type{T})
     return z
 end
 initializer(::Type{ArfFloat}) = initializer{ArfFloat{precision{ArfFloat}}}
-
+# empty constructor
 ArfFloat() = initializer(ArfFloat{precision(ArfFloat)})
 
 zero{T<:ArfFloat}(::Type{T}) = initializer(T)
@@ -62,6 +58,7 @@ function convert{P}(::Type{ArfFloat{P}}, x::BigFloat)
     ccall(@libarb(arf_set_mpfr), Void, (Ptr{ArfFloat{P}}, Ptr{BigFloat}), &z, &x)
     z
 end
+convert(::Type{ArfFloat}, x::BigFloat) = convert(ArfFloat{precision(ArfFloat)}, x)
 
 midpoint{P}(x::ArfFloat{P}) = x
 
