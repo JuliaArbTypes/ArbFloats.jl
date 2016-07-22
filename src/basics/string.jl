@@ -7,6 +7,9 @@ function String{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)
     ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
     if !isinteger(x)
         s = rstrip(s, '0')
+        if s[end]=='.'
+            s = string(s, "0")
+        end
     else
         s = String(split(s, '.')[1])
     end
@@ -20,6 +23,9 @@ function String{P}(x::ArbFloat{P}, flags::UInt)
     ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
     if !isinteger(x)
         s = rstrip(s, '0')
+        if s[end]=='.'
+            s = string(s, "0")
+        end
     else
         s = String(split(s, '.')[1])
     end
@@ -56,8 +62,15 @@ function smartarbstring{P}(x::ArbFloat{P})
         if isinteger(x)
             return String(x, digits, UInt(2))
         else
-            return rstrip(String(x, digits, UInt(2)),'0')
+            s = rstrip(String(x, digits, UInt(2)),'0')
+            if s[end]=='.'
+               s = string(s, "0")
+            end
+            return s
         end
+     end
+     if radius(x) > abs(midpoint(x))
+        return "0"
      end
 
      lb, ub = bounds(x)
@@ -92,7 +105,10 @@ end
 function smartstring{P}(x::ArbFloat{P})
     s = smartarbstring(x)
     a = ArbFloat{P}(s)
-    string(s,upperbound(x) < a ? '-' : (lowerbound(x) > a ? '+' : '~'))
+    if notexact(x)
+       s = string(s,upperbound(x) < a ? '-' : (lowerbound(x) > a ? '+' : '~'))
+    end
+    return s
 end
 
 
