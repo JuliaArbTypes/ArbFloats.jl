@@ -54,7 +54,7 @@ function smartarbstring{P}(x::ArbFloat{P})
      digits = digitsRequired(P)
      if isexact(x)
         if isinteger(x)
-            return String(x, digits, UInt(2))
+            return string(x, digits)
         else
             return rstrip(String(x, digits, UInt(2)),'0')
         end
