@@ -94,19 +94,6 @@ end
 
 bounds{P}(x::ArbFloat{P}) = ( lowerbound(x), upperbound(x) )
 
-function (!=){T<:ArbFloat}(x::T, y::T)
-    return Bool(ccall(@libarb(arb_ne), Cint, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y))
-end
-#=
-(!=){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (!=)(promote(x,y)...)
-(!=){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (!=)(promote(x,y)...)
-(!=){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (!=)(promote(x,y)...)
-=#
-(≖){T<:ArbFloat}(x::T, y::T) = !(x != y)
-(≖){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (≖)(promote(x,y)...)
-(≖){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (≖)(promote(x,y)...)
-(≖){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (≖)(promote(x,y)...)
-
 
 
 function upperBound{T<:ArbFloat}(x::T, prec::Int)
