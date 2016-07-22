@@ -63,7 +63,7 @@ function smartarbstring{P}(x::ArbFloat{P})
      if lbs != ubs
         ubs = String(x, 3, UInt(2))
      end
-     ubs
+     rstrip(ubs,'0')
 end
 
 function smartvalue{P}(x::ArbFloat{P})
