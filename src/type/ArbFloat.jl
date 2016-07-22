@@ -31,14 +31,6 @@ precision(::Type{Type{Val{:ArbFloats}}}) = precision(ArbFloat)
 precision(m::Module) = precision(Type{Val{Symbol(m)}})
 
 
-# precision is significand precision, significand_bits(FloatNN) + 1, for the hidden bit
-typealias ArbFloat16  ArbFloat{ 11}  # read   2 ? 3 or fewer decimal digits to write the same digits ( 16bit Float)
-typealias ArbFloat32  ArbFloat{ 24}  # read   6 ? 7 or fewer decimal digits to write the same digits ( 32bit Float)
-typealias ArbFloat64  ArbFloat{ 53}  # read  15 ?15 or fewer decimal digits to write the same digits ( 64bit Float)
-typealias ArbFloat128 ArbFloat{113}  # read  33 ?34 or fewer decimal digits to write the same digits (128bit Float)
-typealias ArbFloat256 ArbFloat{237}  # read  71 ?71 or fewer decimal digits to write the same digits (256bit Float)
-typealias ArbFloat512 ArbFloat{496}  # read 148?149 or fewer decimal digits to write the same digits (512bit Float)
-
 
 
 
@@ -176,3 +168,14 @@ function trimmedAccuracy{P}(x::ArbFloat{P})
     z
 end
 
+
+
+
+
+# precision is significand precision, significand_bits(FloatNN) + 1, for the hidden bit
+typealias ArbFloat16  ArbFloat{ 11}  # read   2 ? 3 or fewer decimal digits to write the same digits ( 16bit Float)
+typealias ArbFloat32  ArbFloat{ 24}  # read   6 ? 7 or fewer decimal digits to write the same digits ( 32bit Float)
+typealias ArbFloat64  ArbFloat{ 53}  # read  15 ?15 or fewer decimal digits to write the same digits ( 64bit Float)
+typealias ArbFloat128 ArbFloat{113}  # read  33 ?34 or fewer decimal digits to write the same digits (128bit Float)
+typealias ArbFloat256 ArbFloat{237}  # read  71 ?71 or fewer decimal digits to write the same digits (256bit Float)
+typealias ArbFloat512 ArbFloat{496}  # read 148?149 or fewer decimal digits to write the same digits (512bit Float)
