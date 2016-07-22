@@ -69,6 +69,7 @@ initializer(::Type{ArbFloat}) = initializer{ArbFloat{precision{ArbFloat}}}
 ArbFloat() = initializer(ArbFloat{precision(ArbFloat)})
 
 zero{T<:ArbFloat}(::Type{T}) = initializer(T)
+zero(::Type{ArbFloat}) = initializer(ArbFloat{precision(ArbFloat)})
 
 function one{T<:ArbFloat}(::Type{T})
     z = initializer(T)
@@ -77,23 +78,26 @@ function one{T<:ArbFloat}(::Type{T})
     z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
     return z
 end
+#zero(::Type{ArbFloat}) = initializer(ArbFloat{precision(ArbFloat)})
 
 
 # adapted from Nemo
 function (==){T<:ArbFloat}(x::T, y::T)
     return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), &x, &y))
 end
+#=
 (==){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (==)(promote(x,y)...)
 (==){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (==)(promote(x,y)...)
 (==){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (==)(promote(x,y)...)
-
+=#
 function (!=){T<:ArbFloat}(x::T, y::T)
     return Bool(ccall(@libarb(arb_ne), Cint, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y))
 end
+#=
 (!=){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (!=)(promote(x,y)...)
 (!=){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (!=)(promote(x,y)...)
 (!=){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (!=)(promote(x,y)...)
-
+=#
 (≖){T<:ArbFloat}(x::T, y::T) = !(x != y)
 (≖){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (≖)(promote(x,y)...)
 (≖){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (≖)(promote(x,y)...)
