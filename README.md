@@ -16,11 +16,14 @@
 
 
 **using ArbFloats # goes anywhere**  
-DualNumbers, ForwardDiff, Plots, Quaternions others  
-Roots (accepts ArbFloats, results are Float64)
+DualNumbers, ForwardDiff, Plots, Polynomials, Quaternions others  
 
 **using ArbFloats # goes last!**  
-TaylorSeries, others
+TaylorSeries, others  
+
+*partially compatible*  
+Roots (accepts ArbFloats, results are Float64)
+
 
 If you have a package that accepts AbstractFloats or Reals and does not "just work" with ArbFloats, please note it as an issue. [Polynomials]
 
