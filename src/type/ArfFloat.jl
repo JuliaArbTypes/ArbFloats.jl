@@ -24,31 +24,36 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
     hash(reinterpret(UInt,z.significand1)$z.exponentOf2,
          (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arffloat_lo) $ hash_0_arffloat_lo))
 
+Base.(===){T<:ArfFloat}(a::T, b::T) = hash(a) == hash(b)
+Base.(===){P,Q}(a::ArfFloat{P}, b::ArfFloat{Q}) = false
+Base.(===){T<:ArfFloat, R<:Real}(a::T, b::R) = Base.(===)(promote(a,b)...)
 
 @inline finalize{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &x)
 @inline initial0{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &x)
 
 
 # initialize and zero a variable of type ArfFloat
-function initializer{P}(::Type{ArfFloat{P}})
+function initializer{T<:ArfFloat}(::Type{T})
+    P = precision(T)
     z = ArfFloat{P}(0,0,0,0)
-    ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &z)
     initial0(z)
     finalizer(z, finalize)
     return z
 end
+initializer(::Type{ArfFloat}) = initializer{ArfFloat{precision{ArfFloat}}}
 
+ArfFloat() = initializer(ArfFloat{precision(ArfFloat)})
 
+zero{T<:ArfFloat}(::Type{T}) = initializer(T)
 
-zero{P}(::Type{ArfFloat{P}}) = initalizer(ArfFloat{P})
-
-function one{P}(::Type{ArfFloat{P}})
-    z = iniitalizer(ArfFloat{P})
+function one{T<:ArfFloat}(::Type{T})
+    z = initializer(T)
     z.exponentOf2 = 1
     z.nwords_sign = 2
     z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
     return z
 end
+
 
 function convert{P}(::Type{BigFloat}, x::ArfFloat{P})
     z = zero(BigFloat)

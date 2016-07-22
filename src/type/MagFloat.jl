@@ -11,18 +11,37 @@ type MagFloat
 end
 =#
 
-# initializing a MagFloat sets the value to zero
-#@inline firstAction(z::MagFloat) = ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
-#@inline finalAction(x::MagFloat) = ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
 
-firstAct(z::MagFloat) = ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
-finalAct(z::MagFloat) = finalizer(z, ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &z))
+# define hash so other things work
+const hash_arbmag_lo = (UInt === UInt64) ? 0x29f934c433d9a758 : 0x2578e2ce
+const hash_0_arbmag_lo = hash(zero(UInt), hash_arbmag_lo)
+if UInt===UInt64
+   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt64, z.radius_exponentOf2), z.radius_significand )
+else
+   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt32, z.radius_exponentOf2) % UInt64, z.radius_significand )
+end
+
+
+
+# initializing a MagFloat sets the value to zero
+@inline initial0(z::MagFloat) = ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
+@inline finalize(z::MagFloat) = ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &z)
 
 # initialize and zero a variable of type MagFloat
-function initialize(::Type{MagFloat})
+function initializer(::Type{MagFloat})
     z = MagFloat(zero(Int), zero(UInt64))
-    firstAct(z)
-    finalAct(z)
+    inital0(z)
+    finalizer(z, finalize)
+    return z
+end
+
+MagFloat() = initializer(MagFloat)
+
+zero{T<:MagFloat}(::Type{T}) = initializer(T)
+
+function one{T<:MagFloat}(::Type{T})
+    z = initializer(T)
+    z.radius_significand = (~UInt64(1)) >> 34
     return z
 end
 
@@ -44,7 +63,7 @@ Void, (Ref{$T}, ), $(Symbol("my_", postfix, "_var"))
 for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
   @eval begin
     function convert(::Type{MagFloat}, x::($T))
-        z = initialize(MagFloat)
+        z = initializer(MagFloat)
         ccall( :($(QuoteNode(Symbol("mag_set_", $M))), "libarb"), Void, (Ptr{$T}, ), &z )
         #ccall( ($(QuoteNode(Symbol("mag_set_", M))), "libarb"), Void, (Ref{$T}, ), z )
         return z
@@ -65,16 +84,8 @@ MagFloat(radius_exponentOf2::Int, radius_significand::Float32) =
     MagFloat(radius_exponentOf2, convert(UInt64, abs(radius_significand)) )
 
 
-MagFloat() = initialize(MagFloat)
 
-# define hash so other things work
-const hash_arbmag_lo = (UInt === UInt64) ? 0x29f934c433d9a758 : 0x2578e2ce
-const hash_0_arbmag_lo = hash(zero(UInt), hash_arbmag_lo)
-if UInt===UInt64
-   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt64, z.radius_exponentOf2), z.radius_significand )
-else
-   hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt32, z.radius_exponentOf2) % UInt64, z.radius_significand )
-end
+
 
 # conversions
 

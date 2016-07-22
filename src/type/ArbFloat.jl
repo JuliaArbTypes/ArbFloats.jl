@@ -45,8 +45,8 @@ end
 # a type specific hash function helps the type to 'just work'
 const hash_arbfloat_lo = (UInt === UInt64) ? 0x37e642589da3416a : 0x5d46a6b4
 const hash_0_arbfloat_lo = hash(zero(UInt), hash_arbfloat_lo)
-# two values of the sam  e precision
-#    with identical midpoint significands and identical radial exponentOf2s hash equal
+# two values of the same precision
+#    with identical midpoint significands and identical radus_exponentOf2s hash equal
 # they are the same value, one is less accurate yet centered about the other
 hash{P}(z::ArbFloat{P}, h::UInt) =
     hash(z.significand1$z.exponentOf2,
@@ -54,56 +54,69 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
             $ hash_0_arbfloat_lo))
 
 
-
-@inline finalize{P}(x::ArbFloat{P}) =  ccall(@libarb(arf_clear), Void, (Ptr{ArbFloat{P}},), &x)
-@inline initial0{P}(x::ArbFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArbFloat{P}},), &x)
+@inline finalize{P}(x::ArbFloat{P}) =  ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}},), &x)
+@inline initial0{P}(x::ArbFloat{P}) =  ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &x)
 
 # initialize and zero a variable of type ArbFloat
 function initializer{P}(::Type{ArbFloat{P}})
     z = ArbFloat{P}(0,0,0,0,0,0)
-    ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &z)
     initial0(z)
     finalizer(z, finalize)
     return z
 end
+initializer(::Type{ArbFloat}) = initializer{ArbFloat{precision{ArbFloat}}}
 
-#=
+ArbFloat() = initializer(ArbFloat{precision(ArbFloat)})
 
-function clearArbFloat{P}(x::ArbFloat{P})
-     ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}},), &x)
+zero{T<:ArbFloat}(::Type{T}) = initializer(T)
+
+function one{T<:ArbFloat}(::Type{T})
+    z = initializer(T)
+    z.exponentOf2 = 1
+    z.nwords_sign = 2
+    z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
+    return z
 end
-
-function initializer{P}(::Type{ArbFloat{P}})
-    z = ArbFloat{P}(0,0,0,0,0,0)
-    ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &z)
-    finalizer(z, clearArbFloat)
-    z
-end
-
-=#
 
 
 # adapted from Nemo
-function (==){P}(x::ArbFloat{P}, y::ArbFloat{P})
-    return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y))
+function (==){T<:ArbFloat}(x::T, y::T)
+    return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), &x, &y))
 end
-function (!=){P}(x::ArbFloat{P}, y::ArbFloat{P})
+(==){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (==)(promote(x,y)...)
+(==){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (==)(promote(x,y)...)
+(==){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (==)(promote(x,y)...)
+
+function (!=){T<:ArbFloat}(x::T, y::T)
     return Bool(ccall(@libarb(arb_ne), Cint, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y))
 end
+(!=){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (!=)(promote(x,y)...)
+(!=){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (!=)(promote(x,y)...)
+(!=){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (!=)(promote(x,y)...)
 
-function midpoint{P}(x::ArbFloat{P})
+(≖){T<:ArbFloat}(x::T, y::T) = !(x != y)
+(≖){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (≖)(promote(x,y)...)
+(≖){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (≖)(promote(x,y)...)
+(≖){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (≖)(promote(x,y)...)
+
+
+
+function midpoint{T<:ArbFloat}(x::T)
+    P = precision(T)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_get_mid_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     z
 end
 
-function radius{P}(x::ArbFloat{P})
+function radius{T<:ArbFloat}(x::T)
+    P = precision(T)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     z
 end
 
-function upperbound{P}(x::ArbFloat{P})
+function upperbound{T<:ArbFloat}(x::T)
+    P = precision(T)
     a = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
     z = initializer(ArbFloat{P})
@@ -113,7 +126,8 @@ function upperbound{P}(x::ArbFloat{P})
     z
 end
 
-function lowerbound{P}(x::ArbFloat{P})
+function lowerbound{T<:ArbFloat}(x::T)
+    P = precision(T)
     a = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
     z = initializer(ArbFloat{P})
@@ -123,10 +137,11 @@ function lowerbound{P}(x::ArbFloat{P})
     z
 end
 
-bounds{P}(x::ArbFloat{P}) = ( lowerbound(x), upperbound(x) )
+bounds{T<:ArbFloat}(x::T) = ( lowerbound(x), upperbound(x) )
 
 
-function upperBound{P}(x::ArbFloat{P}, prec::Int)
+function upperBound{T<:ArbFloat}(x::T, prec::Int)
+    P = precision(T)
     a = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
     z = initializer(ArbFloat{P})
@@ -136,7 +151,8 @@ function upperBound{P}(x::ArbFloat{P}, prec::Int)
     z
 end
 
-function lowerBound{P}(x::ArbFloat{P}, prec::Int)
+function lowerBound{T<:ArbFloat}(x::T, prec::Int)
+    P = precision(T)
     a = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
     z = initializer(ArbFloat{P})
@@ -146,7 +162,7 @@ function lowerBound{P}(x::ArbFloat{P}, prec::Int)
     z
 end
 
-bothBounds{P}(x::ArbFloat{P},prec::Int) = ( lowerBound(x, prec), upperBound(x, prec) )
+lohiBounds{T<:ArbFloat}(x::T, prec::Int) = ( lowerBound(x, prec), upperBound(x, prec) )
 
 
 
