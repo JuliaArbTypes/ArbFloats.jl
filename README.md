@@ -25,7 +25,7 @@ TaylorSeries, others
 Roots (accepts ArbFloats, results are Float64)
 
 
-If you have a package that accepts AbstractFloats or Reals and does not "just work" with ArbFloats, please note it as an issue. [Polynomials]
+If you have a package that accepts AbstractFloats or Reals and does not "just work" with ArbFloats, please note it as an issue.
 
 ####Appropriateness 
 
