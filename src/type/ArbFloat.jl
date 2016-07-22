@@ -3,7 +3,7 @@
             #
 type ArbFloat{P}  <: Real     # field and struct names from arb.h
   exponentOf2        ::Int    #           fmpz
-  nwords_sign          ::UInt   #           mp_size_t
+  nwords_sign        ::UInt   #           mp_size_t
   significand1       ::UInt   #           significand_struct
   significand2       ::UInt   #
   radius_exponentOf2 ::Int    #           fmpz
