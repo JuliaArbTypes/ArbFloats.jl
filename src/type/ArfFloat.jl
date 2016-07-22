@@ -24,10 +24,6 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
     hash(reinterpret(UInt,z.significand1)$z.exponentOf2,
          (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arffloat_lo) $ hash_0_arffloat_lo))
 
-Base.(===){T<:ArfFloat}(a::T, b::T) = hash(a) == hash(b)
-Base.(===){P,Q}(a::ArfFloat{P}, b::ArfFloat{Q}) = false
-Base.(===){T<:ArfFloat, R<:Real}(a::T, b::R) = Base.(===)(promote(a,b)...)
-
 @inline finalize{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &x)
 @inline initial0{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &x)
 
