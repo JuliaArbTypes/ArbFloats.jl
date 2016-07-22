@@ -73,5 +73,7 @@ include("math/round.jl")
 include("math/elementary.jl")
 include("math/constants.jl")
 include("math/special.jl")
+include("math/rounding.jl")
 include("math/arrayops.jl")
+
 end # ArbFloats
