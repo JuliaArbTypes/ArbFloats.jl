@@ -30,8 +30,8 @@ for (op, i) in ((:two,:2), (:three,:3), (:four, :4))
   end
 end
 
-function copy{P}(x::ArbFloat{P})
-    z = initializer(ArbFloat{P})
+function copy{T<:ArbFloat}(x::T)
+    z = initializer(T)
     ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     z
 end
