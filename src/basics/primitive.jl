@@ -2,11 +2,12 @@
 zero{T<:ArbFloat}(::Type{T}) = initializer(T)
 function zero(::Type{ArbFloat})
     P = precision(ArbFloat)
-    return zero(ArbFloat{P})
+    T = ArbFloat{P}
+    return zero(T)
 end
 
-function one{T<:ArbFloat}(::Type{T})
-    z = initializer(T)
+function one{P}(::Type{ArbFloat{P}})
+    z = initializer(ArbFloat{P})
     z.exponentOf2 = 1
     z.nwords_sign = 2
     z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
