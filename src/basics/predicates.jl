@@ -158,7 +158,7 @@ excludesNegative{P}(x::ArbFloat{P}) = notnegative(x)
 # two parameter predicates
 
 """true iff midpoint(x)==midpoint(y) and radius(x)==radius(y)"""
-function isequal{P}(x::ArbFloat{P}, y::ArbFloat{P})
+function areequal{P}(x::ArbFloat{P}, y::ArbFloat{P})
     z = ccall(@libarb(arb_equal), Int, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y)
     z != 0
 end
