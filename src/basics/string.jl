@@ -8,7 +8,7 @@ function String{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)
     if !isinteger(x)
         s = rstrip(s, '0')
     else
-        s = split(s, '.')[1]
+        s = String(split(s, '.')[1])
     end
     return s
 end
@@ -21,7 +21,7 @@ function String{P}(x::ArbFloat{P}, flags::UInt)
     if !isinteger(x)
         s = rstrip(s, '0')
     else
-        s = split(s, '.')[1]
+        s = String(split(s, '.')[1])
     end
     return s
 end
@@ -109,3 +109,4 @@ function stringallcompact{P}(x::ArbFloat{P})
     return (isexact(x) ? string(midpoint(x)) :
               string(string(midpoint(x),8)," ± ", string(radius(x),10)))
 end
+
