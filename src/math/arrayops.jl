@@ -10,5 +10,4 @@ for (op,dotop) in ((:(+),:(.+)), (:(-),:(.-)), (:(*),:(.*)), (:(/),:(./)))
           return ($dotop)(x, y)
       end
   end
-  end
 end
