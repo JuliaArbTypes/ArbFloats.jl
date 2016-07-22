@@ -16,10 +16,10 @@
 
 
 **using ArbFloats # goes anywhere**  
-DualNumbers, ForwardDiff, Plots, Polynomials, Quaternions others  
+DualNumbers, ForwardDiff, Plots, Polynomials, Quaternions, others  
 
 **using ArbFloats # goes last!**  
-TaylorSeries, others  
+TaylorSeries
 
 *partially compatible*  
 Roots (accepts ArbFloats, results are Float64)
