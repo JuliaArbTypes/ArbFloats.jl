@@ -158,8 +158,25 @@ ulp10(x::Integer) = ulp10(Float64(x))
 
 eps{P}(::Type{ArbFloat{P}}) = ldexp(0.5,1-P) # for intertype workings
 function eps{P}(x::ArbFloat{P})              # for intratype workings
-    m = midpoint(x)
-    iszero(m) && return eps(ArbFloat{P})
-    max( ulp2(m), ufp2(radius(x)) )
+    m,r = midpoint(x), radius(x)
+    return
+        if iszero(m)
+            if iszero(r)
+               eps(ArbFloat{P})
+            else
+               ufp2(r)
+            end
+        elseif iszero(r)
+            ulp2(m)
+        else
+            max( ulp2(m), ufp2(r) )
+        end
 end
 
+function nextfloat{P}(x::ArbFloat{P})
+    x + eps(x)
+end
+
+function prevfloat{P}(x::ArbFloat{P})
+    x - eps(x)
+end
