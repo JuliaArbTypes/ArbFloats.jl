@@ -18,7 +18,7 @@ isequal{T<:ArbFloat}(a::T, b::T) = !(a != b)
 isless{T<:ArbFloat}(a::T, b::T) = !(a >= b)
 
 
-# experimental
+# experimental  ≗
 (≖){T<:ArbFloat}(x::T, y::T) = !(x != y)
 (≖){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (≖)(promote(x,y)...)
 (≖){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (≖)(promote(x,y)...)
