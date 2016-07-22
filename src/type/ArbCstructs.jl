@@ -14,7 +14,7 @@ end
     #
 type ArfFloat{P} <: AbstractFloat
     exponentOf2 ::Int
-    nwords_sign::Int          ## Int, as words is an offset; lsb holds sign of significand
+    nwords_sign::Int           ## Int, as words is an offset; lsb holds sign of significand
     significand1::UInt         ## UInt, as each significand word is a subspan of significand
     significand2::UInt         ##   the significand words are unsigned (sign is in nwords_sign)
 end
@@ -25,7 +25,7 @@ end
 type ArbFloat{P} <: AbstractFloat
                                ##     ArfFloat{P}
     exponentOf2 ::Int          ##        exponentOf2
-    nwords_sign::Int             ##        nwords_sign
+    nwords_sign::Int           ##        nwords_sign
     significand1::UInt         ##        significand1
     significand2::UInt         ##        significand2
                                ###    ArbMag{P}
