@@ -18,7 +18,7 @@ DualNumbers, ForwardDiff, Plots,  Polynomials, Quaternions, TaylorSeries, many o
 
 **using ArbFloats # goes last!**  
 
-If you have a package that does not "just work" with ArbFloats, please note it as an issue.
+If you have a package that accepts AbstractFloats or Reals and does not "just work" with ArbFloats, please note it as an issue.
 
 ####Appropriateness 
 
