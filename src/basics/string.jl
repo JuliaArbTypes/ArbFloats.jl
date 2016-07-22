@@ -5,7 +5,12 @@ function String{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, flags)
     s = unsafe_string(cstr)
     ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
-    s
+    if !isinteger(x)
+        s = rstrip(s, '0')
+    else
+        s = split(s, '.')[1]
+    end
+    return s
 end
 
 function String{P}(x::ArbFloat{P}, flags::UInt)
@@ -13,12 +18,6 @@ function String{P}(x::ArbFloat{P}, flags::UInt)
                  &x, digitsRequired(P), flags)
     s = unsafe_string(cstr)
     ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
-    s
-end
-
-# n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
-function string{P}(x::ArbFloat{P}, ndigits::Int)
-    s = String(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
     if !isinteger(x)
         s = rstrip(s, '0')
     else
@@ -28,13 +27,14 @@ function string{P}(x::ArbFloat{P}, ndigits::Int)
 end
 
 # n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
+function string{P}(x::ArbFloat{P}, ndigits::Int)
+    s = String(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
+    return s
+end
+
+# n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
 function string{P}(x::ArbFloat{P})
     s = String(x,UInt(2)) # midpoint only (within 1ulp), RoundNearest
-    if !isinteger(x)
-        s = rstrip(s, '0')
-    else
-        s = split(s, '.')[1]
-    end
     return s
 end
 
@@ -54,7 +54,7 @@ function smartarbstring{P}(x::ArbFloat{P})
      digits = digitsRequired(P)
      if isexact(x)
         if isinteger(x)
-            return string(x, digits)
+            return String(x, digits, UInt(2))
         else
             return rstrip(String(x, digits, UInt(2)),'0')
         end
