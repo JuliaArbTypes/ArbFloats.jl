@@ -21,6 +21,8 @@ function string{P}(x::ArbFloat{P}, ndigits::Int)
     s = String(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
     if !isinteger(x)
         s = rstrip(s, '0')
+    else
+        s = string(split(s, '.')[1],"0")
     end
     return s
 end
@@ -30,6 +32,8 @@ function string{P}(x::ArbFloat{P})
     s = String(x,UInt(2)) # midpoint only (within 1ulp), RoundNearest
     if !isinteger(x)
         s = rstrip(s, '0')
+    else
+        s = string(split(s, '.')[1],"0")
     end
     return s
 end
