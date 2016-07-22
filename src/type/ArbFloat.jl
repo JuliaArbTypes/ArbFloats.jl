@@ -11,6 +11,19 @@ type ArbFloat{P}  <: Real     # field and struct names from arb.h
 end
 =#
 
+# get and set working precision for ArbFloat
+
+const ArbFloatPrecision = [116,]
+precision(::Type{ArbFloat}) = ArbFloatPrecision[1]
+
+function setprecision(::Type{ArbFloat}, x::Int)
+    priorprecision = precision(ArbFloat)
+    x = max(11, abs(x))
+    x > 4095 && warn("ArbFloats are designed to work best at precisions < 4096 bits")
+    ArbFloatPrecision[1] = x
+    return priorprecision
+end
+
 precision{P}(x::ArbFloat{P}) = P
 precision{P}(::Type{ArbFloat{P}}) = P
 # allow inquiring the precision of the module: precision(ArbFloats)
@@ -27,18 +40,6 @@ typealias ArbFloat256 ArbFloat{237}  # read  71 ?71 or fewer decimal digits to w
 typealias ArbFloat512 ArbFloat{496}  # read 148?149 or fewer decimal digits to write the same digits (512bit Float)
 
 
-# get and set working precision for ArbFloat
-
-const ArbFloatPrecision = [116,]
-precision(::Type{ArbFloat}) = ArbFloatPrecision[1]
-
-function setprecision(::Type{ArbFloat}, x::Int)
-    priorprecision = precision(ArbFloat)
-    x = max(11, abs(x))
-    x > 4095 && warn("ArbFloats are designed to work best at precisions < 4096 bits")
-    ArbFloatPrecision[1] = x
-    priorprecision
-end
 
 
 
@@ -53,10 +54,8 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
          (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arbfloat_lo)
             $ hash_0_arbfloat_lo))
 
-
 @inline finalize{P}(x::ArbFloat{P}) =  ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}},), &x)
 @inline initial0{P}(x::ArbFloat{P}) =  ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &x)
-
 # initialize and zero a variable of type ArbFloat
 function initializer{P}(::Type{ArbFloat{P}})
     z = ArbFloat{P}(0,0,0,0,0,0)
@@ -64,34 +63,13 @@ function initializer{P}(::Type{ArbFloat{P}})
     finalizer(z, finalize)
     return z
 end
-initializer(::Type{ArbFloat}) = initializer{ArbFloat{precision{ArbFloat}}}
-
+initializer(::Type{ArbFloat}) = initializer{ArbFloat{precision(ArbFloat)}}
+# empty constructor
 ArbFloat() = initializer(ArbFloat{precision(ArbFloat)})
 
 
-# adapted from Nemo
-function (==){T<:ArbFloat}(x::T, y::T)
-    return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), &x, &y))
-end
-#=
-(==){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (==)(promote(x,y)...)
-(==){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (==)(promote(x,y)...)
-(==){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (==)(promote(x,y)...)
-=#
-function (!=){T<:ArbFloat}(x::T, y::T)
-    return Bool(ccall(@libarb(arb_ne), Cint, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y))
-end
-#=
-(!=){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (!=)(promote(x,y)...)
-(!=){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (!=)(promote(x,y)...)
-(!=){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (!=)(promote(x,y)...)
-=#
-(≖){T<:ArbFloat}(x::T, y::T) = !(x != y)
-(≖){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (≖)(promote(x,y)...)
-(≖){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (≖)(promote(x,y)...)
-(≖){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (≖)(promote(x,y)...)
-
-
+# parts and aspects
+# midpoint, radius, lowerbound, upperbound, bounds
 
 function midpoint{T<:ArbFloat}(x::T)
     P = precision(T)
@@ -107,8 +85,7 @@ function radius{T<:ArbFloat}(x::T)
     z
 end
 
-function upperbound{T<:ArbFloat}(x::T)
-    P = precision(T)
+function upperbound{P}(x::ArbFloat{P})
     a = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
     z = initializer(ArbFloat{P})
@@ -118,8 +95,7 @@ function upperbound{T<:ArbFloat}(x::T)
     z
 end
 
-function lowerbound{T<:ArbFloat}(x::T)
-    P = precision(T)
+function lowerbound{P}(x::ArbFloat{P})
     a = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
     z = initializer(ArbFloat{P})
@@ -129,7 +105,21 @@ function lowerbound{T<:ArbFloat}(x::T)
     z
 end
 
-bounds{T<:ArbFloat}(x::T) = ( lowerbound(x), upperbound(x) )
+bounds{P}(x::ArbFloat{P}) = ( lowerbound(x), upperbound(x) )
+
+function (!=){T<:ArbFloat}(x::T, y::T)
+    return Bool(ccall(@libarb(arb_ne), Cint, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &x, &y))
+end
+#=
+(!=){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (!=)(promote(x,y)...)
+(!=){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (!=)(promote(x,y)...)
+(!=){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (!=)(promote(x,y)...)
+=#
+(≖){T<:ArbFloat}(x::T, y::T) = !(x != y)
+(≖){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (≖)(promote(x,y)...)
+(≖){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (≖)(promote(x,y)...)
+(≖){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (≖)(promote(x,y)...)
+
 
 
 function upperBound{T<:ArbFloat}(x::T, prec::Int)
