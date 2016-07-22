@@ -1,4 +1,4 @@
-function show{P}(io::IO, x::ArbFloat{P})
+function show{T<:ArbFloat}(io::IO, x::T)
     if isexact(x)
       s = string(midpoint(x))
     else
@@ -7,32 +7,32 @@ function show{P}(io::IO, x::ArbFloat{P})
     print(io, s)
 end
 
-show{P}(x::ArbFloat{P}) = show(Base.STDOUT, x)
+show{T<:ArbFloat}(x::T) = show(Base.STDOUT, x)
 
-function showcompact{P}(io::IO, x::ArbFloat{P})
+function showcompact{T<:ArbFloat}(io::IO, x::T)
     s = stringcompact(x)
     print(io, s)
 end
 
-function showall{P}(io::IO, x::ArbFloat{P})
+function showall{T<:ArbFloat}(io::IO, x::T)
     s = stringall(x)
     print(io, s)
 end
 
-function showallcompact{P}(io::IO, x::ArbFloat{P})
+function showallcompact{T<:ArbFloat}(io::IO, x::T)
     s = stringallcompact(x)
     print(io, s)
 end
 
 
-function showsmart{P}(io::IO, x::ArbFloat{P})
+function showsmart{T<:ArbFloat}(io::IO, x::T)
     s = smartstring(x)
     print(io, s)
 end
 # showsmart is not a Base show function, it needs explict version without io parameter
-showsmart{P}(x::ArbFloat{P}) = showsmart(Base.STDOUT, x)
+showsmart{T<:ArbFloat}(x::T) = showsmart(Base.STDOUT, x)
 
-function showmany{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}, stringformer::Function)
+function showmany{T<:ArbFloat,N}(io::IO, x::NTuple{N,T}, stringformer::Function)
     if N==0
        print(io,"()")
        return nothing
@@ -53,11 +53,11 @@ function showmany{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}, stringformer::Function)
     println(io,string("  ", ss[end], " )"))
 end
 
-showmany{P,N}(x::NTuple{N,ArbFloat{P}}, stringformer::Function) =
+showmany{T<:ArbFloat,N}(x::NTuple{N,T}, stringformer::Function) =
    showmany(Base.STDOUT,x,stringformer)
 
 
-function showmany{P}(io::IO, x::Vector{ArbFloat{P}}, stringformer::Function)
+function showmany{T<:ArbFloat}(io::IO, x::Vector{T}, stringformer::Function)
     n = length(x)
 
     if n==0
@@ -80,7 +80,7 @@ function showmany{P}(io::IO, x::Vector{ArbFloat{P}}, stringformer::Function)
     println(io,string("  ", ss[end], " ]"))
 end
 
-showmany{P}(x::Vector{ArbFloat{P}}, stringformer::Function) =
+showmany{T<:ArbFloat}(x::Vector{T}, stringformer::Function) =
     showmany(Base.STDOUT,x,stringformer)
 
 
