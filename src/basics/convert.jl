@@ -127,13 +127,13 @@ for T in (:Float64, :Float32)
 end
 
 function convert{P}(::Type{BigInt}, x::ArbFloat{P})
-   z = convert(BigFloat, x)
+   z = trunc(convert(BigFloat, x))
    return convert(BigInt, z)
 end
 for T in (:Int128, :Int64, :Int32, :Int16)
   @eval begin
     function convert{P}(::Type{$T}, x::ArbFloat{P})
-      z = convert(BigInt, x)
+      z = trunc(convert(BigFloat, x))
       return convert(($T), z)
     end
   end
