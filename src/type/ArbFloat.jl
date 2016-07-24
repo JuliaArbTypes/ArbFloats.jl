@@ -49,7 +49,7 @@ function initial0{P}(::Type{ArbFloat{P}})
     ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &z)
     return z
 end
-function initial0{T<:ArbFloat}(T)
+function initial0{T<:ArbFloat}(::Type{T})
     P = precision(T)
     z = ArbFloat{P}(0,0,0,0,0,0)
     ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &z)
