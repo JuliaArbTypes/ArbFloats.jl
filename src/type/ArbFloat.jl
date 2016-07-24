@@ -44,7 +44,7 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
 @inline finalize{T<:ArbFloat}(x::Type{T}) = ccall(@libarb(arb_clear), Void, (Ptr{T},), &x)
 @inline finalize{P}(x::Type{ArbFloat{P}}) = ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}},), &x)
 
-function initial0{P}(::Type{ArbFloat{P})
+function initial0{P}(::Type{ArbFloat{P}})
     z = ArbFloat{P}(0,0,0,0,0,0)
     ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &z)
     return z
