@@ -25,14 +25,18 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
 @inline initial0{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &x)
 
 # initialize and zero a variable of type ArfFloat
-function initializer{T<:ArfFloat}(::Type{T})
-    P = precision(T)
-    z = ArfFloat{P}(0,0,0,0)
-    initial0(z)
-    finalizer(z, finalize)
+function release{P}(x::ArfFloat{P})
+    ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
+    return nothing
+end
+
+function initializer{P}(::Type{ArfFloat{P}})
+    z = ArfFloat{P}(zero(Int), zero(UInt64), zero(Int64), zero(Int64))
+    ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), &z)
+    finalizer(z, release)
     return z
 end
-initializer(::Type{ArfFloat}) = initializer{ArfFloat{precision{ArfFloat}}}
+
 # empty constructor
 ArfFloat() = initializer(ArfFloat{precision(ArfFloat)})
 

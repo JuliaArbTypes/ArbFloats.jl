@@ -41,16 +41,19 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
          (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arbfloat_lo)
             $ hash_0_arbfloat_lo))
 
-@inline finalize{P}(x::ArbFloat{P}) =  ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}},), &x)
-@inline initial0{P}(x::ArbFloat{P}) =  ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &x)
-# initialize and zero a variable of type ArbFloat
+
+function release{P}(x::ArbFloat{P})
+    ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
+    return nothing
+end
+
 function initializer{P}(::Type{ArbFloat{P}})
-    z = ArbFloat{P}(0,0,0,0,0,0)
-    initial0(z)
-    finalizer(z, finalize)
+    z = ArbFloat{P}(zero(Int), zero(UInt64), zero(Int64), zero(Int64), zero(Int), zero(UInt64))
+    ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
+    finalizer(z, release)
     return z
 end
-initializer(::Type{ArbFloat}) = initializer{ArbFloat{precision(ArbFloat)}}
+
 # empty constructor
 ArbFloat() = initializer(ArbFloat{precision(ArbFloat)})
 
@@ -93,8 +96,6 @@ function lowerbound{P}(x::ArbFloat{P})
 end
 
 bounds{P}(x::ArbFloat{P}) = ( lowerbound(x), upperbound(x) )
-
-
 
 function upperBound{T<:ArbFloat}(x::T, prec::Int)
     P = precision(T)

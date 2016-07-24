@@ -67,14 +67,14 @@ end
 convert{P}(::Type{ArbFloat{P}}, x::Int16) = convert(ArbFloat{P}, convert(Int,x))
 
 
-function convert{P}(::Type{ArbFloat{P}}, x::Float64)
-    z = initializer(ArbFloat{P})
+function convert{T<:ArbFloat}(::Type{T}, x::Float64)
+    z = initializer(T)
     fp=copy(x)
-    ccall(@libarb(arb_set_d), Void, (Ptr{ArbFloat{P}}, Float64), &z, fp)
-    z
+    ccall(@libarb(arb_set_d), Void, (Ptr{T}, Float64), &z, fp)
+    return z
 end
-convert{P}(::Type{ArbFloat{P}}, x::Float32) = convert(ArbFloat{P}, convert(Float64,x))
-convert{P}(::Type{ArbFloat{P}}, x::Float16) = convert(ArbFloat{P}, convert(Float64,x))
+convert{T<:ArbFloat}(::Type{T}, x::Float32) = convert(T, convert(Float64,x))
+convert{T<:ArbFloat}(::Type{T}, x::Float16) = convert(T, convert(Float64,x))
 
 
 function convert{P}(::Type{ArbFloat{P}}, x::String)

@@ -1,4 +1,4 @@
-module Test_onetwo
+module TestAsInterval
 
 @testset "numbers behave" begin
   @testset "simple value ops" begin
@@ -6,7 +6,7 @@ module Test_onetwo
     @test af1 == af1
     @test af1 != af2
     @test af1 <  af2
-    @test af1 <= af2 
+    @test af1 <= af2
     @test af2 >  af1
     @test af2 >= af1
   end
