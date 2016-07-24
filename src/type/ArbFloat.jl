@@ -44,20 +44,20 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
 @inline finalize{T<:ArbFloat}(x::Type{T}) = ccall(@libarb(arb_clear), Void, (Ptr{T},), &x)
 @inline finalize{P}(x::Type{ArbFloat{P}}) = ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}},), &x)
 
-function initial0{P}(::Type{ArbFloat{P}})
+function initial0{P}(x::ArbFloat{P})
     z = ArbFloat{P}(0,0,0,0,0,0)
     ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &z)
     return z
 end
-function initial0{T<:ArbFloat}(::Type{T})
+function initial0{T<:ArbFloat}(x::T)
     P = precision(T)
     z = ArbFloat{P}(0,0,0,0,0,0)
     ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &z)
     return z
 end
 
-# @inline initial0{T<:ArbFloat}(x::Type{T}) = ccall(@libarb(arb_init), Void, (Ptr{T},), &x)
-# @inline initial0{P}(x::Type{ArbFloat{P}}) = ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &x)
+@inline initial0{T<:ArbFloat}(x::Type{T}) = ccall(@libarb(arb_init), Void, (Ptr{T},), &x)
+@inline initial0{P}(x::Type{ArbFloat{P}}) = ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &x)
 
 # initialize and zero a variable of type ArbFloat
 function initializer{T<:ArbFloat}(::Type{T})
