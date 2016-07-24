@@ -34,8 +34,11 @@ function trunc{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     sig=abs(sig); base=abs(base)
     sigbits = min(P, ceil(Int, (sig * log(base)/log(2.0))))
     z = initializer(ArbFloat{P})
-    cop = signbit(x) ? @libarb(arb_ceil) : @libarb(arb_floor)
-    ccall(cop, Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
+    if signbit(x)
+        ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
+    else
+        ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
+    end
     return z
 end
 
