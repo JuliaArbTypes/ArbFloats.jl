@@ -30,7 +30,7 @@ function release{P}(x::ArfFloat{P})
     return nothing
 end
 
-function initializer{P}(::Type{ArbFloat{P}})
+function initializer{P}(::Type{ArfFloat{P}})
     z = ArfFloat{P}(zero(Int), zero(UInt64), zero(Int64), zero(Int64))
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), &z)
     finalizer(z, release)
