@@ -52,14 +52,12 @@ function (*){T<:ArbFloat}(x::T, y::T)
 end
 
 (+){T<:ArbFloat}(x::T, y::T, z::T) = (x + y) + z
-(+){T<:ArbFloat}(x::T, y::T, z::T) = (x + y) + z
 
 (+){T<:ArbFloat,I<:Integer}(x::I, y::T, z::T) = x + (y + z)
-(+){T<:ArbFloat,I<:Integer}(x::T, y::T, z::I) = (x + y) + z)
+(+){T<:ArbFloat,I<:Integer}(x::T, y::T, z::I) = (x + y) + z
 (+){T<:ArbFloat,R<:Real}(x::T, y::T, z::R) = (x + y) + z
 (+){T<:ArbFloat,R<:Real}(x::R, y::T, z::T) =  x + (y + z)
 
-(*){T<:ArbFloat}(x::ArbFloat{P}, y::ArbFloat{P}, z::ArbFloat{P}) = (x * y) * z
 (*){T<:ArbFloat}(x::T, y::T, z::T) = (x * y) * z
 
 (*){T<:ArbFloat,I<:Integer}(x::I, y::T, z::T) = x * (y * z)
