@@ -158,13 +158,13 @@ ulp(x::Integer, base::Int=2) = ulp(Float64(x), base)
 """ulp2  is unit_last_place base 2"""
 function ulp2(x::Real, precision::Int)
    unitfp  = ufp2(x)
-   twice_u = typeof(x)(2.0^(1-precision))
-   return twice_u * unitfp
+   twice_u = 2.0^(1-precision)
+   return (*)(promote(twice_u, unitfp)...)
 end
 function ulp2{P}(x::ArbFloat{P})
    unitfp  = ufp2(x)
-   twice_u = two(ArbFloat{P})^(1-P)
-   return twice_u * unitfp
+   twice_u = 2.0^(1-P)
+   return (*)(promote(twice_u, unitfp)...)
 end
 ulp2{T<:AbstractFloat}(x::T)  = ulp2(x, 1+Base.significand_bits(T))
 ulp2(x::Integer) = ulp2(Float64(x))
