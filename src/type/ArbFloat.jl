@@ -56,8 +56,8 @@ function initial0{T<:ArbFloat}(::Type{T})
     return z
 end
 
-@inline initial0{T<:ArbFloat}(x::Type{T}) = ccall(@libarb(arb_init), Void, (Ptr{T},), &x)
-@inline initial0{P}(x::Type{ArbFloat{P}}) = ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &x)
+# @inline initial0{T<:ArbFloat}(x::Type{T}) = ccall(@libarb(arb_init), Void, (Ptr{T},), &x)
+# @inline initial0{P}(x::Type{ArbFloat{P}}) = ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &x)
 
 # initialize and zero a variable of type ArbFloat
 function initializer{T<:ArbFloat}(::Type{T})
