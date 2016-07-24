@@ -39,8 +39,8 @@ for (op,cfunc) in ((:+,:arb_add), (:-, :arb_sub), (:/, :arb_div), (:hypot, :arb_
       z
     end
     ($op){P,Q}(x::T, y::ArbFloat{Q}) = ($op)(promote(x,y)...)
-    ($op){T<:AbstractFloat,P}(x::T, y::T) = ($op)(x, convert(T, y))
-    ($op){T<:AbstractFloat,P}(x::T, y::T) = ($op)(convert(T, x), y)
+    ($op){T<:ArbFloat, F<:AbstractFloat}(x::T, y::F) = ($op)(x, convert(T, y))
+    ($op){T<:ArbFloat, F<:AbstractFloat}(x::F, y::T) = ($op)(convert(T, x), y)
   end
 end
 
