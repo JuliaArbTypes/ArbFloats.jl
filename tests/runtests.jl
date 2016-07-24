@@ -12,7 +12,9 @@ else
 end
 
 test_files = [
-              "test_onetwo.jl",
+                "testAsType.jl",
+                "testAsNumber.jl",
+                "testAsInterval.jl"
               ]
 
 #= prepare to test =#
