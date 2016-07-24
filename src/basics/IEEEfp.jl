@@ -1,3 +1,18 @@
+#=
+
+prec=precision(midpt); # bits of significand (signficant radix-2 digits
+prec, typeof(midpt)
+# (57,ArbFloats.ArbFloat{57})
+
+1 + round(Int,log2(ufp2(midpt))) -  round(Int,log2(ulp2(midpt)))
+# 57
+
+prec == (1 + round(Int,log2(ufp2(midpt))) -  round(Int,log2(ulp2(midpt))))
+# true
+
+=#
+
+
 
 """
    x.midpoint -> (significand, exponentOf2)
@@ -31,6 +46,23 @@ end
 
 
 #=
+
+
+      gte_bits2digs(b_bits)    ~>  d_digits
+      d_digits | d digits suffice to encode and recover b bits without error
+
+      gte_digs2bits(d_digits)  ~>  b_bits
+      b_bits |  b bits suffice to encode and recover d digits without error
+
+      lte_bits2digs(b_bits)    ~>  c_digits
+      c_digits | b bits are necessary encode and recover c digits without error
+
+      lte_digs2bits(d_digits)  ~>  a_bits
+      a_bits |  d digits are necessary encode and recover a bits without error
+
+      lte_digs2bits( gte_bits2digs(b_bits  ) ) == b_bits
+      lte_bits2digs( gte_digs2bits(d_digits) ) == d_digits
+
 const log2_log10 = log(10,2)  # 0.3010299956639812 ~= log(2)/log(10)
 const log10_log2 = log(2,10)  # 3.321928094887362  ~= log(10)/log(2)
 
@@ -38,10 +70,10 @@ lte_bits2digs(nbits::Int) = floor(Int, nbits * log2_log10)
 lte_digs2bits(ndigs::Int) = floor(Int, ndigs * log10_log2)
 =#
 
-lte_bits2digs(nbits::Int) = floor( Int, nbits * 0.3010299956639812 )
-lte_digs2bits(ndigs::Int) = floor( Int, ndigs * 3.321928094887362  )
-gte_bits2digs(nbits::Int)  = ceil( Int, nbits * 0.3010299956639812 )
-gte_digs2bits(ndigs::Int)  = ceil( Int, ndigs * 3.321928094887362  )
+lte_bits2digs(nbits::Int) = floor( Int, nbits * 0.30102999566398125 ) # log(10,2) RoundUp
+gte_bits2digs(nbits::Int)  = ceil( Int, nbits * 0.3010299956639812  ) # log(10,2) RoundDown
+lte_digs2bits(ndigs::Int) = floor( Int, ndigs * 3.3219280948873626  ) # log(2,10) RoundUp
+gte_digs2bits(ndigs::Int)  = ceil( Int, ndigs * 3.3219280948873617  ) # log(2,10) RoundDown
 
 """
 logarithm_base(x)
@@ -115,8 +147,8 @@ the float value given by a 1 at the position of
   the least significant nonzero bit|digit in _x_
 """
 function ulp(x::Real, precision::Int, base::Int)
-   unitfp = ufp2(x)
-   twice_u = 2.0^(1-precision)
+   unitfp  = ufp2(x)
+   twice_u = typeof(x)(2.0^(1-precision))
    return twice_u * unitfp
 end
 ulp{T<:AbstractFloat}(x::T, base::Int=2)  =
@@ -127,13 +159,13 @@ ulp(x::Integer, base::Int=2) = ulp(Float64(x), base)
 
 """ulp2  is unit_last_place base 2"""
 function ulp2(x::Real, precision::Int)
-   unitfp = ufp2(x)
-   twice_u = 2.0^(1-precision)
+   unitfp  = ufp2(x)
+   twice_u = typeof(x)(2.0^(1-precision))
    return twice_u * unitfp
 end
 function ulp2{P}(x::ArbFloat{P})
-   unitfp = ufp2(x)
-   twice_u = 2.0^(1-P)
+   unitfp  = ufp2(x)
+   twice_u = two(ArbFloat{P})^(1-P)
    return twice_u * unitfp
 end
 ulp2{T<:AbstractFloat}(x::T)  = ulp2(x, 1+Base.significand_bits(T))
@@ -141,16 +173,16 @@ ulp2(x::Integer) = ulp2(Float64(x))
 
 """ulp10 is unit_last_place base 10"""
 function ulp10(x::Real, bitprecision::Int)
-    unitfp = ufp10(x)
+    unit10fp = ufp10(x)
     digitprecision = lte_bits2digs(bitprecision)
-    twice_u = 10.0^(1-digitprecision)
-    return twice_u * unitfp
+    twice_u10 = typeof(x)(10.0^(1-digitprecision))
+    return twice_u10 * unit10fp
 end
 function ulp10{P}(x::ArbFloat{P})
-    unitfp = ufp10(x)
+    unit10fp = ufp10(x)
     digitprecision = lte_bits2digs(P)
-    twice_u = 10.0^(1-digitprecision)
-    return twice_u * unitfp
+    twice_u10 = ten(ArbFloat{P})^(1-digitprecision)
+    return twice_u10 * unit10fp
 end
 ulp10{T<:AbstractFloat}(x::T) = ulp10( x, (1+Base.significand_bits(T)) )
 ulp10(x::Integer) = ulp10(Float64(x))
@@ -171,7 +203,7 @@ function eps{P}(x::ArbFloat{P})              # for intratype workings
         else
             max( ulp2(m), ufp2(r) )
         end
-   return z     
+   return z
 end
 
 function nextfloat{P}(x::ArbFloat{P})

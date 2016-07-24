@@ -62,10 +62,13 @@ include("type/ArbInterval.jl")
 
 include("basics/primitive.jl")
 include("basics/IEEEfp.jl")
+
 include("basics/predicates.jl")
-include("basics/string.jl")
 include("basics/convert.jl")
 include("basics/compare.jl")
+
+include("basics/intervalics.jl")
+include("basics/string.jl")
 include("basics/io.jl")
 
 include("math/arith.jl")
@@ -73,7 +76,9 @@ include("math/round.jl")
 include("math/elementary.jl")
 include("math/constants.jl")
 include("math/special.jl")
+
 include("math/rounding.jl")
+
 include("math/arrayops.jl")
 
 end # ArbFloats

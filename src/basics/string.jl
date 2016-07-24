@@ -1,6 +1,6 @@
 @inline digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639811952137)
 
-function String{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)
+function string{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)
     n = max(1,min(abs(ndigits), digitsRequired(P)))
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, flags)
     s = unsafe_string(cstr)
@@ -111,6 +111,31 @@ function smartstring{P}(x::ArbFloat{P})
     return s
 end
 
+function smartstring{T<:ArbFloat}(x::T)
+    absx   = abs(x)
+    sa_str = smartarbstring(absx)  # smart arb string
+    sa_val = (T)(absx)             # smart arb value
+    if notexact(absx)
+        md,rd = midpoint(absx), radius(absx)
+        lo,hi = bounds(absx)
+        if     sa_val <= lo
+            if lo-sa_val >= ufp2(rd)
+                sa_str = string(sa_str,"⁺")
+            else
+                sa_str = string(sa_str,"₊")
+            end
+        elseif sa_val > hi
+            if sa_val-hi >= ufp2(rd)
+                sa_str = string(sa_str,"⁻")
+            else
+                sa_str = string(sa_str,"₋")
+            end
+        else
+            sa_str = string(sa_str,"~")
+        end
+    end
+    return sa_str
+end
 
 function stringall{P}(x::ArbFloat{P})
     return (isexact(x) ? string(midpoint(x)) :
