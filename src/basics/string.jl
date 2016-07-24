@@ -34,7 +34,7 @@ end
 
 # n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
 function string{P}(x::ArbFloat{P}, ndigits::Int)
-    s = String(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
+    s = string(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
     return s
 end
 
@@ -60,9 +60,9 @@ function smartarbstring{P}(x::ArbFloat{P})
      digits = digitsRequired(P)
      if isexact(x)
         if isinteger(x)
-            return String(x, digits, UInt(2))
+            return string(x, digits, UInt(2))
         else
-            s = rstrip(String(x, digits, UInt(2)),'0')
+            s = rstrip(string(x, digits, UInt(2)),'0')
             if s[end]=='.'
                s = string(s, "0")
             end
