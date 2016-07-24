@@ -41,8 +41,8 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
          (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arbfloat_lo)
             $ hash_0_arbfloat_lo))
 
-@inline finalize{T<:ArbFloat}(x::Type{T}) = ccall(@libarb(arb_clear), Void, (Ptr{T},), &x)
-@inline finalize{P}(x::Type{ArbFloat{P}}) = ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}},), &x)
+@inline finalize{T<:ArbFloat}(x::T) = ccall(@libarb(arb_clear), Void, (Ptr{T},), &x)
+@inline finalize{P}(x::ArbFloat{P}) = ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}},), &x)
 
 function initial0{P}(x::ArbFloat{P})
     z = ArbFloat{P}(0,0,0,0,0,0)
