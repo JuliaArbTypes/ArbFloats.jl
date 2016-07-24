@@ -60,7 +60,7 @@ end
 #@inline initial0{T<:ArbFloat}(x::Type{T}) = ccall(@libarb(arb_init), Void, (Ptr{T},), &x)
 #@inline initial0{P}(x::Type{ArbFloat{P}}) = ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &x)
 =#
-
+#=
 @inline initial0{P}(x::ArbFloat{P}) =  ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &x)
 @inline finalize{P}(x::ArbFloat{P}) =  ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}},), &x)
 
@@ -82,6 +82,19 @@ function initializer{T<:ArbFloat}(::Type{T})
     return z
 end
 initializer(::Type{ArbFloat}) = initializer{ArbFloat{precision(ArbFloat)}}
+=#
+
+function release{P}(x::ArbFloat{P})
+    ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
+    return nothing
+end
+
+function initializer{P}(::Type{ArbFloat{P}})
+    z = ArbFloat{P}(zero(Int), zero(UInt64), zero(Int64), zero(Int64), zero(Int), zero(UInt64))
+    ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
+    finalizer(z, release)
+    return z
+end
 # empty constructor
 ArbFloat() = initializer(ArbFloat{precision(ArbFloat)})
 
