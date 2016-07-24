@@ -31,7 +31,7 @@ function release{P}(x::ArfFloat{P})
 end
 
 function initializer{P}(::Type{ArfFloat{P}})
-    z = ArfFloat{P}(z = ArbFloat{P}(0,0%UInt64,0,0)
+    z = ArfFloat{P}(0,0%UInt64,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), &z)
     finalizer(z, release)
     return z
