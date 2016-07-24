@@ -72,7 +72,5 @@ function about{T<:ArbFloat}(x::T)
   usurface        = (pi * 4) * uradius^2
   linearvolume    = uvolume^(1/3)
   linearsurface   = usurface^(1/2)
-
-end
-
+  return  lobound,hibound, midpt, uradius, udiameter, ucircumference, usurface, uvolume, linearsurface, linearvolume
 end
