@@ -96,25 +96,25 @@ determine the position of the most significant nonzero bit|digit
 """
 function pfp{T<:Real}(x::T, base::Int=2)
    z = 0 # if x==0.0
-   if x != zero(T)
+   if notzero(x)
        z = floor( Int, log_base(abs(x), base) )
    end
    return z
 end
 pfp{P}(x::ArbFloat{P}, base::Int=2) =
-    x==zero(ArbFloat{P}) ? 0 : floor( Int, log_base(abs(x), base) )
+    return iszero(x) ? 0 : floor( Int, log_base(abs(x), base) )
 """
 binary position_first_place
 determine the position of the most significant nonzero bit
 """
 pfp2{T<:Real}(x::T) = (x==zero(T) ? 0 : floor( Int, log2(abs(x)) ))
-pfp2{P}(x::ArbFloat{P}) = (x==zero(ArbFloat{P}) ? 0 : floor( Int, log2(abs(x)) ))
+pfp2{P}(x::ArbFloat{P}) = (iszero(x) ? 0 : floor( Int, log2(abs(x)) ))
 """
 decimal position_first_place
 determine the position of the most significant nonzero digit
 """
 pfp10{T<:Real}(x::T) = (x==zero(T) ? 0 : floor( Int, log10(abs(x)) ))
-pfp10{P}(x::ArbFloat{P}) = (x==zero(ArbFloat{P}) ? 0 : floor( Int, log10(abs(x)) ))
+pfp10{P}(x::ArbFloat{P}) = (iszero(x) ? 0 : floor( Int, log10(abs(x)) ))
 
 """
 ufp is unit_first_place
