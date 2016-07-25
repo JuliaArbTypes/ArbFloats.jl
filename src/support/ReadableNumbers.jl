@@ -1,5 +1,7 @@
 # module ReadableNumbers
 
+export stringpretty, showpretty
+
 import Base: parse
 
 
