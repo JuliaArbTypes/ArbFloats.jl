@@ -42,26 +42,21 @@ function trunc{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     return z
 end
 
-for T in (:Int16, :Int32, :Int64, :Int128,
-          :UInt16, :UInt32, :UInt64, :UInt128)
-  @eval begin
-    function round{P}(::Type{$T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
-        z = round(x, sig, base)
-        return convert(($T), z)
-    end
-    function ceil{P}(::Type{$T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
-        z = ceil(x, sig, base)
-        return convert(($T), z)
-    end
-    function floor{P}(::Type{$T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
-        z = floor(x, sig, base)
-        return convert(($T), z)
-    end
-    function trunc{P}(::Type{$T}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
-        z = trunc(x, sig, base)
-        return convert(($T), z)
-    end
-  end
+function round{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+    z = round(x, sig, base)
+    return convert(I, z)
+end
+function ceil{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+    z = ceil(x, sig, base)
+    return convert(I, z)
+end
+function floor{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+    z = floor(x, sig, base)
+    return convert(I, z)
+end
+function trunc{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+    z = trunc(x, sig, base)
+    return convert(I, z)
 end
 
 
