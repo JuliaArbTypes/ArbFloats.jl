@@ -1,6 +1,8 @@
 \#\# ArbFloats.jl
 =================
 
+[![Join the chat at https://gitter.im/JuliaArbTypes/ArbFloats.jl](https://badges.gitter.im/JuliaArbTypes/ArbFloats.jl.svg)](https://gitter.im/JuliaArbTypes/ArbFloats.jl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 \#\#\#\# other, sometimes overlapping, software development is with
 [ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl)
 
