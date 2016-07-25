@@ -6,33 +6,32 @@
 #define FMPR_RND_NEAR  4
 =#
 
+sigBitsToUse(prec::Int, sig::Int, base::Int) =
+    min(prec, ifelse(signbit(sig), -sig, sig) * log2(base))
+
 function round{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    sig=abs(sig); base=abs(base)
-    sigbits = min(P, ceil(Int, (sig * log(base)/log(2.0))))
+    sigbits = sigBitsToUse(P, sig, base)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
     return z
 end
 
 function ceil{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    sig=abs(sig); base=abs(base)
-    sigbits = min(P, ceil(Int, (sig * log(base)/log(2.0))))
+    sigbits = sigBitsToUse(P, sig, base)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
     return z
 end
 
 function floor{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    sig=abs(sig); base=abs(base)
-    sigbits = min(P, ceil(Int, (sig * log(base)/log(2.0))))
+    sigbits = sigBitsToUse(P, sig, base)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
     return z
 end
 
 function trunc{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    sig=abs(sig); base=abs(base)
-    sigbits = min(P, ceil(Int, (sig * log(base)/log(2.0))))
+    sigbits = sigBitsToUse(P, sig, base)
     z = initializer(ArbFloat{P})
     if signbit(x)
         ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
