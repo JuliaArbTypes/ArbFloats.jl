@@ -92,29 +92,30 @@ function log_base(x::Real, base::Int)
    return z
 end
 log_base{P}(x::ArbFloat{P}, base::Int) = ArbFloats.logbase(x,base)
+log_base{T<:ArbFloat}(x::T, base::Int) = ArbFloats.logbase(x,base)
 
 
 #=
     position_first_place: the radix position of the most significant nonzero bit|digit
-    
+
     pfp{T<:AbstractFloat}(x::T, base::Int=2)
     pfp{T<:AbstractFloat}(x::T)              == pfp(x,  2)  ==  pfp2{T<:AbstractFloat}(x::T)
     pfp{T<:AbstractFloat}(x::T, base=10)     == pfp(x, 10)  ==  pfp10{T<:AbstractFloat}(x::T)
 
     position_last_place: the radix position of the least significant nonzero bit|digit
-    
+
     plp{T<:AbstractFloat}(x::T, base::Int=2)
     plp{T<:AbstractFloat}(x::T)              == p;p(x,  2)  ==  plp2{T<:AbstractFloat}(x::T)
     plp{T<:AbstractFloat}(x::T, base=10)     == plp(x, 10)  ==  p;p10{T<:AbstractFloat}(x::T)
 
     unit_first_place: the radix *value) of the most significant nonzero bit|digit
-    
+
     pfp{T<:AbstractFloat}(x::T, base::Int=2)
     pfp{T<:AbstractFloat}(x::T)              == pfp(x,  2)  ==  pfp2{T<:AbstractFloat}(x::T)
     pfp{T<:AbstractFloat}(x::T, base=10)     == pfp(x, 10)  ==  pfp10{T<:AbstractFloat}(x::T)
 
     unit_last_place: the radix *value* of the least significant nonzero bit|digit
-    
+
     plp{T<:AbstractFloat}(x::T, base::Int=2)
     plp{T<:AbstractFloat}(x::T)              == plp(x,  2)  ==  plp2{T<:AbstractFloat}(x::T)
     plp{T<:AbstractFloat}(x::T, base=10)     == plp(x, 10)  ==  plp10{T<:AbstractFloat}(x::T)
@@ -129,7 +130,7 @@ function pfp{T<:Real}(x::T, base::Int=2)
    z = 0 # if x==0.0
    if notzero(x)
        z = floor( Int, log_base(abs(x), base) )
-   end 
+   end
    return z
 end
 pfp{P}(x::ArbFloat{P}, base::Int=2) =
@@ -177,7 +178,7 @@ the float value given by a 1 at the position of
 """
 function ulp(x::Real, precision::Int, base::Int)
    unitfp  = ufp2(x)
-   twice_u = typeof(x)(2.0^(1-precision))
+   twice_u = 2.0^(1-precision)
    return twice_u * unitfp
 end
 ulp{T<:AbstractFloat}(x::T, base::Int=2)  =
@@ -204,13 +205,13 @@ ulp2(x::Integer) = ulp2(Float64(x))
 function ulp10(x::Real, bitprecision::Int)
     unit10fp = ufp10(x)
     digitprecision = lte_bits2digs(bitprecision)
-    twice_u10 = typeof(x)(10.0^(1-digitprecision))
+    twice_u10 = 10.0^(1-digitprecision)
     return twice_u10 * unit10fp
 end
 function ulp10{P}(x::ArbFloat{P})
     unit10fp = ufp10(x)
     digitprecision = lte_bits2digs(P)
-    twice_u10 = ten(ArbFloat{P})^(1-digitprecision)
+    twice_u10 = 10.0^(1-digitprecision)
     return twice_u10 * unit10fp
 end
 ulp10{T<:AbstractFloat}(x::T) = ulp10( x, (1+Base.significand_bits(T)) )
@@ -223,7 +224,7 @@ function eps{P}(x::ArbFloat{P})              # for intratype workings
     z =
         if iszero(m)
             if iszero(r)
-               2.0^(P-1)
+               ldexp(0.5, 1-P)
             else
                ufp2(r)
             end
