@@ -75,6 +75,9 @@ gte_bits2digs(nbits::Int)  = ceil( Int, nbits * 0.3010299956639812  ) # log(10,2
 lte_digs2bits(ndigs::Int) = floor( Int, ndigs * 3.3219280948873626  ) # log(2,10) RoundUp
 gte_digs2bits(ndigs::Int)  = ceil( Int, ndigs * 3.3219280948873617  ) # log(2,10) RoundDown
 
+
+
+
 """
 logarithm_base(x)
 """
@@ -90,6 +93,34 @@ function log_base(x::Real, base::Int)
 end
 log_base{P}(x::ArbFloat{P}, base::Int) = ArbFloats.logbase(x,base)
 
+
+#=
+    position_first_place: the radix position of the most significant nonzero bit|digit
+    
+    pfp{T<:AbstractFloat}(x::T, base::Int=2)
+    pfp{T<:AbstractFloat}(x::T)              == pfp(x,  2)  ==  pfp2{T<:AbstractFloat}(x::T)
+    pfp{T<:AbstractFloat}(x::T, base=10)     == pfp(x, 10)  ==  pfp10{T<:AbstractFloat}(x::T)
+
+    position_last_place: the radix position of the least significant nonzero bit|digit
+    
+    plp{T<:AbstractFloat}(x::T, base::Int=2)
+    plp{T<:AbstractFloat}(x::T)              == p;p(x,  2)  ==  plp2{T<:AbstractFloat}(x::T)
+    plp{T<:AbstractFloat}(x::T, base=10)     == plp(x, 10)  ==  p;p10{T<:AbstractFloat}(x::T)
+
+    unit_first_place: the radix *value) of the most significant nonzero bit|digit
+    
+    pfp{T<:AbstractFloat}(x::T, base::Int=2)
+    pfp{T<:AbstractFloat}(x::T)              == pfp(x,  2)  ==  pfp2{T<:AbstractFloat}(x::T)
+    pfp{T<:AbstractFloat}(x::T, base=10)     == pfp(x, 10)  ==  pfp10{T<:AbstractFloat}(x::T)
+
+    unit_last_place: the radix *value* of the least significant nonzero bit|digit
+    
+    plp{T<:AbstractFloat}(x::T, base::Int=2)
+    plp{T<:AbstractFloat}(x::T)              == plp(x,  2)  ==  plp2{T<:AbstractFloat}(x::T)
+    plp{T<:AbstractFloat}(x::T, base=10)     == plp(x, 10)  ==  plp10{T<:AbstractFloat}(x::T)
+
+=#
+
 """
 position_first_place
 determine the position of the most significant nonzero bit|digit
@@ -98,7 +129,7 @@ function pfp{T<:Real}(x::T, base::Int=2)
    z = 0 # if x==0.0
    if notzero(x)
        z = floor( Int, log_base(abs(x), base) )
-   end
+   end 
    return z
 end
 pfp{P}(x::ArbFloat{P}, base::Int=2) =
@@ -192,7 +223,7 @@ function eps{P}(x::ArbFloat{P})              # for intratype workings
     z =
         if iszero(m)
             if iszero(r)
-               eps(ArbFloat{P})
+               2.0^(P-1)
             else
                ufp2(r)
             end
@@ -205,9 +236,9 @@ function eps{P}(x::ArbFloat{P})              # for intratype workings
 end
 
 function nextfloat{P}(x::ArbFloat{P})
-    x + eps(x)
+    x + ulp(x)
 end
 
 function prevfloat{P}(x::ArbFloat{P})
-    x - eps(x)
+    x - ulp(x)
 end
