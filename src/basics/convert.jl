@@ -134,7 +134,7 @@ for T in (:Int128, :Int64, :Int32, :Int16)
   @eval begin
     function convert{P}(::Type{$T}, x::ArbFloat{P})
       z = trunc(x)
-      return convert(($T), z)
+      return ($T)(z)
     end
   end
 end
