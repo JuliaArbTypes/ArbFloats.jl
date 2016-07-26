@@ -133,7 +133,7 @@ end
 for T in (:Int128, :Int64, :Int32, :Int16)
   @eval begin
     function convert{P}(::Type{$T}, x::ArbFloat{P})
-      z = trunc(x)
+      z = convert(BigInt, trunc(x))
       return ($T)(z)
     end
   end
