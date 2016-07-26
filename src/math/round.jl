@@ -7,11 +7,18 @@
 =#
 
 sigBitsToUse(prec::Int, sig::Int, base::Int) =
-    min(prec, ifelse(signbit(sig), -sig, sig) * log2(base))
+    min(prec, ifelse(signbit(sig), -sig, sig) * Float64(nextfloat(Float32(nextfloat(log2(base))))))
+
+sigBitsToUseRadix10(prec::Int, sig::Int) =
+    min(prec, ifelse(signbit(sig), -sig, sig) * 3.3219285) # log2(10)
+
+sigBitsToUseRadix2(prec::Int, sig::Int, base::Int) =
+    min(prec, ifelse(signbit(sig), -sig, sig) * 1)         # log2(2)
+
 
 function round{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     sigbits = sigBitsToUse(P, sig, base)
-    z = initializer(ArbFloat{P})
+    z = initializer(ArbFloat{P})7
     ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
     return z
 end
