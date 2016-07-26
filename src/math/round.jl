@@ -18,7 +18,7 @@ sigBitsToUseRadix2(prec::Int, sig::Int, base::Int) =
 
 function round{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     sigbits = sigBitsToUse(P, sig, base)
-    z = initializer(ArbFloat{P})7
+    z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
     return z
 end
