@@ -22,15 +22,6 @@ function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
     return z
 end
 
-function convert{P}(::Type{ArbFloat{P}}, x::ArfFloat{P})
-    z = initializer(ArbFloat{P})
-    z.exponentOf2  = x.exponentOf2
-    z.nwords_sign  = x.nwords_sign
-    z.significand1 = x.significand1
-    z.significand2 = x.significand2
-    return z
-end
-
 #interconvert ArbFloat{P} with ArbFloat{Q}
 
 function convert{P,Q}(::Type{ArbFloat{Q}}, a::ArbFloat{P})
@@ -66,22 +57,6 @@ function convert{P,Q}(::Type{ArfFloat{Q}}, a::ArfFloat{P})
 end
 
 #interconvert ArfFloat{P} with ArfFloat{Q}
-
-function convert{P,Q}(::Type{ArfFloat{Q}}, a::ArfFloat{P})
-    if (Q < P)
-        a = round(a, Q, 2)
-    end
-
-    z = initializer(ArfFloat{Q})
-    z.exponentOf2  = a.exponentOf2
-    z.nwords_sign  = a.nwords_sign
-    z.significand1 = a.significand1
-    z.significand2 = a.significand2
-
-   return z
-end
-
-#
 
 function convert{P}(::Type{ArbFloat{P}}, x::UInt)
     z = initializer(ArbFloat{P})
