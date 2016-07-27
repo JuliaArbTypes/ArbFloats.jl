@@ -36,6 +36,8 @@ function initializer{P}(::Type{ArfFloat{P}})
     finalizer(z, release)
     return z
 end
+initializer(::Type{ArfFloat}) = initializer(ArfFloat{precision(ArbFloat)})
+
 
 # empty constructor
 ArfFloat() = initializer(ArfFloat{precision(ArfFloat)})
