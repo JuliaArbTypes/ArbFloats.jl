@@ -1,3 +1,49 @@
+
+function union{T<:ArbFloat}(a::T, b::T)
+    P = precision(T)
+    z = initializer(ArbFloat{P})
+    ccall(@libarb(arb_union), Void, (Ptr{T}, Ptr{T}, Ptr{T}, Int64), &z, &a, &b, P%Int64)
+    return z
+end
+
+function intersect{T<:ArbFloat}(a::T, b::T)
+    P = precision(T)
+    z = initializer(ArbFloat{P})
+    if donotoverlap(a,b)
+        ccall(@libarb(arb_indeterminant), Void, (Ptr{T},), &z)
+    else
+        alo,ahi = bounds(a)
+        blo,bhi = bounds(b)
+        if alo >= blo
+           if bhi <= ahi
+              bounded(z, alo, bhi)
+           else
+              bounded(z, alo, blo)
+           end
+        else
+           if ahi <= bhi
+              bounded(z, blo, ahi)
+           else
+              bounded(z, blo, alo)
+           end
+        end
+    end
+    return z
+end
+
+function bounded{T<:ArbFloat}(z::T, lo::T, hi::T)
+    P = precision(T)
+    A = ArfFloat{P}
+    P2 = P + 24
+    lo2 = convert(ArfFloat{P2}(lo),
+    hi2 = ArfFloat{P2}(hi)
+    mid2 = (lo2+hi2) * 0.5
+    rad2 = hi2 - mid2
+     ccall(@libarb(arb_set_interval_arf), Void, (Ptr{T}, Ptr{T}), &z, &mid2)
+
+end
+
+
 #=
     categorizing a floating-point value with respect to a floating-point value
 

@@ -1,6 +1,7 @@
 
 function zero{P}(::Type{ArbFloat{P}})
-    return initializer(ArbFloat{P})
+    z = initializer(ArbFloat{P})
+    return z
 end
 function zero(::Type{ArbFloat})
     P = precision(ArbFloat)
@@ -24,7 +25,7 @@ for (op, i) in ((:two,:2), (:three,:3), (:four, :4))
     function ($op){P}(::Type{ArbFloat{P}})
         z = initializer(ArbFloat{P})
         ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat}, Int), &z, $i)
-        z
+        return z
     end
     ($op)(::Type{ArbFloat}) = ($op)(ArbFloat{precision(ArbFloat)})
   end

@@ -69,6 +69,21 @@ midpoint{P}(x::ArfFloat{P}) = x
 radius{P}(x::ArfFloat{P}) = zero(ArfFloat{P})
 
 
+#=
+#define ARF_RND_DOWN FMPR_RND_DOWN
+#define ARF_RND_UP FMPR_RND_UP
+#define ARF_RND_FLOOR FMPR_RND_FLOOR
+#define ARF_RND_CEIL FMPR_RND_CEIL
+#define ARF_RND_NEAR FMPR_RND_NEAR
+=#
+
+function round{T<:ArfFloat}(x::T, prec::Int64)
+    P = precision(T)
+    z = initializer(ArfFloat{P})
+    ccall(@libarb(arf_set_round), Int, (Ptr{T}, Ptr{T}, Int64, Int), &z, &x, prec, 2)
+    return z
+end
+
 
 #=
 function frexp{P}(x::ArfFloat{P})
