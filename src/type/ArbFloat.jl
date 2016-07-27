@@ -53,9 +53,10 @@ function initializer{P}(::Type{ArbFloat{P}})
     finalizer(z, release)
     return z
 end
+initializer(::Type{ArbFloat}) = initializer(ArbFloat{precision(ArbFloat)})
 
 # empty constructor
-ArbFloat() = initializer(ArbFloat{precision(ArbFloat)})
+ArbFloat() = initializer(ArbFloat)
 
 typemax{P}(::Type{ArbFloat{P}}) = ArbFloat{P}("Inf")
 typemin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}("-Inf")
