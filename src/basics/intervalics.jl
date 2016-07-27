@@ -33,14 +33,10 @@ end
 
 function bounded{T<:ArbFloat}(z::T, lo::T, hi::T)
     P = precision(T)
-    A = ArfFloat{P}
-    P2 = P + 24
-    lo2 = convert(ArfFloat{P2}(lo),
-    hi2 = ArfFloat{P2}(hi)
-    mid2 = (lo2+hi2) * 0.5
-    rad2 = hi2 - mid2
-     ccall(@libarb(arb_set_interval_arf), Void, (Ptr{T}, Ptr{T}), &z, &mid2)
-
+    lo2 = convert(ArfFloat{P}, lo)
+    hi2 = convert(ArfFloat{P}, hi)
+    ccall(@libarb(arb_set_interval_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}, Int64), &z, &mid2, &rad2, P%Int64)
+    return z
 end
 
 
