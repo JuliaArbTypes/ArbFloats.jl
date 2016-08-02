@@ -65,8 +65,8 @@ end
 
 function midpoint_radius{T<:ArbFloat}(midpoint::T, radius::T)
     z = deepcopy(midpoint)
-    z.radius_exponentOf2 = source.radius_exponentOf2
-    z.radius_significand = source.radius_significand
+    z.radius_exponentOf2 = radius.radius_exponentOf2
+    z.radius_significand = radius.radius_significand
     return z
 end
 
