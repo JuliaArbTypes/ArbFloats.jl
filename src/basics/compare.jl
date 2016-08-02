@@ -15,12 +15,20 @@ end
 
 # for sorted ordering
 isequal{T<:ArbFloat}(a::T, b::T) = !(a != b)
-isless{T<:ArbFloat}(a::T, b::T) = !(a >= b)
+isless{ T<:ArbFloat}(a::T, b::T) = !(a >= b)
 
 
-# experimental  ≗
-(≖){T<:ArbFloat}(x::T, y::T) = !(x != y)
-(≖){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (≖)(promote(x,y)...)
-(≖){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (≖)(promote(x,y)...)
-(≖){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (≖)(promote(x,y)...)
+# experimental ≖ ≗
+(eq){T<:ArbFloat}(x::T, y::T) = !(x != y)
+(eq){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (eq)(promote(x,y)...)
+(eq){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (eq)(promote(x,y)...)
+(eq){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (eq)(promote(x,y)...)
+(≗){T<:ArbFloat}(x::T, y::T) = !(x != y)
+(≗){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (≗)(promote(x,y)...)
+(≗){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (≗)(promote(x,y)...)
+(≗){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (≗)(promote(x,y)...)
+(neq){T<:ArbFloat}(x::T, y::T) = donotoverlap(x, y)
+(neq){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (donotoverlap)(promote(x,y)...)
+(neq){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (donotoverlap)(promote(x,y)...)
+(neq){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (donotoverlap)(promote(x,y)...)
 
