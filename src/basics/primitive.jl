@@ -71,7 +71,8 @@ function midpoint_radius{T<:ArbFloat}(midpoint::T, radius::T)
 end
 
 function midpoint_radius{T<:ArbFloat}(midpoint::T, radius::Float64)
-    return midpoint_radius(midpoint, T(radius))
+    rad = convert(T, radius)
+    return midpoint_radius(midpoint, rad)
 end
 
 
