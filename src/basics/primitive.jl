@@ -59,6 +59,22 @@ function copymidpoint{T<:ArbFloat}(target::T, source::T)
     return z
 end
 
+function midpoint_radius{T<:ArbFloat}(x::T)
+    return midpoint(x), radius(x)
+end
+
+function midpoint_radius{T<:ArbFloat}(midpoint::T, radius::T)
+    z = deepcopy(midpoint)
+    z.radius_exponentOf2 = source.radius_exponentOf2
+    z.radius_significand = source.radius_significand
+    return z
+end
+
+function midpoint_radius{T<:ArbFloat}(midpoint::T, radius::Float64)
+    return midpoint_radius(midpoint, T(radius))
+end
+
+
 """
 Rounds x to a number of bits equal to the accuracy of x (as indicated by its radius), plus a few guard bits.
 The resulting ball is guaranteed to contain x, but is more economical if x has less than full accuracy.
