@@ -25,6 +25,7 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
 @inline initial0{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &x)
 
 # initialize and zero a variable of type ArfFloat
+
 function release{P}(x::ArfFloat{P})
     ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
     return nothing
@@ -65,6 +66,10 @@ function convert{P}(::Type{ArfFloat{P}}, x::BigFloat)
     z
 end
 convert(::Type{ArfFloat}, x::BigFloat) = convert(ArfFloat{precision(ArfFloat)}, x)
+
+convert{T<:ArfFloat}(::Type{T}, x::BigInt) = convert(T, convert(BigFloat, x))
+convert{P}(::Type{ArfFloat{P}}, x::BigInt) = convert(ArfFloat{P}, convert(BigFloat, x))
+
 
 midpoint{P}(x::ArfFloat{P}) = x
 
