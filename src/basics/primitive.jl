@@ -65,7 +65,7 @@ end
 
 function midpoint_radius{T<:ArbFloat}(midpoint::T, radius::T)
     z = deepcopy(midpoint)
-    ccall(@libarb(arb_add_err), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &radius)
+    ccall(@libarb(arb_add_error), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &radius)
     return z
 end
 
