@@ -52,4 +52,46 @@ function narrow{T<:ArbFloat}(a::T, b::T, c::T, d::T)
 end
 
 
+function intersect{T<:ArbFloat}(a::T, b::T)
+    P = precision(T)
+    z = initializer(ArbFloat{P})
+    if donotoverlap(a,b)
+        ccall(@libarb(arb_indeterminant), Void, (Ptr{T},), &z)
+    else
+        alo,ahi = bounds(a)
+        blo,bhi = bounds(b)
+        if alo >= blo
+           if bhi <= ahi
+              bounded(z, alo, bhi)
+           else
+              bounded(z, alo, blo)
+           end
+        else
+           if ahi <= bhi
+              bounded(z, blo, ahi)
+           else
+              bounded(z, blo, alo)
+           end
+        end
+    end
+    return z
+end
+
+function bounded{P}(z::ArbFloat{P}, lo::ArbFloat{P}, hi::ArbFloat{P})
+    lo2 = convert(ArfFloat{P}, lo)
+    hi2 = convert(ArfFloat{P}, hi)
+    ccall(@libarb(arb_set_interval_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}, Int64), &z, &lo2, &hi2, P%Int64)
+    return z
+end
+function bounded{T<:ArbFloat}(lo::T, hi::T)
+    z = initializer(T)
+    return bounded(z,lo,hi)
+end
+function boundedrange{T<:ArbFloat}(mid::T, rad::T)
+    z = initializer(T)
+    lo = mid-rad
+    hi = mid+rad
+    return bounded(z,lo,hi)
+end
+
 
