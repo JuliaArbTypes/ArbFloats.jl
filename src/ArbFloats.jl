@@ -22,6 +22,7 @@ import Base: hash, convert, promote_rule, isa,
     sin, cos, tan, csc, sec, cot, asin, acos, atan, atan2,
     sinh, cosh, tanh, csch, sech, coth, asinh, acosh, atanh,
     sinc, gamma, lgamma, digamma, zeta, factorial,
+    union, intersect,
     BigInt, BigFloat,
     Cint
 
@@ -32,7 +33,6 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        stringcompact, stringall, stringallcompact, stringpretty,
        smartvalue, smartstring, showsmart, showallcompact, showpretty,
        two, three, four, copymidpoint, copyradius, deepcopyradius,
-
        get_emax, get_emin, bounded, boundedrange,
        trim, decompose, isexact, notexact,
        isposinf, isneginf,
@@ -43,7 +43,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        includesPositive, excludesPositive, includesNegative, excludesNegative,
        includesNonpositive,  includesNonnegative,
        areequal, notequal, approxeq, ≊,
-       overlap, donotoverlap,
+       narrow, overlap, donotoverlap,
        contains, iscontainedby, doesnotcontain, isnotcontainedby,
        invsqrt, pow, root, tanpi, cotpi, logbase, sincos, sincospi, sinhcosh,
        doublefactorial, risingfactorial, rgamma, agm, polylog,
