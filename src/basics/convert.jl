@@ -7,6 +7,16 @@ end
 
 # interconvert Arb with Arf
 
+function convert{P}(::Type{ArbFloat}, x::ArfFloat{P})
+    P2 = precision(ArbFloat)
+    return convert(ArbFloat{P2},x)
+end
+
+function convert{P}(::Type{ArfFloat}, x::ArbFloat{P})
+    P2 = precision(ArfFloat)
+    return convert(ArfFloat{P2},x)
+end
+
 function convert{P}(::Type{ArbFloat{P}}, x::ArfFloat{P})
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
@@ -118,11 +128,20 @@ end
 convert(::Type{BigInt}, x::String) = parse(BigInt,x)
 convert(::Type{BigFloat}, x::String) = parse(BigFloat,x)
 
+#=
 function convert{P}(::Type{ArbFloat{P}}, x::BigFloat)
      x = round(x,P,2)
      s = string(x)
      return ArbFloat{P}(s)
 end
+=#
+function convert{T<:ArbFloat}(::Type{T}, x::BigFloat)
+     P = precision(T)
+     x = round(x,P,2)
+     s = string(x)
+     return ArbFloat{P}(s)
+end
+
 
 function convert{P}(::Type{BigFloat}, x::ArbFloat{P})
      s = smartarbstring(x)
