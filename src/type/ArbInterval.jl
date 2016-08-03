@@ -60,19 +60,8 @@ function intersect{T<:ArbFloat}(a::T, b::T)
     else
         alo,ahi = bounds(a)
         blo,bhi = bounds(b)
-        if alo >= blo
-           if bhi <= ahi
-              bounded(z, alo, bhi)
-           else
-              bounded(z, alo, blo)
-           end
-        else
-           if ahi <= bhi
-              bounded(z, blo, ahi)
-           else
-              bounded(z, blo, alo)
-           end
-        end
+        lo,hi = minmax(max(alo,blo), min(ahi,bhi))
+        bounded(z, lo, hi)
     end
     return z
 end
