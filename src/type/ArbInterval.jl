@@ -51,6 +51,7 @@ function narrow{T<:ArbFloat}(a::T, b::T, c::T, d::T)
     return union(lo,hi)
 end
 
+intersect{T<:ArbFloat}(a::T) = a
 
 function intersect{T<:ArbFloat}(a::T, b::T)
     P = precision(T)
@@ -64,6 +65,18 @@ function intersect{T<:ArbFloat}(a::T, b::T)
         bounded(z, lo, hi)
     end
     return z
+end
+
+function intersect{T<:ArbFloat}(a::T, b::T, c::T)
+   i1 = intersect(a,b)
+   i2 = intersect(i1,c)
+   return i2
+end
+
+function intersect{T<:ArbFloat}(a::T, b::T, c::T, d::T)
+   i1 = intersect(a,b)
+   i2 = intersect(c,d)
+   return intersect(i1,i2)
 end
 
 function bounded{P}(z::ArbFloat{P}, lo::ArbFloat{P}, hi::ArbFloat{P})
