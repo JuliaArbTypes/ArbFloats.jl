@@ -41,6 +41,8 @@ function convert{P,Q}(::Type{ArbFloat{Q}}, a::ArbFloat{P})
     return z
 end
 
+#interconvert ArfFloat{P} with ArfFloat{Q}
+
 function convert{P,Q}(::Type{ArfFloat{Q}}, a::ArfFloat{P})
     if (Q < P)
         return round(a, Q, 2)
@@ -56,7 +58,19 @@ function convert{P,Q}(::Type{ArfFloat{Q}}, a::ArfFloat{P})
     return z
 end
 
-#interconvert ArfFloat{P} with ArfFloat{Q}
+#interconvert ArbFloat{P} with ArfFloat{Q}
+
+function convert{P,Q}(::Type{ArbFloat{P}}, a::ArfFloat{Q})
+    ap = ArfFloat{P}(a)
+    return convert(ArbFloat{P}, ap)
+end
+
+function convert{P,Q}(::Type{ArfFloat{P}}, a::ArbFloat{Q})
+    ap = ArbFloat{P}(a)
+    return convert(ArfFloat{P}, ap)
+end
+
+# convert ArbFloat with other types
 
 function convert{P}(::Type{ArbFloat{P}}, x::UInt)
     z = initializer(ArbFloat{P})
@@ -166,6 +180,7 @@ for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16,
           :String)
   @eval convert(::Type{ArbFloat}, x::$T) = convert(ArbFloat{precision(ArbFloat)}, x)
 end
+
 
 
 # Promotion
