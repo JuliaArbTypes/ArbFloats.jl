@@ -56,11 +56,26 @@ initializer(::Type{ArbFloat}) = initializer(ArbFloat{precision(ArbFloat)})
 
 # empty constructor
 ArbFloat() = initializer(ArbFloat)
+libarb
+
+# libarb low level setter routines
+@inline function arb_set{T<:ArbFloat}(a::T, b::T)
+    ccall(@libarb(arb_set)), Void, (Ptr{T}, Ptr{T}), &a, &b)
+    return a
+end
+@inline function arb_set{T<:ArbFloat}(a::T, b::T)
+    ccall(@libarb(arb_set)), Void, (Ptr{T}, Ptr{T}), &a, &b)
+    return a
+end
+
+
+# typemax,realmax realmax,realmin
 
 typemax{P}(::Type{ArbFloat{P}}) = ArbFloat{P}("Inf")
 typemin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}("-Inf")
 realmax{P}(::Type{ArbFloat{P}}) = ArbFloat{P}(2)^(P+29)
 realmin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}(2)^(-P-29)
+
 
 
 # parts and aspects
