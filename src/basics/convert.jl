@@ -12,6 +12,60 @@ macro ArbFloat(p,x)
     convert(ArbFloat{:($p)}, string(:($x)))
 end
 
+
+# libarb low level routines
+function arf_sets_arf{T1<:ArfFloat,T2<:ArfFloat}(a::T1, b::T2)
+    P = precision(T1)
+    ccall(@libarb(arb_set_round), Void, (Ptr{T1}, Ptr{T1}, Clong, Cint), &a, &b, P, 2) # round nearest
+    return a
+end
+function1 arb_sets_arb{T1<:ArbFloat,T2<:ArbFloat}(a::T1, b::T2)
+    P = precision(T1)
+    ccall(@libarb(arb_set_round), Void, (Ptr{T1}, Ptr{T1}, Clong), &a, &b, P)
+    return a
+end
+function arb_set_arf{P}(a::ArbFloat{P}, b::ArfFloat{P})
+    ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}), &a, &b)
+    return a
+end
+function arb_set_arb{T<:ArbFloat}(a::T, b::T)
+    P = precision(T) 
+    ccall(@libarb(arb_set), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &a, &b)
+    return a
+end
+function arb_sets_arf{T1<:ArbFloat,T2<:ArfFloat}(a::T1, b::T2)
+    P = precision(T1)
+    z = initializer(ArfFloat{P})
+    arf_sets_arf(z, b)
+    arb_set_arf(a, z)
+    return a
+end
+function arf_sets_arb{T1<:ArfFloat,T2<:ArbFloat}(a::T1, b::T2)
+    P = precision(T1) 
+    z = initializer(ArbFloat{P})
+    arb_sets_arb(z, b)
+    arf_set_arb(a, z)
+    return a
+end
+    
+convert{T1<:ArfFloat,T2<:ArfFloat}(a::T1, b::T2) =
+    arf_sets_arf(a, b)
+
+convert{T1<:ArbFloat,T2<:ArbFloat}(a::T1, b::T2) =
+    arb_sets_arb(a, b)
+
+convert{T1<:ArfFloat,T2<:ArbFloat}(a::T1, b::T2) =
+    arf_sets_arb(a,b)
+
+convert{T1<:ArbFloat,T2<:ArfFloat}(a::T1, b::T2) =
+    arb_sets_arf(a,b)
+
+
+#int arf_set_round(arf_t y, const arf_t x, slong prec, arf_rnd_t rnd)
+
+
+
+
 # interconvert Arb with Arf
 #=
 function convert{ARB<:ArbFloat, ARF<:ArfFloat}(::Type{ARF}, x::ARB)
@@ -67,7 +121,7 @@ end
 =#
 
 #interconvert ArbFloat{P} with ArbFloat{Q}
-#=
+
 function convert{P,Q}(::Type{ArbFloat{Q}}, a::ArbFloat{P})
     if (Q < P)
         return round(a, Q, 2)
