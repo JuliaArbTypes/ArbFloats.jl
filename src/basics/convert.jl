@@ -13,6 +13,7 @@ macro ArbFloat(p,x)
 end
 
 # interconvert Arb with Arf
+#=
 function convert{ARB<:ArbFloat, ARF<:ArfFloat}(::Type{ARF}, x::ARB)
     P = precision(ARF)
     y = ifelse( P == precision(ARF), x, ArbFloat{P}(x) )
@@ -22,6 +23,7 @@ function convert{ARB<:ArbFloat, ARF<:ArfFloat}(::Type{ARF}, x::ARB)
 
     return z
 end
+=#
 
 function convert{ARB<:ArbFloat, ARF<:ArfFloat}(::Type{ARF}, x::ARB)
     P = precision(ARF)
