@@ -1,3 +1,10 @@
+macro ArfFloat(x)
+    convert(ArfFloat, string(:($x)))
+end
+macro ArfFloat(p,x)
+    convert(ArfFloat{:($p)}, string(:($x)))
+end
+
 macro ArbFloat(x)
     convert(ArbFloat, string(:($x)))
 end
@@ -6,7 +13,30 @@ macro ArbFloat(p,x)
 end
 
 # interconvert Arb with Arf
+function convert{ARB<:ArbFloat, ARF<:ArfFloat}(::Type{ARF}, x::ARB)
+    P = precision(ARF)
+    y = ifelse( P == precision(ARF), x, ArbFloat{P}(x) )
 
+    z = initializer(ArfFloat{P})
+    ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}), &z, &y)
+
+    return z
+end
+
+function convert{ARB<:ArbFloat, ARF<:ArfFloat}(::Type{ARF}, x::ARB)
+    P = precision(ARF)
+    y = ifelse( P == precision(ARF), x, ArbFloat{P}(x) )
+
+    z = initializer(ArfFloat{P})
+    z.exponentOf2  = y.exponentOf2
+    z.nwords_sign  = y.nwords_sign
+    z.significand1 = y.significand1
+    z.significand2 = y.significand2
+
+    return z
+end
+
+#=
 function convert{P}(::Type{ArbFloat}, x::ArfFloat{P})
     P2 = precision(ArbFloat)
     return convert(ArbFloat{P2},x)
@@ -16,6 +46,7 @@ function convert{P}(::Type{ArfFloat}, x::ArbFloat{P})
     P2 = precision(ArfFloat)
     return convert(ArfFloat{P2},x)
 end
+
 
 function convert{P}(::Type{ArbFloat{P}}, x::ArfFloat{P})
     z = initializer(ArbFloat{P})
@@ -31,9 +62,10 @@ function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
     z.significand2 = x.significand2
     return z
 end
+=#
 
 #interconvert ArbFloat{P} with ArbFloat{Q}
-
+#=
 function convert{P,Q}(::Type{ArbFloat{Q}}, a::ArbFloat{P})
     if (Q < P)
         return round(a, Q, 2)
@@ -79,7 +111,7 @@ function convert{P,Q}(::Type{ArfFloat{P}}, a::ArbFloat{Q})
     ap = ArbFloat{P}(a)
     return convert(ArfFloat{P}, ap)
 end
-
+=#
 # convert ArbFloat with other types
 
 function convert{P}(::Type{ArbFloat{P}}, x::UInt)
@@ -143,7 +175,7 @@ function convert{T<:ArbFloat}(::Type{T}, x::BigFloat)
 end
 
 
-function convert{P}(::Type{BigFloat}, x::ArbFloat{P})
+function convert{T<:ArbFloat}(::Type{BigFloat}, x::T)
      s = smartarbstring(x)
      return parse(BigFloat, s)
 end
