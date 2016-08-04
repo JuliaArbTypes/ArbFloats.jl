@@ -167,7 +167,7 @@ function convert{P,Q}(::Type{ArfFloat{P}}, a::ArbFloat{Q})
     ap = ArbFloat{P}(a)
     return convert(ArfFloat{P}, ap)
 end
-=#
+
 # convert ArbFloat with other types
 
 function convert{P}(::Type{ArbFloat{P}}, x::UInt)
