@@ -19,7 +19,7 @@ function arf_sets_arf{T1<:ArfFloat,T2<:ArfFloat}(a::T1, b::T2)
     ccall(@libarb(arb_set_round), Void, (Ptr{T1}, Ptr{T1}, Clong, Cint), &a, &b, P, 2) # round nearest
     return a
 end
-function1 arb_sets_arb{T1<:ArbFloat,T2<:ArbFloat}(a::T1, b::T2)
+function arb_sets_arb{T1<:ArbFloat,T2<:ArbFloat}(a::T1, b::T2)
     P = precision(T1)
     ccall(@libarb(arb_set_round), Void, (Ptr{T1}, Ptr{T1}, Clong), &a, &b, P)
     return a
