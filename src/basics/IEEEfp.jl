@@ -237,9 +237,9 @@ function eps{P}(x::ArbFloat{P})              # for intratype workings
 end
 
 function nextfloat{P}(x::ArbFloat{P})
-    x + ulp(x)
+    x + ulp2(x)
 end
 
 function prevfloat{P}(x::ArbFloat{P})
-    x - ulp(x)
+    x - ulp2(x)
 end
