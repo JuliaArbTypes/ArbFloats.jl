@@ -120,7 +120,7 @@ function lowerbound(::Type{MagFloat}, x::UInt64)
     return z
 end
 
-if Int = Int64
+if Int == Int64
   for T in (:UInt128, :UInt32, :UInt16, :UInt8)
     @eval upperbound(::Type{MagFloat}, x::($T)) = upperbound(MagFloat, convert(UInt64, x))
     @eval lowerbound(::Type{MagFloat}, x::($T)) = lowerbound(MagFloat, convert(UInt64, x))
