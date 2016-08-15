@@ -12,44 +12,44 @@ end
 
 function isnan{T<:ArbFloat}(x::T)
     P = precision(T)
-    y = ArfFloat{P}(x)
+    y = ArfFloat(x)
     return 0 != ccall(@libarb(arf_is_nan), Int, (Ptr{ArfFloat{P}},), &y)
 end
 
 function notnan{T<:ArbFloat}(x::T)
     P = precision(T)
-    y = ArfFloat{P}(x)
+    y = ArfFloat(x)
     return 0 == ccall(@libarb(arf_is_nan), Int, (Ptr{ArfFloat{P}},), &y)
 end
 
 function isinf{T<:ArbFloat}(x::T)
     P = precision(T)
-    y = ArfFloat{P}(x)
+    y = ArfFloat(x)
     return 0 != ccall(@libarb(arf_is_inf), Int, (Ptr{ArfFloat{P}},), &y)
 end
 
 function notinf{T<:ArbFloat}(x::T)
-    y = ArfFloat{P}(x)
+    y = ArfFloat(x)
     return 0 == ccall(@libarb(arf_is_inf), Int, (Ptr{ArfFloat{P}},), &y)
 end
 
 function isposinf{T<:ArbFloat}(x::T)
-    y = ArfFloat{P}(x)
+    y = ArfFloat(x)
     return 0 != ccall(@libarb(arf_is_posinf), Int, (Ptr{ArfFloat{P}},), &y)
 end
 
 function notposinf{T<:ArbFloat}(x::T)
-    y = ArfFloat{P}(x)
+    y = ArfFloat(x)
     return 0 == ccall(@libarb(arf_is_posinf), Int, (Ptr{ArfFloat{P}},), &y)
 end
 
 function isneginf{T<:ArbFloat}(x::T)
-    y = ArfFloat{P}(x)
+    y = ArfFloat(x)
     return 0 != ccall(@libarb(arf_is_neginf), Int, (Ptr{ArfFloat{P}},), &y)
 end
 
 function notneginf{T<:ArbFloat}(x::T)
-    y = ArfFloat{P}(x)
+    y = ArfFloat(x)
     return 0 == ccall(@libarb(arf_is_neginf), Int, (Ptr{ArfFloat{P}},), &y)
 end
 
