@@ -12,7 +12,7 @@ end
 
 function isnan{T<:ArbFloat}(x::T)
     P = precision(T)
-    y = ArfFloat(x)
+    y = convert(ArfFloat{P},x)
     return 0 != ccall(@libarb(arf_is_nan), Int, (Ptr{ArfFloat},), &y)
 end
 
