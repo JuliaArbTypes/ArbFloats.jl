@@ -130,11 +130,11 @@ if Int == Int64
   end
 else
   for T in (:UInt128, :UInt64, :UInt16, :UInt8)
-    @eval upperbound(::Type{MagFloat}, x::($T)) = upperbound(MagFloat, convert(UInt64, x))
-    @eval lowerbound(::Type{MagFloat}, x::($T)) = lowerbound(MagFloat, convert(UInt64, x))
+    @eval upperbound(::Type{MagFloat}, x::($T)) = upperbound(MagFloat, convert(UInt32, x))
+    @eval lowerbound(::Type{MagFloat}, x::($T)) = lowerbound(MagFloat, convert(UInt32, x))
   end
   for T in (:Int128, :Int64, :Int16, :Int8)
-    @eval convert(::Type{MagFloat}, x::($T))  = convert(MagFloat, convert(Int64, x))
+    @eval convert(::Type{MagFloat}, x::($T))  = convert(MagFloat, convert(Int32, x))
   end
 end
 
