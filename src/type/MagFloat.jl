@@ -109,18 +109,17 @@ convert(::Type{MagFloat}, x::Float16) = convert(MagFloat, convert(Float64, x))
    upperbound returns lower bound of value
 =#
 
-function upperbound(::Type{MagFloat}, x::UInt64)
+if Int == Int64
+  function upperbound(::Type{MagFloat}, x::UInt64)
     z = MagFloat()
     ccall(@libarb(mag_set_ui), Void, (Ptr{MagFloat}, Ptr{UInt64}), &z, &x)
     return z
-end
-function lowerbound(::Type{MagFloat}, x::UInt64)
+  end
+  function lowerbound(::Type{MagFloat}, x::UInt64)
     z = MagFloat()
     ccall(@libarb(mag_set_ui_lower), Void, (Ptr{MagFloat}, Ptr{UInt64}), &z, &x)
     return z
-end
-
-if Int == Int64
+  end
   for T in (:UInt128, :UInt32, :UInt16, :UInt8)
     @eval upperbound(::Type{MagFloat}, x::($T)) = upperbound(MagFloat, convert(UInt64, x))
     @eval lowerbound(::Type{MagFloat}, x::($T)) = lowerbound(MagFloat, convert(UInt64, x))
@@ -129,6 +128,16 @@ if Int == Int64
     @eval convert(::Type{MagFloat}, x::($T))  = convert(MagFloat, convert(Int64, x))
   end
 else
+  function upperbound(::Type{MagFloat}, x::UInt32)
+    z = MagFloat()
+    ccall(@libarb(mag_set_ui), Void, (Ptr{MagFloat}, Ptr{UInt32}), &z, &x)
+    return z
+  end
+  function lowerbound(::Type{MagFloat}, x::UInt32)
+    z = MagFloat()
+    ccall(@libarb(mag_set_ui_lower), Void, (Ptr{MagFloat}, Ptr{UInt32}), &z, &x)
+    return z
+  end
   for T in (:UInt128, :UInt64, :UInt16, :UInt8)
     @eval upperbound(::Type{MagFloat}, x::($T)) = upperbound(MagFloat, convert(UInt32, x))
     @eval lowerbound(::Type{MagFloat}, x::($T)) = lowerbound(MagFloat, convert(UInt32, x))
