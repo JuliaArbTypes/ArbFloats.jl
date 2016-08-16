@@ -180,7 +180,7 @@ for F in (:BigInt, :Rational, :Irrational)
         P = precision(T)
         B = precision(BigFloat)
         if B < P+24
-            return convert(ArbFloat{P}, biggerFloat(P+24, convertx))
+            return convert(ArbFloat{P}, biggerFloat(P+24, x))
         else
             return convert(ArbFloat{P}, convert(BigFloat, x))
         end
