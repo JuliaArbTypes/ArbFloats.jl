@@ -168,9 +168,15 @@ for F in (:BigInt, :Rational, :Irrational)
         P = precision(T)
         B = precision(BigFloat)
         if B < P+24
-            setprecision(BigFloat, P+24) do
-                return convert(ArbFloat{P}, convert(BigFloat, x))
-            end
+            return convert(ArbFloat{P}, string(x))
+        else
+            return convert(ArbFloat{P}, convert(BigFloat, x))
+        end
+    end
+    function convert{P}(::Type{ArbFloat{P}}, x::$F)
+        B = precision(BigFloat)
+        if B < P+24
+            return convert(ArbFloat{P}, string(x))
         else
             return convert(ArbFloat{P}, convert(BigFloat, x))
         end
