@@ -162,11 +162,11 @@ for T in (:Integer, :Signed)
   end
 end
 
-function biggerFloat(prec::Int, x::BigFloat)
-    B = precision(x)
+function biggerFloat(prec::Int, x::Real)
+    B = precision(BigFloat)
     P = prec+24
     if B >= P
-        return x
+        return convert(BigFloat,x)
     else
         setprecision(BigFloat, P) do
            return parse(BigFloat, string(x))
@@ -180,7 +180,7 @@ for F in (:BigInt, :Rational, :Irrational)
         P = precision(T)
         B = precision(BigFloat)
         if B < P+24
-            return convert(ArbFloat{P}, biggerFloat(P+24, x))
+            return convert(ArbFloat{P}, biggerFloat(P+24, convertx))
         else
             return convert(ArbFloat{P}, convert(BigFloat, x))
         end
