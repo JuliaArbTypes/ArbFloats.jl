@@ -129,7 +129,7 @@ convert(::Type{BigFloat}, x::String) = parse(BigFloat,x)
 
 function convert{T<:ArbFloat}(::Type{T}, x::BigFloat)
      P = precision(T)
-     x = round(x,P,2)
+     x = round(x,P+24,2)
      s = string(x)
      return ArbFloat{P}(s)
 end
@@ -169,7 +169,7 @@ for F in (:BigInt, :Rational, :Irrational)
   @eval begin
     function convert{T<:ArbFloat}(::Type{T}, x::$F)
         P = precision(T)
-        convert(ArbFloat{P}, x)
+        convert(ArbFloat{P}, convert(ArbFloat{P}, x)
     end
   end
 end
@@ -217,7 +217,7 @@ end
 
 float{P}(x::ArbFloat{P}) = convert(Float64, x)
 
-promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigFloat}) = BigFloat
+promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigFloat}) = ArbFloat{P}
 promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigInt}) = ArbFloat{P}
 promote_rule{P}(::Type{ArbFloat{P}}, ::Type{Rational{BigInt}}) = Rational{BigInt}
 
