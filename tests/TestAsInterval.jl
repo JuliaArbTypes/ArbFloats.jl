@@ -1,20 +1,11 @@
 module TestAsInterval
 
-@testset "numbers behave" begin
-  @testset "simple value ops" begin
-    @test af1 === af1
-    @test af1 == af1
-    @test af1 != af2
-    @test af1 <  af2
-    @test af1 <= af2
-    @test af2 >  af1
-    @test af2 >= af1
-  end
-  @testset "value recovery" begin
-    @test  asin(log(acosh(cosh(exp(sin(afhalf)))))) > afhalf
-    @test  upperbound(asin(log(atanh(tanh(exp(sin(afhalf))))))) >= afhalf
-    @test  lowerbound(asin(log(atanh(tanh(exp(sin(afhalf))))))) <= afhalf
-  end
-end # numbers behave
+
+afIvl1 = midpoint_radius(ArbFloat(1.0), ArbFloat(1.0e-8))
+afIvl2 = midpoint_radius(ArbFloat(1.0), ArbFloat(1.0e-10))
+afIvl3 = nextfloat(afIvl2)
+
+@test contains(afIvl1, afIvl2)
+@test overlap(afIvl2, afIvl3)
 
 end # module
