@@ -18,8 +18,8 @@
 #### Compatable Packages
 
 **using ArbFloats \# goes anywhere**  
-DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,  
-Plots, Polynomials, Quaternions, DifferentialEquations, others
+DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers,
+MappedArrays, Plots, Polynomials, Quaternions, , others
 
 **using ArbFloats \# goes last!** TaylorSeries
 
