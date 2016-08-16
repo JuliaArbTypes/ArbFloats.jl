@@ -29,12 +29,12 @@ include(joinpath(d,"test_prep.jl"))
 # @test isempty(lintpkg( "MyPackage", returnMsgs=true))
 # println("Done.")
 
-println("Testing ...")
+#println("Testing ...")
 for f in test_files
 #    println(f)
     include(f)
 end
-println("Done testing.")
+#println("Done testing.")
 
 #= end tests =#
 
