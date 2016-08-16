@@ -1,19 +1,17 @@
 ## ArbFloats.jl
 =================
 
-#### other, sometimes overlapping, software development is with
-[ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl)
-
-### current flows are in  
-  [the ArbFloats gitter](https://gitter.im/JuliaArbTypes/ArbFloats.jl)  
- [the ArbReals wiki](https://github.com/JuliaArbTypes/ArbReals.jl/wiki) 
- and [on gitter](https://gitter.im/JuliaArbTypes/ArbReals.jl)  
 
 ###### Arb available as an extended precision floating point context.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ruby
                         Jeffrey Sarnoff © 2016˗May˗26 in New York City
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+> This is a foundational library that substitutes for BigFloat
+> when prespecified significand lengths are required.
+> ArbDecimal, which built on top of this library, is a better choice
+> when standard digit spans (significand lengths) are to be used.
 
 ##### This is for Julia v0.5.
 
@@ -210,3 +208,13 @@ Exports (including re-exports)
 > cosh, sinhcosh, tanh, csch, sech, coth, asinh, acosh, atanh,
 
 > gamma, lgamma, digamma, sinc, zeta, polylog, agm
+
+
+#### other, sometimes overlapping, software development is with
+[ArbDecimal](https://github.com/JuliaArbTypes/ArbDecimal.jl)
+[ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl)
+
+### current flows are in  
+  [the ArbFloats gitter](https://gitter.im/JuliaArbTypes/ArbFloats.jl)  
+ [the ArbReals wiki](https://github.com/JuliaArbTypes/ArbReals.jl/wiki) 
+ and [on gitter](https://gitter.im/JuliaArbTypes/ArbReals.jl)  
