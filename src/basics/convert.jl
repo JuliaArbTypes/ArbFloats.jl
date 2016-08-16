@@ -29,7 +29,7 @@ function arb_set_arf{P}(a::ArbFloat{P}, b::ArfFloat{P})
     return a
 end
 function arb_set_arb{T<:ArbFloat}(a::T, b::T)
-    P = precision(T) 
+    P = precision(T)
     ccall(@libarb(arb_set), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &a, &b)
     return a
 end
@@ -41,13 +41,13 @@ function arb_sets_arf{T1<:ArbFloat,T2<:ArfFloat}(a::T1, b::T2)
     return a
 end
 function arf_sets_arb{T1<:ArfFloat,T2<:ArbFloat}(a::T1, b::T2)
-    P = precision(T1) 
+    P = precision(T1)
     z = initializer(ArbFloat{P})
     arb_sets_arb(z, b)
     arf_set_arb(a, z)
     return a
 end
-    
+
 convert{T1<:ArfFloat,T2<:ArfFloat}(a::T1, b::T2) =
     arf_sets_arf(a, b)
 
@@ -120,6 +120,21 @@ function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
 end
 =#
 
+function convert{P}(::Type{ArbFloat{P}}, x::ArfFloat{P})
+    z = initializer(ArbFloat{P})
+    ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
+    return z
+end
+
+function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
+    z = initializer(ArfFloat{P})
+    z.exponentOf2  = x.exponentOf2
+    z.nwords_sign  = x.nwords_sign
+    z.significand1 = x.significand1
+    z.significand2 = x.significand2
+    return z
+end
+
 #interconvert ArbFloat{P} with ArbFloat{Q}
 
 function convert{P,Q}(::Type{ArbFloat{Q}}, a::ArbFloat{P})
@@ -157,6 +172,10 @@ function convert{P,Q}(::Type{ArfFloat{Q}}, a::ArfFloat{P})
 end
 
 #interconvert ArbFloat{P} with ArfFloat{Q}
+
+function convert{P}(::Type{ArbFloat{P}}, a::ArfFloat{P})
+
+end
 
 function convert{P,Q}(::Type{ArbFloat{P}}, a::ArfFloat{Q})
     ap = ArfFloat{P}(a)
@@ -231,7 +250,7 @@ function convert{T<:ArbFloat}(::Type{T}, x::BigFloat)
 end
 
 
-function convert{T<:ArbFloat}(::Type{BigFloat}, x::T)
+function convert+(::Type{BigFloat}, x::T)
      s = smartarbstring(x)
      return parse(BigFloat, s)
 end
@@ -285,7 +304,7 @@ end
 for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16,
           :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),
           :String)
-  @eval convert(::Type{ArbFloat}, x::$T) = convert(ArbFloat{precision(ArbFloat)}, x)
+  @eval convert{T<:ArbFloat}(::Type{ArbFloat}, x::$T) = convert(ArbFloat{precision(ArbFloat)}, x)
 end
 
 

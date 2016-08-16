@@ -12,45 +12,38 @@ end
 
 function isnan{T<:ArbFloat}(x::T)
     P = precision(T)
-    y = convert(ArfFloat{P},x)
-    return 0 != ccall(@libarb(arf_is_nan), Int, (Ptr{ArfFloat},), &y)
+    return isnan(convert(ArfFloat{P},x))
 end
-
 function notnan{T<:ArbFloat}(x::T)
     P = precision(T)
-    y = ArfFloat(x)
-    return 0 == ccall(@libarb(arf_is_nan), Int, (Ptr{ArfFloat},), &y)
+    return notnan(convert(ArfFloat{P},x))
 end
 
 function isinf{T<:ArbFloat}(x::T)
     P = precision(T)
-    y = ArfFloat(x)
-    return 0 != ccall(@libarb(arf_is_inf), Int, (Ptr{ArfFloat},), &y)
+    return isinf(convert(ArfFloat{P},x))
 end
-
 function notinf{T<:ArbFloat}(x::T)
-    y = ArfFloat(x)
-    return 0 == ccall(@libarb(arf_is_inf), Int, (Ptr{ArfFloat},), &y)
+    P = precision(T)
+    return notinf(convert(ArfFloat{P},x))
 end
 
 function isposinf{T<:ArbFloat}(x::T)
-    y = ArfFloat(x)
-    return 0 != ccall(@libarb(arf_is_posinf), Int, (Ptr{ArfFloat},), &y)
+    P = precision(T)
+    return isposinf(convert(ArfFloat{P},x))
 end
-
 function notposinf{T<:ArbFloat}(x::T)
-    y = ArfFloat(x)
-    return 0 == ccall(@libarb(arf_is_posinf), Int, (Ptr{ArfFloat},), &y)
+    P = precision(T)
+    return notposinf(convert(ArfFloat{P},x))
 end
 
 function isneginf{T<:ArbFloat}(x::T)
-    y = ArfFloat(x)
-    return 0 != ccall(@libarb(arf_is_neginf), Int, (Ptr{ArfFloat},), &y)
+    P = precision(T)
+    return isneginf(convert(ArfFloat{P},x))
 end
-
 function notneginf{T<:ArbFloat}(x::T)
-    y = ArfFloat(x)
-    return 0 == ccall(@libarb(arf_is_neginf), Int, (Ptr{ArfFloat},), &y)
+    P = precision(T)
+    return notneginf(convert(ArfFloat{P},x))
 end
 
 
@@ -58,40 +51,34 @@ end
 function iszero{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_is_zero), Int, (Ptr{T},), &x)
 end
-
 """true iff midpoint(x) or radius(x) are not zero"""
 function notzero{T<:ArbFloat}(x::T)
     return 0 == ccall(@libarb(arb_is_zero), Int, (Ptr{T},), &x)
 end
-
 notzero{T<:Real}(x::T) = (x != zero(T))
 
 """true iff zero is not within [upperbound(x), lowerbound(x)]"""
 function nonzero{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_is_nonzero), Int, (Ptr{T},), &x)
 end
-
 nonzero{T<:Real}(x::T) = (x != zero(T))
 
 """true iff midpoint(x) is one and radius(x) is zero"""
 function isone{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_is_one), Int, (Ptr{T},), &x)
 end
-
 isone{T<:Real}(x::T) = (x == one(T))
 
 """true iff midpoint(x) is not one or midpoint(x) is one and radius(x) is nonzero"""
 function notone{T<:ArbFloat}(x::T)
     return 0 == ccall(@libarb(arb_is_one), Int, (Ptr{T},), &x)
 end
-
 notone{T<:Real}(x::T) = (x != one(T))
 
 """true iff radius is zero"""
 function isexact{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_is_exact), Int, (Ptr{T},), &x)
 end
-
 """true iff radius is nonzero"""
 function notexact{T<:ArbFloat}(x::T)
     return 0 == ccall(@libarb(arb_is_exact), Int, (Ptr{T},), &x)
@@ -104,7 +91,6 @@ notexact{T<:Integer}(x::T) = false
 function isinteger{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_is_int), Int, (Ptr{T},), &x)
 end
-
 """true iff midpoint(x) is not an integer or radius(x) is nonzero"""
 function notinteger{T<:ArbFloat}(x::T)
     return 0 == ccall(@libarb(arb_is_int), Int, (Ptr{T},), &x)
