@@ -1,5 +1,6 @@
 module TestAsInterval
 
+using Base.Test
 using ArbFloats
 
 afIvl1 = midpoint_radius(ArbFloat(1.0), ArbFloat(1.0e-8))
