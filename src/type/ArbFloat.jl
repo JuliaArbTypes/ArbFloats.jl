@@ -50,7 +50,10 @@ end
     finalizer(z, release)
     return z
 end
-initializer(::Type{ArbFloat}) = initializer(ArbFloat{precision(ArbFloat)})
+@inline function initializer{T<:ArbFloat}(::Type{T})
+    P = precision(T)
+    return initializer(ArbFloat{P})
+end
 
 # empty constructor
 ArbFloat() = initializer(ArbFloat)
