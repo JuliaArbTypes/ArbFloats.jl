@@ -22,4 +22,8 @@ afInf = ArbFloat(Inf)
 @test typeof(ArbFloat{53}(af2)) == ArbFloat{53}
 @test typeof(af2) == ArbFloat{precision(ArbFloat)}
 
+@test string(ArbFloat{24}(pi)) == "3.141593"
+@test string(ArbFloat{53}(catalan)) == "0.915965594177219"
+
+
 end # module
