@@ -162,7 +162,7 @@ for T in (:Integer, :Signed)
   end
 end
 
-for F in (:BigInt, :Rational, :Irrational)
+for F in (:BigInt, :Rational)
   @eval begin
     function convert{T<:ArbFloat}(::Type{T}, x::$F)
         P = precision(T)
@@ -183,6 +183,15 @@ for F in (:BigInt, :Rational, :Irrational)
     end
   end
 end
+
+function convert{T<:ArbFloat,S}(::Type{T}, x::Irrational{S})
+    a = T()
+    setprecision(BigFloat, precision(T)+24) do
+         a = convert(T, BigFloat(x))
+    end
+    return a
+end
+
 
 for T in (:Float64, :Float32)
   @eval begin
