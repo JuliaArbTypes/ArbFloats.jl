@@ -4,22 +4,23 @@ using Compat
 using ArbFloats
 
 
-if VERSION >= v"0.5.0-dev+7720"
+if VERSION >= v"0.5.0-"
     using Base.Test
 else
     using BaseTestNext
     const Test = BaseTestNext
 end
 
+d = joinpath(Pkg.dir("ArbFloats"),"tests")
 test_files = [
-                "testAsType.jl",
-                "testAsNumber.jl",
-                "testAsInterval.jl"
+                joinpath(d,"TestAsType.jl"),
+                joinpath(d,"TestAsNumber.jl"),
+                joinpath(d,"TestAsInterval.jl")
               ]
 
 #= prepare to test =#
 
-include("test_prep.jl")
+include(joinpath(d,"test_prep.jl"))
 
 #= begin tests =#
 
