@@ -147,6 +147,17 @@ function convert{I<:Integer,P}(::Type{Rational{I}}, x::ArbFloat{P})
     return convert(Rational{I}, bf)
 end
 
+function convert{P}(::Type{Integer}, x::ArbFloat{P})
+    y = trunc(x)
+    try
+       return convert(Int64, x)
+    catch
+       try
+          return convert(Int128, x)
+       end
+    end
+end
+
 convert{P}(::Type{ArbFloat{P}}, x::BigInt)   = convert(ArbFloat{P}, convert(BigFloat,x))
 convert{P}(::Type{ArbFloat{P}}, x::Rational) = convert(ArbFloat{P}, convert(BigFloat,x))
 convert{P}(::Type{ArbFloat{P}}, x::Irrational) = convert(ArbFloat{P}, convert(BigFloat,x))
