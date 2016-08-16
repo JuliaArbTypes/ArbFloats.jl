@@ -11,4 +11,7 @@ afIvl3 = nextfloat(afIvl2)
 @test !contains(afIvl2, afIvl1)
 @test overlap(afIvl2, afIvl3)
 
+@test midpoint(afIvl3) > midpoint(afIvl2)
+@test radius(afIvl3) == radius(afIvl2)
+
 end # module
