@@ -152,6 +152,7 @@ function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
 end
 =#
 
+#=
 function convert{P}(::Type{ArbFloat{P}}, x::ArfFloat{P})
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
@@ -166,6 +167,7 @@ function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
     z.significand2 = x.significand2
     return z
 end
+=#
 
 #interconvert ArbFloat{P} with ArbFloat{Q}
 
@@ -294,7 +296,6 @@ convert{P}(::Type{ArbFloat{P}}, x::BigInt)   = convert(ArbFloat{P}, convert(BigF
 convert{P}(::Type{ArbFloat{P}}, x::Rational) = convert(ArbFloat{P}, convert(BigFloat,x))
 convert{P,S}(::Type{ArbFloat{P}}, x::Irrational{S}) = convert(ArbFloat{P}, convert(BigFloat,x))
 
-convert{P}(::Type{ArbFloat{P}}, y::ArbFloat{P}) = y
 
 for T in (:Float64, :Float32)
   @eval begin
