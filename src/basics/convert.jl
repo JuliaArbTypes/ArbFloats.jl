@@ -12,7 +12,52 @@ macro ArbFloat(p,x)
     convert(ArbFloat{:($p)}, string(:($x)))
 end
 
+convert{P}(::Type{ArbFloat{P}}, x::ArbFloat{P}) = x
+convert{P}(::Type{ArfFloat{P}}, x::ArfFloat{P}) = x
 
+function convert{P,Q}(::Type{ArfFloat{P}}, x::ArfFloat{Q})
+   z = initializer(ArfFloat{P})
+   ccall(@libarb(arf_set_round), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{Q}, Clong}), &z, &x, Clong(P))
+   return z
+end
+
+function convert{P,Q}(::Type{ArbFloat{P}}, x::ArbFloat{Q})
+   z = initializer(ArbFloat{P})
+   ccall(@libarb(arb_set_round), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{Q}, Clong}), &z, &x, Clong(P))
+   return z
+end
+
+
+function convert{P}(::Type{ArbFloat{P}}, x::ArfFloat{P})
+   z = initializer(ArbFloat{P})
+   ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
+   return z
+end
+
+function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
+    z = initializer(ArfFloat{P})
+    z.exponentOf2  = x.exponentOf2
+    z.nwords_sign  = x.nwords_sign
+    z.significand1 = x.significand1
+    z.significand2 = x.significand2
+    return z
+end
+
+function convert{P,Q}(::Type{ArbFloat{P}}, x::ArfFloat{Q})
+    y = convert(ArfFloat{P}, x)
+    z = convert(ArbFloat{P}, y)
+    return z
+end
+
+function convert{P,Q}(::Type{ArfFloat{P}}, x::ArbFloat{Q})
+    y = convert(ArbFloat{P}, x)
+    z = convert(ArfFloat{P}, y)
+    return z
+end
+
+
+
+#=
 # libarb low level routines
 function arf_sets_arf{T1<:ArfFloat,T2<:ArfFloat}(a::T1, b::T2)
     P = precision(T1)
@@ -62,7 +107,7 @@ convert{T1<:ArfFloat,T2<:ArbFloat}(a::T1, b::T2) =
 
 convert{T1<:ArbFloat,T2<:ArfFloat}(a::T1, b::T2) =
     arb_sets_arf(a,b)
-
+=#
 
 #int arf_set_round(arf_t y, const arf_t x, slong prec, arf_rnd_t rnd)
 
@@ -81,7 +126,7 @@ function convert{ARB<:ArbFloat, ARF<:ArfFloat}(::Type{ARF}, x::ARB)
     return z
 end
 =#
-
+#=
 function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
     z = initializer(ArfFloat{P})
     z.exponentOf2  = x.exponentOf2
@@ -109,8 +154,8 @@ function convert{P,Q}(::Type{ArbFloat{Q}}, x::ArfFloat{P})
   y = convert(ArfFloat{Q}, x)
   return convert(ArbFloat{Q}, y)
 end
-
-
+=#
+#=
 function convert{ARB<:ArbFloat, ARF<:ArfFloat}(::Type{ARF}, x::ARB)
     P = precision(ARF)
     y = ifelse( P == precision(ARF), x, ArbFloat{P}(x) )
@@ -123,7 +168,7 @@ function convert{ARB<:ArbFloat, ARF<:ArfFloat}(::Type{ARF}, x::ARB)
 
     return z
 end
-
+=#
 #=
 function convert{P}(::Type{ArbFloat}, x::ArfFloat{P})
     P2 = precision(ArbFloat)
