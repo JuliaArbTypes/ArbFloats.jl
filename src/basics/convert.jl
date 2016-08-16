@@ -248,7 +248,7 @@ function convert{T<:ArbFloat}(::Type{T}, x::BigFloat)
 end
 
 
-function convert(::Type{BigFloat}, x::T)
+function convert{T<:ArbFloat}(::Type{BigFloat}, x::T)
      s = smartarbstring(x)
      return parse(BigFloat, s)
 end
