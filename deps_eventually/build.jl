@@ -133,7 +133,8 @@ if on_windows
 else
    cd("$wdir/flint2")
    withenv("LD_LIBRARY_PATH"=>"$vdir/lib", "LDFLAGS"=>LDFLAGS) do
-      run(`./configure --prefix=$vdir --extensions="$wdir/antic" --disable-static --enable-shared --with-mpir=$vdir --with-mpfr=$vdir`)
+      #run(`./configure --prefix=$vdir --extensions="$wdir/antic" --disable-static --enable-shared --with-mpir=$vdir --with-mpfr=$vdir`)
+      run(`./configure --prefix=$vdir  --disable-static --enable-shared --with-mpir=$vdir --with-mpfr=$vdir`)
       run(`make -j4`)
       run(`make install`)
    end
