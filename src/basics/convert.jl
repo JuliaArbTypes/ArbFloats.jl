@@ -185,12 +185,13 @@ for F in (:BigInt, :Rational)
 end
 
 function convert{T<:ArbFloat,S}(::Type{T}, x::Irrational{S})
-    a = T()
+    a = initializer(T)
     setprecision(BigFloat, precision(T)+24) do
          a = convert(T, BigFloat(x))
     end
     return a
 end
+
 
 
 for T in (:Float64, :Float32)
