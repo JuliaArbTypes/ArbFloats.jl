@@ -169,7 +169,7 @@ for F in (:BigInt, :Rational, :Irrational)
   @eval begin
     function convert{T<:ArbFloat}(::Type{T}, x::$F)
         P = precision(T)
-        convert(ArbFloat{P}, convert(ArbFloat{P}, x)
+        convert(ArbFloat{P}, convert(BigFloat, x))
     end
   end
 end
