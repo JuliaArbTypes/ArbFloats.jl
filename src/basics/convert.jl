@@ -89,7 +89,7 @@ function convert{P}(::Type{ArbFloat{P}}, x::Cuint)
     return z
 end
 function convert{P}(::Type{ArbFloat{P}}, x::Culong)
-    z = x<=typemex(Cuint) ? convert(ArbFloat{P}, Cuint(x)) : ArbFloat{P}(string(x))
+    z = x<=typemax(Cuint) ? convert(ArbFloat{P}, Cuint(x)) : ArbFloat{P}(string(x))
     return z
 end
 convert{P}(::Type{ArbFloat{P}}, x::UInt16) = convert(ArbFloat{P}, Cuint(x))
@@ -100,7 +100,7 @@ function convert{P}(::Type{ArbFloat{P}}, x::Cint)
     return z
 end
 function convert{P}(::Type{ArbFloat{P}}, x::Clong)
-    z = x<=typemex(Cuint) ? convert(ArbFloat{P}, Cint(x)) : ArbFloat{P}(string(x))
+    z = x<=typemax(Cuint) ? convert(ArbFloat{P}, Cint(x)) : ArbFloat{P}(string(x))
     return z
 end
 convert{P}(::Type{ArbFloat{P}}, x::Int16) = convert(ArbFloat{P}, Cint(x))
