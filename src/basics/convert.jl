@@ -48,6 +48,9 @@ function arf_sets_arb{T1<:ArfFloat,T2<:ArbFloat}(a::T1, b::T2)
     return a
 end
 
+convert{P}(::Type{ArfFloat{P}}, x::ArfFloat{P}) = x
+convert{P}(::Type{ArbFloat{P}}, x::ArbFloat{P}) = x
+
 convert{T1<:ArfFloat,T2<:ArfFloat}(a::T1, b::T2) =
     arf_sets_arf(a, b)
 
@@ -78,6 +81,35 @@ function convert{ARB<:ArbFloat, ARF<:ArfFloat}(::Type{ARF}, x::ARB)
     return z
 end
 =#
+
+function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
+    z = initializer(ArfFloat{P})
+    z.exponentOf2  = x.exponentOf2
+    z.nwords_sign  = x.nwords_sign
+    z.significand1 = x.significand1
+    z.significand2 = x.significand2
+
+    return z
+end
+function convert{P,T<:ArfFloat}(::Type{T}, x::ArbFloat{P})
+  P2 = precision(T)
+  return convert(ArfFloat{P2}, x)
+end
+
+function convert{P}(::Type{ArbFloat{P}}, x::ArfFloat{P})
+    z = initializer(ArbFloat{P})
+    z.exponentOf2  = x.exponentOf2
+    z.nwords_sign  = x.nwords_sign
+    z.significand1 = x.significand1
+    z.significand2 = x.significand2
+
+    return z
+end
+function convert{P,T<:ArbFloat}(::Type{T}, x::ArfFloat{P})
+  P2 = precision(T)
+  return convert(ArbFloat{P2}, x)
+end
+
 
 function convert{ARB<:ArbFloat, ARF<:ArfFloat}(::Type{ARF}, x::ARB)
     P = precision(ARF)
