@@ -83,35 +83,32 @@ end
 
 # convert ArbFloat with other types
 
-function convert{P}(::Type{ArbFloat{P}}, x::UInt)
+function convert{P}(::Type{ArbFloat{P}}, x::Cuint)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_ui), Void, (Ptr{ArbFloat{P}}, UInt), &z, x)
     return z
 end
-if sizeof(Int)==sizeof(Int64)
-   convert{P}(::Type{ArbFloat{P}}, x::UInt32) = convert(ArbFloat{P}, convert(UInt64,x))
-else
-   convert{P}(::Type{ArbFloat{P}}, x::UInt64) = convert(ArbFloat{P}, convert(UInt32,x))
+function convert{P}(::Type{ArbFloat{P}}, x::Culong)
+    z = x<=typemex(Cuint) ? convert(ArbFloat{P}, Cuint(x)) : ArbFloat{P}(string(x))
+    return z
 end
-convert{P}(::Type{ArbFloat{P}}, x::UInt16) = convert(ArbFloat{P}, convert(UInt,x))
+convert{P}(::Type{ArbFloat{P}}, x::UInt16) = convert(ArbFloat{P}, Cuint(x))
 
-function convert{P}(::Type{ArbFloat{P}}, x::Int)
+function convert{P}(::Type{ArbFloat{P}}, x::Cint)
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat{P}}, Int), &z, x)
-    z
+    ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat{P}}, Cint), &z, x)
+    return z
 end
-if sizeof(Int)==sizeof(Int64)
-   convert{P}(::Type{ArbFloat{P}}, x::Int32) = convert(ArbFloat{P}, convert(Int64,x))
-else
-   convert{P}(::Type{ArbFloat{P}}, x::Int64) = convert(ArbFloat{P}, convert(Int32,x))
+function convert{P}(::Type{ArbFloat{P}}, x::Clong)
+    z = x<=typemex(Cuint) ? convert(ArbFloat{P}, Cint(x)) : ArbFloat{P}(string(x))
+    return z
 end
-convert{P}(::Type{ArbFloat{P}}, x::Int16) = convert(ArbFloat{P}, convert(Int,x))
+convert{P}(::Type{ArbFloat{P}}, x::Int16) = convert(ArbFloat{P}, Cint(x))
 
 
 function convert{T<:ArbFloat}(::Type{T}, x::Float64)
     z = initializer(T)
-    fp=copy(x)
-    ccall(@libarb(arb_set_d), Void, (Ptr{T}, Float64), &z, fp)
+    ccall(@libarb(arb_set_d), Void, (Ptr{T}, Float64), &z, x)
     return z
 end
 convert{T<:ArbFloat}(::Type{T}, x::Float32) = convert(T, convert(Float64,x))
@@ -124,6 +121,7 @@ function convert{P}(::Type{ArbFloat{P}}, x::String)
     ccall(@libarb(arb_set_str), Void, (Ptr{ArbFloat}, Ptr{UInt8}, Int), &z, s, P)
     return z
 end
+convert{T<:ArbFloat}(::Type{T}, x::String) = convert(ArbFloat{precision(T)}, x)
 
 
 convert(::Type{BigInt}, x::String) = parse(BigInt,x)
