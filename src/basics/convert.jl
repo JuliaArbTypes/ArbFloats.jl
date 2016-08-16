@@ -162,14 +162,18 @@ for T in (:Integer, :Signed)
   end
 end
 
-convert{P}(::Type{ArbFloat{P}}, x::BigInt)   = convert(ArbFloat{P}, convert(BigFloat,x))
-convert{P}(::Type{ArbFloat{P}}, x::Rational) = convert(ArbFloat{P}, convert(BigFloat,x))
-convert{P}(::Type{ArbFloat{P}}, x::Irrational) = convert(ArbFloat{P}, convert(BigFloat,x))
 for F in (:BigInt, :Rational, :Irrational)
   @eval begin
     function convert{T<:ArbFloat}(::Type{T}, x::$F)
         P = precision(T)
-        convert(ArbFloat{P}, convert(BigFloat, x))
+        B = precision(BigFloat)
+        if B < P+24
+            setprecision(BigFloat, P+24) do
+                return convert(ArbFloat{P}, convert(BigFloat, x))
+            end
+        else
+            return convert(ArbFloat{P}, convert(BigFloat, x))
+        end
     end
   end
 end
