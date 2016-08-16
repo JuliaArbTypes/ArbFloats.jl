@@ -11,8 +11,8 @@
 > This is a foundational library that substitutes for BigFloat
 > when prespecified significand lengths are required.  
 > ArbDecimal, which built on top of this library, is a better choice
-> when standard digit spans (significands) are used  
-> and highly reliable results are desired.
+> when standard digit spans (significand lengths)  
+>  are used and *highly reliable* results are desired.
 
 ##### This is for Julia v0.5.
 
