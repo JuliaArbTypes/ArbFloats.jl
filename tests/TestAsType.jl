@@ -19,4 +19,7 @@ afInf = ArbFloat(Inf)
 @test af1 == af1
 @test af1 != af2
 
+@test typeof(ArbFloat{53}(af2)) == ArbFloat{53}
+@test typeof(af2) == ArbFloat{precision(ArbFloat)}
+
 end # module
