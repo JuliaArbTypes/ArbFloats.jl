@@ -149,8 +149,15 @@ end
 
 convert{P}(::Type{ArbFloat{P}}, x::BigInt)   = convert(ArbFloat{P}, convert(BigFloat,x))
 convert{P}(::Type{ArbFloat{P}}, x::Rational) = convert(ArbFloat{P}, convert(BigFloat,x))
-convert{P,S}(::Type{ArbFloat{P}}, x::Irrational{S}) = convert(ArbFloat{P}, convert(BigFloat,x))
-
+convert{P}(::Type{ArbFloat{P}}, x::Irrational) = convert(ArbFloat{P}, convert(BigFloat,x))
+for F in (:BigInt, :Rational, :Irrational)
+  @eval begin
+    function convert{T<:ArbFloat}(::Type{T}, x::$F)
+        P = precision(T)
+        convert(ArbFloat{P}, x)
+    end
+  end
+end
 
 for T in (:Float64, :Float32)
   @eval begin
