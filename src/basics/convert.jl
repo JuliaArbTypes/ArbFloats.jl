@@ -173,9 +173,7 @@ end
 
 #interconvert ArbFloat{P} with ArfFloat{Q}
 
-function convert{P}(::Type{ArbFloat{P}}, a::ArfFloat{P})
 
-end
 
 function convert{P,Q}(::Type{ArbFloat{P}}, a::ArfFloat{Q})
     ap = ArfFloat{P}(a)
@@ -250,7 +248,7 @@ function convert{T<:ArbFloat}(::Type{T}, x::BigFloat)
 end
 
 
-function convert+(::Type{BigFloat}, x::T)
+function convert(::Type{BigFloat}, x::T)
      s = smartarbstring(x)
      return parse(BigFloat, s)
 end
