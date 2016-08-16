@@ -81,7 +81,7 @@ for (op,cfunc) in ((:^,:arb_pow), (:pow,:arb_pow))
     end
     function ($op){P,I<:Integer}(x::ArbFloat{P}, y::I)
       sy,ay = signbit(y), abs(y)
-      yy = ArbFloat{P}(y)
+      yy = ArbFloat{P}(ay)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, &yy, P)
       sy ? 1/z : z
