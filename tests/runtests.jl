@@ -31,7 +31,7 @@ include(joinpath(d,"test_prep.jl"))
 
 println("Testing ...")
 for f in test_files
-    println(f)
+#    println(f)
     include(f)
 end
 println("Done testing.")
