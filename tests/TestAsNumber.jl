@@ -1,5 +1,7 @@
 module TestAsNumber
 
+using ArbFloats
+
 af0 = zero(ArbFloat)
 af1 = one(ArbFloat)
 af2 = af1 + af1
