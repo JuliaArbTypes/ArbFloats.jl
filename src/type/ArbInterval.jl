@@ -1,3 +1,18 @@
+function midpoint_radius(mid::Float64, rad::Float64)
+    m = convert(ArbFloat, mid)
+    r = convert(ArbFloat, rad)
+    return midpoint_radius(m, r)
+end
+function midpoint_radius{P}(mid::ArbFloat{P}, rad::Float64)
+    r = convert(ArbFloat{P}, rad)
+    return midpoint_radius(m, r)
+end
+function midpoint_radius{P}(mid::ArfFloat{P}, rad::Float64)
+    m = convert(ArbFloat{P}, mid)
+    r = convert(ArbFloat{P}, rad)
+    return midpoint_radius(m, r)
+end
+
 #=
 void arb_union(arb_t z, const arb_t x, const arb_t y, slong prec)¶
 Sets z to a ball containing both x and y.
