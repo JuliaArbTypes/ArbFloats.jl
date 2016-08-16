@@ -164,12 +164,14 @@ end
 
 function biggerFloat(prec::Int, x::Real)
     B = precision(BigFloat)
-    P = prec+24
+    P = prec
     if B >= P
         return convert(BigFloat,x)
     else
+        s = string(x)
         setprecision(BigFloat, P) do
-           return parse(BigFloat, string(x))
+           bf = parse(BigFloat, s)
+           return bf
         end
     end
 end
