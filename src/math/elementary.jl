@@ -85,7 +85,7 @@ for (op,cfunc) in ((:^,:arb_pow), (:pow,:arb_pow))
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, &yy, P)
       z
     end
-    function ($op){P,R:<Real}(x::R, y::ArbFloat{P})
+    function ($op){P,R<:Real}(x::R, y::ArbFloat{P})
       xx = ArbFloat{P}(x)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &xx, &y, P)
