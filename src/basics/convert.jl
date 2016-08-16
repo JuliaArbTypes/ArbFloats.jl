@@ -299,10 +299,10 @@ function convert{I<:Integer,P}(::Type{I}, x::ArbFloat{P})
 end
 =#
 
-for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16,
+for N in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16,
           :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),
           :String)
-  @eval convert{T<:ArbFloat}(::Type{ArbFloat}, x::$T) = convert(ArbFloat{precision(ArbFloat)}, x)
+  @eval convert{T<:ArbFloat}(::Type{T}, x::$N) = convert(ArbFloat{precision(ArbFloat)}, x)
 end
 
 
