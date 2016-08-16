@@ -202,8 +202,7 @@ end
 
 
 for N in (:Int128, :Int64, :Int32, :Int16,
-          :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),
-          :String)
+          :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),)
   @eval convert{T<:ArbFloat}(::Type{T}, x::$N) = convert(ArbFloat{precision(ArbFloat)}, x)
 end
 
