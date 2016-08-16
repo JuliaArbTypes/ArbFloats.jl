@@ -1,5 +1,5 @@
-on_windows = @windows ? true : false
-on_osx = @osx ? true : false
+on_windows = @static is_windows ? true : false
+on_osx = @static is_osx ? true : false
 
 oldwdir = pwd()
 
