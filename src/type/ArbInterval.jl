@@ -5,7 +5,7 @@ function midpoint_radius(mid::Float64, rad::Float64)
 end
 function midpoint_radius{P}(mid::ArbFloat{P}, rad::Float64)
     r = convert(ArbFloat{P}, rad)
-    return midpoint_radius(m, r)
+    return midpoint_radius(mid, r)
 end
 function midpoint_radius{P}(mid::ArfFloat{P}, rad::Float64)
     m = convert(ArbFloat{P}, mid)
