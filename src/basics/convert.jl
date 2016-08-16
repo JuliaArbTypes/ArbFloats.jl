@@ -62,8 +62,20 @@ function convert{P,Q}(::Type{ArbFloat{P}}, x::ArfFloat{Q})
     z = convert(ArbFloat{P}, y)
     return z
 end
+function convert{Q}(::Type{ArbFloat}, x::ArfFloat{Q})
+    P = precision(ArbFloat)
+    y = convert(ArfFloat{P}, x)
+    z = convert(ArbFloat{P}, y)
+    return z
+end
 
 function convert{P,Q}(::Type{ArfFloat{P}}, x::ArbFloat{Q})
+    y = convert(ArbFloat{P}, x)
+    z = convert(ArfFloat{P}, y)
+    return z
+end
+function convert{Q}(::Type{ArfFloat}, x::ArbFloat{Q})
+    P = precision(ArfFloat)
     y = convert(ArbFloat{P}, x)
     z = convert(ArfFloat{P}, y)
     return z
