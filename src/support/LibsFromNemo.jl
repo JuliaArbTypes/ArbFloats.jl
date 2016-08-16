@@ -1,9 +1,9 @@
 
 # ensure the requisite libraries are available
 
-isdir(Pkg.dir("Nemo")) || throw(ErrorException("Nemo not found"))
+isdir(Pkg.dir("ArbFloats")) || throw(ErrorException("ArbFloats not found"))
 
-libDir = Pkg.dir("Nemo/local/lib");
+libDir = Pkg.dir("ArbFloats/local/lib");
 libFiles = readdir(libDir);
 libarb   = joinpath(libDir,libFiles[findfirst([startswith(x,"libarb") for x in libFiles])])
 libflint = joinpath(libDir,libFiles[findfirst([startswith(x,"libflint") for x in libFiles])])
