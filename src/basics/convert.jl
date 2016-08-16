@@ -188,7 +188,6 @@ for F in (:BigInt, :Rational, :Irrational)
     function convert{P}(::Type{ArbFloat{P}}, x::$F)
         B = precision(BigFloat)
         if B < P+24
-        if B < P+24
             return convert(ArbFloat{P}, biggerFloat(P+24, x))
         else
             return convert(ArbFloat{P}, convert(BigFloat, x))
