@@ -162,15 +162,34 @@ for T in (:Integer, :Signed)
   end
 end
 
+function biggerFloat(prec::Int, x::BigFloat)
+    B = precision(x)
+    P = prec+24
+    if B >= P
+        return x
+    else
+        setprecision(BigFloat, P) do
+           return parse(BigFloat, string(x))
+        end
+    end
+end
+
 for F in (:BigInt, :Rational, :Irrational)
   @eval begin
     function convert{T<:ArbFloat}(::Type{T}, x::$F)
         P = precision(T)
         B = precision(BigFloat)
         if B < P+24
-            setprecision(BigFloat, P+24) do
-                return convert(ArbFloat{P}, convert(BigFloat, x))
-            end
+            return convert(ArbFloat{P}, biggerFloat(P+24, x))
+        else
+            return convert(ArbFloat{P}, convert(BigFloat, x))
+        end
+    end
+    function convert{P}(::Type{ArbFloat{P}}, x::$F)
+        B = precision(BigFloat)
+        if B < P+24
+        if B < P+24
+            return convert(ArbFloat{P}, biggerFloat(P+24, x))
         else
             return convert(ArbFloat{P}, convert(BigFloat, x))
         end
