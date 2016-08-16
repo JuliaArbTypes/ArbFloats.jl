@@ -147,15 +147,21 @@ function convert{I<:Integer,P}(::Type{Rational{I}}, x::ArbFloat{P})
     return convert(Rational{I}, bf)
 end
 
-function convert{P}(::Type{Integer}, x::ArbFloat{P})
-    y = trunc(x)
-    try
-       return convert(Int64, x)
-    catch
-       try
-          return convert(Int128, x)
-       end
+for T in (:Integer, :Signed)
+  @eval begin
+    function convert{P}(::Type{$T}, x::ArbFloat{P})
+        y = trunc(x)
+        try
+           return convert(Int64, x)
+        catch
+           try
+              return convert(Int128, x)
+           catch
+              DomainError()
+           end
+        end
     end
+  end
 end
 
 convert{P}(::Type{ArbFloat{P}}, x::BigInt)   = convert(ArbFloat{P}, convert(BigFloat,x))
