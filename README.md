@@ -155,6 +155,13 @@ bounds(gamma_oneThird)
 
 gamma( fpOneThird )
 2.6789_384f0
+
+pi66bits=ArbFloat{66}(pi)
+3.141592653589793238
+
+pi67bits=ArbFloat{67}(pi)
+3.1415926535897932385
+
 ```
 
 Exports (including re-exports)
