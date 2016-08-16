@@ -42,7 +42,7 @@ function ldexp{P}(s::ArbFloat{P}, e::Int)
     z.exponentOf2 = e
     return z
 end
-
+ldexp{P}(x::Tuple{ArbFloats.ArbFloat{P}, Int}) = ldexp(x[1],x[2])
 
 
 #=
