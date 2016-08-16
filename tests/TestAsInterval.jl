@@ -1,5 +1,6 @@
 module TestAsInterval
 
+using ArbFloats
 
 afIvl1 = midpoint_radius(ArbFloat(1.0), ArbFloat(1.0e-8))
 afIvl2 = midpoint_radius(ArbFloat(1.0), ArbFloat(1.0e-10))
