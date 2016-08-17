@@ -3,8 +3,8 @@ ArbFloats.jl
 
 ###### Arb available as an extended precision floating point context.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ruby
-                              Jeffrey Sarnoff © 2016˗May˗26 in New York City
+<p align="right">Jeffrey Sarnoff © 2016˗May˗26 in New York City</p>
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 >   This is a foundational library that substitutes for BigFloat when
