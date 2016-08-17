@@ -84,7 +84,8 @@ the`ArbFloat\` so that the radius is subsumed (as if 0.0).
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ julia
 Pkg.add("Nemo")
-Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
+Pkg.add("ArbFloats")
+# or Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #### Use with other Numeric Types
