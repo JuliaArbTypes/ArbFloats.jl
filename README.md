@@ -14,7 +14,7 @@ ArbFloats.jl
 
 ##### version 0.1.0 (This is for Julia v0.5).
 
-#### Compatable Packages
+### Compatable Packages
 
 **using ArbFloats \# goes anywhere**  
 DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,
@@ -28,7 +28,7 @@ If you have a package that accepts AbstractFloats or Reals and does not “just
 work” with ArbFloats, please note it as an issue. If you have a package that
 works well with ArbFloats, let us know.
 
-#### Appropriateness
+### Appropriateness
 
 Preferred for extending the precision of floating point computations from 64
 bits [17 digits] up to 512 bits [150 digits]. Recommended for use where
