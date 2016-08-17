@@ -41,16 +41,16 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
             $ hash_0_arbfloat_lo))
 
 
-@inline function release{P}(x::ArbFloat{P})
+function release{P}(x::ArbFloat{P})
     ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
 end
-@inline function initializer{P}(::Type{ArbFloat{P}})
+function initializer{P}(::Type{ArbFloat{P}})
     z = ArbFloat{P}(0,0%UInt64,0,0,0,0%UInt64)
     ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
     finalizer(z, release)
     return z
 end
-@inline function initializer{T<:ArbFloat}(::Type{T})
+function initializer{T<:ArbFloat}(::Type{T})
     P = precision(T)
     return initializer(ArbFloat{P})
 end
