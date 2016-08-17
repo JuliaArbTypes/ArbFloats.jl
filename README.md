@@ -1,11 +1,10 @@
-\#\# ArbFloats.jl
-=================
+ArbFloats.jl
+============
 
 ###### Arb available as an extended precision floating point context.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ruby
-                        Jeffrey Sarnoff © 2016˗May˗26 in New York City
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<p align="right">Jeffrey Sarnoff © 2016˗May˗26 in New York City</p>
+
 
 >   This is a foundational library that substitutes for BigFloat when
 >   prespecified significand lengths are required.  
@@ -13,9 +12,9 @@
 >   standard digit spans (significand lengths)  
 >   are used and *highly reliable* results are desired.
 
-##### version 0.1.0 (This is for Julia v0.5).
+##### version 0.1.0 (This is for Julia v0.5+).
 
-#### Compatable Packages
+### Compatable Packages
 
 **using ArbFloats \# goes anywhere**  
 DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,
@@ -29,7 +28,7 @@ If you have a package that accepts AbstractFloats or Reals and does not “just
 work” with ArbFloats, please note it as an issue. If you have a package that
 works well with ArbFloats, let us know.
 
-#### Appropriateness
+### Appropriateness
 
 Preferred for extending the precision of floating point computations from 64
 bits [17 digits] up to 512 bits [150 digits]. Recommended for use where
@@ -60,19 +59,14 @@ exported arithmetic, elementary or special functions is applied to an
 `ArbFloat`, the value transforms as an extended precision floating point
 interval.
 
-### About Arb
+### About Arb and using Nemo's libraries
 
 This work is constructed atop a state-of-the-art C library for working with
 *midpoint ± radius* intervals, `Arb`. `Arb` is designed and written by Fredrik
 Johansson, who graciously allows Julia to use it under the MIT License.
 
 The C libraries that this package accesses are some of the shared libraries that
-Nemo.jl requires and builds when it is installed; and I am calling them
-directly. Nemo is a computational environment where the most important software
-for number theory and related work. Julia is used to create a cohesive whole
-that shares a manner of use. Fredrik Johansson, William Hart, and Tommy Hoffman
-have been especially helpful, taking the time to explain details of Arb as I was
-working on ArbFloats.
+Nemo.jl requires and builds; and, with permission, I call them directly.
 
 ###### Hint
 
@@ -85,7 +79,8 @@ the`ArbFloat\` so that the radius is subsumed (as if 0.0).
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ julia
 Pkg.add("Nemo")
-Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
+Pkg.add("ArbFloats")
+# or Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #### Use with other Numeric Types
@@ -197,6 +192,25 @@ The least significant digit observable, through show(af) or with string(af),
 >   tanh, csch, sech, coth, asinh, acosh, atanh,
 
 >   gamma, lgamma, digamma, sinc, zeta, polylog, agm
+
+
+
+
+#### Credits, References, Thanks
+
+This work relies on Fredrik Johansson's Arb software, using parts of that extensive C library.  
+He has been greatly helpful.  The Arb library documentation is [here](http://fredrikj.net/arb/).    
+
+Much of the early development was well informed from study of Nemo.jl, a number theory and  
+numerical algebra package that incorporates some of Arb's capabilities along with many others.  
+William Hart andTommy Hofmann have been gracious with their work and generous with their time.
+
+Others have helped with conceptual subtilties, software from which I learned Julia, clarifying or fixing bugs, testing and specific good will: Stefan Karpinski, Jeff Bezanson, Alan Edelman, John Myles White, Tim Holy, Tom Breloff, David P. Sanders, Scott Jones, Luis Benet, Chris Rackauckas. 
+
+=====
+=====
+developer info
+===============
 
 #### other, sometimes overlapping, software development is with
 
