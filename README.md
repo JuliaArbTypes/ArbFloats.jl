@@ -12,7 +12,7 @@ ArbFloats.jl
 >   standard digit spans (significand lengths)  
 >   are used and *highly reliable* results are desired.
 
-##### version 0.1.0 (This is for Julia v0.5).
+##### version 0.1.0 (This is for Julia v0.5+).
 
 ### Compatable Packages
 
