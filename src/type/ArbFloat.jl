@@ -52,9 +52,7 @@ function initializer{P}(::Type{ArbFloat{P}})
 end
 function initializer{T<:ArbFloat}(::Type{T})
     P = precision(T)
-    z = ArbFloat{P}(0,0%UInt64,0,0,0,0%UInt64)
-    ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
-    finalizer(z, release_arb)
+    z = initializer(ArbFloat{P})
     return z
 end
 

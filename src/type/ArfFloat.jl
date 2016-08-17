@@ -39,9 +39,7 @@ function initializer{P}(::Type{ArfFloat{P}})
 end
 function initializer{T<:ArfFloat}(::Type{T})
     P = precision(T)
-    z = ArfFloat{P}(0,0%UInt64,0,0)
-    ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), &z)
-    finalizer(z, release_arf)
+    z = initializer(ArfFloat{P})
     return z
 end
 
