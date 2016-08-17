@@ -116,13 +116,15 @@ convert{T<:ArbFloat}(::Type{T}, x::Float16) = convert(T, convert(Float64,x))
 
 
 function convert{P}(::Type{ArbFloat{P}}, x::String)
-    s = String(x)
+    # s = String(x)
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_set_str), Void, (Ptr{ArbFloat}, Ptr{UInt8}, Int), &z, s, P)
+    ccall(@libarb(arb_set_str), Void, (Ptr{ArbFloat}, Ptr{UInt8}, Int), &z, x, P)
     return z
 end
-convert{T<:ArbFloat}(::Type{T}, x::String) = convert(ArbFloat{precision(T)}, x)
-
+function convert{T<:ArbFloat}(::Type{T}, x::String)
+    P = precision(T)
+    return convert(ArbFloat{P}, x)
+end
 
 convert(::Type{BigInt}, x::String) = parse(BigInt,x)
 convert(::Type{BigFloat}, x::String) = parse(BigFloat,x)
@@ -131,6 +133,7 @@ function convert{T<:ArbFloat}(::Type{T}, x::BigFloat)
      P = precision(T)
      x = round(x,P+24,2)
      s = string(x)
+     z = convert(ArbFloat{P}, s)
      return ArbFloat{P}(s)
 end
 
