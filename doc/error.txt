@@ -10,6 +10,9 @@ Platform Info:
   LIBM: libopenlibm
   LLVM: libLLVM-3.7.1 (ORCJIT, ivybridge)
 
+Pkg.clone("git://github.com/JuliaArbTypes/ArbFloats.jl.git")
+Pkg.clone("https://github.com/andreasnoack/LinearAlgebra.jl")
+
 using LinearAlgebra, ArbFloats
 xi(s,Pi) = (1/2)*s*(s-1)*exp(-log(Pi)*s/2)*gamma(s/2)*zeta(s)
 setprecision(ArbFloat,256)
