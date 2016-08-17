@@ -1,4 +1,4 @@
-## ArbFloats.jl
+\#\# ArbFloats.jl
 =================
 
 ###### Arb available as an extended precision floating point context.
@@ -13,13 +13,13 @@
 >   standard digit spans (significand lengths)  
 >   are used and *highly reliable* results are desired.
 
-##### version 0.3 (This is for Julia v0.5).
+##### version 0.1.0 (This is for Julia v0.5).
 
 #### Compatable Packages
 
 **using ArbFloats \# goes anywhere**  
-DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers,
-MappedArrays, Plots, Polynomials, Quaternions, , others
+DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,
+Plots, Polynomials, Quaternions, , others
 
 **using ArbFloats \# goes last!** TaylorSeries
 
