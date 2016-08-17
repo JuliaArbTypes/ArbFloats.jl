@@ -59,19 +59,14 @@ exported arithmetic, elementary or special functions is applied to an
 `ArbFloat`, the value transforms as an extended precision floating point
 interval.
 
-### About Arb
+### About Arb and using Nemo's libraries
 
 This work is constructed atop a state-of-the-art C library for working with
 *midpoint ± radius* intervals, `Arb`. `Arb` is designed and written by Fredrik
 Johansson, who graciously allows Julia to use it under the MIT License.
 
 The C libraries that this package accesses are some of the shared libraries that
-Nemo.jl requires and builds when it is installed; and I am calling them
-directly. Nemo is a computational environment where the most important software
-for number theory and related work. Julia is used to create a cohesive whole
-that shares a manner of use. Fredrik Johansson, William Hart, and Tommy Hoffman
-have been especially helpful, taking the time to explain details of Arb as I was
-working on ArbFloats.
+Nemo.jl requires and builds; and, with permission, I call them directly.
 
 ###### Hint
 
