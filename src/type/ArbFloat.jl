@@ -42,7 +42,9 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
 
 
 function release_arb{P}(x::ArbFloat{P})
-    ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
+    if x.exponentOf2 != C_NULL
+        ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
+    end
 end
 function initializer{P}(::Type{ArbFloat{P}})
     z = ArbFloat{P}(0,0%UInt64,0,0,0,0%UInt64)
