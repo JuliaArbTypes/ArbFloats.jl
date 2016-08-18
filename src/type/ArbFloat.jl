@@ -55,7 +55,7 @@ function initializer{P}(::Type{ArbFloat{P}})
     return z
 end
 =#
-#=
+
 function release_arb{T<:ArbFloat}(x::T)
     ccall(@libarb(arb_clear), Void, (Ptr{T}, ), &x)
 end
