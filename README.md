@@ -3,8 +3,7 @@ ArbFloats.jl
 
 ###### Arb available as an extended precision floating point context.
 
-<p align="right">Jeffrey Sarnoff © 2016˗May˗26 in New York City</p>
-
+Jeffrey Sarnoff © 2016˗May˗26 in New York City
 
 >   This is a foundational library that substitutes for BigFloat when
 >   prespecified significand lengths are required.  
@@ -193,24 +192,30 @@ The least significant digit observable, through show(af) or with string(af),
 
 >   gamma, lgamma, digamma, sinc, zeta, polylog, agm
 
-
-
-
 #### Credits, References, Thanks
 
-This work relies on Fredrik Johansson's Arb software, using parts of that extensive C library.  
-He has been greatly helpful.  The Arb library documentation is [here](http://fredrikj.net/arb/).    
+This work relies on Fredrik Johansson's Arb software, using parts of that
+extensive C library.  
+He has been greatly helpful. The Arb library documentation is
+[here](http://fredrikj.net/arb/).
 
-Much of the early development was well informed from study of Nemo.jl, a number theory and  
-numerical algebra package that incorporates some of Arb's capabilities along with many others.  
-William Hart andTommy Hofmann have been gracious with their work and generous with their time.
+Much of the early development was well informed from study of Nemo.jl, a number
+theory and  
+numerical algebra package that incorporates some of Arb's capabilities along
+with many others.  
+William Hart andTommy Hofmann have been gracious with their work and generous
+with their time.
 
-Others have helped with conceptual subtilties, software from which I learned Julia, clarifying or fixing bugs, testing and specific good will: Stefan Karpinski, Jeff Bezanson, Alan Edelman, John Myles White, Tim Holy, Tom Breloff, David P. Sanders, Scott Jones, Luis Benet, Chris Rackauckas. 
+Others have helped with conceptual subtilties, software from which I learned
+Julia, clarifying or fixing bugs, testing and specific good will: Stefan
+Karpinski, Jeff Bezanson, Alan Edelman, John Myles White, Tim Holy, Thomas
+Breloff, David P. Sanders, Scott Jones, Yichao Yu, Luis Benet, Chris Rackauckas.
 
 =====
 =====
+
 developer info
-===============
+==============
 
 #### other, sometimes overlapping, software development is with
 
