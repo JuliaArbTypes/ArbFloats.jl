@@ -27,8 +27,9 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
 # initialize and zero a variable of type ArfFloat
 
 function release_arf{P}(x::ArfFloat{P})
-    ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
-    return nothing
+    if x.exponentOf2 != C_NULL
+        ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
+    end
 end
 
 function initializer{P}(::Type{ArfFloat{P}})

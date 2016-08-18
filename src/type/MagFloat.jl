@@ -25,13 +25,17 @@ end
 
 # initializing a MagFloat sets the value to zero
 @inline initial0(z::MagFloat) = ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
-@inline finalize(z::MagFloat) = ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &z)
+
+function release_mag(z::MagFloat)
+    if z.radius_exponentOf2 != C_NULL
+        ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &z)
+    end
+end
 
 # initialize and zero a variable of type MagFloat
 function initializer(::Type{MagFloat})
     z = MagFloat(zero(Int), zero(UInt64))
-    inital0(z)
-    finalizer(z, finalize)
+    finalizer(z, release_mag)
     return z
 end
 
