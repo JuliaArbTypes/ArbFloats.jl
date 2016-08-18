@@ -25,25 +25,57 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
 @inline initial0{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &x)
 
 # initialize and zero a variable of type ArfFloat
-
+#=
 function release_arf{P}(x::ArfFloat{P})
-    if x.exponentOf2 != C_NULL
+#    if pointer_from_objref(x) != C_NULL
         ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
-    end
+#    end
 end
-
+=#
+#=
 function initializer{P}(::Type{ArfFloat{P}})
     z = ArfFloat{P}(0,0%UInt64,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), &z)
     finalizer(z, release_arf)
     return z
 end
+=#
+function release_arf{T<:ArfFloat}(x::T)
+    ccall(@libarb(arf_clear), Void, (Ptr{T}, ), &x)
+end
+function initialize_arf{T<:ArfFloat}(::Type{T})
+    P = precision(T)
+    z = ArfFloat{P}(0,0%UInt64,0,0)
+    ccall(@libarb(arf_init), Void, (Ptr{T}, ), &z)
+    return z
+end
 function initializer{T<:ArfFloat}(::Type{T})
     P = precision(T)
-    z = initializer(ArfFloat{P})
+    z = ArfFloat{P}(0,0%UInt64,0,0)
+    ccall(@libarb(arf_init), Void, (Ptr{T}, ), &z)
+    finalizer(z, release_arf)
     return z
 end
 
+
+weakcopy{P}(x::ArfFloat{P}) = WeakRef(x)
+
+function copy{T<:ArfFloat}(x::T)
+    z = initialize_arf(T)
+    ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+    finalizer(z, release_arf)
+    return z
+end
+
+function deepcopy{T<:ArfFloat}(x::T)
+    z = initialize_arf(T)
+    ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+    finalizer(z, release_arf)
+    return z
+#    z = initializer(T)
+#    ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+#    return z
+end
 
 # empty constructor
 ArfFloat() = initializer(ArfFloat{precision(ArfFloat)})
@@ -117,8 +149,8 @@ end
 
 function convert{P}(::Type{BigFloat}, x::ArfFloat{P})
     z = zero(BigFloat)
-    ccall(@libarb(arf_get_mpfr), Void, (Ptr{BigFloat}, Ptr{ArfFloat{P}}), &z, &x)
-    z
+    r = ccall(@libarb(arf_get_mpfr), Int, (Ptr{BigFloat}, Ptr{ArfFloat{P}}, Cint), &z, &x, 0)
+    return z
 end
 
 function convert{P}(::Type{ArfFloat{P}}, x::BigFloat)

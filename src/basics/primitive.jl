@@ -31,16 +31,23 @@ for (op, i) in ((:two,:2), (:three,:3), (:four, :4))
   end
 end
 
+weakcopy{P}(x::ArbFloat{P}) = WeakRef(x)
+
 function copy{T<:ArbFloat}(x::T)
-    z = initializer(T)
-    ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    z = initialize_arb(T)
+    ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+    finalizer(z, release_arb)
     return z
 end
 
 function deepcopy{T<:ArbFloat}(x::T)
-    z = initializer(T)
-    ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    z = initialize_arb(T)
+    ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+    finalizer(z, release_arb)
     return z
+#    z = initializer(T)
+#    ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+#    return z
 end
 
 function copyradius{T<:ArbFloat}(target::T, source::T)
