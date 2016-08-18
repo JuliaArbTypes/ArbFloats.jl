@@ -22,20 +22,17 @@ else
 end
 
 
-
-# initializing a MagFloat sets the value to zero
-@inline initial0(z::MagFloat) = ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
-
-function release_mag(z::MagFloat)
-    if z.radius_exponentOf2 != C_NULL
-        ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &z)
-    end
+function release_mag(x::MagFloat)
+    #if pointer_from_objref(x) != C_NULL
+        ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
+    #end
 end
 
 # initialize and zero a variable of type MagFloat
 function initializer(::Type{MagFloat})
     z = MagFloat(zero(Int), zero(UInt64))
-    finalizer(z, release_mag)
+    call(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
+    finalizer(z, ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &z))
     return z
 end
 

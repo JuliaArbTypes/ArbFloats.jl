@@ -42,19 +42,23 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
 
 
 function release_arb{P}(x::ArbFloat{P})
-    if x.exponentOf2 != C_NULL
+#    if pointer_from_objref(x) != C_NULL
         ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
-    end
+#    end
 end
+#=
 function initializer{P}(::Type{ArbFloat{P}})
     z = ArbFloat{P}(0,0%UInt64,0,0,0,0%UInt64)
     ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
     finalizer(z, release_arb)
     return z
 end
+=#
 function initializer{T<:ArbFloat}(::Type{T})
     P = precision(T)
-    z = initializer(ArbFloat{P})
+    z = ArbFloat{P}(0,0%UInt64,0,0,0,0%UInt64)
+    ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
+    finalizer(z, ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &z))
     return z
 end
 

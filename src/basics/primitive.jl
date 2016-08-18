@@ -33,13 +33,13 @@ end
 
 function copy{T<:ArbFloat}(x::T)
     z = initializer(T)
-    ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
     return z
 end
 
 function deepcopy{T<:ArbFloat}(x::T)
     z = initializer(T)
-    ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
     return z
 end
 
