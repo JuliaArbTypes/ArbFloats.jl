@@ -13,7 +13,6 @@ precision{P}(::Type{ArfFloat{P}}) = P
 precision(::Type{ArfFloat}) = ArbFloatPrecision[1]
 setprecision(::Type{ArfFloat}, x::Int) = setprecision(ArbFloat, x)
 
-
 # a type specific hash function helps the type to 'just work'
 const hash_arffloat_lo = (UInt === UInt64) ? 0x37e642589da3416a : 0x5d46a6b4
 const hash_0_arffloat_lo = hash(zero(UInt), hash_arffloat_lo)
@@ -24,33 +23,6 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
 @inline finalize{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &x)
 @inline initial0{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &x)
 
-# initialize and zero a variable of type ArfFloat
-#=
-function release_arf{P}(x::ArfFloat{P})
-#    if pointer_from_objref(x) != C_NULL
-        ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
-#    end
-end
-=#
-#=
-function initializer{P}(::Type{ArfFloat{P}})
-    z = ArfFloat{P}(0,0%UInt64,0,0)
-    ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), &z)
-    finalizer(z, release_arf)
-    return z
-end
-=#
-#=
-function release_arf{T<:ArfFloat}(x::T)
-    ccall(@libarb(arf_clear), Void, (Ptr{T}, ), &x)
-end
-function initialize_arf{T<:ArfFloat}(::Type{T})
-    P = precision(T)
-    z = ArfFloat{P}(0,0%UInt64,0,0)
-    ccall(@libarb(arf_init), Void, (Ptr{T}, ), &z)
-    return z
-end
-=#
 initializer{T<:ArfFloat}(::Type{T}) = T()
 
 # empty constructor

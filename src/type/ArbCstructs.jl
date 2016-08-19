@@ -4,7 +4,6 @@
     see Cstructs.txt for the C library versions
 =#
 
-
 type MagFloat <: AbstractFloat
     radius_exponentOf2::Int
     radius_significand::UInt   ## radius is unsigned (nonnegative), by definition

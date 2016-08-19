@@ -23,11 +23,6 @@ function setprecision(::Type{ArbFloat}, x::Int)
     return x
 end
 
-precision{P}(x::ArfFloat{P}) = P
-precision{P}(::Type{ArfFloat{P}}) = P
-precision(::Type{ArfFloat}) = ArbFloatPrecision[1]
-setprecision(::Type{ArfFloat}, x::Int) = setprecision(ArbFloat, x)
-
 precision{P}(x::ArbFloat{P}) = P
 precision{P}(::Type{ArbFloat{P}}) = P
 precision(::Type{ArbFloat}) = ArbFloatPrecision[1]
@@ -47,39 +42,6 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
          (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arbfloat_lo)
             $ hash_0_arbfloat_lo))
 
-#=
-function release_arb{P}(x::ArbFloat{P})
-#    if pointer_from_objref(x) != C_NULL
-        ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
-#    end
-end
-=#
-#=
-function initializer{P}(::Type{ArbFloat{P}})
-    z = ArbFloat{P}(0,0%UInt64,0,0,0,0%UInt64)
-    ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
-    finalizer(z, release_arb)
-    return z
-end
-=#
-#=
-function release_arb{T<:ArbFloat}(x::T)
-    ccall(@libarb(arb_clear), Void, (Ptr{T}, ), &x)
-end
-function initialize_arb{T<:ArbFloat}(::Type{T})
-    P = precision(T)
-    z = ArbFloat{P}(0,0%UInt64,0,0,0,0%UInt64)
-    ccall(@libarb(arb_init), Void, (Ptr{T}, ), &z)
-    return z
-end
-function initializer{T<:ArbFloat}(::Type{T})
-    P = precision(T)
-    z = ArbFloat{P}(0,0%UInt64,0,0,0,0%UInt64)
-    ccall(@libarb(arb_init), Void, (Ptr{T}, ), &z)
-    finalizer(z, release_arb)
-    return z
-end
-=#
 initializer{T<:ArbFloat}(::Type{T}) = T()
 # empty constructor
 ArbFloat() = initializer(ArbFloat{precision(ArbFloat)})
