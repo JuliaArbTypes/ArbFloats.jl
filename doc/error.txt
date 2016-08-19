@@ -10,72 +10,69 @@ Platform Info:
   LIBM: libopenlibm
   LLVM: libLLVM-3.7.1 (ORCJIT, ivybridge)
 
-Pkg.clone("git://github.com/JuliaArbTypes/ArbFloats.jl.git")
-Pkg.clone("https://github.com/andreasnoack/LinearAlgebra.jl")
+# Version 0.5.0-rc2+0 (2016-08-12 11:25 UTC)
+#  x86_64-unknown-linux-gnu
 
-using LinearAlgebra, ArbFloats
-xi(s,Pi) = (1/2)*s*(s-1)*exp(-log(Pi)*s/2)*gamma(s/2)*zeta(s)
-setprecision(ArbFloat,256)
-tst=[xi(ArbFloat{200}(x/100),ArbFloat{200}(pi)) for x in 0.1:0.1:8.1];
-m=reshape(tst,(9,9));
-msvd = svdvals(m);
+# Pkg.rm("ArbFloats"); Pkg.rm("ArbFloats");
+# Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
+# Pkg.clone("https://github.com/andreasnoack/LinearAlgebra.jl")
 
-*** Error in `/usr/local/bin/julia': malloc(): smallbin double linked list corrupted: 0x0000000004665bd0 ***
+using ArbFloats, LinearAlgebra
+
+xi(s) = (1/2)*s*(s-1)*exp(-log(pi)*s/2)*gamma(s/2)*zeta(s);
+setprecision(ArbFloat,128);
+
+m3x3=reshape([xi(ArbFloat(x/10)) for x in 1:9], (3,3));
+svdvals(m3x3)
+#3-element Array{ArbFloats.ArbFloat{128},1}:
+# 1.4936631715164232064218297243
+# 0.0013812828660073723022935548
+# 2.8533564025955063690205003e-7
+
+setprecision(ArbFloat,129);
+
+m3x3=reshape([xi(ArbFloat(x/10)) for x in 1:9], (3,3));
+svdvals(m3x3)
+*** Error in `/usr/local/bin/julia': double free or corruption (fasttop): 0x000000000328f040 ***
 ======= Backtrace: =========
-/lib/x86_64-linux-gnu/libc.so.6(+0x77725)[0x7fee2a484725]
-/lib/x86_64-linux-gnu/libc.so.6(+0x81f01)[0x7fee2a48ef01]
-/lib/x86_64-linux-gnu/libc.so.6(__libc_malloc+0x54)[0x7fee2a4905a4]
-/usr/local/bin/../lib/julia/libstdc++.so.6(_Znwm+0x18)[0x7fee288a80b8]
-/usr/local/bin/../lib/julia/libstdc++.so.6(_ZNSs4_Rep9_S_createEmmRKSaIcE+0x59)[0x7fee288e6519]
-/usr/local/bin/../lib/julia/libstdc++.so.6(+0xcb637)[0x7fee288e6637]
-/usr/local/bin/../lib/julia/libstdc++.so.6(_ZNSsC1EPKcmRKSaIcE+0x1b)[0x7fee288e7ebb]
-/usr/local/bin/../lib/julia/libLLVM-3.7.1.so(+0x84e815)[0x7fee293e4815]
-/usr/local/bin/../lib/julia/libLLVM-3.7.1.so(_ZN4llvm12DWARFContext25getInliningInfoForAddressEmNS_19DILineInfoSpecifierE+0x256)[0x7fee293d3d76]
-/usr/local/bin/../lib/libjulia.so.0.5(+0xd7965)[0x7fee2aed6965]
-/usr/local/bin/../lib/libjulia.so.0.5(+0xdc288)[0x7fee2aedb288]
-/usr/local/bin/../lib/libjulia.so.0.5(jl_lookup_code_address+0x4a)[0x7fee2ae7a73a]
-/usr/local/lib/julia/sys.so(+0x382721)[0x7fee25999721]
-[0x7fec1b649989]
-[0x7fec1b649cc9]
-/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7fee2ae3af00]
-[0x7fec1b64875c]
-[0x7fec1b649383]
-[0x7fec1b6482b7]
-[0x7fec1b648543]
-/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7fee2ae3af00]
-/usr/local/bin/../lib/libjulia.so.0.5(+0x7c563)[0x7fee2ae7b563]
-/usr/local/bin/../lib/libjulia.so.0.5(+0x7ca25)[0x7fee2ae7ba25]
-/usr/local/bin/../lib/libjulia.so.0.5(jl_gc_collect+0x12f)[0x7fee2ae80a5f]
-/usr/local/bin/../lib/libjulia.so.0.5(jl_gc_pool_alloc+0xa7)[0x7fee2ae81b17]
-[0x7fec1b64ab74]
-[0x7fec1b655fa8]
-[0x7fec1b6564d4]
-[0x7fec1b6575ea]
-[0x7fec1b650f29]
-[0x7fec1b651419]
-[0x7fec1b64a73b]
-[0x7fec1b64a773]
-/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7fee2ae3af00]
-/usr/local/bin/../lib/libjulia.so.0.5(+0x5011e)[0x7fee2ae4f11e]
-/usr/local/bin/../lib/libjulia.so.0.5(+0x4f22e)[0x7fee2ae4e22e]
-/usr/local/bin/../lib/libjulia.so.0.5(+0x50763)[0x7fee2ae4f763]
-/usr/local/bin/../lib/libjulia.so.0.5(+0x50b7f)[0x7fee2ae4fb7f]
-/usr/local/bin/../lib/libjulia.so.0.5(jl_toplevel_eval+0x5dd)[0x7fee2ae67c6d]
-/usr/local/bin/../lib/libjulia.so.0.5(+0x4aedd)[0x7fee2ae49edd]
-/usr/local/lib/julia/sys.so(+0x24d38a)[0x7fee2586438a]
-/usr/local/lib/julia/sys.so(+0x24d3a0)[0x7fee258643a0]
-/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7fee2ae3af00]
-[0x7fec1b61cae6]
-[0x7fec1b61cd47]
-/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7fee2ae3af00]
-[0x7fec1b613c1f]
-[0x7fec1b613f30]
-/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7fee2ae3af00]
-/usr/local/bin/../lib/libjulia.so.0.5(+0x58b90)[0x7fee2ae57b90]
+/lib/x86_64-linux-gnu/libc.so.6(+0x77725)[0x7f418b432725]
+/lib/x86_64-linux-gnu/libc.so.6(+0x7ff4a)[0x7f418b43af4a]
+/lib/x86_64-linux-gnu/libc.so.6(cfree+0x4c)[0x7f418b43eabc]
+/home/jas/.julia/v0.5/Nemo/local/lib/libarb.so(arb_clear+0x35)[0x7f3f7be2d7a5]
+[0x7f3f7c617f50]
+[0x7f3f7c617f73]
+/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7f418bde8f00]
+/usr/local/bin/../lib/libjulia.so.0.5(+0x7c563)[0x7f418be29563]
+/usr/local/bin/../lib/libjulia.so.0.5(+0x7ca25)[0x7f418be29a25]
+/usr/local/bin/../lib/libjulia.so.0.5(jl_gc_enable_finalizers+0x45)[0x7f418be2d5b5]
+/usr/local/bin/../lib/libjulia.so.0.5(+0x3c4c0)[0x7f418bde94c0]
+/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x3bd)[0x7f418bde8fcd]
+[0x7f3f7c61e8d8]
+[0x7f3f7c61ed69]
+[0x7f3f7c618093]
+[0x7f3f7c6180c3]
+/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7f418bde8f00]
+[0x7f3f7c617b14]
+[0x7f3f7c617b43]
+/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7f418bde8f00]
+/usr/local/bin/../lib/libjulia.so.0.5(+0x5011e)[0x7f418bdfd11e]
+/usr/local/bin/../lib/libjulia.so.0.5(+0x4f22e)[0x7f418bdfc22e]
+/usr/local/bin/../lib/libjulia.so.0.5(jl_toplevel_eval+0x1f8)[0x7f418be15888]
+/usr/local/bin/../lib/libjulia.so.0.5(+0x4aedd)[0x7f418bdf7edd]
+/usr/local/lib/julia/sys.so(+0x24d38a)[0x7f418681238a]
+/usr/local/lib/julia/sys.so(+0x24d3a0)[0x7f41868123a0]
+/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7f418bde8f00]
+[0x7f3f7c5cb1a6]
+[0x7f3f7c5cb407]
+/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7f418bde8f00]
+[0x7f3f7c5c1c1f]
+[0x7f3f7c5c1f30]
+/usr/local/bin/../lib/libjulia.so.0.5(jl_apply_generic+0x2f0)[0x7f418bde8f00]
+/usr/local/bin/../lib/libjulia.so.0.5(+0x58b90)[0x7f418be05b90]
 ======= Memory map: ========
 00400000-00402000 r-xp 00000000 fc:00 287786                             /usr/local/bin/julia
 00602000-00603000 rw-p 00002000 fc:00 287786                             /usr/local/bin/julia
-01b96000-056f1000 rw-p 00000000 00:00 0                                  [heap]
+00ae8000-036f0000 rw-p 00000000 00:00 0                                  [heap]
 3a1ba00000-3a1bb2e000 r-xp 00000000 fc:00 291261                         /usr/local/lib/julia/libcrypto.so.6
 3a1bb2e000-3a1bd2d000 ---p 0012e000 fc:00 291261                         /usr/local/lib/julia/libcrypto.so.6
 3a1bd2d000-3a1bd4e000 rw-p 0012d000 fc:00 291261                         /usr/local/lib/julia/libcrypto.so.6
@@ -83,241 +80,221 @@ msvd = svdvals(m);
 3a1be00000-3a1be48000 r-xp 00000000 fc:00 291298                         /usr/local/lib/julia/libssl.so.6
 3a1be48000-3a1c048000 ---p 00048000 fc:00 291298                         /usr/local/lib/julia/libssl.so.6
 3a1c048000-3a1c04e000 rw-p 00048000 fc:00 291298                         /usr/local/lib/julia/libssl.so.6
-7fec10000000-7fec10021000 rw-p 00000000 00:00 0 
-7fec10021000-7fec14000000 ---p 00000000 00:00 0 
-7fec16b72000-7fec16ba1000 r-xp 00000000 fc:00 291246                     /usr/local/lib/julia/libopenlibm.so.2.3
-7fec16ba1000-7fec16da0000 ---p 0002f000 fc:00 291246                     /usr/local/lib/julia/libopenlibm.so.2.3
-7fec16da0000-7fec16da2000 rw-p 0002e000 fc:00 291246                     /usr/local/lib/julia/libopenlibm.so.2.3
-7fec16da2000-7fec16da3000 rw-p 00038000 fc:00 291246                     /usr/local/lib/julia/libopenlibm.so.2.3
-7fec16da3000-7fec19494000 r--p 00000000 fc:00 291287                     /usr/local/lib/julia/sys.so
-7fec19494000-7fec1a42f000 r--p 00000000 fc:00 291307                     /usr/local/lib/libjulia.so.0.5.0
-7fec1a42f000-7fec1a4a2000 r-xp 00000000 fc:00 1450987                    /home/jas/.julia/v0.5/Nemo/local/lib/libgmp.so.16.6.2
-7fec1a4a2000-7fec1a6a2000 ---p 00073000 fc:00 1450987                    /home/jas/.julia/v0.5/Nemo/local/lib/libgmp.so.16.6.2
-7fec1a6a2000-7fec1a6a3000 r--p 00073000 fc:00 1450987                    /home/jas/.julia/v0.5/Nemo/local/lib/libgmp.so.16.6.2
-7fec1a6a3000-7fec1a6a4000 rw-p 00074000 fc:00 1450987                    /home/jas/.julia/v0.5/Nemo/local/lib/libgmp.so.16.6.2
-7fec1a6a4000-7fec1aab3000 r-xp 00000000 fc:00 1451989                    /home/jas/.julia/v0.5/Nemo/local/lib/libflint.so.13.5.2
-7fec1aab3000-7fec1acb2000 ---p 0040f000 fc:00 1451989                    /home/jas/.julia/v0.5/Nemo/local/lib/libflint.so.13.5.2
-7fec1acb2000-7fec1acb3000 r--p 0040e000 fc:00 1451989                    /home/jas/.julia/v0.5/Nemo/local/lib/libflint.so.13.5.2
-7fec1acb3000-7fec1ade1000 rw-p 0040f000 fc:00 1451989                    /home/jas/.julia/v0.5/Nemo/local/lib/libflint.so.13.5.2
-7fec1ade1000-7fec1b10f000 r-xp 00000000 fc:00 1470855                    /home/jas/.julia/v0.5/Nemo/local/lib/libarb.so.1.1.1
-7fec1b10f000-7fec1b30f000 ---p 0032e000 fc:00 1470855                    /home/jas/.julia/v0.5/Nemo/local/lib/libarb.so.1.1.1
-7fec1b30f000-7fec1b310000 r--p 0032e000 fc:00 1470855                    /home/jas/.julia/v0.5/Nemo/local/lib/libarb.so.1.1.1
-7fec1b310000-7fec1b313000 rw-p 0032f000 fc:00 1470855                    /home/jas/.julia/v0.5/Nemo/local/lib/libarb.so.1.1.1
-7fec1b313000-7fec1b513000 rw-p 00000000 00:00 0 
-7fec1b513000-7fec1b613000 r--p 00000000 00:00 0 
-7fec1b613000-7fec1b713000 r-xp 00000000 00:00 0 
-7fec1b713000-7fec1b744000 r-xp 00000000 fc:00 291245                     /usr/local/lib/julia/libspqr.so
-7fec1b744000-7fec1b943000 ---p 00031000 fc:00 291245                     /usr/local/lib/julia/libspqr.so
-7fec1b943000-7fec1b944000 rw-p 00030000 fc:00 291245                     /usr/local/lib/julia/libspqr.so
-7fec1b944000-7fec1ba0b000 r-xp 00000000 fc:00 291283                     /usr/local/lib/julia/libumfpack.so
-7fec1ba0b000-7fec1bc0a000 ---p 000c7000 fc:00 291283                     /usr/local/lib/julia/libumfpack.so
-7fec1bc0a000-7fec1bc0b000 rw-p 000c6000 fc:00 291283                     /usr/local/lib/julia/libumfpack.so
-7fec1bc0b000-7fec1bc0c000 r-xp 00000000 fc:00 291286                     /usr/local/lib/julia/libsuitesparse_wrapper.so
-7fec1bc0c000-7fec1be0b000 ---p 00001000 fc:00 291286                     /usr/local/lib/julia/libsuitesparse_wrapper.so
-7fec1be0b000-7fec1be0c000 rw-p 00000000 fc:00 291286                     /usr/local/lib/julia/libsuitesparse_wrapper.so
-7fec1be0c000-7fec1be0e000 r-xp 00000000 fc:00 291300                     /usr/local/lib/julia/libsuitesparseconfig.so
-7fec1be0e000-7fec1c00d000 ---p 00002000 fc:00 291300                     /usr/local/lib/julia/libsuitesparseconfig.so
-7fec1c00d000-7fec1c00e000 rw-p 00001000 fc:00 291300                     /usr/local/lib/julia/libsuitesparseconfig.so
-7fec1c00e000-7fec1c019000 r-xp 00000000 fc:00 291299                     /usr/local/lib/julia/libccolamd.so
-7fec1c019000-7fec1c218000 ---p 0000b000 fc:00 291299                     /usr/local/lib/julia/libccolamd.so
-7fec1c218000-7fec1c219000 rw-p 0000a000 fc:00 291299                     /usr/local/lib/julia/libccolamd.so
-7fec1c219000-7fec1c223000 r-xp 00000000 fc:00 291250                     /usr/local/lib/julia/libcamd.so
-7fec1c223000-7fec1c423000 ---p 0000a000 fc:00 291250                     /usr/local/lib/julia/libcamd.so
-7fec1c423000-7fec1c424000 rw-p 0000a000 fc:00 291250                     /usr/local/lib/julia/libcamd.so
-7fec1c424000-7fec1c42d000 r-xp 00000000 fc:00 291302                     /usr/local/lib/julia/libamd.so
-7fec1c42d000-7fec1c62c000 ---p 00009000 fc:00 291302                     /usr/local/lib/julia/libamd.so
-7fec1c62c000-7fec1c62d000 rw-p 00008000 fc:00 291302                     /usr/local/lib/julia/libamd.so
-7fec1c62d000-7fec1c634000 r-xp 00000000 fc:00 291303                     /usr/local/lib/julia/libcolamd.so
-7fec1c634000-7fec1c833000 ---p 00007000 fc:00 291303                     /usr/local/lib/julia/libcolamd.so
-7fec1c833000-7fec1c834000 rw-p 00006000 fc:00 291303                     /usr/local/lib/julia/libcolamd.so
-7fec1c834000-7fec1c932000 r-xp 00000000 fc:00 291276                     /usr/local/lib/julia/libcholmod.so
-7fec1c932000-7fec1cb31000 ---p 000fe000 fc:00 291276                     /usr/local/lib/julia/libcholmod.so
-7fec1cb31000-7fec1cb32000 rw-p 000fd000 fc:00 291276                     /usr/local/lib/julia/libcholmod.so
-7fec1cb32000-7fec1cb49000 r-xp 00000000 fc:00 267596                     /lib/x86_64-linux-gnu/libresolv-2.23.so
-7fec1cb49000-7fec1cd49000 ---p 00017000 fc:00 267596                     /lib/x86_64-linux-gnu/libresolv-2.23.so
-7fec1cd49000-7fec1cd4a000 r--p 00017000 fc:00 267596                     /lib/x86_64-linux-gnu/libresolv-2.23.so
-7fec1cd4a000-7fec1cd4b000 rw-p 00018000 fc:00 267596                     /lib/x86_64-linux-gnu/libresolv-2.23.so
-7fec1cd4b000-7fec1cd4d000 rw-p 00000000 00:00 0 
-7fec1cd4d000-7fec1cd50000 r-xp 00000000 fc:00 267505                     /lib/x86_64-linux-gnu/libkeyutils.so.1.5
-7fec1cd50000-7fec1cf4f000 ---p 00003000 fc:00 267505                     /lib/x86_64-linux-gnu/libkeyutils.so.1.5
-7fec1cf4f000-7fec1cf50000 r--p 00002000 fc:00 267505                     /lib/x86_64-linux-gnu/libkeyutils.so.1.5
-7fec1cf50000-7fec1cf51000 rw-p 00003000 fc:00 267505                     /lib/x86_64-linux-gnu/libkeyutils.so.1.5
-7fec1cf51000-7fec1cf5b000 r-xp 00000000 fc:00 2108460                    /usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1
-7fec1cf5b000-7fec1d15a000 ---p 0000a000 fc:00 2108460                    /usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1
-7fec1d15a000-7fec1d15b000 r--p 00009000 fc:00 2108460                    /usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1
-7fec1d15b000-7fec1d15c000 rw-p 0000a000 fc:00 2108460                    /usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1
-7fec1d15c000-7fec1d1a8000 r-xp 00000000 fc:00 291243                     /usr/local/lib/julia/libmbedcrypto.so.2.3.0
-7fec1d1a8000-7fec1d3a7000 ---p 0004c000 fc:00 291243                     /usr/local/lib/julia/libmbedcrypto.so.2.3.0
-7fec1d3a7000-7fec1d3ab000 rw-p 0004b000 fc:00 291243                     /usr/local/lib/julia/libmbedcrypto.so.2.3.0
-7fec1d3ab000-7fec1d3ad000 rw-p 00000000 00:00 0 
-7fec1d3ad000-7fec1d3bf000 r-xp 00000000 fc:00 291257                     /usr/local/lib/julia/libmbedx509.so.2.3.0
-7fec1d3bf000-7fec1d5bf000 ---p 00012000 fc:00 291257                     /usr/local/lib/julia/libmbedx509.so.2.3.0
-7fec1d5bf000-7fec1d5c0000 rw-p 00012000 fc:00 291257                     /usr/local/lib/julia/libmbedx509.so.2.3.0
-7fec1d5c0000-7fec1d5e4000 r-xp 00000000 fc:00 291288                     /usr/local/lib/julia/libmbedtls.so.2.3.0
-7fec1d5e4000-7fec1d7e4000 ---p 00024000 fc:00 291288                     /usr/local/lib/julia/libmbedtls.so.2.3.0
-7fec1d7e4000-7fec1d7e7000 rw-p 00024000 fc:00 291288                     /usr/local/lib/julia/libmbedtls.so.2.3.0
-7fec1d7e7000-7fec1d813000 r-xp 00000000 fc:00 2108450                    /usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1
-7fec1d813000-7fec1da12000 ---p 0002c000 fc:00 2108450                    /usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1
-7fec1da12000-7fec1da14000 r--p 0002b000 fc:00 2108450                    /usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1
-7fec1da14000-7fec1da15000 rw-p 0002d000 fc:00 2108450                    /usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1
-7fec1da15000-7fec1da16000 rw-p 00000000 00:00 0 
-7fec1da16000-7fec1da19000 r-xp 00000000 fc:00 267453                     /lib/x86_64-linux-gnu/libcom_err.so.2.1
-7fec1da19000-7fec1dc18000 ---p 00003000 fc:00 267453                     /lib/x86_64-linux-gnu/libcom_err.so.2.1
-7fec1dc18000-7fec1dc19000 r--p 00002000 fc:00 267453                     /lib/x86_64-linux-gnu/libcom_err.so.2.1
-7fec1dc19000-7fec1dc1a000 rw-p 00003000 fc:00 267453                     /lib/x86_64-linux-gnu/libcom_err.so.2.1
-7fec1dc1a000-7fec1dcdd000 r-xp 00000000 fc:00 2108458                    /usr/lib/x86_64-linux-gnu/libkrb5.so.3.3
-7fec1dcdd000-7fec1dedd000 ---p 000c3000 fc:00 2108458                    /usr/lib/x86_64-linux-gnu/libkrb5.so.3.3
-7fec1dedd000-7fec1deea000 r--p 000c3000 fc:00 2108458                    /usr/lib/x86_64-linux-gnu/libkrb5.so.3.3
-7fec1deea000-7fec1deec000 rw-p 000d0000 fc:00 2108458                    /usr/lib/x86_64-linux-gnu/libkrb5.so.3.3
-7fec1deec000-7fec1df33000 r-xp 00000000 fc:00 2108229                    /usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2
-7fec1df33000-7fec1e132000 ---p 00047000 fc:00 2108229                    /usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2
-7fec1e132000-7fec1e134000 r--p 00046000 fc:00 2108229                    /usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2
-7fec1e134000-7fec1e136000 rw-p 00048000 fc:00 2108229                    /usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2
-7fec1e136000-7fec1e165000 r-xp 00000000 fc:00 291279                     /usr/local/lib/julia/libssh2.so.1.0.1
-7fec1e165000-7fec1e365000 ---p 0002f000 fc:00 291279                     /usr/local/lib/julia/libssh2.so.1.0.1
-7fec1e365000-7fec1e367000 rw-p 0002f000 fc:00 291279                     /usr/local/lib/julia/libssh2.so.1.0.1
-7fec1e367000-7fec1e461000 r-xp 00000000 fc:00 291293                     /usr/local/lib/julia/libgit2.so.0.24.0
-7fec1e461000-7fec1e661000 ---p 000fa000 fc:00 291293                     /usr/local/lib/julia/libgit2.so.0.24.0
-7fec1e661000-7fec1e664000 rw-p 000fa000 fc:00 291293                     /usr/local/lib/julia/libgit2.so.0.24.0
-7fec1e664000-7fec20664000 rw-p 00000000 00:00 0 
-7fec20664000-7fec206a1000 r-xp 00000000 fc:00 291260                     /usr/local/lib/julia/libquadmath.so.0
-7fec206a1000-7fec208a1000 ---p 0003d000 fc:00 291260                     /usr/local/lib/julia/libquadmath.so.0
-7fec208a1000-7fec208a2000 rw-p 0003d000 fc:00 291260                     /usr/local/lib/julia/libquadmath.so.0
-7fec208a2000-7fec208a3000 rw-p 000e8000 fc:00 291260                     /usr/local/lib/julia/libquadmath.so.0
-7fec208a3000-7fec209c1000 r-xp 00000000 fc:00 291242                     /usr/local/lib/julia/libgfortran.so.3
-7fec209c1000-7fec20bc1000 ---p 0011e000 fc:00 291242                     /usr/local/lib/julia/libgfortran.so.3
-7fec20bc1000-7fec20bc3000 rw-p 0011e000 fc:00 291242                     /usr/local/lib/julia/libgfortran.so.3
-7fec20bc3000-7fec22c7b000 r-xp 00000000 fc:00 291275                     /usr/local/lib/julia/libopenblas64_.so
-7fec22c7b000-7fec22e7a000 ---p 020b8000 fc:00 291275                     /usr/local/lib/julia/libopenblas64_.so
-7fec22e7a000-7fec22e9a000 rw-p 020b7000 fc:00 291275                     /usr/local/lib/julia/libopenblas64_.so
-7fec22e9a000-7fec22ef9000 rw-p 00000000 00:00 0 
-7fec22ef9000-7fec22f3b000 rw-p 021cd000 fc:00 291275                     /usr/local/lib/julia/libopenblas64_.so
-7fec22f3b000-7fec22f3e000 r-xp 00000000 fc:00 291237                     /usr/local/lib/julia/libdSFMT.so
-7fec22f3e000-7fec2313e000 ---p 00003000 fc:00 291237                     /usr/local/lib/julia/libdSFMT.so
-7fec2313e000-7fec2313f000 rw-p 00003000 fc:00 291237                     /usr/local/lib/julia/libdSFMT.so
-7fec2313f000-7fec2319a000 r-xp 00000000 fc:00 2242059                    /usr/local/lib/libmpfr.so.4.1.3
-7fec2319a000-7fec23399000 ---p 0005b000 fc:00 2242059                    /usr/local/lib/libmpfr.so.4.1.3
-7fec23399000-7fec2339b000 r--p 0005a000 fc:00 2242059                    /usr/local/lib/libmpfr.so.4.1.3
-7fec2339b000-7fec2339c000 rw-p 0005c000 fc:00 2242059                    /usr/local/lib/libmpfr.so.4.1.3
-7fec2339c000-7fec23432000 r-xp 00000000 fc:00 291301                     /usr/local/lib/julia/libgmp.so.10.3.0
-7fec23432000-7fec23631000 ---p 00096000 fc:00 291301                     /usr/local/lib/julia/libgmp.so.10.3.0
-7fec23631000-7fec23633000 rw-p 00095000 fc:00 291301                     /usr/local/lib/julia/libgmp.so.10.3.0
-7fec23633000-7fec23733000 rw-p 00000000 00:00 0 
-7fec23733000-7fec237b3000 r-xp 00000000 fc:00 291289                     /usr/local/lib/julia/libpcre2-8.so.0.3.0
-7fec237b3000-7fec239b2000 ---p 00080000 fc:00 291289                     /usr/local/lib/julia/libpcre2-8.so.0.3.0
-7fec239b2000-7fec239b3000 rw-p 0007f000 fc:00 291289                     /usr/local/lib/julia/libpcre2-8.so.0.3.0
-7fec239b3000-7fec23a00000 rw-p 00000000 00:00 0 
-7fec23a00000-7fee24c14000 rw-p 00000000 00:00 0 
-7fee24c14000-7fee25617000 rw-p 00000000 00:00 0 
-7fee25617000-7fee2737e000 r-xp 00000000 fc:00 291287                     /usr/local/lib/julia/sys.so
-7fee2737e000-7fee2757d000 ---p 01d67000 fc:00 291287                     /usr/local/lib/julia/sys.so
-7fee2757d000-7fee275e0000 rw-p 01d66000 fc:00 291287                     /usr/local/lib/julia/sys.so
-7fee275e0000-7fee27609000 rw-p 00000000 00:00 0 
-7fee27609000-7fee2760a000 ---p 00000000 00:00 0 
-7fee2760a000-7fee27e0a000 rw-p 00000000 00:00 0 
-7fee27e0a000-7fee280e2000 r--p 00000000 fc:00 2105738                    /usr/lib/locale/locale-archive
-7fee280e2000-7fee280fb000 r-xp 00000000 fc:00 267635                     /lib/x86_64-linux-gnu/libz.so.1.2.8
-7fee280fb000-7fee282fa000 ---p 00019000 fc:00 267635                     /lib/x86_64-linux-gnu/libz.so.1.2.8
-7fee282fa000-7fee282fb000 r--p 00018000 fc:00 267635                     /lib/x86_64-linux-gnu/libz.so.1.2.8
-7fee282fb000-7fee282fc000 rw-p 00019000 fc:00 267635                     /lib/x86_64-linux-gnu/libz.so.1.2.8
-7fee282fc000-7fee28312000 r-xp 00000000 fc:00 291248                     /usr/local/lib/julia/libgcc_s.so.1
-7fee28312000-7fee28511000 ---p 00016000 fc:00 291248                     /usr/local/lib/julia/libgcc_s.so.1
-7fee28511000-7fee28512000 rw-p 00015000 fc:00 291248                     /usr/local/lib/julia/libgcc_s.so.1
-7fee28512000-7fee2861a000 r-xp 00000000 fc:00 267514                     /lib/x86_64-linux-gnu/libm-2.23.so
-7fee2861a000-7fee28819000 ---p 00108000 fc:00 267514                     /lib/x86_64-linux-gnu/libm-2.23.so
-7fee28819000-7fee2881a000 r--p 00107000 fc:00 267514                     /lib/x86_64-linux-gnu/libm-2.23.so
-7fee2881a000-7fee2881b000 rw-p 00108000 fc:00 267514                     /lib/x86_64-linux-gnu/libm-2.23.so
-7fee2881b000-7fee28985000 r-xp 00000000 fc:00 291280                     /usr/local/lib/julia/libstdc++.so.6
-7fee28985000-7fee28b85000 ---p 0016a000 fc:00 291280                     /usr/local/lib/julia/libstdc++.so.6
-7fee28b85000-7fee28b90000 r--p 0016a000 fc:00 291280                     /usr/local/lib/julia/libstdc++.so.6
-7fee28b90000-7fee28b92000 rw-p 00175000 fc:00 291280                     /usr/local/lib/julia/libstdc++.so.6
-7fee28b92000-7fee28b96000 rw-p 00000000 00:00 0 
-7fee28b96000-7fee2a0f3000 r-xp 00000000 fc:00 291239                     /usr/local/lib/julia/libLLVM-3.7.so
-7fee2a0f3000-7fee2a2f3000 ---p 0155d000 fc:00 291239                     /usr/local/lib/julia/libLLVM-3.7.so
-7fee2a2f3000-7fee2a3fd000 rw-p 0155d000 fc:00 291239                     /usr/local/lib/julia/libLLVM-3.7.so
-7fee2a3fd000-7fee2a40d000 rw-p 00000000 00:00 0 
-7fee2a40d000-7fee2a5cd000 r-xp 00000000 fc:00 267444                     /lib/x86_64-linux-gnu/libc-2.23.so
-7fee2a5cd000-7fee2a7cc000 ---p 001c0000 fc:00 267444                     /lib/x86_64-linux-gnu/libc-2.23.so
-7fee2a7cc000-7fee2a7d0000 r--p 001bf000 fc:00 267444                     /lib/x86_64-linux-gnu/libc-2.23.so
-7fee2a7d0000-7fee2a7d2000 rw-p 001c3000 fc:00 267444                     /lib/x86_64-linux-gnu/libc-2.23.so
-7fee2a7d2000-7fee2a7d6000 rw-p 00000000 00:00 0 
-7fee2a7d6000-7fee2a7ee000 r-xp 00000000 fc:00 267590                     /lib/x86_64-linux-gnu/libpthread-2.23.so
-7fee2a7ee000-7fee2a9ed000 ---p 00018000 fc:00 267590                     /lib/x86_64-linux-gnu/libpthread-2.23.so
-7fee2a9ed000-7fee2a9ee000 r--p 00017000 fc:00 267590                     /lib/x86_64-linux-gnu/libpthread-2.23.so
-7fee2a9ee000-7fee2a9ef000 rw-p 00018000 fc:00 267590                     /lib/x86_64-linux-gnu/libpthread-2.23.so
-7fee2a9ef000-7fee2a9f3000 rw-p 00000000 00:00 0 
-7fee2a9f3000-7fee2a9fa000 r-xp 00000000 fc:00 267598                     /lib/x86_64-linux-gnu/librt-2.23.so
-7fee2a9fa000-7fee2abf9000 ---p 00007000 fc:00 267598                     /lib/x86_64-linux-gnu/librt-2.23.so
-7fee2abf9000-7fee2abfa000 r--p 00006000 fc:00 267598                     /lib/x86_64-linux-gnu/librt-2.23.so
-7fee2abfa000-7fee2abfb000 rw-p 00007000 fc:00 267598                     /lib/x86_64-linux-gnu/librt-2.23.so
-7fee2abfb000-7fee2abfe000 r-xp 00000000 fc:00 267468                     /lib/x86_64-linux-gnu/libdl-2.23.so
-7fee2abfe000-7fee2adfd000 ---p 00003000 fc:00 267468                     /lib/x86_64-linux-gnu/libdl-2.23.so
-7fee2adfd000-7fee2adfe000 r--p 00002000 fc:00 267468                     /lib/x86_64-linux-gnu/libdl-2.23.so
-7fee2adfe000-7fee2adff000 rw-p 00003000 fc:00 267468                     /lib/x86_64-linux-gnu/libdl-2.23.so
-7fee2adff000-7fee2afa3000 r-xp 00000000 fc:00 291307                     /usr/local/lib/libjulia.so.0.5.0
-7fee2afa3000-7fee2b1a3000 ---p 001a4000 fc:00 291307                     /usr/local/lib/libjulia.so.0.5.0
-7fee2b1a3000-7fee2b1e3000 rw-p 001a4000 fc:00 291307                     /usr/local/lib/libjulia.so.0.5.0
-7fee2b1e3000-7fee2b3ff000 rw-p 00000000 00:00 0 
-7fee2b3ff000-7fee2b425000 r-xp 00000000 fc:00 267416                     /lib/x86_64-linux-gnu/ld-2.23.so
-7fee2b46e000-7fee2b4af000 rw-p 00000000 00:00 0 
-7fee2b501000-7fee2b511000 rwxp 00000000 00:00 0 
-7fee2b511000-7fee2b5f9000 rw-p 00000000 00:00 0 
-7fee2b5f9000-7fee2b5fb000 rw-p 00000000 00:00 0 
-7fee2b5fb000-7fee2b5fc000 ---p 00000000 00:00 0 
-7fee2b5fc000-7fee2b5fe000 rw-p 00000000 00:00 0 
-7fee2b5fe000-7fee2b601000 r--p 00000000 00:00 0 
-7fee2b601000-7fee2b624000 rw-p 00000000 00:00 0 
-7fee2b624000-7fee2b625000 r--p 00025000 fc:00 267416                     /lib/x86_64-linux-gnu/ld-2.23.so
-7fee2b625000-7fee2b626000 rw-p 00026000 fc:00 267416                     /lib/x86_64-linux-gnu/ld-2.23.so
-7fee2b626000-7fee2b627000 rw-p 00000000 00:00 0 
-7ffd8f20d000-7ffd8f258000 rw-p 00000000 00:00 0                          [stack]
-7ffd8f313000-7ffd8f315000 r--p 00000000 00:00 0                          [vvar]
-7ffd8f315000-7ffd8f317000 r-xp 00000000 00:00 0                          [vdso]
+7f3f74000000-7f3f74021000 rw-p 00000000 00:00 0 
+7f3f74021000-7f3f78000000 ---p 00000000 00:00 0 
+7f3f7b1ac000-7f3f7b1db000 r-xp 00000000 fc:00 291246                     /usr/local/lib/julia/libopenlibm.so.2.3
+7f3f7b1db000-7f3f7b3da000 ---p 0002f000 fc:00 291246                     /usr/local/lib/julia/libopenlibm.so.2.3
+7f3f7b3da000-7f3f7b3dc000 rw-p 0002e000 fc:00 291246                     /usr/local/lib/julia/libopenlibm.so.2.3
+7f3f7b3dc000-7f3f7b3dd000 rw-p 00038000 fc:00 291246                     /usr/local/lib/julia/libopenlibm.so.2.3
+7f3f7b3dd000-7f3f7b450000 r-xp 00000000 fc:00 1450987                    /home/jas/.julia/v0.5/Nemo/local/lib/libgmp.so.16.6.2
+7f3f7b450000-7f3f7b650000 ---p 00073000 fc:00 1450987                    /home/jas/.julia/v0.5/Nemo/local/lib/libgmp.so.16.6.2
+7f3f7b650000-7f3f7b651000 r--p 00073000 fc:00 1450987                    /home/jas/.julia/v0.5/Nemo/local/lib/libgmp.so.16.6.2
+7f3f7b651000-7f3f7b652000 rw-p 00074000 fc:00 1450987                    /home/jas/.julia/v0.5/Nemo/local/lib/libgmp.so.16.6.2
+7f3f7b652000-7f3f7ba61000 r-xp 00000000 fc:00 1451989                    /home/jas/.julia/v0.5/Nemo/local/lib/libflint.so.13.5.2
+7f3f7ba61000-7f3f7bc60000 ---p 0040f000 fc:00 1451989                    /home/jas/.julia/v0.5/Nemo/local/lib/libflint.so.13.5.2
+7f3f7bc60000-7f3f7bc61000 r--p 0040e000 fc:00 1451989                    /home/jas/.julia/v0.5/Nemo/local/lib/libflint.so.13.5.2
+7f3f7bc61000-7f3f7bd8f000 rw-p 0040f000 fc:00 1451989                    /home/jas/.julia/v0.5/Nemo/local/lib/libflint.so.13.5.2
+7f3f7bd8f000-7f3f7c0bd000 r-xp 00000000 fc:00 1470855                    /home/jas/.julia/v0.5/Nemo/local/lib/libarb.so.1.1.1
+7f3f7c0bd000-7f3f7c2bd000 ---p 0032e000 fc:00 1470855                    /home/jas/.julia/v0.5/Nemo/local/lib/libarb.so.1.1.1
+7f3f7c2bd000-7f3f7c2be000 r--p 0032e000 fc:00 1470855                    /home/jas/.julia/v0.5/Nemo/local/lib/libarb.so.1.1.1
+7f3f7c2be000-7f3f7c2c1000 rw-p 0032f000 fc:00 1470855                    /home/jas/.julia/v0.5/Nemo/local/lib/libarb.so.1.1.1
+7f3f7c2c1000-7f3f7c4c1000 rw-p 00000000 00:00 0 
+7f3f7c4c1000-7f3f7c5c1000 r--p 00000000 00:00 0 
+7f3f7c5c1000-7f3f7c6c1000 r-xp 00000000 00:00 0 
+7f3f7c6c1000-7f3f7c6f2000 r-xp 00000000 fc:00 291245                     /usr/local/lib/julia/libspqr.so
+7f3f7c6f2000-7f3f7c8f1000 ---p 00031000 fc:00 291245                     /usr/local/lib/julia/libspqr.so
+7f3f7c8f1000-7f3f7c8f2000 rw-p 00030000 fc:00 291245                     /usr/local/lib/julia/libspqr.so
+7f3f7c8f2000-7f3f7c9b9000 r-xp 00000000 fc:00 291283                     /usr/local/lib/julia/libumfpack.so
+7f3f7c9b9000-7f3f7cbb8000 ---p 000c7000 fc:00 291283                     /usr/local/lib/julia/libumfpack.so
+7f3f7cbb8000-7f3f7cbb9000 rw-p 000c6000 fc:00 291283                     /usr/local/lib/julia/libumfpack.so
+7f3f7cbb9000-7f3f7cbba000 r-xp 00000000 fc:00 291286                     /usr/local/lib/julia/libsuitesparse_wrapper.so
+7f3f7cbba000-7f3f7cdb9000 ---p 00001000 fc:00 291286                     /usr/local/lib/julia/libsuitesparse_wrapper.so
+7f3f7cdb9000-7f3f7cdba000 rw-p 00000000 fc:00 291286                     /usr/local/lib/julia/libsuitesparse_wrapper.so
+7f3f7cdba000-7f3f7cdbc000 r-xp 00000000 fc:00 291300                     /usr/local/lib/julia/libsuitesparseconfig.so
+7f3f7cdbc000-7f3f7cfbb000 ---p 00002000 fc:00 291300                     /usr/local/lib/julia/libsuitesparseconfig.so
+7f3f7cfbb000-7f3f7cfbc000 rw-p 00001000 fc:00 291300                     /usr/local/lib/julia/libsuitesparseconfig.so
+7f3f7cfbc000-7f3f7cfc7000 r-xp 00000000 fc:00 291299                     /usr/local/lib/julia/libccolamd.so
+7f3f7cfc7000-7f3f7d1c6000 ---p 0000b000 fc:00 291299                     /usr/local/lib/julia/libccolamd.so
+7f3f7d1c6000-7f3f7d1c7000 rw-p 0000a000 fc:00 291299                     /usr/local/lib/julia/libccolamd.so
+7f3f7d1c7000-7f3f7d1d1000 r-xp 00000000 fc:00 291250                     /usr/local/lib/julia/libcamd.so
+7f3f7d1d1000-7f3f7d3d1000 ---p 0000a000 fc:00 291250                     /usr/local/lib/julia/libcamd.so
+7f3f7d3d1000-7f3f7d3d2000 rw-p 0000a000 fc:00 291250                     /usr/local/lib/julia/libcamd.so
+7f3f7d3d2000-7f3f7d3db000 r-xp 00000000 fc:00 291302                     /usr/local/lib/julia/libamd.so
+7f3f7d3db000-7f3f7d5da000 ---p 00009000 fc:00 291302                     /usr/local/lib/julia/libamd.so
+7f3f7d5da000-7f3f7d5db000 rw-p 00008000 fc:00 291302                     /usr/local/lib/julia/libamd.so
+7f3f7d5db000-7f3f7d5e2000 r-xp 00000000 fc:00 291303                     /usr/local/lib/julia/libcolamd.so
+7f3f7d5e2000-7f3f7d7e1000 ---p 00007000 fc:00 291303                     /usr/local/lib/julia/libcolamd.so
+7f3f7d7e1000-7f3f7d7e2000 rw-p 00006000 fc:00 291303                     /usr/local/lib/julia/libcolamd.so
+7f3f7d7e2000-7f3f7d8e0000 r-xp 00000000 fc:00 291276                     /usr/local/lib/julia/libcholmod.so
+7f3f7d8e0000-7f3f7dadf000 ---p 000fe000 fc:00 291276                     /usr/local/lib/julia/libcholmod.so
+7f3f7dadf000-7f3f7dae0000 rw-p 000fd000 fc:00 291276                     /usr/local/lib/julia/libcholmod.so
+7f3f7dae0000-7f3f7daf7000 r-xp 00000000 fc:00 267596                     /lib/x86_64-linux-gnu/libresolv-2.23.so
+7f3f7daf7000-7f3f7dcf7000 ---p 00017000 fc:00 267596                     /lib/x86_64-linux-gnu/libresolv-2.23.so
+7f3f7dcf7000-7f3f7dcf8000 r--p 00017000 fc:00 267596                     /lib/x86_64-linux-gnu/libresolv-2.23.so
+7f3f7dcf8000-7f3f7dcf9000 rw-p 00018000 fc:00 267596                     /lib/x86_64-linux-gnu/libresolv-2.23.so
+7f3f7dcf9000-7f3f7dcfb000 rw-p 00000000 00:00 0 
+7f3f7dcfb000-7f3f7dcfe000 r-xp 00000000 fc:00 267505                     /lib/x86_64-linux-gnu/libkeyutils.so.1.5
+7f3f7dcfe000-7f3f7defd000 ---p 00003000 fc:00 267505                     /lib/x86_64-linux-gnu/libkeyutils.so.1.5
+7f3f7defd000-7f3f7defe000 r--p 00002000 fc:00 267505                     /lib/x86_64-linux-gnu/libkeyutils.so.1.5
+7f3f7defe000-7f3f7deff000 rw-p 00003000 fc:00 267505                     /lib/x86_64-linux-gnu/libkeyutils.so.1.5
+7f3f7deff000-7f3f7df09000 r-xp 00000000 fc:00 2108460                    /usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1
+7f3f7df09000-7f3f7e108000 ---p 0000a000 fc:00 2108460                    /usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1
+7f3f7e108000-7f3f7e109000 r--p 00009000 fc:00 2108460                    /usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1
+7f3f7e109000-7f3f7e10a000 rw-p 0000a000 fc:00 2108460                    /usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1
+7f3f7e10a000-7f3f7e156000 r-xp 00000000 fc:00 291243                     /usr/local/lib/julia/libmbedcrypto.so.2.3.0
+7f3f7e156000-7f3f7e355000 ---p 0004c000 fc:00 291243                     /usr/local/lib/julia/libmbedcrypto.so.2.3.0
+7f3f7e355000-7f3f7e359000 rw-p 0004b000 fc:00 291243                     /usr/local/lib/julia/libmbedcrypto.so.2.3.0
+7f3f7e359000-7f3f7e35b000 rw-p 00000000 00:00 0 
+7f3f7e35b000-7f3f7e36d000 r-xp 00000000 fc:00 291257                     /usr/local/lib/julia/libmbedx509.so.2.3.0
+7f3f7e36d000-7f3f7e56d000 ---p 00012000 fc:00 291257                     /usr/local/lib/julia/libmbedx509.so.2.3.0
+7f3f7e56d000-7f3f7e56e000 rw-p 00012000 fc:00 291257                     /usr/local/lib/julia/libmbedx509.so.2.3.0
+7f3f7e56e000-7f3f7e592000 r-xp 00000000 fc:00 291288                     /usr/local/lib/julia/libmbedtls.so.2.3.0
+7f3f7e592000-7f3f7e792000 ---p 00024000 fc:00 291288                     /usr/local/lib/julia/libmbedtls.so.2.3.0
+7f3f7e792000-7f3f7e795000 rw-p 00024000 fc:00 291288                     /usr/local/lib/julia/libmbedtls.so.2.3.0
+7f3f7e795000-7f3f7e7c1000 r-xp 00000000 fc:00 2108450                    /usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1
+7f3f7e7c1000-7f3f7e9c0000 ---p 0002c000 fc:00 2108450                    /usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1
+7f3f7e9c0000-7f3f7e9c2000 r--p 0002b000 fc:00 2108450                    /usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1
+7f3f7e9c2000-7f3f7e9c3000 rw-p 0002d000 fc:00 2108450                    /usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1
+7f3f7e9c3000-7f3f7e9c4000 rw-p 00000000 00:00 0 
+7f3f7e9c4000-7f3f7e9c7000 r-xp 00000000 fc:00 267453                     /lib/x86_64-linux-gnu/libcom_err.so.2.1
+7f3f7e9c7000-7f3f7ebc6000 ---p 00003000 fc:00 267453                     /lib/x86_64-linux-gnu/libcom_err.so.2.1
+7f3f7ebc6000-7f3f7ebc7000 r--p 00002000 fc:00 267453                     /lib/x86_64-linux-gnu/libcom_err.so.2.1
+7f3f7ebc7000-7f3f7ebc8000 rw-p 00003000 fc:00 267453                     /lib/x86_64-linux-gnu/libcom_err.so.2.1
+7f3f7ebc8000-7f3f7ec8b000 r-xp 00000000 fc:00 2108458                    /usr/lib/x86_64-linux-gnu/libkrb5.so.3.3
+7f3f7ec8b000-7f3f7ee8b000 ---p 000c3000 fc:00 2108458                    /usr/lib/x86_64-linux-gnu/libkrb5.so.3.3
+7f3f7ee8b000-7f3f7ee98000 r--p 000c3000 fc:00 2108458                    /usr/lib/x86_64-linux-gnu/libkrb5.so.3.3
+7f3f7ee98000-7f3f7ee9a000 rw-p 000d0000 fc:00 2108458                    /usr/lib/x86_64-linux-gnu/libkrb5.so.3.3
+7f3f7ee9a000-7f3f7eee1000 r-xp 00000000 fc:00 2108229                    /usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2
+7f3f7eee1000-7f3f7f0e0000 ---p 00047000 fc:00 2108229                    /usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2
+7f3f7f0e0000-7f3f7f0e2000 r--p 00046000 fc:00 2108229                    /usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2
+7f3f7f0e2000-7f3f7f0e4000 rw-p 00048000 fc:00 2108229                    /usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2
+7f3f7f0e4000-7f3f7f113000 r-xp 00000000 fc:00 291279                     /usr/local/lib/julia/libssh2.so.1.0.1
+7f3f7f113000-7f3f7f313000 ---p 0002f000 fc:00 291279                     /usr/local/lib/julia/libssh2.so.1.0.1
+7f3f7f313000-7f3f7f315000 rw-p 0002f000 fc:00 291279                     /usr/local/lib/julia/libssh2.so.1.0.1
+7f3f7f315000-7f3f7f40f000 r-xp 00000000 fc:00 291293                     /usr/local/lib/julia/libgit2.so.0.24.0
+7f3f7f40f000-7f3f7f60f000 ---p 000fa000 fc:00 291293                     /usr/local/lib/julia/libgit2.so.0.24.0
+7f3f7f60f000-7f3f7f612000 rw-p 000fa000 fc:00 291293                     /usr/local/lib/julia/libgit2.so.0.24.0
+7f3f7f612000-7f3f81612000 rw-p 00000000 00:00 0 
+7f3f81612000-7f3f8164f000 r-xp 00000000 fc:00 291260                     /usr/local/lib/julia/libquadmath.so.0
+7f3f8164f000-7f3f8184f000 ---p 0003d000 fc:00 291260                     /usr/local/lib/julia/libquadmath.so.0
+7f3f8184f000-7f3f81850000 rw-p 0003d000 fc:00 291260                     /usr/local/lib/julia/libquadmath.so.0
+7f3f81850000-7f3f81851000 rw-p 000e8000 fc:00 291260                     /usr/local/lib/julia/libquadmath.so.0
+7f3f81851000-7f3f8196f000 r-xp 00000000 fc:00 291242                     /usr/local/lib/julia/libgfortran.so.3
+7f3f8196f000-7f3f81b6f000 ---p 0011e000 fc:00 291242                     /usr/local/lib/julia/libgfortran.so.3
+7f3f81b6f000-7f3f81b71000 rw-p 0011e000 fc:00 291242                     /usr/local/lib/julia/libgfortran.so.3
+7f3f81b71000-7f3f83c29000 r-xp 00000000 fc:00 291275                     /usr/local/lib/julia/libopenblas64_.so
+7f3f83c29000-7f3f83e28000 ---p 020b8000 fc:00 291275                     /usr/local/lib/julia/libopenblas64_.so
+7f3f83e28000-7f3f83e48000 rw-p 020b7000 fc:00 291275                     /usr/local/lib/julia/libopenblas64_.so
+7f3f83e48000-7f3f83ea7000 rw-p 00000000 00:00 0 
+7f3f83ea7000-7f3f83ee9000 rw-p 021cd000 fc:00 291275                     /usr/local/lib/julia/libopenblas64_.so
+7f3f83ee9000-7f3f83eec000 r-xp 00000000 fc:00 291237                     /usr/local/lib/julia/libdSFMT.so
+7f3f83eec000-7f3f840ec000 ---p 00003000 fc:00 291237                     /usr/local/lib/julia/libdSFMT.so
+7f3f840ec000-7f3f840ed000 rw-p 00003000 fc:00 291237                     /usr/local/lib/julia/libdSFMT.so
+7f3f840ed000-7f3f84148000 r-xp 00000000 fc:00 2242059                    /usr/local/lib/libmpfr.so.4.1.3
+7f3f84148000-7f3f84347000 ---p 0005b000 fc:00 2242059                    /usr/local/lib/libmpfr.so.4.1.3
+7f3f84347000-7f3f84349000 r--p 0005a000 fc:00 2242059                    /usr/local/lib/libmpfr.so.4.1.3
+7f3f84349000-7f3f8434a000 rw-p 0005c000 fc:00 2242059                    /usr/local/lib/libmpfr.so.4.1.3
+7f3f8434a000-7f3f843e0000 r-xp 00000000 fc:00 291301                     /usr/local/lib/julia/libgmp.so.10.3.0
+7f3f843e0000-7f3f845df000 ---p 00096000 fc:00 291301                     /usr/local/lib/julia/libgmp.so.10.3.0
+7f3f845df000-7f3f845e1000 rw-p 00095000 fc:00 291301                     /usr/local/lib/julia/libgmp.so.10.3.0
+7f3f845e1000-7f3f846e1000 rw-p 00000000 00:00 0 
+7f3f846e1000-7f3f84761000 r-xp 00000000 fc:00 291289                     /usr/local/lib/julia/libpcre2-8.so.0.3.0
+7f3f84761000-7f3f84960000 ---p 00080000 fc:00 291289                     /usr/local/lib/julia/libpcre2-8.so.0.3.0
+7f3f84960000-7f3f84961000 rw-p 0007f000 fc:00 291289                     /usr/local/lib/julia/libpcre2-8.so.0.3.0
+7f3f84961000-7f3f849ae000 rw-p 00000000 00:00 0 
+7f3f849ae000-7f4185bc2000 rw-p 00000000 00:00 0 
+7f4185bc2000-7f41865c5000 rw-p 00000000 00:00 0 
+7f41865c5000-7f418832c000 r-xp 00000000 fc:00 291287                     /usr/local/lib/julia/sys.so
+7f418832c000-7f418852b000 ---p 01d67000 fc:00 291287                     /usr/local/lib/julia/sys.so
+7f418852b000-7f418858e000 rw-p 01d66000 fc:00 291287                     /usr/local/lib/julia/sys.so
+7f418858e000-7f41885b7000 rw-p 00000000 00:00 0 
+7f41885b7000-7f41885b8000 ---p 00000000 00:00 0 
+7f41885b8000-7f4188db8000 rw-p 00000000 00:00 0 
+7f4188db8000-7f4189090000 r--p 00000000 fc:00 2105738                    /usr/lib/locale/locale-archive
+7f4189090000-7f41890a9000 r-xp 00000000 fc:00 267635                     /lib/x86_64-linux-gnu/libz.so.1.2.8
+7f41890a9000-7f41892a8000 ---p 00019000 fc:00 267635                     /lib/x86_64-linux-gnu/libz.so.1.2.8
+7f41892a8000-7f41892a9000 r--p 00018000 fc:00 267635                     /lib/x86_64-linux-gnu/libz.so.1.2.8
+7f41892a9000-7f41892aa000 rw-p 00019000 fc:00 267635                     /lib/x86_64-linux-gnu/libz.so.1.2.8
+7f41892aa000-7f41892c0000 r-xp 00000000 fc:00 291248                     /usr/local/lib/julia/libgcc_s.so.1
+7f41892c0000-7f41894bf000 ---p 00016000 fc:00 291248                     /usr/local/lib/julia/libgcc_s.so.1
+7f41894bf000-7f41894c0000 rw-p 00015000 fc:00 291248                     /usr/local/lib/julia/libgcc_s.so.1
+7f41894c0000-7f41895c8000 r-xp 00000000 fc:00 267514                     /lib/x86_64-linux-gnu/libm-2.23.so
+7f41895c8000-7f41897c7000 ---p 00108000 fc:00 267514                     /lib/x86_64-linux-gnu/libm-2.23.so
+7f41897c7000-7f41897c8000 r--p 00107000 fc:00 267514                     /lib/x86_64-linux-gnu/libm-2.23.so
+7f41897c8000-7f41897c9000 rw-p 00108000 fc:00 267514                     /lib/x86_64-linux-gnu/libm-2.23.so
+7f41897c9000-7f4189933000 r-xp 00000000 fc:00 291280                     /usr/local/lib/julia/libstdc++.so.6
+7f4189933000-7f4189b33000 ---p 0016a000 fc:00 291280                     /usr/local/lib/julia/libstdc++.so.6
+7f4189b33000-7f4189b3e000 r--p 0016a000 fc:00 291280                     /usr/local/lib/julia/libstdc++.so.6
+7f4189b3e000-7f4189b40000 rw-p 00175000 fc:00 291280                     /usr/local/lib/julia/libstdc++.so.6
+7f4189b40000-7f4189b44000 rw-p 00000000 00:00 0 
+7f4189b44000-7f418b0a1000 r-xp 00000000 fc:00 291239                     /usr/local/lib/julia/libLLVM-3.7.so
+7f418b0a1000-7f418b2a1000 ---p 0155d000 fc:00 291239                     /usr/local/lib/julia/libLLVM-3.7.so
+7f418b2a1000-7f418b3ab000 rw-p 0155d000 fc:00 291239                     /usr/local/lib/julia/libLLVM-3.7.so
+7f418b3ab000-7f418b3bb000 rw-p 00000000 00:00 0 
+7f418b3bb000-7f418b57b000 r-xp 00000000 fc:00 267444                     /lib/x86_64-linux-gnu/libc-2.23.so
+7f418b57b000-7f418b77a000 ---p 001c0000 fc:00 267444                     /lib/x86_64-linux-gnu/libc-2.23.so
+7f418b77a000-7f418b77e000 r--p 001bf000 fc:00 267444                     /lib/x86_64-linux-gnu/libc-2.23.so
+7f418b77e000-7f418b780000 rw-p 001c3000 fc:00 267444                     /lib/x86_64-linux-gnu/libc-2.23.so
+7f418b780000-7f418b784000 rw-p 00000000 00:00 0 
+7f418b784000-7f418b79c000 r-xp 00000000 fc:00 267590                     /lib/x86_64-linux-gnu/libpthread-2.23.so
+7f418b79c000-7f418b99b000 ---p 00018000 fc:00 267590                     /lib/x86_64-linux-gnu/libpthread-2.23.so
+7f418b99b000-7f418b99c000 r--p 00017000 fc:00 267590                     /lib/x86_64-linux-gnu/libpthread-2.23.so
+7f418b99c000-7f418b99d000 rw-p 00018000 fc:00 267590                     /lib/x86_64-linux-gnu/libpthread-2.23.so
+7f418b99d000-7f418b9a1000 rw-p 00000000 00:00 0 
+7f418b9a1000-7f418b9a8000 r-xp 00000000 fc:00 267598                     /lib/x86_64-linux-gnu/librt-2.23.so
+7f418b9a8000-7f418bba7000 ---p 00007000 fc:00 267598                     /lib/x86_64-linux-gnu/librt-2.23.so
+7f418bba7000-7f418bba8000 r--p 00006000 fc:00 267598                     /lib/x86_64-linux-gnu/librt-2.23.so
+7f418bba8000-7f418bba9000 rw-p 00007000 fc:00 267598                     /lib/x86_64-linux-gnu/librt-2.23.so
+7f418bba9000-7f418bbac000 r-xp 00000000 fc:00 267468                     /lib/x86_64-linux-gnu/libdl-2.23.so
+7f418bbac000-7f418bdab000 ---p 00003000 fc:00 267468                     /lib/x86_64-linux-gnu/libdl-2.23.so
+7f418bdab000-7f418bdac000 r--p 00002000 fc:00 267468                     /lib/x86_64-linux-gnu/libdl-2.23.so
+7f418bdac000-7f418bdad000 rw-p 00003000 fc:00 267468                     /lib/x86_64-linux-gnu/libdl-2.23.so
+7f418bdad000-7f418bf51000 r-xp 00000000 fc:00 291307                     /usr/local/lib/libjulia.so.0.5.0
+7f418bf51000-7f418c151000 ---p 001a4000 fc:00 291307                     /usr/local/lib/libjulia.so.0.5.0
+7f418c151000-7f418c191000 rw-p 001a4000 fc:00 291307                     /usr/local/lib/libjulia.so.0.5.0
+7f418c191000-7f418c3ad000 rw-p 00000000 00:00 0 
+7f418c3ad000-7f418c3d3000 r-xp 00000000 fc:00 267416                     /lib/x86_64-linux-gnu/ld-2.23.so
+7f418c41b000-7f418c45c000 rw-p 00000000 00:00 0 
+7f418c4ae000-7f418c4be000 rwxp 00000000 00:00 0 
+7f418c4be000-7f418c5a5000 rw-p 00000000 00:00 0 
+7f418c5a6000-7f418c5a9000 rw-p 00000000 00:00 0 
+7f418c5a9000-7f418c5aa000 ---p 00000000 00:00 0 
+7f418c5aa000-7f418c5ac000 rw-p 00000000 00:00 0 
+7f418c5ac000-7f418c5af000 r--p 00000000 00:00 0 
+7f418c5af000-7f418c5d2000 rw-p 00000000 00:00 0 
+7f418c5d2000-7f418c5d3000 r--p 00025000 fc:00 267416                     /lib/x86_64-linux-gnu/ld-2.23.so
+7f418c5d3000-7f418c5d4000 rw-p 00026000 fc:00 267416                     /lib/x86_64-linux-gnu/ld-2.23.so
+7f418c5d4000-7f418c5d5000 rw-p 00000000 00:00 0 
+7ffdaaaa1000-7ffdaaaeb000 rw-p 00000000 00:00 0                          [stack]
+7ffdaab5a000-7ffdaab5c000 r--p 00000000 00:00 0                          [vvar]
+7ffdaab5c000-7ffdaab5e000 r-xp 00000000 00:00 0                          [vdso]
 ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
 
 signal (6): Aborted
 while loading no file, in expression starting on line 0
-operator new at /home/centos/src/gcc_source/gcc-5.1.0/libstdc++-v3/libsupc++/new_op.cc:50
-allocate at /home/centos/src/gcc_build/x86_64-unknown-linux-gnu/libstdc++-v3/include/ext/new_allocator.h:104 [inlined]
-_S_create at /home/centos/src/gcc_build/x86_64-unknown-linux-gnu/libstdc++-v3/include/bits/basic_string.tcc:1051
-_S_construct<char const*> at /home/centos/src/gcc_build/x86_64-unknown-linux-gnu/libstdc++-v3/include/bits/basic_string.tcc:582
-_S_construct_aux<char const*> at /home/centos/src/gcc_build/x86_64-unknown-linux-gnu/libstdc++-v3/include/bits/basic_string.h:4136 [inlined]
-_S_construct<char const*> at /home/centos/src/gcc_build/x86_64-unknown-linux-gnu/libstdc++-v3/include/bits/basic_string.h:4157 [inlined]
-basic_string at /home/centos/src/gcc_build/x86_64-unknown-linux-gnu/libstdc++-v3/include/bits/basic_string.tcc:651
-lookup_pointer at /home/centos/buildbot/slave/package_tarball64/build/src/debuginfo.cpp:685
-lookup_pointer at /home/centos/buildbot/slave/package_tarball64/build/src/debuginfo.cpp:668 [inlined]
-jl_getDylibFunctionInfo at /home/centos/buildbot/slave/package_tarball64/build/src/debuginfo.cpp:1136 [inlined]
-jl_getFunctionInfo at /home/centos/buildbot/slave/package_tarball64/build/src/debuginfo.cpp:1340
-jl_lookup_code_address at /home/centos/buildbot/slave/package_tarball64/build/src/stackwalk.c:353
-lookup at ./stacktraces.jl:125
-collect_to! at ./array.jl:337
-jl_call_method_internal at /home/centos/buildbot/slave/package_tarball64/build/src/julia_internal.h:192 [inlined]
-jl_apply_generic at /home/centos/buildbot/slave/package_tarball64/build/src/gf.c:1930
-_collect at ./array.jl:318
-stacktrace at ./stacktraces.jl:147
-release at /home/jas/.julia/v0.5/ArbF/src/type/ArbFloat.jl:45
+arb_clear at /home/jas/.julia/v0.5/Nemo/deps/arb/arb/clear.c:20
+release_arb at /home/jas/.julia/v0.5/ArbFloats/src/type/ArbFloat.jl:60
 jl_call_method_internal at /home/centos/buildbot/slave/package_tarball64/build/src/julia_internal.h:192 [inlined]
 jl_apply_generic at /home/centos/buildbot/slave/package_tarball64/build/src/gf.c:1930
 jl_apply at /home/centos/buildbot/slave/package_tarball64/build/src/julia.h:1392 [inlined]
 run_finalizer at /home/centos/buildbot/slave/package_tarball64/build/src/gc.c:108
 jl_gc_run_finalizers_in_list at /home/centos/buildbot/slave/package_tarball64/build/src/gc.c:190 [inlined]
 run_finalizers at /home/centos/buildbot/slave/package_tarball64/build/src/gc.c:211
-jl_gc_collect at /home/centos/buildbot/slave/package_tarball64/build/src/gc.c:1868
-jl_gc_pool_alloc at /home/centos/buildbot/slave/package_tarball64/build/src/gc.c:824
-initializer at /home/jas/.julia/v0.5/ArbF/src/type/ArbFloat.jl:53 [inlined]
-abs at /home/jas/.julia/v0.5/ArbF/src/math/arith.jl:15
-givensAlgorithm at ./linalg/givens.jl:100
-givens at ./linalg/givens.jl:258
-svdIter! at /home/jas/.julia/v0.5/LinearAlgebra/src/svd.jl:51
-#svdvals!#1 at /home/jas/.julia/v0.5/LinearAlgebra/src/svd.jl:170
+jl_gc_enable_finalizers at /home/centos/buildbot/slave/package_tarball64/build/src/gc.c:222
+jl_mutex_unlock at /home/centos/buildbot/slave/package_tarball64/build/src/./julia_threads.h:476 [inlined]
+jl_compile_for_dispatch at /home/centos/buildbot/slave/package_tarball64/build/src/gf.c:1315
+jl_call_method_internal at /home/centos/buildbot/slave/package_tarball64/build/src/julia_internal.h:187 [inlined]
+jl_apply_generic at /home/centos/buildbot/slave/package_tarball64/build/src/gf.c:1930
+#svdvals!#1 at /home/jas/.julia/v0.5/LinearAlgebra/src/svd.jl:123
+svdvals! at /home/jas/.julia/v0.5/LinearAlgebra/src/svd.jl:291
+jl_call_method_internal at /home/centos/buildbot/slave/package_tarball64/build/src/julia_internal.h:192 [inlined]
+jl_apply_generic at /home/centos/buildbot/slave/package_tarball64/build/src/gf.c:1930
 svdvals at ./linalg/svd.jl:90
 jl_call_method_internal at /home/centos/buildbot/slave/package_tarball64/build/src/julia_internal.h:192 [inlined]
 jl_apply_generic at /home/centos/buildbot/slave/package_tarball64/build/src/gf.c:1930
 do_call at /home/centos/buildbot/slave/package_tarball64/build/src/interpreter.c:66
 eval at /home/centos/buildbot/slave/package_tarball64/build/src/interpreter.c:190
-eval_body at /home/centos/buildbot/slave/package_tarball64/build/src/interpreter.c:469
-jl_interpret_call at /home/centos/buildbot/slave/package_tarball64/build/src/interpreter.c:573
-jl_toplevel_eval_flex at /home/centos/buildbot/slave/package_tarball64/build/src/toplevel.c:572 [inlined]
+jl_toplevel_eval_flex at /home/centos/buildbot/slave/package_tarball64/build/src/toplevel.c:558 [inlined]
 jl_toplevel_eval at /home/centos/buildbot/slave/package_tarball64/build/src/toplevel.c:580
 jl_toplevel_eval_in_warn at /home/centos/buildbot/slave/package_tarball64/build/src/builtins.c:576
 eval at ./boot.jl:234
@@ -333,5 +310,4 @@ jl_apply_generic at /home/centos/buildbot/slave/package_tarball64/build/src/gf.c
 jl_apply at /home/centos/buildbot/slave/package_tarball64/build/src/julia.h:1392 [inlined]
 start_task at /home/centos/buildbot/slave/package_tarball64/build/src/task.c:253
 unknown function (ip: 0xffffffffffffffff)
-Allocations: 4794480 (Pool: 4791805; Big: 2675); GC: 7
-
+Allocations: 6091474 (Pool: 6090012; Big: 1462); GC: 9
