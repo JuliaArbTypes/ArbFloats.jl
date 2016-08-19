@@ -23,11 +23,18 @@ function setprecision(::Type{ArbFloat}, x::Int)
     return x
 end
 
+precision{P}(x::ArfFloat{P}) = P
+precision{P}(::Type{ArfFloat{P}}) = P
+precision(::Type{ArfFloat}) = ArbFloatPrecision[1]
+setprecision(::Type{ArfFloat}, x::Int) = setprecision(ArbFloat, x)
+
 precision{P}(x::ArbFloat{P}) = P
 precision{P}(::Type{ArbFloat{P}}) = P
+precision(::Type{ArbFloat}) = ArbFloatPrecision[1]
 # allow inquiring the precision of the module: precision(ArbFloats)
 precision(::Type{Type{Val{:ArbFloats}}}) = precision(ArbFloat)
 precision(m::Module) = precision(Type{Val{Symbol(m)}})
+
 
 # a type specific hash function helps the type to 'just work'
 const hash_arbfloat_lo = (UInt === UInt64) ? 0x37e642589da3416a : 0x5d46a6b4
@@ -74,7 +81,8 @@ function initializer{T<:ArbFloat}(::Type{T})
 end
 =#
 initializer{T<:ArbFloat}(::Type{T}) = T()
-
+# empty constructor
+ArbFloat() = initializer(ArbFloat{precision(ArbFloat)})
 
 
 # typemax,realmax realmax,realmin
