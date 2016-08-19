@@ -14,14 +14,6 @@ end
 # get and set working precision for ArbFloat
 
 const ArbFloatPrecision = [116,]
-precision(::Type{ArbFloat}) = ArbFloatPrecision[1]
-
-function setprecision(::Type{ArbFloat}, x::Int)
-    x = max(11, abs(x))
-    x > 4095 && warn("ArbFloats are designed to work best at precisions < 4096 bits")
-    ArbFloatPrecision[1] = x
-    return x
-end
 
 precision{P}(x::ArbFloat{P}) = P
 precision{P}(::Type{ArbFloat{P}}) = P
@@ -29,6 +21,13 @@ precision(::Type{ArbFloat}) = ArbFloatPrecision[1]
 # allow inquiring the precision of the module: precision(ArbFloats)
 precision(::Type{Type{Val{:ArbFloats}}}) = precision(ArbFloat)
 precision(m::Module) = precision(Type{Val{Symbol(m)}})
+
+function setprecision(::Type{ArbFloat}, x::Int)
+    x = max(11, abs(x))
+    x > 4095 && warn("ArbFloats are designed to work best at precisions < 4096 bits")
+    ArbFloatPrecision[1] = x
+    return x
+end
 
 
 # a type specific hash function helps the type to 'just work'
