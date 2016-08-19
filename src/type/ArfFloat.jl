@@ -43,6 +43,12 @@ end
 function release_arf{T<:ArfFloat}(x::T)
     ccall(@libarb(arf_clear), Void, (Ptr{T}, ), &x)
 end
+function initialize_arf{T<:ArfFloat}(::Type{T})
+    P = precision(T)
+    z = ArfFloat{P}(0,0%UInt64,0,0)
+    ccall(@libarb(arf_init), Void, (Ptr{T}, ), &z)
+    return z
+end
 function initializer{T<:ArfFloat}(::Type{T})
     P = precision(T)
     z = ArfFloat{P}(0,0%UInt64,0,0)
@@ -51,6 +57,25 @@ function initializer{T<:ArfFloat}(::Type{T})
     return z
 end
 
+
+weakcopy{P}(x::ArfFloat{P}) = WeakRef(x)
+
+function copy{T<:ArfFloat}(x::T)
+    z = initialize_arf(T)
+    ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+    finalizer(z, release_arf)
+    return z
+end
+
+function deepcopy{T<:ArfFloat}(x::T)
+    z = initialize_arf(T)
+    ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+    finalizer(z, release_arf)
+    return z
+#    z = initializer(T)
+#    ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+#    return z
+end
 
 # empty constructor
 ArfFloat() = initializer(ArfFloat{precision(ArfFloat)})

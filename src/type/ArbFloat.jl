@@ -59,6 +59,12 @@ end
 function release_arb{T<:ArbFloat}(x::T)
     ccall(@libarb(arb_clear), Void, (Ptr{T}, ), &x)
 end
+function initialize_arb{T<:ArbFloat}(::Type{T})
+    P = precision(T)
+    z = ArbFloat{P}(0,0%UInt64,0,0,0,0%UInt64)
+    ccall(@libarb(arb_init), Void, (Ptr{T}, ), &z)
+    return z
+end
 function initializer{T<:ArbFloat}(::Type{T})
     P = precision(T)
     z = ArbFloat{P}(0,0%UInt64,0,0,0,0%UInt64)
