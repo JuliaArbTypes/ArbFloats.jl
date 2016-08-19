@@ -21,22 +21,15 @@ else
    hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt32, z.radius_exponentOf2) % UInt64, z.radius_significand )
 end
 
-
+#=
 function release_mag(x::MagFloat)
     #if pointer_from_objref(x) != C_NULL
         ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
     #end
 end
-
+=#
 # initialize and zero a variable of type MagFloat
-function initializer(::Type{MagFloat})
-    z = MagFloat(zero(Int), zero(UInt64))
-    call(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
-    finalizer(z, ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &z))
-    return z
-end
-
-MagFloat() = initializer(MagFloat)
+initializer(::Type{MagFloat}) = MagFloat()
 
 zero{T<:MagFloat}(::Type{T}) = initializer(T)
 

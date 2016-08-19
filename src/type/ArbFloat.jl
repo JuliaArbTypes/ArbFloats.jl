@@ -55,7 +55,7 @@ function initializer{P}(::Type{ArbFloat{P}})
     return z
 end
 =#
-
+#=
 function release_arb{T<:ArbFloat}(x::T)
     ccall(@libarb(arb_clear), Void, (Ptr{T}, ), &x)
 end
@@ -72,9 +72,8 @@ function initializer{T<:ArbFloat}(::Type{T})
     finalizer(z, release_arb)
     return z
 end
-
-# empty constructor
-ArbFloat() = initializer(ArbFloat)
+=#
+initializer{T<:ArbFloat}(::Type{T}) = T()
 
 
 
