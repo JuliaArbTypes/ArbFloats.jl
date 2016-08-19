@@ -130,11 +130,11 @@ convert(::Type{BigInt}, x::String) = parse(BigInt,x)
 convert(::Type{BigFloat}, x::String) = parse(BigFloat,x)
 
 function convert{T<:ArbFloat}(::Type{T}, x::BigFloat)
-     P = precision(T)
-     x = round(x,P+24,2)
+     P = precision(T)+24
+     x = round(x,P,2)
      s = string(x)
-     z = convert(ArbFloat{P}, s)
-     return ArbFloat{P}(s)
+     z = T(s)
+     return z
 end
 
 

@@ -149,8 +149,8 @@ end
 
 function convert{P}(::Type{BigFloat}, x::ArfFloat{P})
     z = zero(BigFloat)
-    ccall(@libarb(arf_get_mpfr), Void, (Ptr{BigFloat}, Ptr{ArfFloat{P}}), &z, &x)
-    z
+    r = ccall(@libarb(arf_get_mpfr), Int, (Ptr{BigFloat}, Ptr{ArfFloat{P}}, Cint), &z, &x, 0)
+    return z
 end
 
 function convert{P}(::Type{ArfFloat{P}}, x::BigFloat)
