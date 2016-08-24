@@ -138,8 +138,17 @@ function smartstring{T<:ArbFloat}(x::T)
 end
 
 function stringall{P}(x::ArbFloat{P})
-    return (isexact(x) ? string(midpoint(x)) :
-              string(midpoint(x)," ± ", string(radius(x))))
+    if isexact(x)
+        return string(x)
+    end
+    sm = string(midpoint(x))
+    sr = try
+            string(Float64(radius(x)))
+        catch
+            string(round(radius(x),58,2))
+        end
+
+    return string(sm," ± ", sr)
 end
 
 function stringcompact{P}(x::ArbFloat{P})
