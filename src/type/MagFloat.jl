@@ -20,20 +20,11 @@ else
    hash(z::MagFloat, h::UInt) = hash( reinterpret(UInt32, z.radius_exponentOf2) % UInt64, z.radius_significand )
 end
 
-#=
-function release_mag(x::MagFloat)
-    #if pointer_from_objref(x) != C_NULL
-        ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
-    #end
-end
-=#
 # initialize and zero a variable of type MagFloat
-initializer(::Type{MagFloat}) = MagFloat()
-
-zero{T<:MagFloat}(::Type{T}) = initializer(T)
+zero{T<:MagFloat}(::Type{T}) = T()
 
 function one{T<:MagFloat}(::Type{T})
-    z = initializer(T)
+    z = T()
     z.radius_significand = (~UInt64(1)) >> 34
     return z
 end
@@ -56,7 +47,7 @@ Void, (Ref{$T}, ), $(Symbol("my_", postfix, "_var"))
 for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
   @eval begin
     function convert(::Type{MagFloat}, x::($T))
-        z = initializer(MagFloat)
+        z = MagFloat()
         ccall( :($(QuoteNode(Symbol("mag_set_", $M))), "libarb"), Void, (Ptr{$T}, ), &z )
         #ccall( ($(QuoteNode(Symbol("mag_set_", M))), "libarb"), Void, (Ref{$T}, ), z )
         return z

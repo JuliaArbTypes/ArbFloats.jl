@@ -41,13 +41,9 @@ function copy{T<:ArbFloat}(x::T)
 end
 
 function deepcopy{T<:ArbFloat}(x::T)
-    z = initialize_arb(T)
+    z = T()
     ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
-    finalizer(z, release_arb)
     return z
-#    z = initializer(T)
-#    ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
-#    return z
 end
 
 function copyradius{T<:ArbFloat}(target::T, source::T)
@@ -88,7 +84,7 @@ The resulting ball is guaranteed to contain x, but is more economical if x has l
 (from arb_trim documentation)
 """
 function trim{T<:ArbFloat}(x::T)
-    z = initializer(T)
+    z = T()
     ccall(@libarb(arb_trim), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     return z
 end

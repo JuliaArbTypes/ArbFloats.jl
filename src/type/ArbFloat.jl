@@ -41,9 +41,8 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
          (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arbfloat_lo)
             $ hash_0_arbfloat_lo))
 
-initializer{T<:ArbFloat}(::Type{T}) = T()
 # empty constructor
-ArbFloat() = initializer(ArbFloat{precision(ArbFloat)})
+ArbFloat() = ArbFloat{precision(ArbFloat)}()
 
 
 # typemax,realmax realmax,realmin

@@ -20,39 +20,30 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
     hash(reinterpret(UInt,z.significand1)$z.exponentOf2,
          (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arffloat_lo) $ hash_0_arffloat_lo))
 
-@inline finalize{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &x)
-@inline initial0{P}(x::ArfFloat{P}) =  ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &x)
-
-initializer{T<:ArfFloat}(::Type{T}) = T()
 
 # empty constructor
-ArfFloat() = initializer(ArfFloat{precision(ArfFloat)})
+ArfFloat() = ArfFloat{precision(ArfFloat)}()
 
 
 weakcopy{P}(x::ArfFloat{P}) = WeakRef(x)
 
 function copy{T<:ArfFloat}(x::T)
-    z = initialize_arf(T)
+    z = T()
     ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
-    finalizer(z, release_arf)
     return z
 end
 
 function deepcopy{T<:ArfFloat}(x::T)
-    z = initialize_arf(T)
+    z = T()
     ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
-    finalizer(z, release_arf)
     return z
-#    z = initializer(T)
-#    ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
-#    return z
 end
 
 
-zero{T<:ArfFloat}(::Type{T}) = initializer(T)
+zero{T<:ArfFloat}(::Type{T}) = T()
 
 function one{T<:ArfFloat}(::Type{T})
-    z = initializer(T)
+    z = T()
     z.exponentOf2 = 1
     z.nwords_sign = 2
     z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
