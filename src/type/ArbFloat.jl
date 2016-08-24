@@ -137,14 +137,14 @@ end
 function min2{T<:ArbFloat}(x::T, y::T)
     return
         if donotoverlap(x,y)
-            return x < y ? x : y
+            x < y ? x : y
         else
             xlo, xhi = bounds(x)
             ylo, yhi = bounds(y)
             lo,hi = min(xlo, ylo), min(xhi, yhi)
             md = (hi+lo)/2
             rd = (hi-lo)/2
-            return midpoint_radius(md, rd)
+            midpoint_radius(md, rd)
         end
 end
 
