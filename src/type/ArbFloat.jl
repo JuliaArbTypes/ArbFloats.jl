@@ -126,34 +126,39 @@ end
 lohiBounds{T<:ArbFloat}(x::T, prec::Int) = ( lowerBound(x, prec), upperBound(x, prec) )
 
 
-max{T<:ArbFloat}(x::T, y::T) = (x + y + abs(x - y))/2
-min{T<:ArbFloat}(x::T, y::T) = (x + y - abs(x - y))/2
+function max{T<:ArbFloat}(x::T, y::T)
+    return (x + y + abs(x - y))/2
+end
+
+function min{T<:ArbFloat}(x::T, y::T)
+    return (x + y - abs(x - y))/2
+end
 
 function min2{T<:ArbFloat}(x::T, y::T)
     return
         if donotoverlap(x,y)
-            x < y ? x : y
+            return x < y ? x : y
         else
             xlo, xhi = bounds(x)
             ylo, yhi = bounds(y)
             lo,hi = min(xlo, ylo), min(xhi, yhi)
             md = (hi+lo)/2
             rd = (hi-lo)/2
-            midpoint_radius(md, rd)
+            return midpoint_radius(md, rd)
         end
 end
 
 function max2{T<:ArbFloat}(x::T, y::T)
     return
         if donotoverlap(x,y)
-            x > y ? x : y
+            return x > y ? x : y
         else
             xlo, xhi = bounds(x)
             ylo, yhi = bounds(y)
             lo,hi = max(xlo, ylo), max(xhi, yhi)
             md = (hi+lo)/2
             rd = (hi-lo)/2
-            midpoint_radius(md, rd)
+            return midpoint_radius(md, rd)
         end
 end
 
