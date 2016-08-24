@@ -15,7 +15,12 @@ end
 
 # for sorted ordering
 isequal{T<:ArbFloat}(a::T, b::T) = !(a != b)
-isless{ T<:ArbFloat}(a::T, b::T) = !(a >= b)
+isless{ T<:ArbFloat}(a::T, b::T) = b == max(a,b) # !(a >= b)
+isequal{T<:ArbFloat}(a::Void, b::T) = false
+isequal{T<:ArbFloat}(a::T, b::Void) = false
+isless{ T<:ArbFloat}(a::Void, b::T) = true
+isless{ T<:ArbFloat}(a::T, b::Void) = true
+
 
 
 # experimental ≖ ≗
