@@ -209,6 +209,10 @@ for T in (:Float64, :Float32)
           throw(DomainError)
       end
     end
+    function convert{A<:ArbFloat}(::Type{$T}, x::A)
+        P = precision(A)
+        return convert{P}($T, x)
+    end
   end
 end
 
