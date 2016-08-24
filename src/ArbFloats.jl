@@ -23,7 +23,7 @@ import Base: hash, convert, promote_rule, isa,
     sinh, cosh, tanh, csch, sech, coth, asinh, acosh, atanh,
     sinc, gamma, lgamma, digamma, zeta, factorial,
     union, intersect,
-    BigInt, BigFloat,
+    BigInt, BigFloat, Float64, Float32, Int128, Int64, Int32, Rational,
     Cint
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
