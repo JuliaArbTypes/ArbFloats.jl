@@ -70,7 +70,7 @@ intersect{T<:ArbFloat}(a::T) = a
 
 function intersect{T<:ArbFloat}(a::T, b::T)
     P = precision(T)
-    z = initializer(ArbFloat{P})
+    z = ArbFloat{P}()
     if donotoverlap(a,b)
         ccall(@libarb(arb_indeterminate), Void, (Ptr{T},), &z)
     else

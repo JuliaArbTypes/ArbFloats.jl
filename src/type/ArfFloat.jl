@@ -123,7 +123,7 @@ function convert{P}(::Type{BigFloat}, x::ArfFloat{P})
 end
 
 function convert{P}(::Type{ArfFloat{P}}, x::BigFloat)
-    z = initializer(ArfFloat{P})
+    z = ArfFloat{P}()
     ccall(@libarb(arf_set_mpfr), Void, (Ptr{ArfFloat{P}}, Ptr{BigFloat}), &z, &x)
     z
 end
@@ -133,14 +133,14 @@ convert{T<:ArfFloat}(::Type{T}, x::BigInt) = convert(T, convert(BigFloat, x))
 convert{P}(::Type{ArfFloat{P}}, x::BigInt) = convert(ArfFloat{P}, convert(BigFloat, x))
 
 function convert{P}(::Type{ArfFloat{P}}, x::Int64)
-    z = initializer(ArfFloat{P})
+    z = ArfFloat{P}()
     ccall(@libarb(arf_set_si), Void, (Ptr{ArfFloat{P}}, Ptr{Int64}), &z, &x)
     z
 end
 convert(::Type{ArfFloat}, x::Int64) = convert(ArfFloat{precision(ArfFloat)}, x)
 
 function convert{P}(::Type{ArfFloat{P}}, x::Float64)
-    z = initializer(ArfFloat{P})
+    z = ArfFloat{P}()
     ccall(@libarb(arf_set_d), Void, (Ptr{ArfFloat{P}}, Ptr{Float64}), &z, &x)
     z
 end
@@ -161,7 +161,7 @@ radius{P}(x::ArfFloat{P}) = zero(ArfFloat{P})
 
 function round{T<:ArfFloat}(x::T, prec::Int64)
     P = precision(T)
-    z = initializer(ArfFloat{P})
+    z = ArfFloat{P}()
     ccall(@libarb(arf_set_round), Int, (Ptr{T}, Ptr{T}, Int64, Int), &z, &x, prec, 2)
     return z
 end
@@ -169,7 +169,7 @@ end
 
 #=
 function frexp{P}(x::ArfFloat{P})
-   significand = initializer(ArfFloat{P})
+   significand = ArfFloat{P}()
    exponentOf2 = zero(Int64)
    ccall(@libarb(arf_frexp), Void, (Ptr{ArfFloat{P}}, Int64, Ptr{ArfFloat{P}}), &significand, exponentOf2, &x)
    significand, exponentOf2

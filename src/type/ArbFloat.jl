@@ -60,14 +60,14 @@ realmin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}(2)^(-P-29)
 
 function midpoint{T<:ArbFloat}(x::T)
     P = precision(T)
-    z = initializer(ArbFloat{P})
+    z = ArbFloat{P}()
     ccall(@libarb(arb_get_mid_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     z
 end
 
 function radius{T<:ArbFloat}(x::T)
     P = precision(T)
-    z = initializer(ArbFloat{P})
+    z = ArbFloat{P}()
     ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     z
 end
@@ -75,7 +75,7 @@ end
 function upperbound{P}(x::ArbFloat{P})
     a = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
-    z = initializer(ArbFloat{P})
+    z = ArbFloat{P}()
     ccall(@libarb(arb_get_ubound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, P)
     ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
     ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
@@ -85,7 +85,7 @@ end
 function lowerbound{P}(x::ArbFloat{P})
     a = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
-    z = initializer(ArbFloat{P})
+    z = ArbFloat{P}()
     ccall(@libarb(arb_get_lbound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, P)
     ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
     ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
@@ -98,7 +98,7 @@ function upperBound{T<:ArbFloat}(x::T, prec::Int)
     P = precision(T)
     a = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
-    z = initializer(ArbFloat{P})
+    z = ArbFloat{P}()
     ccall(@libarb(arb_get_ubound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, prec)
     ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
     ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
@@ -109,7 +109,7 @@ function lowerBound{T<:ArbFloat}(x::T, prec::Int)
     P = precision(T)
     a = ArfFloat{P}(0,0,0,0)
     ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}},), &a)
-    z = initializer(ArbFloat{P})
+    z = ArbFloat{P}()
     ccall(@libarb(arb_get_lbound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, prec)
     ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
     ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
@@ -143,7 +143,7 @@ function midpointPrecision{P}(x::ArbFloat{P})
 end
 
 function trimmedAccuracy{P}(x::ArbFloat{P})
-    z = initializer(ArbFloat{P})
+    z = ArbFloat{P}()
     ccall(@libarb(arb_trim), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     z
 end
