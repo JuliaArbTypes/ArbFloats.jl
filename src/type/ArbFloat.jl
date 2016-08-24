@@ -119,8 +119,17 @@ lohiBounds{T<:ArbFloat}(x::T, prec::Int) = ( lowerBound(x, prec), upperBound(x, 
 
 
 
+function min{T<:ArbFloat}(x::T, y::T)
+    return ((x<=y) | !(y>x)) ? x : y
+end
+
+function max{T<:ArbFloat}(x::T, y::T)
+    return ((x>=y) | !(y<x)) ? x : y
+end
+
+
 function minmax{P}(x::ArbFloat{P}, y::ArbFloat{P})
-   x < y ? (x,y) : (y,x)
+   ((x<=y) | !(y>x)) ? (x,y) : (y,x)
 end
 
 function relativeError{P}(x::ArbFloat{P})
