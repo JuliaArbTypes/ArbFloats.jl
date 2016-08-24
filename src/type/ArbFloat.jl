@@ -133,7 +133,7 @@ end
 function min{T<:ArbFloat}(x::T, y::T)
     return (x + y - abs(x - y))/2
 end
-
+#=
 function min2{T<:ArbFloat}(x::T, y::T)
     return
         if donotoverlap(x,y)
@@ -161,7 +161,7 @@ function max2{T<:ArbFloat}(x::T, y::T)
             return midpoint_radius(md, rd)
         end
 end
-
+=#
 #=
 function max{T<:ArbFloat}(x::T, y::T)
     return ((x>=y) | !(y<x)) ? x : y
