@@ -166,3 +166,13 @@ function frexp{P}(x::ArfFloat{P})
    significand, exponentOf2
 end
 =#
+
+function min{T<:ArfFloat}(x::T, y::T)
+    c = ccall(@libarb(arf_cmp), Cint, (Ptr{T}, Ptr{T}), &x, &y)
+    return (c < 0) ? x : y
+end
+
+function max{T<:ArfFloat}(x::T, y::T)
+    c = ccall(@libarb(arf_cmp), Cint, (Ptr{T}, Ptr{T}), &x, &y)
+    return (c > 0) ? x : y
+end
