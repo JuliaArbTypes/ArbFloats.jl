@@ -11,12 +11,12 @@ function string{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)
             s = string(s, "0")
         end
     else
-        s = String(split(s, '.')[1])
+        s = string(split(s, '.')[1])
     end
     return s
 end
 
-function String{P}(x::ArbFloat{P}, flags::UInt)
+function string{P}(x::ArbFloat{P}, flags::UInt)
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt),
                  &x, digitsRequired(P), flags)
     s = unsafe_string(cstr)
@@ -27,7 +27,7 @@ function String{P}(x::ArbFloat{P}, flags::UInt)
             s = string(s, "0")
         end
     else
-        s = String(split(s, '.')[1])
+        s = string(split(s, '.')[1])
     end
     return s
 end
@@ -40,7 +40,7 @@ end
 
 # n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
 function string{P}(x::ArbFloat{P})
-    s = String(x,UInt(2)) # midpoint only (within 1ulp), RoundNearest
+    s = string(x,UInt(2)) # midpoint only (within 1ulp), RoundNearest
     return s
 end
 
