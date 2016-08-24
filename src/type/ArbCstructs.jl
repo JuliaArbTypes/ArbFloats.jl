@@ -20,9 +20,6 @@ function c_release_mag(x::MagFloat)
   ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
 end
 
-function c_release_arf{P}(x::ArfFloat{P})
-  ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
-end
 
 
     #       P is the precision in bits as a parameter
@@ -41,8 +38,9 @@ type ArfFloat{P} <: AbstractFloat
     end
 end
 
-function c_release_arb{P}(x::ArbFloat{P})
-  ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
+
+function c_release_arf{P}(x::ArfFloat{P})
+  ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
 end
 
     #       P is the precision in bits as a parameter
@@ -65,3 +63,6 @@ type ArbFloat{P} <: AbstractFloat
     end
 end
 
+function c_release_arb{P}(x::ArbFloat{P})
+  ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
+end
