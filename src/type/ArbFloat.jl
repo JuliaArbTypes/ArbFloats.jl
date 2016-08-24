@@ -88,7 +88,7 @@ function upperbound{P}(x::ArbFloat{P})
     z = ArbFloat{P}()
     ccall(@libarb(arb_get_ubound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, P)
     ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
-    ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
+    # ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
     z
 end
 
@@ -97,7 +97,7 @@ function lowerbound{P}(x::ArbFloat{P})
     z = ArbFloat{P}()
     ccall(@libarb(arb_get_lbound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, P)
     ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
-    ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
+    # ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
     z
 end
 
@@ -109,7 +109,7 @@ function upperBound{T<:ArbFloat}(x::T, prec::Int)
     z = ArbFloat{P}()
     ccall(@libarb(arb_get_ubound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, prec)
     ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
-    ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
+    # ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
     z
 end
 
@@ -119,7 +119,7 @@ function lowerBound{T<:ArbFloat}(x::T, prec::Int)
     z = ArbFloat{P}()
     ccall(@libarb(arb_get_lbound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, prec)
     ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
-    ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
+    # ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}},), &a)
     z
 end
 
