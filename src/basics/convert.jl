@@ -272,10 +272,7 @@ promote_rule{P,Q}(::Type{ArbFloat{P}}, ::Type{ArbFloat{Q}}) =
 @vectorize_1arg(Int128, ArbFloat)
 @vectorize_1arg(Int64, ArbFloat)
 @vectorize_1arg(Int32, ArbFloat)
-@vectorize_1arg(Rational{BigInt}, ArbFloat)
-@vectorize_1arg(Rational{Int128}, ArbFloat)
-@vectorize_1arg(Rational{Int64}, ArbFloat)
-@vectorize_1arg(Rational{Int32}, ArbFloat)
+@vectorize_1arg(Rational, ArbFloat)
 
 @vectorize_1arg(ArbFloat, Float64)
 @vectorize_1arg(ArbFloat, Float32)
@@ -283,7 +280,5 @@ promote_rule{P,Q}(::Type{ArbFloat{P}}, ::Type{ArbFloat{Q}}) =
 @vectorize_1arg(ArbFloat, Int128)
 @vectorize_1arg(ArbFloat, Int64)
 @vectorize_1arg(ArbFloat, Int32)
-@vectorize_1arg(ArbFloat, Rational{BigInt})
-@vectorize_1arg(ArbFloat, Rational{Int128})
-@vectorize_1arg(ArbFloat, Rational{Int64})
-@vectorize_1arg(ArbFloat, Rational{Int32})
+@vectorize_1arg(ArbFloat, Rational)
+
