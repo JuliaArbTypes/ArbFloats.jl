@@ -139,7 +139,7 @@ end
 
 function stringall{P}(x::ArbFloat{P})
     return (isexact(x) ? string(midpoint(x)) :
-              string(midpoint(x)," ± ", string(radius(x),10)))
+              string(midpoint(x)," ± ", string(radius(x))))
 end
 
 function stringcompact{P}(x::ArbFloat{P})
