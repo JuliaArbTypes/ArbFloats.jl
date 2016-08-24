@@ -4,7 +4,7 @@ function string{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)
     n = max(1,min(abs(ndigits), digitsRequired(P)))
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, flags)
     s = unsafe_string(cstr)
-    ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
+    #ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
     if !isinteger(x)
         s = rstrip(s, '0')
         if s[end]=='.'
@@ -20,7 +20,7 @@ function string{P}(x::ArbFloat{P}, flags::UInt)
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt),
                  &x, digitsRequired(P), flags)
     s = unsafe_string(cstr)
-    ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
+    #ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
     if !isinteger(x)
         s = rstrip(s, '0')
         if s[end]=='.'
