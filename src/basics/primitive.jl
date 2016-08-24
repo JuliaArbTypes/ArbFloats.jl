@@ -1,6 +1,6 @@
 
 function zero{P}(::Type{ArbFloat{P}})
-    z = initializer(ArbFloat{P})
+    z = ArbFloat{P}()
     return z
 end
 function zero(::Type{ArbFloat})
@@ -9,7 +9,7 @@ function zero(::Type{ArbFloat})
 end
 
 function one{P}(::Type{ArbFloat{P}})
-    z = initializer(ArbFloat{P})
+    z = ArbFloat{P}()
     z.exponentOf2 = 1
     z.nwords_sign = 2
     z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
@@ -23,7 +23,7 @@ end
 for (op, i) in ((:two,:2), (:three,:3), (:four, :4))
   @eval begin
     function ($op){P}(::Type{ArbFloat{P}})
-        z = initializer(ArbFloat{P})
+        z = ArbFloat{P}()
         ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat}, Int), &z, $i)
         return z
     end
