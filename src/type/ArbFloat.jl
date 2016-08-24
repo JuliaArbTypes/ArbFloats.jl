@@ -126,8 +126,10 @@ end
 lohiBounds{T<:ArbFloat}(x::T, prec::Int) = ( lowerBound(x, prec), upperBound(x, prec) )
 
 
+max{T<:ArbFloat}(x::T, y::T) = (x + y + abs(x - y))/2
+min{T<:ArbFloat}(x::T, y::T) = (x + y - abs(x - y))/2
 
-function min{T<:ArbFloat}(x::T, y::T)
+function min2{T<:ArbFloat}(x::T, y::T)
     return
         if donotoverlap(x,y)
             x < y ? x : y
@@ -141,7 +143,7 @@ function min{T<:ArbFloat}(x::T, y::T)
         end
 end
 
-function max{T<:ArbFloat}(x::T, y::T)
+function max2{T<:ArbFloat}(x::T, y::T)
     return
         if donotoverlap(x,y)
             x > y ? x : y
