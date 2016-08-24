@@ -21,7 +21,7 @@ union{T<:ArbFloat}(a::T) = a
 
 function union{T<:ArbFloat}(a::T, b::T)
     P = precision(T)
-    z = initializer(T)
+    z = ArbFloat{P}{}
     ccall(@libarb(arb_union), Void, (Ptr{T}, Ptr{T}, Ptr{T}, Clong), &z, &a, &b, P)
     return z
 end
@@ -101,11 +101,13 @@ function bounded{P}(z::ArbFloat{P}, lo::ArbFloat{P}, hi::ArbFloat{P})
     return z
 end
 function bounded{T<:ArbFloat}(lo::T, hi::T)
-    z = initializer(T)
+    P = precision(T)
+    z = ArbFloat{P}()
     return bounded(z,lo,hi)
 end
 function boundedrange{T<:ArbFloat}(mid::T, rad::T)
-    z = initializer(T)
+    P = precision(T)
+    z = ArbFloat{P}()
     lo = mid-rad
     hi = mid+rad
     return bounded(z,lo,hi)

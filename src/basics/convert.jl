@@ -107,7 +107,8 @@ convert{P}(::Type{ArbFloat{P}}, x::Int16) = convert(ArbFloat{P}, Cint(x))
 
 
 function convert{T<:ArbFloat}(::Type{T}, x::Float64)
-    z = initializer(T)
+    P = precision(T)
+    z = ArbFloat{P}()
     ccall(@libarb(arb_set_d), Void, (Ptr{T}, Float64), &z, x)
     return z
 end
@@ -188,7 +189,8 @@ for F in (:BigInt, :Rational)
 end
 
 function convert{T<:ArbFloat,S}(::Type{T}, x::Irrational{S})
-    a = initializer(T)
+    P = precision(T)
+    a = ArbFloat{P}()
     setprecision(BigFloat, precision(T)+24) do
          a = convert(T, BigFloat(x))
     end
