@@ -70,17 +70,17 @@ function midpoint{T<:ArbFloat}(x::T)
 end
 
 function radius{T<:ArbFloat}(x::T)
-    P = precision(T)
-    z = ArbFloat{P}()
-    z.exponentOf2 = x.radius_exponentOf2
-    z.nwords_sign = x.radius_significand
+    #P = precision(T)
+    z = T() #ArbFloat{P}()
+    #z.exponentOf2 = x.radius_exponentOf2
+    #z.nwords_sign = x.radius_significand
     # z.significand1 = x.significand1
     # z.significand2 = x.significand2
     #z.radius_exponentOf2 = zero(Int)
     #z.radius_significand = zero(UInt)
+    #return z
+    ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     return z
-    #ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-    z
 end
 
 function upperbound{P}(x::ArbFloat{P})
