@@ -92,7 +92,8 @@ function convert{P,U<:Union{UInt64,Culong}}(::Type{ArbFloat{P}}, x::U)
     z = x<=typemax(UInt32) ? convert(ArbFloat{P}, UInt32(x)) : ArbFloat{P}(string(x))
     return z
 end
-convert{P}(::Type{ArbFloat{P}}, x::UInt16) = convert(ArbFloat{P}, Cuint(x))
+convert{P}(::Type{ArbFloat{P}}, x::UInt16) = convert(ArbFloat{P}, UInt32(x))
+convert{P}(::Type{ArbFloat{P}}, x::UInt8) = convert(ArbFloat{P}, UInt32(x))
 
 function convert{P,I<:Union{Int32,Cint}}(::Type{ArbFloat{P}}, x::I)
     z = ArbFloat{P}()
@@ -103,7 +104,8 @@ function convert{P,I<:Union{Int64,Clong}}(::Type{ArbFloat{P}}, x::I)
     z = x<=typemax(Int32) ? convert(ArbFloat{P}, Int32(x)) : ArbFloat{P}(string(x))
     return z
 end
-convert{P}(::Type{ArbFloat{P}}, x::Int16) = convert(ArbFloat{P}, Cint(x))
+convert{P}(::Type{ArbFloat{P}}, x::Int16) = convert(ArbFloat{P}, Int32(x))
+convert{P}(::Type{ArbFloat{P}}, x::Int8) = convert(ArbFloat{P}, Int32(x))
 
 
 function convert{T<:ArbFloat}(::Type{T}, x::Float64)
@@ -220,7 +222,7 @@ function convert{P}(::Type{BigInt}, x::ArbFloat{P})
    z = trunc(convert(BigFloat, x))
    return convert(BigInt, z)
 end
-for T in (:Int128, :Int64, :Int32, :Int16)
+for T in (:Int128, :Int64, :Int32, :Int16, :Int8)
   @eval begin
     function convert{P}(::Type{$T}, x::ArbFloat{P})
       z = convert(BigInt, trunc(x))
@@ -230,7 +232,7 @@ for T in (:Int128, :Int64, :Int32, :Int16)
 end
 
 
-for N in (:Int128, :Int64, :Int32, :Int16,
+for N in (:Int128, :Int16, :Int8,
           :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),)
   @eval convert{T<:ArbFloat}(::Type{T}, x::$N) = convert(ArbFloat{precision(ArbFloat)}, x)
 end
