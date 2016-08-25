@@ -218,8 +218,14 @@ ulp10{T<:AbstractFloat}(x::T) = ulp10( x, (1+Base.significand_bits(T)) )
 ulp10(x::Integer) = ulp10(Float64(x))
 
 
-eps{P}(::Type{ArbFloat{P}}) = ldexp(0.5,1-P) # for intertype workings
-function eps{P}(x::ArbFloat{P})              # for intratype workings
+function eps{T<:ArbFloat}(x::T)
+    ieps = internal_eps(x)
+    return T(ieps)
+end
+eps{P}(x::ArbFloat{P}) = ArbFloat{P}( internal_eps(x) )
+
+internal_eps{P}(::Type{ArbFloat{P}}) = ldexp(0.5,1-P) # for intertype workings
+function internal_eps{P}(x::ArbFloat{P})              # for intratype workings
     m,r = midpoint(x), radius(x)
     z =
         if iszero(m)
