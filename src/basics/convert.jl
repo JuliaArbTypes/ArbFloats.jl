@@ -95,23 +95,22 @@ function convert{T<:ArbFloat}(::Type{T}, x::Int32)
 end
 
 function convert{T<:ArbFloat}(::Type{T}, x::UInt64)
-    z = x<=typemax(UInt32) ? convert(ArbFloat{P}, UInt32(x)) : T(string(x))
+    z = x<=typemax(UInt32) ? convert(T, UInt32(x)) : T(string(x))
     return z
 end
-convert{T<:ArbFloat}(::Type{T}, x::UInt16) = convert(ArbFloat{P}, UInt32(x))
-convert{T<:ArbFloat}(::Type{T}, x::UInt8) = convert(ArbFloat{P}, UInt32(x))
+convert{T<:ArbFloat}(::Type{T}, x::UInt16) = convert(T, UInt32(x))
+convert{T<:ArbFloat}(::Type{T}, x::UInt8) = convert(T, UInt32(x))
 
 function convert{T<:ArbFloat}(::Type{T}, x::Int64)
-    z = (abs(x)<=typemax(Int32)) ? convert(ArbFloat{P}, Int32(x)) : T(string(x))
+    z = (abs(x)<=typemax(Int32)) ? convert(T, Int32(x)) : T(string(x))
     return z
 end
-convert{T<:ArbFloat}(::Type{T}, x::Int16) = convert(ArbFloat{P}, Int32(x))
-convert{T<:ArbFloat}(::Type{T}, x::Int8) = convert(ArbFloat{P}, Int32(x))
+convert{T<:ArbFloat}(::Type{T}, x::Int16) = convert(T, Int32(x))
+convert{T<:ArbFloat}(::Type{T}, x::Int8) = convert(T, Int32(x))
 
 
 function convert{T<:ArbFloat}(::Type{T}, x::Float64)
-    P = precision(T)
-    z = ArbFloat{P}()
+    z = T()
     ccall(@libarb(arb_set_d), Void, (Ptr{T}, Float64), &z, x)
     return z
 end
@@ -119,15 +118,10 @@ convert{T<:ArbFloat}(::Type{T}, x::Float32) = convert(T, convert(Float64,x))
 convert{T<:ArbFloat}(::Type{T}, x::Float16) = convert(T, convert(Float64,x))
 
 
-function convert{P}(::Type{ArbFloat{P}}, x::String)
-    # s = String(x)
-    z = ArbFloat{P}()
+function convert{T<:ArbFloat}(::Type{T}, x::String)
+    z = T()
     ccall(@libarb(arb_set_str), Void, (Ptr{ArbFloat}, Ptr{UInt8}, Int), &z, x, P)
     return z
-end
-function convert{T<:ArbFloat}(::Type{T}, x::String)
-    P = precision(T)
-    return convert(ArbFloat{P}, x)
 end
 
 convert(::Type{BigInt}, x::String) = parse(BigInt,x)
