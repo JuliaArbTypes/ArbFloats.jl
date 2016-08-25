@@ -121,7 +121,7 @@ convert{T<:ArbFloat}(::Type{T}, x::Float32) = convert(T, convert(Float64,x))
 convert{T<:ArbFloat}(::Type{T}, x::Float16) = convert(T, convert(Float64,x))
 
 function convert{T<:ArbFloat}(::Type{Float64}, x::T)
-    ptr2mid = ccall(@libarb(arb_mid_ptr), Ptr{ArfFloat}, (Ptr{T}, ), &x)
+    ptr2mid = ptr_to_midpoint(x)
     fl = ccall(@libarb(arf_get_d), Float64, (Ptr{ArfFloat}, Int), ptr2mid, 4) # round nearest
     return fl
 end
@@ -133,6 +133,47 @@ function convert{T<:ArbFloat}(::Type{Float16}, x::T)
     return convert(Float16, convert(Float64, x))
 end
 
+for I in (:UInt64, :UInt128)
+  @eval begin
+    function convert{T<:ArbFloat}(::Type{$I}, x::T)
+        if isinteger(x)
+           if notnegative(x)
+               return convert($I, convert(BigInt,x))
+           else
+               throw DomainError()
+           end
+        else
+           throw InexactError()
+        end
+    end
+end
+
+convert{T<:ArbFloat}(::Type{UInt32}, x::T) = convert(UInt32, convert(UInt64,x))
+convert{T<:ArbFloat}(::Type{UInt16}, x::T) = convert(UInt16, convert(UInt64,x))
+convert{T<:ArbFloat}(::Type{UInt8}, x::T) = convert(UInt8, convert(UInt64,x))
+
+for I in (:Int64, :Int128)
+  @eval begin
+    function convert{T<:ArbFloat}(::Type{$I}, x::T)
+        if isinteger(x)
+           return convert($I, convert(BigInt,x))
+        else
+           throw InexactError()
+        end
+    end
+end
+
+convert{T<:ArbFloat}(::Type{Int32}, x::T) = convert(Int32, convert(Int64,x))
+convert{T<:ArbFloat}(::Type{Int16}, x::T) = convert(Int16, convert(Int64,x))
+convert{T<:ArbFloat}(::Type{Int8}, x::T) = convert(Int8, convert(Int64,x))
+
+function parse{T<:ArbFloat}(::Type{T}, x::String)
+    return T(x)
+end
+
+
+
+# =================
 
 
 
