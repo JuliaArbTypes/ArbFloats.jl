@@ -129,17 +129,11 @@ function convert{T<:ArbFloat}(::Type{Float64}, x::T)
     return ccall(@libarb(arf_get_d), Float64, (Ptr{ArfFloat{P}}, Int), &y, 4)
 end
 
-
-
-function convert{T<ArbFloat}(::Type{Float32}, x::T)
-    fl = convert(Float64, x)
-    z  = convert(Float32, fl)
-    return z
+function convert{T<:ArbFloat}(::Type{Float32}, x::T)
+    return convert(Float32, convert(Float64, x))
 end
-function convert{T<ArbFloat}(::Type{Float16}, x::T)
-    fl = convert(Float64, x)
-    z  = convert(Float16, fl)
-    return z
+function convert{T<:ArbFloat}(::Type{Float16}, x::T)
+    return convert(Float16, convert(Float64, x))
 end
 
 
