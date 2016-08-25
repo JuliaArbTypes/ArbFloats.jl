@@ -83,24 +83,24 @@ end
 
 # convert ArbFloat with other types
 
-function convert{P}(::Type{ArbFloat{P}}, x::Cuint)
+function convert{P,U<:Union{UInt32,Cuint}}(::Type{ArbFloat{P}}, x::U)
     z = ArbFloat{P}()
-    ccall(@libarb(arb_set_ui), Void, (Ptr{ArbFloat{P}}, UInt), &z, x)
+    ccall(@libarb(arb_set_ui), Void, (Ptr{ArbFloat{P}}, UInt32), &z, x)
     return z
 end
-function convert{P}(::Type{ArbFloat{P}}, x::Culong)
-    z = x<=typemax(Cuint) ? convert(ArbFloat{P}, Cuint(x)) : ArbFloat{P}(string(x))
+function convert{P,U<:Union{UInt64,Culong}}(::Type{ArbFloat{P}}, x::U)
+    z = x<=typemax(UInt32) ? convert(ArbFloat{P}, UInt32(x)) : ArbFloat{P}(string(x))
     return z
 end
 convert{P}(::Type{ArbFloat{P}}, x::UInt16) = convert(ArbFloat{P}, Cuint(x))
 
-function convert{P}(::Type{ArbFloat{P}}, x::Cint)
+function convert{P,I<:Union{Int32,Cint}}(::Type{ArbFloat{P}}, x::I)
     z = ArbFloat{P}()
-    ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat{P}}, Cint), &z, x)
+    ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat{P}}, Int32), &z, x)
     return z
 end
-function convert{P}(::Type{ArbFloat{P}}, x::Clong)
-    z = x<=typemax(Cuint) ? convert(ArbFloat{P}, Cint(x)) : ArbFloat{P}(string(x))
+function convert{P,I<:Union{Int64,Clong}}(::Type{ArbFloat{P}}, x::I)
+    z = x<=typemax(Int32) ? convert(ArbFloat{P}, Int32(x)) : ArbFloat{P}(string(x))
     return z
 end
 convert{P}(::Type{ArbFloat{P}}, x::Int16) = convert(ArbFloat{P}, Cint(x))
