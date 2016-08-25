@@ -122,8 +122,7 @@ convert{T<:ArbFloat}(::Type{T}, x::Float16) = convert(T, convert(Float64,x))
 
 function convert{T<:ArbFloat}(::Type{Float64}, x::T)
     P = precision(T)
-    z = T()
-    ccall(@libarb(arb_get_mid_arb), Void, (Ptr{T}, Ptr{T}), &z, &x)
+    z = midpoint(x)
     y = convert(ArfFloat{P},z)
     # 4 == round to nearest
     fl = ccall(@libarb(arf_get_d), Float64, (Ptr{ArfFloat{P}}, Cint), &y, 4)
