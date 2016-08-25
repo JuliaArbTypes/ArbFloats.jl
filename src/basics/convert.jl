@@ -94,29 +94,31 @@ function convert{T<:ArbFloat}(::Type{T}, x::Int64)
     return z
 end
 
-convert{T<:ArbFloat}(::Type{T}, x::UInt32) = convert(T, x%UInt64)
-convert{T<:ArbFloat}(::Type{T}, x::UInt16) = convert(T, x%UInt64)
-convert{T<:ArbFloat}(::Type{T}, x::UInt8) = convert(T, x%UInt64)
-
-convert{T<:ArbFloat}(::Type{T}, x::Int32) = convert(T, x%Int64)
-convert{T<:ArbFloat}(::Type{T}, x::Int16) = convert(T, x%Int64)
-convert{T<:ArbFloat}(::Type{T}, x::Int8) = convert(T, x%Int64)
-
-
 function convert{T<:ArbFloat}(::Type{T}, x::Float64)
     z = T()
     ccall(@libarb(arb_set_d), Void, (Ptr{T}, Float64), &z, x)
     return z
 end
-convert{T<:ArbFloat}(::Type{T}, x::Float32) = convert(T, convert(Float64,x))
-convert{T<:ArbFloat}(::Type{T}, x::Float16) = convert(T, convert(Float64,x))
-
 
 function convert{T<:ArbFloat}(::Type{T}, x::String)
     z = T()
     ccall(@libarb(arb_set_str), Void, (Ptr{ArbFloat}, Ptr{UInt8}, Int), &z, x, P)
     return z
 end
+
+convert{T<:ArbFloat}(::Type{T}, x::UInt32)  = convert(T, x%UInt64)
+convert{T<:ArbFloat}(::Type{T}, x::UInt16)  = convert(T, x%UInt64)
+convert{T<:ArbFloat}(::Type{T}, x::UInt8)   = convert(T, x%UInt64)
+convert{T<:ArbFloat}(::Type{T}, x::UInt128) = convert(T, string(x))
+
+convert{T<:ArbFloat}(::Type{T}, x::Int32)  = convert(T, x%Int64)
+convert{T<:ArbFloat}(::Type{T}, x::Int16)  = convert(T, x%Int64)
+convert{T<:ArbFloat}(::Type{T}, x::Int8)   = convert(T, x%Int64)
+convert{T<:ArbFloat}(::Type{T}, x::Int128) = convert(T, string(x))
+
+convert{T<:ArbFloat}(::Type{T}, x::Float32) = convert(T, convert(Float64,x))
+convert{T<:ArbFloat}(::Type{T}, x::Float16) = convert(T, convert(Float64,x))
+
 
 convert(::Type{BigInt}, x::String) = parse(BigInt,x)
 convert(::Type{BigFloat}, x::String) = parse(BigFloat,x)
@@ -192,6 +194,7 @@ end
 
 for T in (:Float64, :Float32)
   @eval begin
+#=
     function convert{P}(::Type{$T}, x::ArbFloat{P})
       s = smartarbstring(x)
       try
@@ -200,6 +203,7 @@ for T in (:Float64, :Float32)
           throw(DomainError)
       end
     end
+=#
     function convert{A<:ArbFloat}(::Type{$T}, x::A)
         P = precision(A)
         return convert{P}($T, x)
@@ -211,18 +215,9 @@ function convert{P}(::Type{BigInt}, x::ArbFloat{P})
    z = trunc(convert(BigFloat, x))
    return convert(BigInt, z)
 end
-for T in (:Int128, :Int64, :Int32, :Int16, :Int8)
-  @eval begin
-    function convert{P}(::Type{$T}, x::ArbFloat{P})
-      z = convert(BigInt, trunc(x))
-      return ($T)(z)
-    end
-  end
-end
 
 
-for N in (:Int128,
-          :(Rational{Int128}), :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),)
+for N in (:(Rational{Int128}), :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),)
   @eval convert{T<:ArbFloat}(::Type{T}, x::$N) = convert(ArbFloat{precision(ArbFloat)}, x)
 end
 
