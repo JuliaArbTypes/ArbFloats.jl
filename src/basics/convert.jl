@@ -101,8 +101,9 @@ function convert{T<:ArbFloat}(::Type{T}, x::Float64)
 end
 
 function convert{T<:ArbFloat}(::Type{T}, x::String)
+    P = precision(T)
     z = T()
-    ccall(@libarb(arb_set_str), Void, (Ptr{ArbFloat}, Ptr{UInt8}, Int), &z, x, P)
+    ccall(@libarb(arb_set_str), Void, (Ptr{T}, Ptr{UInt8}, Int), &z, &x, P)
     return z
 end
 
