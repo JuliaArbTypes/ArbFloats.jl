@@ -57,6 +57,13 @@ realmin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}(2)^(-P-29)
 # parts and aspects
 # midpoint, radius, lowerbound, upperbound, bounds
 
+@inline function ptr_to_midpoint{T<:ArbFloat}(x::T) # Ptr{ArfFloat}
+    return ccall(@libarb(arb_mid_ptr), Ptr{ArfFloat}, (Ptr{T}, ), &x)
+end
+@inline function ptr_to_radius{T<:ArbFloat}(x::T) # Ptr{ArfFloat}
+    return ccall(@libarb(arb_rad_ptr), Ptr{ArfFloat}, (Ptr{T}, ), &x)
+end
+
 function midpoint{T<:ArbFloat}(x::T)
     z = T()
     ccall(@libarb(arb_get_mid_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
