@@ -85,24 +85,24 @@ end
 
 function convert{T<:ArbFloat}(::Type{T}, x::UInt32)
     z = T()
-    ccall(@libarb(arb_set_ui), Void, (Ptr{ArbFloat{P}}, UInt32), &z, x)
+    ccall(@libarb(arb_set_ui), Void, (Ptr{T}, UInt32), &z, x)
     return z
 end
 function convert{T<:ArbFloat}(::Type{T}, x::Int32)
     z = T()
-    ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat{P}}, Int32), &z, x)
+    ccall(@libarb(arb_set_si), Void, (Ptr{T}, Int32), &z, x)
     return z
 end
 
 function convert{T<:ArbFloat}(::Type{T}, x::UInt64)
-    z = x<=typemax(UInt32) ? convert(ArbFloat{P}, UInt32(x)) : ArbFloat{P}(string(x))
+    z = x<=typemax(UInt32) ? convert(ArbFloat{P}, UInt32(x)) : T(string(x))
     return z
 end
 convert{T<:ArbFloat}(::Type{T}, x::UInt16) = convert(ArbFloat{P}, UInt32(x))
 convert{T<:ArbFloat}(::Type{T}, x::UInt8) = convert(ArbFloat{P}, UInt32(x))
 
 function convert{T<:ArbFloat}(::Type{T}, x::Int64)
-    z = (abs(x)<=typemax(Int32)) ? convert(ArbFloat{P}, Int32(x)) : ArbFloat{P}(string(x))
+    z = (abs(x)<=typemax(Int32)) ? convert(ArbFloat{P}, Int32(x)) : T(string(x))
     return z
 end
 convert{T<:ArbFloat}(::Type{T}, x::Int16) = convert(ArbFloat{P}, Int32(x))
