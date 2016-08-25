@@ -223,7 +223,9 @@ function eps{T<:ArbFloat}(x::T)
     return T(ieps)
 end
 eps{P}(x::ArbFloat{P}) = ArbFloat{P}( internal_eps(x) )
+eps{T<:ArbFloat}(::Type{T}) = T(internal_eps(T))
 
+internal_eps{T<:ArbFloat}(::Type{T}) = ldexp(0.5,1-precision(T)) # for intertype workings
 internal_eps{P}(::Type{ArbFloat{P}}) = ldexp(0.5,1-P) # for intertype workings
 function internal_eps{P}(x::ArbFloat{P})              # for intratype workings
     m,r = midpoint(x), radius(x)
