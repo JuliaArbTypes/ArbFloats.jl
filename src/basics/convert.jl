@@ -129,6 +129,22 @@ function convert{T<:ArbFloat}(::Type{Float64}, x::T)
     return ccall(@libarb(arf_get_d), Float64, (Ptr{ArfFloat{P}}, Int), &y, 4)
 end
 
+
+
+function convert{T<ArbFloat}(::Type{Float32}, x::T)
+    fl = convert(Float64, x)
+    z  = convert(Float32, fl)
+    return z
+end
+function convert{T<ArbFloat}(::Type{Float16}, x::T)
+    fl = convert(Float64, x)
+    z  = convert(Float16, fl)
+    return z
+end
+
+
+
+
 convert(::Type{BigInt}, x::String) = parse(BigInt,x)
 convert(::Type{BigFloat}, x::String) = parse(BigFloat,x)
 
@@ -199,26 +215,6 @@ function convert{T<:ArbFloat,S}(::Type{T}, x::Irrational{S})
     return a
 end
 
-
-
-for T in (:Float64, :Float32)
-  @eval begin
-#=
-    function convert{P}(::Type{$T}, x::ArbFloat{P})
-      s = smartarbstring(x)
-      try
-          parse(($T), s)
-      catch
-          throw(DomainError)
-      end
-    end
-=#
-    function convert{A<:ArbFloat}(::Type{$T}, x::A)
-        P = precision(A)
-        return convert{P}($T, x)
-    end
-  end
-end
 
 function convert{P}(::Type{BigInt}, x::ArbFloat{P})
    z = trunc(convert(BigFloat, x))
