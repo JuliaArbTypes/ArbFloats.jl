@@ -146,6 +146,7 @@ for I in (:UInt64, :UInt128)
            throw( InexactError() )
         end
     end
+  end
 end
 
 convert{T<:ArbFloat}(::Type{UInt32}, x::T) = convert(UInt32, convert(UInt64,x))
