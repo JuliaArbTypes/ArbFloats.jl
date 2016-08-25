@@ -162,6 +162,7 @@ for I in (:Int64, :Int128)
            throw( InexactError() )
         end
     end
+  end
 end
 
 convert{T<:ArbFloat}(::Type{Int32}, x::T) = convert(Int32, convert(Int64,x))
