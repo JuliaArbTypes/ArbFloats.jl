@@ -120,6 +120,14 @@ convert{T<:ArbFloat}(::Type{T}, x::Int128) = convert(T, string(x))
 convert{T<:ArbFloat}(::Type{T}, x::Float32) = convert(T, convert(Float64,x))
 convert{T<:ArbFloat}(::Type{T}, x::Float16) = convert(T, convert(Float64,x))
 
+function convert{T<:ArbFloat}(::Type{Float64}, x::T)
+    P = precision(T)
+    z = T()
+    ccall(@libarb(arb_get_mid_arb), Void, (Ptr{T}, Ptr{T}), &z, &x)
+    y = convert(ArfFloat{P},z)
+    # 4 == round to nearest
+    return ccall(@libarb(arf_get_d), Float64, (Ptr{ArfFloat{P}}, Int), &y, 4)
+end
 
 convert(::Type{BigInt}, x::String) = parse(BigInt,x)
 convert(::Type{BigFloat}, x::String) = parse(BigFloat,x)
