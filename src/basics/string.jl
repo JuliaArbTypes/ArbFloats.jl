@@ -48,7 +48,7 @@ function stringTrimmed{P}(x::ArbFloat{P}, ndigitsremoved::Int)
    n = max(1, digitsRequired(P) - max(0, ndigitsremoved))
    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, UInt(2))
    s = unsafe_string(cstr)
-   ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
+   # ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
    s
 end
 
