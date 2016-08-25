@@ -140,10 +140,10 @@ for I in (:UInt64, :UInt128)
            if notnegative(x)
                return convert($I, convert(BigInt,x))
            else
-               throw DomainError()
+               throw( DomainError() )
            end
         else
-           throw InexactError()
+           throw( InexactError() )
         end
     end
 end
@@ -158,7 +158,7 @@ for I in (:Int64, :Int128)
         if isinteger(x)
            return convert($I, convert(BigInt,x))
         else
-           throw InexactError()
+           throw( InexactError() )
         end
     end
 end
