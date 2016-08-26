@@ -187,8 +187,8 @@ The least significant digit observable, through show(af) or with string(af),
 | ispositive, notpositive, isnegative, notnegative,           | numerical predicates     |
 
 >   copy, deepcopy, zero, one, eps, epsilon, isequal, notequal, isless,
->   (==),(!=),(\<),(\<=),(\>=),(\>),          #  comparatives using Arb library strict validity 
->   (\≃), (\≄), (\≺), (\≼), (\≻), (\≽ ),    #  comparatives using non-strict total ordering
+>   (==),(!=),(\<),(\<=),(\>=),(\>),          #  Arb, strict:  a < b iff upperbound(a) < lowerbound(b)
+>   (\≃), (\≄), (\≺), (\≼), (\≻), (\≽ ),    #  non-strict total ordering  (better for convergence testing) 
 >   approxeq, ≊, min, max, minmax,
 
 >   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,
