@@ -1,3 +1,16 @@
+#=
+    We use two sets of infixable comparatives.
+
+    The conventional symbols {==,!=,<,<=,>,>=} are defined using
+       the Arb C library's implementation of eq,ne,lt,le,gt,ge.
+
+    The precesessor/successor symbols {≃,≄,≺,≼,≻,≽} are defined from
+       Hend Dawood's non-strict total ordering for interval values.
+       (q.v. Hend's Master's thesis:
+        Interval Mathematics Foundations, Algebraic Structures, and Applications)
+
+
+=#
 
 for (op,cop) in ((:(==), :(arb_eq)), (:(!=), :(arb_ne)),
                  (:(<=), :(arb_le)), (:(>=), :(arb_ge)),
@@ -11,6 +24,35 @@ for (op,cop) in ((:(==), :(arb_eq)), (:(!=), :(arb_ne)),
     ($op){T<:ArbFloat,R<:Real}(a::R, b::T) = ($op)(promote(a,b)...)
   end
 end
+
+function (≃){T<:ArbFloat}(a::T, b::T)
+    return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), &a, &b))
+end
+function (≄){T<:ArbFloat}(a::T, b::T)
+    return !Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), &a, &b))
+end
+function (≼){T<:ArbFloat}(a::T, b::T)
+    alo, ahi = bounds(a)
+    blo, bhi = bounds(b)
+    return (alo < blo) || ((alo == blo) & (ahi <= bhi))
+end
+function (≺){T<:ArbFloat}(a::T, b::T) # (a ≼ b) & (a ≄ b)
+    alo, ahi = bounds(a)
+    blo, bhi = bounds(b)
+    return (alo < blo) || ((alo == blo) & (ahi < bhi))
+end
+function (≽){T<:ArbFloat}(a::T, b::T)
+    alo, ahi = bounds(a)
+    blo, bhi = bounds(b)
+    return (alo > blo) || ((alo == blo) & (ahi >= bhi))
+end
+function (≻){T<:ArbFloat}(a::T, b::T)
+    alo, ahi = bounds(a)
+    blo, bhi = bounds(b)
+    return (alo > blo) || ((alo == blo) & (ahi > bhi))
+end
+
+
 
 
 # for sorted ordering
