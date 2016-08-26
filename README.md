@@ -1,9 +1,9 @@
 ArbFloats.jl
 ============
 
-###### Arb available as an extended precision floating point context.
+###### Arb available as an extended precision floating point context.  
 
-Jeffrey Sarnoff © 2016˗May˗26 in New York City
+<p align="right">Jeffrey Sarnoff © 2016˗May˗26 in New York City</p>  
 
 >   This is a foundational library that substitutes for BigFloat when
 >   prespecified significand lengths are required.  
@@ -27,12 +27,12 @@ Pkg.add("ArbFloats")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ julia
 setprecision(ArbFloat, 64);
 #==
-          remember to do this    and       to avoid this
+          remember to do this        and           to avoid this
 ==#
-    goodValue = @ArbFloat(1.2345);    wrongValue = ArbFloat(1.2345);
-#       1.234500000000000000                1.2344999999999999307
-    ArbFloat(12345)/ArbFloat(1000);    ArbFloat(12.345)/ArbFloat(10)
-#       1.234500000000000000                1.234500000000000064
+    goodValue = @ArbFloat(1.2345);        wrongValue = ArbFloat(1.2345);
+#       1.234500000000000000                   1.2344999999999999307
+    ArbFloat(12345)/ArbFloat(1000);       ArbFloat(12.345)/ArbFloat(10)
+#       1.234500000000000000                   1.234500000000000064
 
 @ArbFloat(1.2345) == ArbFloat("1.2345")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -187,8 +187,8 @@ The least significant digit observable, through show(af) or with string(af),
 | ispositive, notpositive, isnegative, notnegative,           | numerical predicates     |
 
 >   copy, deepcopy, zero, one, eps, epsilon, isequal, notequal, isless,
->   (==),(!=),(\<),(\<=),(\>=),(\>),          #  comparatives using Arb library strict validity 
->   (\≃), (\≄), (\≺), (\≼), (\≻), (\≽ ),    #  comparatives using non-strict total ordering
+>   (==),(!=),(\<),(\<=),(\>=),(\>),          #  Arb, strict:  a < b iff upperbound(a) < lowerbound(b)
+>   (\≃), (\≄), (\≺), (\≼), (\≻), (\≽ ),    #  non-strict total ordering  (better for convergence testing) 
 >   approxeq, ≊, min, max, minmax,
 
 >   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,
