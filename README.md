@@ -13,66 +13,6 @@ Jeffrey Sarnoff © 2016˗May˗26 in New York City
 
 ##### version 0.1.0 (This is for Julia v0.5+).
 
-### Compatable Packages
-
-**using ArbFloats \# goes anywhere**  
-DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,
-Plots, Polynomials, Quaternions, , others
-
-**using ArbFloats \# goes last!** TaylorSeries
-
-*partially compatible* Roots (accepts ArbFloats, results are Float64)
-
-If you have a package that accepts AbstractFloats or Reals and does not “just
-work” with ArbFloats, please note it as an issue. If you have a package that
-works well with ArbFloats, let us know.
-
-### Appropriateness
-
-Preferred for extending the precision of floating point computations from 64
-bits [17 digits] up to 512 bits [150 digits]. Recommended for use where
-elementary or special functions are evaluated to obtain results with up to 250
-digits [800 bits].
-
-#### Conceptual Background
-
-`Transparency`: a desirable quality that may obtain in the presentation of
-numerical quantity. Where `transparency` exists, it may well not persist. A
-diminution of `transparency` increases `opacity`, and vice versa. Presentation
-of a floating point value either evinces `transparency` or furthers `opacity`.
-With `transparent` values, ‘looking at a value’ is ‘looking through to see the
-knowable value’. With `opaque` values, ‘looking at a value’ is ‘looking away
-from’ that. And it is that nonresponsive, nonparticipative engagement of
-cognitive attention that is the `opaqueness` underlying `opacity`.
-
-Presented with a `transparent` floating point value, the perceiver is become
-best informed. There is no other rendition of that floating point realization
-which is intrinsically more informing and none which relays the value of that
-floating point realization more accurately – none with fewer digits, none with
-more digits, none of greater magnitude, none of lesser magnitude.
-
-An `ArbFloat` is an extended precision float architected to evince
-`transparency`. It informs without leading or misleading. An `ArbFloat`, when
-viewed, appears as an extended precision floating point value. When any of the
-exported arithmetic, elementary or special functions is applied to an
-`ArbFloat`, the value transforms as an extended precision floating point
-interval.
-
-### About Arb and using Nemo's libraries
-
-This work is constructed atop a state-of-the-art C library for working with
-*midpoint ± radius* intervals, `Arb`. `Arb` is designed and written by Fredrik
-Johansson, who graciously allows Julia to use it under the MIT License.
-
-The C libraries that this package accesses are some of the shared libraries that
-Nemo.jl requires and builds; and, with permission, I call them directly.
-
-###### Hint
-
-It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius
-– and sometimes they are. When an `ArbFloat` has a nonzero radius, the user sees
-only those digits that \_don`t care_:  the digits which remain after rounding
-the`ArbFloat\` so that the radius is subsumed (as if 0.0).
 
 #### Install
 
@@ -150,7 +90,72 @@ pi66bits=ArbFloat{66}(pi)
 
 pi67bits=ArbFloat{67}(pi)
 3.1415926535897932385
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+
+
+
+### Compatable Packages
+
+**using ArbFloats \# goes anywhere**  
+DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,
+Plots, Polynomials, Quaternions, , others
+
+**using ArbFloats \# goes last!** TaylorSeries
+
+*partially compatible* Roots (accepts ArbFloats, results are Float64)
+
+If you have a package that accepts AbstractFloats or Reals and does not “just
+work” with ArbFloats, please note it as an issue. If you have a package that
+works well with ArbFloats, let us know.
+
+### Appropriateness
+
+Preferred for extending the precision of floating point computations from 64
+bits [17 digits] up to 512 bits [150 digits]. Recommended for use where
+elementary or special functions are evaluated to obtain results with up to 250
+digits [800 bits].
+
+#### Conceptual Background
+
+`Transparency`: a desirable quality that may obtain in the presentation of
+numerical quantity. Where `transparency` exists, it may well not persist. A
+diminution of `transparency` increases `opacity`, and vice versa. Presentation
+of a floating point value either evinces `transparency` or furthers `opacity`.
+With `transparent` values, ‘looking at a value’ is ‘looking through to see the
+knowable value’. With `opaque` values, ‘looking at a value’ is ‘looking away
+from’ that. And it is that nonresponsive, nonparticipative engagement of
+cognitive attention that is the `opaqueness` underlying `opacity`.
+
+Presented with a `transparent` floating point value, the perceiver is become
+best informed. There is no other rendition of that floating point realization
+which is intrinsically more informing and none which relays the value of that
+floating point realization more accurately – none with fewer digits, none with
+more digits, none of greater magnitude, none of lesser magnitude.
+
+An `ArbFloat` is an extended precision float architected to evince
+`transparency`. It informs without leading or misleading. An `ArbFloat`, when
+viewed, appears as an extended precision floating point value. When any of the
+exported arithmetic, elementary or special functions is applied to an
+`ArbFloat`, the value transforms as an extended precision floating point
+interval.
+
+### About Arb and using Nemo's libraries
+
+This work is constructed atop a state-of-the-art C library for working with
+*midpoint ± radius* intervals, `Arb`. `Arb` is designed and written by Fredrik
+Johansson, who graciously allows Julia to use it under the MIT License.
+
+The C libraries that this package accesses are some of the shared libraries that
+Nemo.jl requires and builds; and, with permission, I call them directly.
+
+###### Hint
+
+It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius
+– and sometimes they are. When an `ArbFloat` has a nonzero radius, the user sees
+only those digits that \_don`t care_:  the digits which remain after rounding
+the`ArbFloat\` so that the radius is subsumed (as if 0.0).
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 
 Exports (including re-exports)
 ------------------------------
