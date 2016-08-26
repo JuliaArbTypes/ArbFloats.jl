@@ -3,6 +3,7 @@ module ArbFloats
 import Base: hash, convert, promote_rule, isa,
     string, show, showcompact, showall, parse,
     finalizer, decompose, precision, setprecision,
+    serialize, deserialize,
     typemin, typemax, realmin, realmax,
     copy, deepcopy,
     zero, one, isinteger,
@@ -62,6 +63,8 @@ include("type/MagFloat.jl")
 include("type/ArfFloat.jl")
 include("type/ArbFloat.jl")
 include("type/ArbInterval.jl")
+
+include("support/compatable.jl")               # serialize/deserialize
 
 include("basics/primitive.jl")
 include("basics/IEEEfp.jl")
