@@ -27,12 +27,12 @@ Pkg.add("ArbFloats")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ julia
 setprecision(ArbFloat, 64);
 #==
-          remember to do this    and       to avoid this
+          remember to do this        and           to avoid this
 ==#
-    goodValue = @ArbFloat(1.2345);    wrongValue = ArbFloat(1.2345);
-#       1.234500000000000000                1.2344999999999999307
-    ArbFloat(12345)/ArbFloat(1000);    ArbFloat(12.345)/ArbFloat(10)
-#       1.234500000000000000                1.234500000000000064
+    goodValue = @ArbFloat(1.2345);        wrongValue = ArbFloat(1.2345);
+#       1.234500000000000000                   1.2344999999999999307
+    ArbFloat(12345)/ArbFloat(1000);       ArbFloat(12.345)/ArbFloat(10)
+#       1.234500000000000000                   1.234500000000000064
 
 @ArbFloat(1.2345) == ArbFloat("1.2345")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
