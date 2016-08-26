@@ -27,8 +27,8 @@ import Base: hash, convert, promote_rule, isa,
     Cint
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
-       ArbFloat512, ArbFloat256, ArbFloat128, ArbFloat64, ArbFloat32, ArbFloat16,
        @ArbFloat,     # converts string form of argument, precision is optional first arg
+       (≃),(≄),(≺),(≼),(≻),(≽),
        midpoint, radius, midpoint_radius, upperbound, lowerbound, bounds,
        stringcompact, stringall, stringallcompact, stringpretty,
        smartvalue, smartstring, showsmart, showallcompact, showpretty,
@@ -42,7 +42,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        includesAnInteger, excludesIntegers, includesZero, excludesZero,
        includesPositive, excludesPositive, includesNegative, excludesNegative,
        includesNonpositive,  includesNonnegative,
-       areequal, notequal, approxeq, ≊,
+       areequal, notequal, approxeq, (≊),
        narrow, overlap, donotoverlap,
        contains, iscontainedby, doesnotcontain, isnotcontainedby,
        invsqrt, pow, root, tanpi, cotpi, logbase, sincos, sincospi, sinhcosh,
