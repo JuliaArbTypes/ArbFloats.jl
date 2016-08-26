@@ -3,7 +3,7 @@ ArbFloats.jl
 
 ###### Arb available as an extended precision floating point context.  
 
-<center>Jeffrey Sarnoff © 2016˗May˗26 in New York City</center>  
+<p align="right">Jeffrey Sarnoff © 2016˗May˗26 in New York City</p>  
 
 >   This is a foundational library that substitutes for BigFloat when
 >   prespecified significand lengths are required.  
