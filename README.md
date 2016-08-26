@@ -108,12 +108,30 @@ If you have a package that accepts AbstractFloats or Reals and does not “just
 work” with ArbFloats, please note it as an issue. If you have a package that
 works well with ArbFloats, let us know.
 
+### About Arb and using Nemo's libraries
+
+This work is constructed atop a state-of-the-art C library for working with
+*midpoint ± radius* intervals, `Arb`. `Arb` is designed and written by Fredrik
+Johansson, who graciously allows Julia to use it under the MIT License.
+
+The C libraries that this package accesses are some of the shared libraries that
+Nemo.jl requires and builds; and, with permission, I call them directly.
+
+###### Hint
+
+It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius
+– and sometimes they are. When an `ArbFloat` has a nonzero radius, the user sees
+only those digits that remain after rounding the`ArbFloat\` to subsume the radius.
+
+
 ### Appropriateness
 
 Preferred for extending the precision of floating point computations from 64
 bits [17 digits] up to 512 bits [150 digits]. Recommended for use where
 elementary or special functions are evaluated to obtain results with up to 250
 digits [800 bits].
+
+
 
 #### Conceptual Background
 
@@ -138,22 +156,6 @@ viewed, appears as an extended precision floating point value. When any of the
 exported arithmetic, elementary or special functions is applied to an
 `ArbFloat`, the value transforms as an extended precision floating point
 interval.
-
-### About Arb and using Nemo's libraries
-
-This work is constructed atop a state-of-the-art C library for working with
-*midpoint ± radius* intervals, `Arb`. `Arb` is designed and written by Fredrik
-Johansson, who graciously allows Julia to use it under the MIT License.
-
-The C libraries that this package accesses are some of the shared libraries that
-Nemo.jl requires and builds; and, with permission, I call them directly.
-
-###### Hint
-
-It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius
-– and sometimes they are. When an `ArbFloat` has a nonzero radius, the user sees
-only those digits that \_don`t care_:  the digits which remain after rounding
-the`ArbFloat\` so that the radius is subsumed (as if 0.0).
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 
@@ -185,7 +187,9 @@ The least significant digit observable, through show(af) or with string(af),
 | ispositive, notpositive, isnegative, notnegative,           | numerical predicates     |
 
 >   copy, deepcopy, zero, one, eps, epsilon, isequal, notequal, isless,
->   (==),(!=),(\<),(\<=),(\>=),(\>), approxeq, ≊, min, max, minmax,
+>   (==),(!=),(\<),(\<=),(\>=),(\>),          #  comparatives using Arb library strict validity 
+>   (\≃), (\≄), (\≺), (\≼), (\≻), (\≽ ),    #  comparatives using non-strict total ordering
+>   approxeq, ≊, min, max, minmax,
 
 >   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,
 >   sqrt, invsqrt, hypot, factorial, doublefactorial, risingfactorial, trunc,
