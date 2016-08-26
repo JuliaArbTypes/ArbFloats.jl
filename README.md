@@ -1,9 +1,9 @@
 ArbFloats.jl
 ============
 
-###### Arb available as an extended precision floating point context.
+###### Arb available as an extended precision floating point context.  
 
-Jeffrey Sarnoff © 2016˗May˗26 in New York City
+<center>Jeffrey Sarnoff © 2016˗May˗26 in New York City</center>  
 
 >   This is a foundational library that substitutes for BigFloat when
 >   prespecified significand lengths are required.  
