@@ -5,10 +5,6 @@ export stringpretty, showpretty
 import Base: parse
 
 
-if VERSION <= v"0.4.999"
-   typealias String AbstractString
-end
-
 #=
 export
   # generating and showing prettier numeric strings
