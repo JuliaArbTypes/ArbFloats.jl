@@ -111,12 +111,14 @@ pi67bits=ArbFloat{67}(pi)
 ### Compatable Packages
 
 **using ArbFloats \# goes anywhere**  
-DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,
+DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,  
 Plots, Polynomials, Quaternions, , others
 
-**using ArbFloats \# goes last!** TaylorSeries
+**using ArbFloats \# goes last!**  
+TaylorSeries
 
-*partially compatible* Roots (accepts ArbFloats, results are Float64)
+*partially compatible*  
+Roots (accepts ArbFloats, results are Float64)
 
 If you have a package that accepts AbstractFloats or Reals and does not “just
 work” with ArbFloats, please note it as an issue. If you have a package that
@@ -200,20 +202,20 @@ The least significant digit observable, through show(af) or with string(af),
 | iszero, notzero, nonzero, isone, notone,                    | number predicates        |
 | ispositive, notpositive, isnegative, notnegative,           | numerical predicates     |
 
->   copy, deepcopy, zero, one, eps, epsilon, isequal, notequal, isless,
->   (==),(!=),(\<),(\<=),(\>=),(\>),          #  Arb, strict:  a < b iff upperbound(a) < lowerbound(b)
->   (\≃), (\≄), (\≺), (\≼), (\≻), (\≽ ),    #  non-strict total ordering  (better for convergence testing) 
->   approxeq, ≊, min, max, minmax,
+>   copy, deepcopy, zero, one, eps, epsilon, isequal, notequal, isless,  
+>   (==),(!=),(\<),(\<=),(\>=),(\>),          #  Arb, strict:  a < b iff upperbound(a) < lowerbound(b)  
+>   (\≃), (\≄), (\≺), (\≼), (\≻), (\≽ ),    #  non-strict total ordering  (better for convergence testing)   
+>   approxeq, ≊, min, max, minmax,  
 
->   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,
->   sqrt, invsqrt, hypot, factorial, doublefactorial, risingfactorial, trunc,
->   round, ceil, floor,
+>   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,  
+>   sqrt, invsqrt, hypot, factorial, doublefactorial, risingfactorial, trunc,  
+>   round, ceil, floor,  
 
->   pow, root, exp, expm1, log, log1p, log2, log10, logbase, sin, cos, sincos,
->   sincospi, tan, csc, sec, cot, asin, acos, atan, atan2, sinh, cosh, sinhcosh,
->   tanh, csch, sech, coth, asinh, acosh, atanh,
+>   pow, root, exp, expm1, log, log1p, log2, log10, logbase, sin, cos, sincos,  
+>   sincospi, tan, csc, sec, cot, asin, acos, atan, atan2, sinh, cosh, sinhcosh,  
+>   tanh, csch, sech, coth, asinh, acosh, atanh,  
 
->   gamma, lgamma, digamma, sinc, zeta, polylog, agm
+>   gamma, lgamma, digamma, sinc, zeta, polylog, agm  
 
 #### Credits, References, Thanks
 
