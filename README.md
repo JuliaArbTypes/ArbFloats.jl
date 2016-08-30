@@ -10,7 +10,7 @@ ArbFloats.jl
  
    This is the sixth effort and first reasonably comprehensive ArbFloats release.  
    This package is a faster alternative to BigFloats when working with significands  
-   that do not exceed ~3,500 bits.
+   that do not exceed ~3,250 bits (~1000 digits).
 
    The base C library implements floating point intervals and operations thereupon  
    which are guaranteed to produce results that enclose the theoretical math value.  
@@ -204,12 +204,10 @@ only those digits that remain after rounding the`ArbFloat\` to subsume the radiu
 
 ### Appropriateness
 
-Preferred for extending the precision of floating point computations from 64
-bits [17 digits] up to 1024 bits [3000 digits]. Recommended for use where
-elementary or special functions are evaluated to obtain results with up to 250
-digits [800 bits].
-
-
+This package is appropriate to use for extending the precision of floating point computations  
+from 64 bits [~17 digits] up to 3,250 bits [~1000 digits].  
+While much more testing on different environments is needed to characterize a most performant  
+range of precisions, one should find working with 800 bits (~240 digits) a welcome change.
 
 #### Conceptual Background
 
