@@ -295,7 +295,8 @@ Others have helped with conceptual subtilties, software from which I learned Jul
 suggesting improvements, fixing bugs, testing and other specific acts of good will:  
 Stefan Karpinski, Jeff Bezanson, Alan Edelman, John Myles White, Tim Holy, Thomas
 Breloff,  
-David P. Sanders, Scott Jones, Yichao Yu, Luis Benet, Chris Rackauckas.
+David P. Sanders, Scott Jones, Yichao Yu, Luis Benet, Chris Rackauckas,  
+Galen O'Neil.
 
 =====
 =====
