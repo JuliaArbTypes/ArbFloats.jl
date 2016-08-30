@@ -256,12 +256,6 @@ function convert{P}(::Type{BigInt}, x::ArbFloat{P})
 end
 
 
-for N in (:(Rational{Int128}), :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),)
-  @eval convert{T<:ArbFloat}(::Type{T}, x::$N) = convert(ArbFloat{precision(ArbFloat)}, x)
-end
-
-
-
 # Promotion
 for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16,
           :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),
