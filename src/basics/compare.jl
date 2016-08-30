@@ -52,9 +52,6 @@ function (≻){T<:ArbFloat}(a::T, b::T)
     return (alo > blo) || ((alo == blo) & (ahi > bhi))
 end
 
-
-
-
 # for sorted ordering
 isequal{T<:ArbFloat}(a::T, b::T) = !(a != b)
 isless{ T<:ArbFloat}(a::T, b::T) = b == max(a,b) # !(a >= b)

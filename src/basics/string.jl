@@ -57,12 +57,12 @@ end
 =#
 
 function smartarbstring{P}(x::ArbFloat{P})
-     digits = digitsRequired(P)
+     digts = digitsRequired(P)
      if isexact(x)
         if isinteger(x)
-            return string(x, digits, UInt(2))
+            return string(x, digts, UInt(2))
         else
-            s = rstrip(string(x, digits, UInt(2)),'0')
+            s = rstrip(string(x, digts, UInt(2)),'0')
             if s[end]=='.'
                s = string(s, "0")
             end
@@ -74,12 +74,12 @@ function smartarbstring{P}(x::ArbFloat{P})
      end
 
      lb, ub = bounds(x)
-     lbs = string(lb, digits, UInt(2))
-     ubs = string(ub, digits, UInt(2))
+     lbs = string(lb, digts, UInt(2))
+     ubs = string(ub, digts, UInt(2))
      if lbs[end]==ubs[end] && lbs==ubs
          return ubs
      end
-     for i in (digits-2):-2:4
+     for i in (digts-2):-2:4
          lbs = string(lb, i, UInt(2))
          ubs = string(ub, i, UInt(2))
          if lbs[end]==ubs[end] && lbs==ubs # tests rounding to every other digit position

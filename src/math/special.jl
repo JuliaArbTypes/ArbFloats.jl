@@ -1,7 +1,7 @@
 for (op,cfunc) in ((:factorial,:arb_fac_ui), (:doublefactorial,:arb_doublefac_ui))
   @eval begin
     function ($op){P}(x::ArbFloat{P})
-      signbit(x) && ErrorException("Domain Error: argument is negative")
+      signbit(x) && throw(ErrorException("Domain Error: argument is negative"))
       y = trunc(UInt, x)
       z = ArbFloat{P}()
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, UInt, Int), &z, y, P)
@@ -19,7 +19,7 @@ end
 for (op,cfunc) in ((:risingfactorial,:arb_rising),)
   @eval begin
     function ($op){P}(x::ArbFloat{P}, y::ArbFloat{P})
-      signbit(x) && ErrorException("Domain Error: argument is negative")
+      signbit(x) && throw(ErrorException("Domain Error: argument is negative"))
       z = ArbFloat{P}()
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, &y, P)
       z
