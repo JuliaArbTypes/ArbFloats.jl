@@ -1,3 +1,5 @@
+__precompile__()
+
 module ArbFloats
 
 import Base: hash, convert, promote_rule, isa,
