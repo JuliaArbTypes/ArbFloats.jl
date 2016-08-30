@@ -53,6 +53,26 @@ _We use some of Nemo's libraries.  Nemo is very large, and this package needs pe
 Pkg.add("ArbFloats")
 # or else Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ```
+If you have not installed Nemo before, you will see compilation notes and maybe warnings.  
+Ignore them.  This is a good time to walk the dog, go for coffee, or play shuffleboard.  
+When the prompt comes back,   quit() and restart Julia and ```julia> using ArbFloats```  
+should precompile quickly and work well.  This is what I do, to get things set up:
+
+```julia
+Pkg.update()
+# get current Nemo, if needed do
+# Pkg.rm("Nemo"); Pkg.rm("Nemo");
+Pkg.add("Nemo")
+quit()
+# get current ArbFloats, if you have an older realization do
+# Pkg.rm("ArbFloats");Pkg.rm("ArbFloats");
+Pkg.add("ArbFloats")
+Pkg.update()
+using ArbFloats
+quit()
+using ArbFloats
+quit()
+```
 
 #### Initializing ArbFloats
 
