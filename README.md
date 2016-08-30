@@ -24,25 +24,6 @@ Pkg.add("ArbFloats")
 ```
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#### Use with other Numeric Types
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-```julia
-setprecision(ArbFloat, 64);
-#==
-          remember to do this        and           to avoid this
-==#
-    goodValue = @ArbFloat(1.2345);        wrongValue = ArbFloat(1.2345);
-#       1.234500000000000000                   1.2344999999999999307
-    ArbFloat(12345)/ArbFloat(1000);       ArbFloat(12.345)/ArbFloat(10)
-#       1.234500000000000000                   1.234500000000000064
-
-@ArbFloat(1.2345) == ArbFloat("1.2345")
-```
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#### Use
-
 ##### Initializing ArbFloats
 
 ArbFloats can be initialized from Integers, Floats, Rationals, and Strings
@@ -61,7 +42,27 @@ c = ArbFloat{200}(12) # use specified precision, at run time
 d = @ArbFloat(200,12) # use specified precision, at compile time
 ```
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+#### Use with other Numeric Types
+```julia
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+```julia
+setprecision(ArbFloat, 64);
+#==
+          remember to do this        and           to avoid this
+==#
+    goodValue = @ArbFloat(1.2345);        wrongValue = ArbFloat(1.2345);
+#       1.234500000000000000                   1.2344999999999999307
+    ArbFloat(12345)/ArbFloat(1000);       ArbFloat(12.345)/ArbFloat(10)
+#       1.234500000000000000                   1.234500000000000064
+
+@ArbFloat(1.2345) == ArbFloat("1.2345")
+```
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#### Use
 ```julia
 using ArbFloats
 
