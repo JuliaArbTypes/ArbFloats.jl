@@ -16,15 +16,18 @@ ArbFloats.jl
 
 #### Install
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ julia
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+```julia
 Pkg.add("Nemo")
 Pkg.add("ArbFloats")
 # or Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
+```
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #### Use with other Numeric Types
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ julia
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+```julia
 setprecision(ArbFloat, 64);
 #==
           remember to do this        and           to avoid this
@@ -35,11 +38,31 @@ setprecision(ArbFloat, 64);
 #       1.234500000000000000                   1.234500000000000064
 
 @ArbFloat(1.2345) == ArbFloat("1.2345")
+```
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #### Use
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.f#}
+##### Initializing ArbFloats
+
+ArbFloats can be initialized from Integers, Floats, Rationals, and Strings
+
+```julia
+using ArbFloats
+
+precision(ArbFloat) # show the current default precision
+# 116
+setprecision(ArbFloat, 120) # change the current default precision
+# 100
+
+a = ArbFloat(12)  # use the default precision, at run time
+b = @ArbFloat(12) # use the default precision, at compile time
+c = ArbFloat{200}(12) # use specified precision, at run time
+d = @ArbFloat(200,12) # use specified precision, at compile time
+```
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```julia
 using ArbFloats
 
 five = ArbFloat(5)
@@ -90,6 +113,7 @@ pi66bits=ArbFloat{66}(pi)
 
 pi67bits=ArbFloat{67}(pi)
 3.1415926535897932385
+```
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 
 
