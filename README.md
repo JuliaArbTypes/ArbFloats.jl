@@ -1,3 +1,4 @@
+
 ArbFloats.jl
 ============
 
@@ -5,6 +6,22 @@ ArbFloats.jl
 
 <p align="right">Jeffrey Sarnoff © 2016˗May˗26 in New York City</p>  
 
+   
+ 
+   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
+   This package is a faster alternative to BigFloats when working with significands  
+   that do not exceed ~3,500 bits.
+
+   The base C library implements floating point intervals and operations thereupon  
+   which are guaranteed to produce results that enclose the theoretical math value.  
+   While not the package focus, full access to interval-based functions is present.
+
+   This package has been designed to offer the Julia community more performant  
+   extended precision floating point math and to offer extended floating point  
+   results as accurately as possible at a precision that does not misrepresent  
+   the information content of the unerlying interval valuation.
+
+>
 >   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
 >   This package is a faster alternative to BigFloats when working with significands  
 >   that do not exceed ~3,500 bits.
@@ -20,13 +37,17 @@ ArbFloats.jl
 
 ##### version 0.0.6 (This is for Julia v0.5+).
 
+Anyone interested in contributing some time is encouraged to contact the author (firstname.lastname at-the-gmail).
+
+Nemo is required for some of its C libraries.  Nemo is very large, and this package uses only a few of its libraries.    
+Moreover, of those libraries, only a sixth of the routines are likely to be required for this to function properly.  
+
 
 #### Install
 
 ```julia
-Pkg.add("Nemo")
 Pkg.add("ArbFloats")
-# or Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
+# or else Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ```
 
 #### Initializing ArbFloats
