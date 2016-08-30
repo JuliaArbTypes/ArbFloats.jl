@@ -12,6 +12,18 @@ function midpoint_radius{P}(mid::ArfFloat{P}, rad::Float64)
     r = convert(ArbFloat{P}, rad)
     return midpoint_radius(m, r)
 end
+function midpoint_radius(mid::String, rad::String)
+    P = precision(ArbFloat)
+    m = @ArbFloat{P}(mid)
+    r = @ArbFloat{P}(rad)
+    return midpoint_radius(m, r)
+end
+function midpoint_radius(mid, rad)
+    P = precision(ArbFloat)
+    m = convert(ArbFloat{P}, mid)
+    r = convert(ArbFloat{P}, rad)
+    return midpoint_radius(m, r)
+end
 
 #=
 void arb_union(arb_t z, const arb_t x, const arb_t y, slong prec)¶
