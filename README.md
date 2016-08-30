@@ -291,7 +291,7 @@ Breloff, David P. Sanders, Scott Jones, Yichao Yu, Luis Benet, Chris Rackauckas.
 [//]: # (### current flows are in)
 
 [//]: # ([the ArbFloats gitter](https://gitter.im/JuliaArbTypes/ArbFloats.jl)  )
-[//]: # ([the ArbReals wiki](https://github.com/JuliaArbTypes/ArbReals.jl/wiki) and [on
-gitter](https://gitter.im/JuliaArbTypes/ArbReals.jl) )
+[//]: # ([the ArbReals wiki](https://github.com/JuliaArbTypes/ArbReals.jl/wiki) )
+[//]: # (and [ongitter](https://gitter.im/JuliaArbTypes/ArbReals.jl) )
 
 
