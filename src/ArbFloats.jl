@@ -66,7 +66,6 @@ include("type/ArfFloat.jl")
 include("type/ArbFloat.jl")
 include("type/ArbInterval.jl")
 
-include("support/compatable.jl")               # serialize/deserialize
 
 include("basics/primitive.jl")
 include("basics/IEEEfp.jl")
@@ -77,6 +76,7 @@ include("basics/compare.jl")
 
 include("basics/string.jl")
 include("basics/show.jl")
+include("basics/serialize.jl")
 
 include("math/arith.jl")
 include("math/round.jl")
