@@ -177,7 +177,7 @@ the float value given by a 1 at the position of
   the least significant nonzero bit|digit in _x_
 """
 function ulp(x::Real, precision::Int, base::Int)
-   unitfp  = base==2 ? ufp2(x) : (base==10 ? ufp10(x) : throw(DomainError())
+   unitfp  = base==2 ? ufp2(x) : (base==10 ? ufp10(x) : throw(DomainError()))
    twice_u = 2.0^(1-precision)
    return twice_u * unitfp
 end
