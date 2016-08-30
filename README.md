@@ -233,7 +233,7 @@ exported arithmetic, elementary or special functions is applied to an
 `ArbFloat`, the value transforms as an extended precision floating point
 interval.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+
 
 Exports (including re-exports)
 ------------------------------
@@ -247,14 +247,6 @@ Exports (including re-exports)
 | overlap, donotoverlap,                                     | of interval suborder      |
 | contains, iscontainedby, doesnotcontain, isnotcontainedby, | of interval partial order |
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ArbFloat values: Arb seen as precisely accurate floats
-   elevates transparent information over number mumble
-   each digit shown is an accurate refinement of value
-
-The least significant digit observable, through show(af) or with string(af),
-  is smallest transparent _(intrinsically non-misleading)_ refinement of value.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 | ArbFloat attributes                                         | nature                   |
 |-------------------------------------------------------------|--------------------------|
@@ -291,11 +283,11 @@ with many others.
 William Hart and Tommy Hofmann have been gracious with their work and generous
 with their time.  
 
-Others have helped with conceptual subtilties, software from which I learned Julia,   
-suggesting improvements, fixing bugs, testing and other specific acts of good will:  
-&nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman, John Myles White,
-&nbsp;&nbsp;&nbsp;&nbsp;Tim Holy, Thomas Breloff, David P. Sanders, Scott Jones, Yichao Yu,   
-&nbsp;&nbsp;&nbsp;&nbsp;Luis Benet, Chris Rackauckas, Galen O'Neil.
+Others have helped with conceptual subtilties, software from which I learned Julia,    
+suggesting improvements, fixing bugs, testing and other specific acts of good will:   
+&nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman, John Myles White,  
+&nbsp;&nbsp;&nbsp;&nbsp;Tim Holy, Thomas Breloff, David P. Sanders, Yichao Yu,   
+&nbsp;&nbsp;&nbsp;&nbsp;Scott Jones, Luis Benet, Chris Rackauckas, Galen O'Neil.
 
 =====
 =====
