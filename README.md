@@ -263,16 +263,16 @@ The least significant digit observable, through show(af) or with string(af),
 This work relies on Fredrik Johansson's Arb software, using parts of that
 extensive C library.  
 He has been greatly helpful. The Arb library documentation is
-[here](http://fredrikj.net/arb/).
+[here](http://fredrikj.net/arb/).  
 
 Much of the early development was well informed from study of Nemo.jl, a number
 theory and  
 numerical algebra package that incorporates some of Arb's capabilities along
 with many others.  
-William Hart andTommy Hofmann have been gracious with their work and generous
-with their time.
+William Hart and Tommy Hofmann have been gracious with their work and generous
+with their time.  
 
-Others have helped with conceptual subtilties, software from which I learned
+Others have helped with conceptual subtilties, software from which I learned  
 Julia, clarifying or fixing bugs, testing and specific good will: Stefan
 Karpinski, Jeff Bezanson, Alan Edelman, John Myles White, Tim Holy, Thomas
 Breloff, David P. Sanders, Scott Jones, Yichao Yu, Luis Benet, Chris Rackauckas.
