@@ -19,7 +19,7 @@ ArbFloats.jl
    This package has been designed to offer the Julia community more performant  
    extended precision floating point math and to offer extended floating point  
    results as accurately as possible at a precision that does not misrepresent  
-   the information content of the unerlying interval valuation.
+   the information content of the underlying interval valuation.
 
 
 
@@ -35,7 +35,7 @@ ArbFloats.jl
 >   This package has been designed to offer the Julia community more performant  
 >   extended precision floating point math and to offer extended floating point  
 >   results as accurately as possible at a precision that does not misrepresent  
->   the information content of the unerlying interval valuation.
+>   the information content of the underlying interval valuation.
 
 #### version 0.0.6 (for Julia v0.5+).
 
@@ -172,7 +172,7 @@ showpretty(ArbFloat{67}(pi),5)
 
 
 
-### Compatable Packages
+### Compatible Packages
 
 **using ArbFloats \# goes anywhere**  
 DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,  
@@ -191,15 +191,15 @@ works well with ArbFloats, let us know.
 ### About Arb and using Nemo's libraries
 
 This work is constructed atop a state-of-the-art C library for working with
-*midpoint ± radius* intervals, `Arb`. `Arb` is designed and written by Fredrik
+*midpoint ± radius* intervals, `Arb`. Arb is designed and written by Fredrik
 Johansson, who graciously allows Julia to use it under the MIT License.
 
 The C libraries that this package accesses are some of the shared libraries that
 Nemo.jl requires and builds; and, with permission, I call them directly.
 
 It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius
-– and sometimes they are. When an `ArbFloat` has a nonzero radius, the user sees
-only those digits that remain after rounding the`ArbFloat\` to subsume the radius.
+– and sometimes they are. When an ArbFloat has a nonzero radius, the user sees
+only those digits that remain after rounding the ArbFloat to subsume the radius.
 
 
 ### Appropriateness
@@ -212,25 +212,25 @@ precision range, I have found working with 800 bits (~240 digits) a welcome chan
 #### Conceptual Background
 
 `Transparency`: a desirable quality that may obtain in the presentation of
-numerical quantity. Where `transparency` exists, it may well not persist. A
-diminution of `transparency` increases `opacity`, and vice versa. Presentation
-of a floating point value either evinces `transparency` or furthers `opacity`.
-With `transparent` values, ‘looking at a value’ is ‘looking through to see the
-knowable value’. With `opaque` values, ‘looking at a value’ is ‘looking away
+numerical quantity. Where transparency exists, it may well not persist. A
+diminution of transparency increases `opacity`, and vice versa. Presentation
+of a floating point value either evinces transparency or furthers opacity.
+With transparent values, ‘looking at a value’ is ‘looking through to see the
+knowable value’. With opaque values, ‘looking at a value’ is ‘looking away
 from’ that. And it is that nonresponsive, nonparticipative engagement of
-cognitive attention that is the `opaqueness` underlying `opacity`.
+cognitive attention that is the opaqueness underlying opacity.
 
-Presented with a `transparent` floating point value, the perceiver is become
+Presented with a transparent floating point value, the perceiver is become
 best informed. There is no other rendition of that floating point realization
 which is intrinsically more informing and none which relays the value of that
 floating point realization more accurately – none with fewer digits, none with
 more digits, none of greater magnitude, none of lesser magnitude.
 
 An `ArbFloat` is an extended precision float architected to evince
-`transparency`. It informs without leading or misleading. An `ArbFloat`, when
+transparency. It informs without leading or misleading. An ArbFloat, when
 viewed, appears as an extended precision floating point value. When any of the
 exported arithmetic, elementary or special functions is applied to an
-`ArbFloat`, the value transforms as an extended precision floating point
+ArbFloat, the value transforms as an extended precision floating point
 interval.
 
 
@@ -283,7 +283,7 @@ with many others.
 William Hart and Tommy Hofmann have been gracious with their work and generous
 with their time.  
 
-Others have helped with conceptual subtilties, software from which I learned Julia,    
+Others have helped with conceptual subtleties, software from which I learned Julia,    
 suggesting improvements, fixing bugs, testing and other specific acts of good will:   
 &nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman,  
 &nbsp;&nbsp;&nbsp;&nbsp;John Myles White,  Tim Holy, Thomas Breloff,  
