@@ -204,10 +204,10 @@ only those digits that remain after rounding the`ArbFloat\` to subsume the radiu
 
 ### Appropriateness
 
-This package is appropriate to use for extending the precision of floating point computations  
-from 64 bits [~17 digits] up to 3,250 bits [~1000 digits].  While much more testing on different   
-environments is needed to characterize a most performant range of precisions, one should find   
-working with 800 bits (~240 digits) a welcome change.
+This package is appropriate to use for extending the precision of floating point   
+computations from 64 bits [~17 digits] up to 3,250 bits [~1000 digits].  
+While Testing on many different hosts is needed to characterize a most performant  
+precision range, I have found working with 800 bits (~240 digits) a welcome change.
 
 #### Conceptual Background
 
