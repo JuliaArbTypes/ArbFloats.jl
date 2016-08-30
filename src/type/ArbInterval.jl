@@ -25,6 +25,29 @@ function midpoint_radius(mid, rad)
     return midpoint_radius(m, r)
 end
 
+function bounding_midpoint{T<:ArbFloat}(a::T)
+    lo = lowerbound(a)
+    hi = upperbound(a)
+    mid = lo*0.5 + hi*0.5
+    return mid
+end
+
+function bounding_radius{T<:ArbFloat}(a::T)
+    lo = lowerbound(a)
+    hi = upperbound(a)
+    rad = hi - lo
+    return rad
+end
+
+function bounding_midpoint_radius{T<:ArbFloat}(a::T)
+    lo = lowerbound(a)
+    hi = upperbound(a)
+    mid = lo*0.5 + hi*0.5
+    rad = hi - lo
+    return midpoint_radius(mid, rad)
+end
+
+
 #=
 void arb_union(arb_t z, const arb_t x, const arb_t y, slong prec)¶
 Sets z to a ball containing both x and y.
