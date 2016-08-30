@@ -14,8 +14,8 @@ function midpoint_radius{P}(mid::ArfFloat{P}, rad::Float64)
 end
 function midpoint_radius(mid::String, rad::String)
     P = precision(ArbFloat)
-    m = @ArbFloat{P}(mid)
-    r = @ArbFloat{P}(rad)
+    m = @ArbFloat(mid)
+    r = @ArbFloat(rad)
     return midpoint_radius(m, r)
 end
 function midpoint_radius(mid, rad)
