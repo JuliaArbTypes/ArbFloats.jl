@@ -25,5 +25,6 @@ afInf = ArbFloat(Inf)
 @test string(ArbFloat{24}(pi)) == "3.141593"
 @test string(ArbFloat{53}(catalan)) == "0.915965594177219"
 
+@test promote(ArbFloat(4), 3//5) == (4, ArbFloat(0.6))
 
 end # module
