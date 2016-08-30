@@ -279,13 +279,13 @@ Breloff, David P. Sanders, Scott Jones, Yichao Yu, Luis Benet, Chris Rackauckas.
 
 =====
 =====
-
+<!--
 developer info
 ==============
 
 #### other, sometimes overlapping, software development is with
 
-[ArbDecimal](https://github.com/JuliaArbTypes/ArbDecimal.jl)
+[ArbDecimals](https://github.com/JuliaArbTypes/ArbDecimals.jl)
 [ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl)
 
 ### current flows are in
@@ -293,3 +293,4 @@ developer info
 [the ArbFloats gitter](https://gitter.im/JuliaArbTypes/ArbFloats.jl)  
 [the ArbReals wiki](https://github.com/JuliaArbTypes/ArbReals.jl/wiki) and [on
 gitter](https://gitter.im/JuliaArbTypes/ArbReals.jl)
+<--!>
