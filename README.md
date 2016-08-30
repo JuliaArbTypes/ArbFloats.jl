@@ -22,7 +22,7 @@ Pkg.add("ArbFloats")
 # or Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ```
 
-##### Initializing ArbFloats
+#### Initializing ArbFloats
 
 ArbFloats can be initialized from Integers, Floats, Rationals, and Strings
 
@@ -38,11 +38,7 @@ a = ArbFloat(12)  # use the default precision, at run time
 b = @ArbFloat(12) # use the default precision, at compile time
 c = ArbFloat{200}(12) # use specified precision, at run time
 d = @ArbFloat(200,12) # use specified precision, at compile time
-```
 
-#### Use with other Numeric Types
-
-```julia
 setprecision(ArbFloat, 64);
 #==
           remember to do this        and           to avoid this
@@ -54,7 +50,6 @@ setprecision(ArbFloat, 64);
 
 @ArbFloat(1.2345) == ArbFloat("1.2345")
 ```
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #### Use
 ```julia
