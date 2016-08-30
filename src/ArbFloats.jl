@@ -35,7 +35,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        smartvalue, smartstring, showsmart, showallcompact, showpretty,
        two, three, four, copymidpoint, copyradius, deepcopyradius,
        get_emax, get_emin, bounded, boundedrange,
-       trim, decompose, isexact, notexact,
+       decompose, isexact, notexact,
        isposinf, isneginf,
        notnan, notinf, notposinf, notneginf, notfinite,
        iszero, notzero, nonzero, isone, notone, notinteger,
