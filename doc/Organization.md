@@ -4,27 +4,30 @@
 
 ##type
 - ArbCstructs
-- ArbInterval
 - ArbFloat
 - ArfFloat
 - MagFloat
+- ArbInterval
 
 ##basics
 - primitive
 - IEEEfp
 - predicates
+- compare
 - string
 - convert
-- compare
-- io
+- show
 
 ##math
 - constants
 - arith
+- rounding
 - round
 - elementary
 - special
+- arrayops
 
-# ./support
+##support
 - NemoLibs
 - ReadableNumbers
+- compatable
