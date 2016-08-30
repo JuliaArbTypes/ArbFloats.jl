@@ -1,10 +1,29 @@
+
 ArbFloats.jl
 ============
 
-###### Arb available as an extended precision floating point context.  
+#### Arb available as an extended precision floating point context.  
 
-<p align="right">Jeffrey Sarnoff © 2016˗May˗26 in New York City</p>  
+<p align="right">Jeffrey Sarnoff © 2016 August 30 in New York City</p>  
 
+===========  
+ 
+   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
+   This package is a faster alternative to BigFloats when working with significands  
+   that do not exceed ~3,500 bits.
+
+   The base C library implements floating point intervals and operations thereupon  
+   which are guaranteed to produce results that enclose the theoretical math value.  
+   While not the package focus, full access to interval-based functions is present.
+
+   This package has been designed to offer the Julia community more performant  
+   extended precision floating point math and to offer extended floating point  
+   results as accurately as possible at a precision that does not misrepresent  
+   the information content of the unerlying interval valuation.
+
+
+
+>
 >   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
 >   This package is a faster alternative to BigFloats when working with significands  
 >   that do not exceed ~3,500 bits.
@@ -18,15 +37,21 @@ ArbFloats.jl
 >   results as accurately as possible at a precision that does not misrepresent  
 >   the information content of the unerlying interval valuation.
 
-##### version 0.0.6 (This is for Julia v0.5+).
+#### version 0.0.6 (for Julia v0.5+).
+
+If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
+If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
+
+Anyone interested in contributing some time is encouraged to contact the author (firstname.lastname at-the-gmail).
+
+_We use some of Nemo's libraries.  Nemo is very large, and this package needs perhaps 1/8th of it to function properly._  
 
 
 #### Install
 
 ```julia
-Pkg.add("Nemo")
 Pkg.add("ArbFloats")
-# or Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
+# or else Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ```
 
 #### Initializing ArbFloats
@@ -124,7 +149,6 @@ pi67bits=ArbFloat{67}(pi)
 showpretty(ArbFloat{67}(pi),5)
 # 3.14159_26535_89793_2385
 ```
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 
 
 
@@ -153,8 +177,6 @@ Johansson, who graciously allows Julia to use it under the MIT License.
 The C libraries that this package accesses are some of the shared libraries that
 Nemo.jl requires and builds; and, with permission, I call them directly.
 
-###### Hint
-
 It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius
 – and sometimes they are. When an `ArbFloat` has a nonzero radius, the user sees
 only those digits that remain after rounding the`ArbFloat\` to subsume the radius.
@@ -163,7 +185,7 @@ only those digits that remain after rounding the`ArbFloat\` to subsume the radiu
 ### Appropriateness
 
 Preferred for extending the precision of floating point computations from 64
-bits [17 digits] up to 512 bits [150 digits]. Recommended for use where
+bits [17 digits] up to 1024 bits [3000 digits]. Recommended for use where
 elementary or special functions are evaluated to obtain results with up to 250
 digits [800 bits].
 
@@ -242,33 +264,36 @@ The least significant digit observable, through show(af) or with string(af),
 This work relies on Fredrik Johansson's Arb software, using parts of that
 extensive C library.  
 He has been greatly helpful. The Arb library documentation is
-[here](http://fredrikj.net/arb/).
+[here](http://fredrikj.net/arb/).  
 
 Much of the early development was well informed from study of Nemo.jl, a number
 theory and  
 numerical algebra package that incorporates some of Arb's capabilities along
 with many others.  
-William Hart andTommy Hofmann have been gracious with their work and generous
-with their time.
+William Hart and Tommy Hofmann have been gracious with their work and generous
+with their time.  
 
-Others have helped with conceptual subtilties, software from which I learned
-Julia, clarifying or fixing bugs, testing and specific good will: Stefan
-Karpinski, Jeff Bezanson, Alan Edelman, John Myles White, Tim Holy, Thomas
-Breloff, David P. Sanders, Scott Jones, Yichao Yu, Luis Benet, Chris Rackauckas.
+Others have helped with conceptual subtilties, software from which I learned Julia,   
+suggesting improvements, fixing bugs, testing and other specific acts of good will:  
+Stefan Karpinski, Jeff Bezanson, Alan Edelman, John Myles White, Tim Holy, Thomas
+Breloff,  
+David P. Sanders, Scott Jones, Yichao Yu, Luis Benet, Chris Rackauckas.
 
 =====
 =====
+  
+  
+[//]: # (developer info)
 
-developer info
-==============
+[//]: # (#### other, sometimes overlapping, software development is with)
 
-#### other, sometimes overlapping, software development is with
+[//]: # ([ArbDecimals](https://github.com/JuliaArbTypes/ArbDecimals.jl))
+[//]: # ([ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl))
 
-[ArbDecimal](https://github.com/JuliaArbTypes/ArbDecimal.jl)
-[ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl)
+[//]: # (### current flows are in)
 
-### current flows are in
+[//]: # ([the ArbFloats gitter](https://gitter.im/JuliaArbTypes/ArbFloats.jl)  )
+[//]: # ([the ArbReals wiki](https://github.com/JuliaArbTypes/ArbReals.jl/wiki) )
+[//]: # (and [ongitter](https://gitter.im/JuliaArbTypes/ArbReals.jl) )
 
-[the ArbFloats gitter](https://gitter.im/JuliaArbTypes/ArbFloats.jl)  
-[the ArbReals wiki](https://github.com/JuliaArbTypes/ArbReals.jl/wiki) and [on
-gitter](https://gitter.im/JuliaArbTypes/ArbReals.jl)
+
