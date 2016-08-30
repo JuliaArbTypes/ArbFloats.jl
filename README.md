@@ -5,13 +5,20 @@ ArbFloats.jl
 
 <p align="right">Jeffrey Sarnoff © 2016˗May˗26 in New York City</p>  
 
->   This is a foundational library that substitutes for BigFloat when
->   prespecified significand lengths are required.  
->   ArbDecimals, which built on top of this library, is a better choice when
->   standard digit spans (significand lengths)  
->   are used and *highly reliable* results are desired.
+>   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
+>   This package is a faster alternative to BigFloats when working with significands  
+>   that do not exceed ~3,500 bits.
+>
+>   The base C library implements floating point intervals and operations thereupon  
+>   which are guaranteed to produce results that enclose the theoretical math value.  
+>   While not the package focus, full access to interval-based functions is present.
+>
+>   This package has been designed to offer the Julia community more performant  
+>   extended precision floating point math and to offer extended floating point  
+>   results as accurately as possible at a precision that does not misrepresent  
+>   the information content of the unerlying interval valuation.
 
-##### version 0.1.0 (This is for Julia v0.5+).
+##### version 0.0.6 (This is for Julia v0.5+).
 
 
 #### Install
