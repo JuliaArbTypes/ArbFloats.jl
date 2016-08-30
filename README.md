@@ -16,13 +16,11 @@ ArbFloats.jl
 
 #### Install
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 ```julia
 Pkg.add("Nemo")
 Pkg.add("ArbFloats")
 # or Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ```
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ##### Initializing ArbFloats
 
@@ -42,12 +40,8 @@ c = ArbFloat{200}(12) # use specified precision, at run time
 d = @ArbFloat(200,12) # use specified precision, at compile time
 ```
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 #### Use with other Numeric Types
-```julia
 
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 ```julia
 setprecision(ArbFloat, 64);
 #==
