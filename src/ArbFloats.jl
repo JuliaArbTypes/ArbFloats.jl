@@ -32,7 +32,9 @@ import Base: hash, convert, promote_rule, isa,
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
        @ArbFloat,     # converts string form of argument, precision is optional first arg
        (≃),(≄),(≺),(≼),(≻),(≽),
-       midpoint, radius, midpoint_radius, upperbound, lowerbound, bounds,
+       upperbound, lowerbound, bounds,
+       midpoint, radius, midpoint_radius,
+       bounding_midpoint, bounding_radius, bounding_midpoint_radius,
        stringcompact, stringall, stringallcompact, stringpretty,
        smartvalue, smartstring, showsmart, showallcompact, showpretty,
        two, three, four, copymidpoint, copyradius, deepcopyradius,
