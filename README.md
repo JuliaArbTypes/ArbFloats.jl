@@ -149,7 +149,6 @@ pi67bits=ArbFloat{67}(pi)
 showpretty(ArbFloat{67}(pi),5)
 # 3.14159_26535_89793_2385
 ```
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 
 
 
@@ -178,8 +177,6 @@ Johansson, who graciously allows Julia to use it under the MIT License.
 The C libraries that this package accesses are some of the shared libraries that
 Nemo.jl requires and builds; and, with permission, I call them directly.
 
-###### Hint
-
 It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius
 – and sometimes they are. When an `ArbFloat` has a nonzero radius, the user sees
 only those digits that remain after rounding the`ArbFloat\` to subsume the radius.
@@ -188,7 +185,7 @@ only those digits that remain after rounding the`ArbFloat\` to subsume the radiu
 ### Appropriateness
 
 Preferred for extending the precision of floating point computations from 64
-bits [17 digits] up to 512 bits [150 digits]. Recommended for use where
+bits [17 digits] up to 1024 bits [3000 digits]. Recommended for use where
 elementary or special functions are evaluated to obtain results with up to 250
 digits [800 bits].
 
