@@ -37,10 +37,12 @@ ArbFloats.jl
 
 ##### version 0.0.6 (This is for Julia v0.5+).
 
+If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
+If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
+
 Anyone interested in contributing some time is encouraged to contact the author (firstname.lastname at-the-gmail).
 
-Nemo is required for some of its C libraries.  Nemo is very large, and this package uses only a few of its libraries.    
-Moreover, of those libraries, only a sixth of the routines are likely to be required for this to function properly.  
+_We use some of Nemo's libraries.  Nemo is very large, and this package needs perhaps 1/8th of it to function properly._  
 
 
 #### Install
