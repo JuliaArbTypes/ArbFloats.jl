@@ -6,7 +6,7 @@ ArbFloats.jl
 
 <p align="right">Jeffrey Sarnoff © 2016 August 30 in New York City</p>  
 
-   
+===========  
  
    This is the sixth effort and first reasonably comprehensive ArbFloats release.  
    This package is a faster alternative to BigFloats when working with significands  
@@ -20,6 +20,8 @@ ArbFloats.jl
    extended precision floating point math and to offer extended floating point  
    results as accurately as possible at a precision that does not misrepresent  
    the information content of the unerlying interval valuation.
+
+
 
 >
 >   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
@@ -35,7 +37,7 @@ ArbFloats.jl
 >   results as accurately as possible at a precision that does not misrepresent  
 >   the information content of the unerlying interval valuation.
 
-##### version 0.0.6 (This is for Julia v0.5+).
+#### version 0.0.6 (for Julia v0.5+).
 
 If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
 If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
