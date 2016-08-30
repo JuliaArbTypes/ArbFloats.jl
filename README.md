@@ -10,7 +10,7 @@ ArbFloats.jl
  
    This is the sixth effort and first reasonably comprehensive ArbFloats release.  
    This package is a faster alternative to BigFloats when working with significands  
-   that do not exceed ~3,500 bits.
+   that do not exceed ~3,250 bits (~1000 digits).
 
    The base C library implements floating point intervals and operations thereupon  
    which are guaranteed to produce results that enclose the theoretical math value.  
@@ -204,12 +204,10 @@ only those digits that remain after rounding the`ArbFloat\` to subsume the radiu
 
 ### Appropriateness
 
-Preferred for extending the precision of floating point computations from 64
-bits [17 digits] up to 1024 bits [3000 digits]. Recommended for use where
-elementary or special functions are evaluated to obtain results with up to 250
-digits [800 bits].
-
-
+This package is appropriate to use for extending the precision of floating point   
+computations from 64 bits [~17 digits] up to 3,250 bits [~1000 digits].  
+While Testing on many different hosts is needed to characterize a most performant  
+precision range, I have found working with 800 bits (~240 digits) a welcome change.
 
 #### Conceptual Background
 
@@ -235,7 +233,7 @@ exported arithmetic, elementary or special functions is applied to an
 `ArbFloat`, the value transforms as an extended precision floating point
 interval.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+
 
 Exports (including re-exports)
 ------------------------------
@@ -249,14 +247,6 @@ Exports (including re-exports)
 | overlap, donotoverlap,                                     | of interval suborder      |
 | contains, iscontainedby, doesnotcontain, isnotcontainedby, | of interval partial order |
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ArbFloat values: Arb seen as precisely accurate floats
-   elevates transparent information over number mumble
-   each digit shown is an accurate refinement of value
-
-The least significant digit observable, through show(af) or with string(af),
-  is smallest transparent _(intrinsically non-misleading)_ refinement of value.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 | ArbFloat attributes                                         | nature                   |
 |-------------------------------------------------------------|--------------------------|
@@ -293,11 +283,11 @@ with many others.
 William Hart and Tommy Hofmann have been gracious with their work and generous
 with their time.  
 
-Others have helped with conceptual subtilties, software from which I learned Julia,   
-suggesting improvements, fixing bugs, testing and other specific acts of good will:  
-Stefan Karpinski, Jeff Bezanson, Alan Edelman, John Myles White, Tim Holy, Thomas
-Breloff,  
-David P. Sanders, Scott Jones, Yichao Yu, Luis Benet, Chris Rackauckas.
+Others have helped with conceptual subtilties, software from which I learned Julia,    
+suggesting improvements, fixing bugs, testing and other specific acts of good will:   
+&nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman, John Myles White,  
+&nbsp;&nbsp;&nbsp;&nbsp;Tim Holy, Thomas Breloff, David P. Sanders, Yichao Yu,   
+&nbsp;&nbsp;&nbsp;&nbsp;Scott Jones, Luis Benet, Chris Rackauckas, Galen O'Neil.
 
 =====
 =====
