@@ -7,7 +7,7 @@ ArbFloats.jl
 
 >   This is a foundational library that substitutes for BigFloat when
 >   prespecified significand lengths are required.  
->   ArbDecimal, which built on top of this library, is a better choice when
+>   ArbDecimals, which built on top of this library, is a better choice when
 >   standard digit spans (significand lengths)  
 >   are used and *highly reliable* results are desired.
 
