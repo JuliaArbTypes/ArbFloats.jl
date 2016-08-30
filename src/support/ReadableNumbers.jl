@@ -276,7 +276,7 @@ prettyFloat(s::String, group::Int, span::Char) =
 prettyFloat(s::String, group::Int, intSep::Char, fltSep::Char) =
     prettyFloat(s, group, group, intSep, fltSep)
 
-prettyFloat(s::String, intsSpanned::Int, fracGroup::Int, span::Char) =
+prettyFloat(s::String, intGroup::Int, fracGroup::Int, span::Char) =
     prettyFloat(s, intGroup, fracGroup, span, span)
 
 # do the work
@@ -330,7 +330,7 @@ function nonnegIntegerString(s::String, group::Int, span::Char)
 end
 
 function integerString(s::String, group::Int, span::Char)
-    if s[1] != "-"
+    if s[1] != '-'
        nonnegIntegerString(s, group, span)
     else
        s1 = string(s[2:end])
@@ -368,7 +368,7 @@ intsSpanned(n::Int) = intsSpanned!(n)
 
 function fltsSpanned!(n::Int)
     n = max(0,n)
-    fltsSpanned[1]   = n
+    fltsSpanned[1] = n
     nothing
 end
 fltsSpanned(n::Int) = fltsSpanned!(n)

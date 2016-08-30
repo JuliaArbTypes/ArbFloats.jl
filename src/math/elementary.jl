@@ -110,7 +110,7 @@ end
 root{P}(x::ArbFloat{P}, y::ArbFloat{P}) = pow(x, inv(y))
 root{P}(x::Integer, y::ArbFloat{P}) = pow(ArbFloat{P}(x), inv(y))
 function root{P}(x::ArbFloat{P}, y::Integer)
-   return
+   return (
      if y>=0
        yy = UInt64(y)
        z = ArbFloat{P}()
@@ -118,6 +118,6 @@ function root{P}(x::ArbFloat{P}, y::Integer)
        z
     else
       pow(ArbFloat{P}(x), inv(y))
-    end
+    end )
 end
 

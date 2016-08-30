@@ -21,9 +21,9 @@ prec == (1 + round(Int,log2(ufp2(midpt))) -  round(Int,log2(ulp2(midpt))))
 """
 function frexp{P}(x::ArfFloat{P})
     exponentOf2 = x.exponentOf2
-    significand = deepcopy(x)
-    significand.exponentOf2 = 0
-    return significand, exponentOf2
+    significandOf = deepcopy(x)
+    significandOf.exponentOf2 = 0
+    return significandOf, exponentOf2
 end
 
 function ldexp{P}(s::ArfFloat{P}, e::Int)
@@ -33,8 +33,8 @@ function ldexp{P}(s::ArfFloat{P}, e::Int)
 end
 
 function frexp{P}(x::ArbFloat{P})
-    significand, exponentOf2 = frexp(ArfFloat{P}(x))
-    return ArbFloat{P}(significand), exponentOf2
+    significandOf, exponentOf2 = frexp(ArfFloat{P}(x))
+    return ArbFloat{P}(significandOf), exponentOf2
 end
 
 function ldexp{P}(s::ArbFloat{P}, e::Int)
@@ -177,7 +177,7 @@ the float value given by a 1 at the position of
   the least significant nonzero bit|digit in _x_
 """
 function ulp(x::Real, precision::Int, base::Int)
-   unitfp  = ufp2(x)
+   unitfp  = base==2 ? ufp2(x) : (base==10 ? ufp10(x) : throw(DomainError())
    twice_u = 2.0^(1-precision)
    return twice_u * unitfp
 end

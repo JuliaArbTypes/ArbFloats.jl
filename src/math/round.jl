@@ -29,21 +29,21 @@ end
 function round{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     sigbits = sigBitsToUse(P, sig, base)
     z = ArbFloat{P}()
-    ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
+    ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
 
 function ceil{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     sigbits = sigBitsToUse(P, sig, base)
     z = ArbFloat{P}()
-    ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
+    ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
 
 function floor{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     sigbits = sigBitsToUse(P, sig, base)
     z = ArbFloat{P}()
-    ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
+    ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
 
@@ -51,9 +51,9 @@ function trunc{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     sigbits = sigBitsToUse(P, sig, base)
     z = ArbFloat{P}()
     if signbit(x)
-        ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
+        ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     else
-        ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, sigbits)
+        ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     end
     return z
 end
