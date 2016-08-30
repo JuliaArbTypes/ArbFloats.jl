@@ -281,23 +281,17 @@ Breloff, David P. Sanders, Scott Jones, Yichao Yu, Luis Benet, Chris Rackauckas.
 =====
   
   
-[//]: # (
-  
+[//]: # (developer info)
 
-developer info
-==============
+[//]: # (#### other, sometimes overlapping, software development is with)
 
-#### other, sometimes overlapping, software development is with
+[//]: # ([ArbDecimals](https://github.com/JuliaArbTypes/ArbDecimals.jl))
+[//]: # ([ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl))
 
-[ArbDecimals](https://github.com/JuliaArbTypes/ArbDecimals.jl)
-[ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl)
+[//]: # (### current flows are in)
 
-### current flows are in
-
-[the ArbFloats gitter](https://gitter.im/JuliaArbTypes/ArbFloats.jl)  
-[the ArbReals wiki](https://github.com/JuliaArbTypes/ArbReals.jl/wiki) and [on
-gitter](https://gitter.im/JuliaArbTypes/ArbReals.jl)
-
-)
+[//]: # ([the ArbFloats gitter](https://gitter.im/JuliaArbTypes/ArbFloats.jl)  )
+[//]: # ([the ArbReals wiki](https://github.com/JuliaArbTypes/ArbReals.jl/wiki) and [on
+gitter](https://gitter.im/JuliaArbTypes/ArbReals.jl) )
 
 
