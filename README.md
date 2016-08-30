@@ -4,7 +4,7 @@ ArbFloats.jl
 
 ###### Arb available as an extended precision floating point context.  
 
-<p align="right">Jeffrey Sarnoff © 2016˗May˗26 in New York City</p>  
+<p align="right">Jeffrey Sarnoff © 2016 August 30 in New York City</p>  
 
    
  
