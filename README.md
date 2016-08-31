@@ -124,10 +124,6 @@ bounds(fuzzed_e)
 overlap(exp1, fuzzed_e), contains(fuzzed_e, exp1), iscontainedby(exp1, fuzzed_e)
 # ( true. true, true )
 
-smartstring(exp1)
-# "2.71828182845904523536028747135266+"
-smartstring(fuzzed_e)
-# "2.7182818284590452353602874713527-"
 
 smartvalue(exp1)
 # 2.71828182845904523536028747135266
@@ -159,6 +155,12 @@ bounds(gamma_oneThird)
 
 #### Display
 ```julia
+
+smartstring(exp1)
+# "2.71828182845904523536028747135266+"
+smartstring(fuzzed_e)
+# "2.7182818284590452353602874713527-"
+
 pi66bits=ArbFloat{66}(pi)
 # 3.141592653589793238
 showpretty(ArbFloat{66}(pi))
