@@ -336,8 +336,9 @@ suggesting improvements, fixing bugs, testing and other specific acts of good wi
 
 &nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman,  
 &nbsp;&nbsp;&nbsp;&nbsp;John Myles White,  Tim Holy, Thomas Breloff,  
-&nbsp;&nbsp;&nbsp;&nbsp;David P. Sanders, Yichao Yu, Chris Rackauckas,  
-&nbsp;&nbsp;&nbsp;&nbsp;Scott Jones, Luis Benet, Galen O'Neil.
+&nbsp;&nbsp;&nbsp;&nbsp;David P. Sanders, Yichao Yu, Katharine Hyatt,  
+&nbsp;&nbsp;&nbsp;&nbsp;Chris Rackauckas, Scott Jones, Luis Benet,  
+&nbsp;&nbsp;&nbsp;&nbsp;Galen O'Neil, and others in Julia's community
 
 =====
   
