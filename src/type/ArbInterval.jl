@@ -26,24 +26,24 @@ function midpoint_radius(mid, rad)
 end
 
 function bounding_midpoint{T<:ArbFloat}(a::T)
-    lo = lowerbound(a)
-    hi = upperbound(a)
-    mid = lo*0.5 + hi*0.5
+    halflo = lowerbound(a) * 0.5
+    halfhi = upperbound(a) * 0.5
+    mid = halflo + halfhi
     return mid
 end
 
 function bounding_radius{T<:ArbFloat}(a::T)
-    lo = lowerbound(a)
-    hi = upperbound(a)
-    rad = hi - lo
+    halflo = lowerbound(a) * 0.5
+    halfhi = upperbound(a) * 0.5
+    rad = halfhi - halflo
     return rad
 end
 
 function bounding_midpoint_radius{T<:ArbFloat}(a::T)
-    lo = lowerbound(a)
-    hi = upperbound(a)
-    mid = lo*0.5 + hi*0.5
-    rad = hi - lo
+    halflo = lowerbound(a) * 0.5
+    halfhi = upperbound(a) * 0.5
+    mid = halflo + halfhi
+    rad = halfhi - halflo
     return midpoint_radius(mid, rad)
 end
 
