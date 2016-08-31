@@ -6,7 +6,7 @@ const radius_digits   =  9
 const midpoint_bits   = 40
 const radius_bits     = 30
 
-string{T<:ArbFloat}(x::T) = string(x, midpoint_bits, radius_bits)::String
+string{P}(x::ArbFloat{P}) = string(x, midpoint_bits, radius_bits)::String
 
 function string{T<:ArbFloat}(x::T, mbits::Int=midpoint_bits, rbits::Int=radius_bits)::String
     return (
