@@ -215,7 +215,7 @@ This package now does now provide a means of working with Arb's complex interval
 Arb is happiest, and performs most admirably using intervals where the radius is   
 a very small portion of the working precision. Ideally, the radius is kept within    
 8*eps(midpoint). One way that I quantify the usefulness of an interval result  
-is to estimate _the crispness of its novelty_ as log(2, eps(x)/radius(x)).
+is to estimate `the crispness of its novelty` with log(2, eps(x)/radius(x)).
 
 
 When the radius is rather large relative to the midpoint (midpoint_radius(2.0, 1.0),  
