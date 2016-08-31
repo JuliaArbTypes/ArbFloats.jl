@@ -158,6 +158,8 @@ bounds(gamma_oneThird)
 
 ArbFloat("Inf"), ArbFloat("-Inf"), ArbFloat("NaN")
 # +Inf, -Inf, NaN
+one(ArbFloat)/ArbFloat(Inf), ArbFloat("Inf")+ArbFloat("-Inf")
+# 0, NaN
 
 smartstring(exp1)
 # "2.71828182845904523536028747135266+"
