@@ -209,7 +209,9 @@ some extra work and checking.  This package has made itself around such things.
 
 When the radius is rather large relative to the midpoint (midpoint_radius(2.0, 1.0),  
 the string that Arb passes back ("[+/- 3.01]") does not mean  (-3.01) .. (3.01),  
-as seen by taking the bounds ( 0.999999998, 3.000000002 ).
+as seen by taking the bounds ( 0.999999998, 3.000000002 ) or using showall,  
+(2 ± 1.0000000018626451).
+
 
 
 ### About Arb and using Nemo's libraries
