@@ -222,10 +222,10 @@ is like a Float32 (24bit significand) value with a much larger exponent.
 
 One way of think of these midpoint+radius intervals is as cereal and milk.  
 The cereal  sources nourishment and the milk makes it easy to digest.  
-The midpoint associates as a valuation, and the radius engages as a 
-capacity-limiting store of value. The more extensive the radius, the more  
-spread out, dilute is any value stored.  Value concentrates as the midpoint  
-magnitude increases relative to the radius.
+The midpoint associates as a valuation, and the radius engages as a capacity-  
+limiting store of value. The more extensive the radius, the more spread out,  
+dilute is any value stored.  Value concentrates as the midpoint magnitude  
+increases relative to the radius.
 
 Another is to use the pairing of midpoint with its immediate locale (diameter)   
 as a semantic descriptor and quantify the semantics.  The veridical presentment   
