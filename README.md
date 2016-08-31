@@ -256,8 +256,9 @@ Exports (including re-exports)
 
 >   copy, deepcopy, zero, one, eps, epsilon, isequal, notequal, isless,  
 >   (==), (!=), (<), (<=), (>=), (>),  #  Arb, strict:  a < b iff upperbound(a) < lowerbound(b)  
->   (≃), (≄), (≺), (≼), (≻), (≽),    #   non-strict total ordering  (better for convergence testing)  
->   simeq, nsime, prec, prec, preceq, succ, succeq, # names matching binops above
+>   (≃), (≄), (≺), (⪯), (≻), (⪰),
+   #   non-strict total ordering  (better for convergence testing)  
+>   simeq, nsime, prec, preceq, succ, succeq, # names matching binops above
 >   approxeq, ≊, min, max, minmax,  
 
 >   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,  
