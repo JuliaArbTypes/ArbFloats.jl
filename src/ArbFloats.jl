@@ -31,7 +31,8 @@ import Base: hash, convert, promote_rule, isa,
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
        @ArbFloat,     # converts string form of argument, precision is optional first arg
-       (≃),(≄),(≺),(≼),(≻),(≽),
+       simeq, nsime, prec, preceq, succ, succeq, # non-strict total ordering comparisons
+       (≃), (≄), (≺), (⪯), (≻), (⪰),           #    matched binary operators
        upperbound, lowerbound, bounds,
        midpoint, radius, midpoint_radius,
        bounding_midpoint, bounding_radius, bounding_midpoint_radius,
