@@ -124,10 +124,6 @@ bounds(fuzzed_e)
 overlap(exp1, fuzzed_e), contains(fuzzed_e, exp1), iscontainedby(exp1, fuzzed_e)
 # ( true. true, true )
 
-smartstring(exp1)
-# "2.71828182845904523536028747135266+"
-smartstring(fuzzed_e)
-# "2.7182818284590452353602874713527-"
 
 smartvalue(exp1)
 # 2.71828182845904523536028747135266
@@ -159,6 +155,12 @@ bounds(gamma_oneThird)
 
 #### Display
 ```julia
+
+smartstring(exp1)
+# "2.71828182845904523536028747135266+"
+smartstring(fuzzed_e)
+# "2.7182818284590452353602874713527-"
+
 pi66bits=ArbFloat{66}(pi)
 # 3.141592653589793238
 showpretty(ArbFloat{66}(pi))
@@ -172,7 +174,7 @@ showpretty(ArbFloat{67}(pi),5)
 
 #### Non-Strict Total Ordering
 ```julia
-thinner  = midpoint_radius( 1000.0, 1.0)
+thinner = midpoint_radius( 1000.0, 1.0)
 thicker = midpoint_radius( 1000.0, 2.0)
 
 thinner  ⪯  thicker
@@ -186,7 +188,7 @@ succ(thicker, thinner)
 
 **using ArbFloats \# goes anywhere**  
 DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,  
-Plots, Polynomials, Quaternions, , others
+Plots, Polynomials, Quaternions, others
 
 **using ArbFloats \# goes last!**  
 TaylorSeries
@@ -194,22 +196,36 @@ TaylorSeries
 *partially compatible*  
 Roots (accepts ArbFloats, results are Float64)
 
-If you have a package that accepts AbstractFloats or Reals and does not “just
-work” with ArbFloats, please note it as an issue. If you have a package that
-works well with ArbFloats, let us know.
+If you have a package that accepts AbstractFloats or Reals and does not “just work”   
+with ArbFloats, please note it as an issue. If you have a package that works well   
+with ArbFloats, do let us know.
+
+#### Rough Spots
+
+This package does whatever it may through the Arb C library.  On rare occasion,   
+this may give a result which makes sense within Arb yet runs counter-intuitive  
+to the general practices we strive to evince.  These things are remedyable with  
+some extra work and checking.  This package has made itself around such things.
+
+When the radius is rather large relative to the midpoint (midpoint_radius(2.0, 1.0),  
+the string that Arb passes back ("[+/- 3.01]") does not mean  (-3.01) .. (3.01),  
+as seen by taking the bounds ( 0.999999998, 3.000000002 ) or using showall,  
+(2 ± 1.0000000018626451).
+
+
 
 ### About Arb and using Nemo's libraries
 
-This work is constructed atop a state-of-the-art C library for working with
-*midpoint ± radius* intervals, `Arb`. Arb is designed and written by Fredrik
-Johansson, who graciously allows Julia to use it under the MIT License.
+This work is constructed atop a state-of-the-art C library for working with  
+*midpoint ± radius* intervals, `Arb`. Arb is designed and written by Fredrik  
+Johansson, who graciously allows Julia to use it under the MIT License.  
 
-The C libraries that this package accesses are some of the shared libraries that
-Nemo.jl requires and builds; and, with permission, I call them directly.
+The C libraries that this package accesses are some of the shared libraries that  
+Nemo.jl requires and builds; and, with permission, I call them directly.  
 
-It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius
-– and sometimes they are. When an ArbFloat has a nonzero radius, the user sees
-only those digits that remain after rounding the ArbFloat to subsume the radius.
+It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius  
+– and sometimes they are. When an ArbFloat has a nonzero radius, the user sees  
+only those digits that remain after rounding the ArbFloat to subsume the radius.  
 
 
 ### Appropriateness
@@ -221,27 +237,26 @@ precision range, I have found working with 800 bits (~240 digits) a welcome chan
 
 #### Conceptual Background
 
-`Transparency`: a desirable quality that may obtain in the presentation of
-numerical quantity. Where transparency exists, it may well not persist. A
-diminution of transparency increases `opacity`, and vice versa. Presentation
-of a floating point value either evinces transparency or furthers opacity.
-With transparent values, ‘looking at a value’ is ‘looking through to see the
-knowable value’. With opaque values, ‘looking at a value’ is ‘looking away
-from’ that. And it is that nonresponsive, nonparticipative engagement of
-cognitive attention that is the opaqueness underlying opacity.
+`Transparency`: a desirable quality that may obtain in the presentation of  
+numerical quantity. Where transparency exists, it may well not persist.  
+A diminution of transparency increases `opacity`, and vice versa. Presentation  
+of a floating point value either evinces transparency or furthers opacity.  
+With transparent values, ‘looking at a value’ is ‘looking through to see the  
+knowable value’. With opaque values, ‘looking at a value’ is ‘looking away from’  
+that. And it is that nonresponsive, nonparticipative engagement of cognitive   
+attention that is the opaqueness underlying opacity. 
 
-Presented with a transparent floating point value, the perceiver is become
-best informed. There is no other rendition of that floating point realization
-which is intrinsically more informing and none which relays the value of that
-floating point realization more accurately – none with fewer digits, none with
-more digits, none of greater magnitude, none of lesser magnitude.
+Presented with a transparent floating point value, the perceiver is become  
+best informed. There is no other rendition of that floating point realization  
+which is intrinsically more informing and none which relays the value of that  
+floating point realization more accurately – none with fewer digits, none with  
+more digits, none of greater magnitude, none of lesser magnitude.  
 
-An `ArbFloat` is an extended precision float architected to evince
-transparency. It informs without leading or misleading. An ArbFloat, when
-viewed, appears as an extended precision floating point value. When any of the
-exported arithmetic, elementary or special functions is applied to an
-ArbFloat, the value transforms as an extended precision floating point
-interval.
+An `ArbFloat` is an extended precision float architected to evince transparency.   
+It informs without leading or misleading. An ArbFloat, when viewed, appears as   
+an extended precision floating point value.  When any of the exported arithmetic,   
+elementary or special functions is applied to an ArbFloat, the value transforms   
+as an extended precision floating point interval.  
 
 
 
