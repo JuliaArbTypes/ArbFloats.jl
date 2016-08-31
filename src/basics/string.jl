@@ -4,7 +4,7 @@
 const midpointDigits = 12;  const midpoint_digits_shown = [ midpointDigits ];
 const radiusDigits   =  9;  const radius_digits_shown   = [ radiusDigits   ];
 const midpointBits   = 40;  const midpoint_bits_shown   = [ midpointBits   ];
-const radiusBits     = 30;  const midpoint_bits_shown   = [ radiusBits     ];
+const radiusBits     = 30;  const radius_bits_shown     = [ radiusBits     ];
 
 midpoint_digits() = midpoint_digits_shown[1]
 radius_digits()   = radius_digits_shown[1]
