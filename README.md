@@ -220,7 +220,7 @@ increasing the working precision, if that is practicable.
 When the radius is rather large relative to the midpoint (midpoint_radius(2.0, 1.0),  
 the string that you see looks like ("[+/- 3.01]"). That is not  (-3.01) .. (3.01),  
 as seen using showall (2 ± 1.0000000018626451).  And when the underlying interval  
-is not well-resolvable as a floating point quantity, you may be shown _1e+_ or _4e+_.  
+is not well-resolvable as a floating point quantity, you may see e.g. _1e+_, _4e+_.  
 This are known issues, and will become gone.  
 
 
