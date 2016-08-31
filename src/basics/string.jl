@@ -3,8 +3,8 @@
 # default values for summary view
 const midpoint_digits = 12;
 const radius_digits   =  9;
-const midpoint_digits   = 40;
-const radius_digits     = 30;
+const midpoint_bits   = 40;
+const radius_bits     = 30;
 
 function string{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits, rdigits::Int=radius_digits)::String
     return (
