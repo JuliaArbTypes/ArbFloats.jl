@@ -4,7 +4,7 @@ ArbFloats.jl
 
 #### Arb available as an extended precision floating point context.  
 
-<p align="right">Jeffrey Sarnoff © 2016 August 30 in New York City</p>  
+<p align="right">Jeffrey Sarnoff © 2016 August 31 in New York City</p>  
 
 ===========  
  
@@ -37,14 +37,13 @@ ArbFloats.jl
 >   results as accurately as possible at a precision that does not misrepresent  
 >   the information content of the underlying interval valuation.
 
-#### version 0.0.6 (for Julia v0.5+).
+#### version 0.6.1 (for Julia v0.5+).
 
 If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
 If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
 
-Anyone interested in contributing some time is encouraged to contact the author (firstname.lastname at-the-gmail).
-
-_We use some of Nemo's libraries.  Nemo is very large, and this package needs perhaps 1/8th of it to function properly._  
+Anyone interested in contributing some time is encouraged  
+to contact the author (firstname.lastname at-the-gmail).
 
 
 #### Install
@@ -73,6 +72,7 @@ quit()
 using ArbFloats
 quit()
 ```
+__It is helpful to add Nemo first, quit, then add ArbFloats and quit__.  
 
 #### Initializing ArbFloats
 
@@ -205,25 +205,37 @@ If you have a package that accepts AbstractFloats or Reals and does not “just 
 with ArbFloats, please note it as an issue. If you have a package that works well   
 with ArbFloats, do let us know.
 
+#### Hewing to the sensible
+
+Arb is happiest, and performs most admirably using intervals where the radius is     
+a very small portion of the working precision. Ideally, the radius is kept within      
+8*eps(midpoint). One way of weighing results that are given as an midpoint+radius   
+is to make as a measure of each _finite_ interval `the crispness of its novelty`:    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; log2( eps(x)/radius(x) )   
+given two, (a, b), one may ascertain their `relative perspicacity`:   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a_rel_b = log( abs(a), abs(b) ), b_rel_a = log( abs(b), abs(a) )   
+
+
 #### Rough Spots
 
 This package does whatever it may through the Arb C library.  On rare occasion,    
 this may give a result which makes Arb sense yet appears counter-intuitive here.  
 One example is Arb's ability to work with and to return projective infinity (±Inf).  
-This package now does now provide a means of working with Arb's complex intervals.  
+This package now does now provide a means of working with Arb's complex intervals,  
+nor is their access to any of Arb's matrix routines (det, inv, lu, maybe charpoly). 
 
-Arb is happiest, and performs most admirably using intervals where the radius is   
-a very small portion of the working precision. Ideally, the radius is kept within    
-8*eps(midpoint). One way that I quantify the usefulness of an interval result  
-is to estimate _the crispness of its novelty_ as log(2, eps(x)/radius(x)).
+ArbFloats do not lend themselves easily to higher matrix algebra (svd, eigenvals).    
+If someone implements one of the known good algorithms for getting the eigenvalues  
+or the svd of a matrix with interval-valued entries, this package is at the ready.  
 
 
 When the radius is rather large relative to the midpoint (midpoint_radius(2.0, 1.0),  
 the string that you see looks like ("[+/- 3.01]"). That is not  (-3.01) .. (3.01),  
 as seen using showall (2 ± 1.0000000018626451).  And when the underlying interval  
 is not well-resolvable as a floating point quantity, you may see e.g. _1e+_, _4e+_.  
-This are known issues, and will become gone.  
+This are known issues, and will become gone.   
 
+_We use some of Nemo's libraries.  Nemo is very large, and this work needs less than 1/8th of it._  
 
 
 ### About Arb and using Nemo's libraries
@@ -293,20 +305,19 @@ Exports (including re-exports)
 
 >   copy, deepcopy, zero, one, eps, epsilon, isequal, notequal, isless,  
 >   (==), (!=), (<), (<=), (>=), (>),  #  Arb, strict:  a < b iff upperbound(a) < lowerbound(b)  
->   (≃), (≄), (≺), (⪯), (≻), (⪰),
-   #   non-strict total ordering  (better for convergence testing)  
->   simeq, nsime, prec, preceq, succ, succeq, # names matching binops above
+>   (≃), (≄), (≺), (⪯), (≻), (⪰),    #  non-strict total ordering  (best for convergence tests)  
+>   simeq, nsime, prec, preceq, succ, succeq, # names matching binops above  
 >   approxeq, ≊, min, max, minmax,  
 
->   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,  
->   sqrt, invsqrt, hypot, factorial, doublefactorial, risingfactorial, trunc,  
->   round, ceil, floor,  
+>   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,    
+>   sqrt, invsqrt, hypot, factorial, doublefactorial, risingfactorial, trunc,    
+>   round, ceil, floor,   
 
->   pow, root, exp, expm1, log, log1p, log2, log10, logbase, sin, cos, sincos,  
->   sincospi, tan, csc, sec, cot, asin, acos, atan, atan2, sinh, cosh, sinhcosh,  
->   tanh, csch, sech, coth, asinh, acosh, atanh,  
+>   pow, root, exp, expm1, log, log1p, log2, log10, logbase, sin, cos, sincos,    
+>   sincospi, tan, csc, sec, cot, asin, acos, atan, atan2, sinh, cosh, sinhcosh,   
+>   tanh, csch, sech, coth, asinh, acosh, atanh,    
 
->   gamma, lgamma, digamma, sinc, zeta, polylog, agm  
+>   gamma, lgamma, digamma, sinc, zeta, polylog, agm    
 
 #### Credits, References, Thanks
 
@@ -327,10 +338,10 @@ with their time.
 Others have helped with conceptual subtleties, software from which I learned Julia,    
 suggesting improvements, fixing bugs, testing and other specific acts of good will:  
 
-&nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman,  
-&nbsp;&nbsp;&nbsp;&nbsp;John Myles White,  Tim Holy, Thomas Breloff,  
-&nbsp;&nbsp;&nbsp;&nbsp;David P. Sanders, Yichao Yu, Chris Rackauckas,  
-&nbsp;&nbsp;&nbsp;&nbsp;Scott Jones, Luis Benet, Galen O'Neil.
+&nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman, Viral Shah,     
+&nbsp;&nbsp;&nbsp;&nbsp;John Myles White, Tim Holy, Thomas Breloff, Katherine Hyatt,  
+&nbsp;&nbsp;&nbsp;&nbsp;Avik Sengupta, Yichao Yu, David P. Sanders, Chris Rackauckas,  
+&nbsp;&nbsp;&nbsp;&nbsp;Scott Jones, Luis Benet, Galen O'Neil, and Julia's community    
 
 =====
   
