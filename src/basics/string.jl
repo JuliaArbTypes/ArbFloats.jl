@@ -41,23 +41,49 @@ function string_nonfinite{T<:ArbFloat}(x::T)::String
 end
 
 
-function string{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits(), rdigits::Int=radius_digits())::String
-    return (
-      if isfinite(x)
-          isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
-      else
-          string_nonfinite(x)
-      end
-    )
+function string{T<:ArbFloat}(x::T)
+    mdigits = midpoint_digits()
+    rdigits = radius_digits()
+
+    s = if isfinite(x)
+            isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
+        else
+            string_nonfinite(x)
+        end
+    return s
 end
 
-function string_exact{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits())::String
+
+function string{T<:ArbFloat}(x::T, ndigits::Int)
+    mdigits = max(ndigits, midpoint_digits())
+    rdigits = min(ndigits, radius_digits())
+
+    s = if isfinite(x)
+            isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
+        else
+            string_nonfinite(x)
+        end
+    return s
+end
+
+function string{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)
+    s = if isfinite(x)
+            isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
+        else
+            string_nonfinite(x)
+        end
+    return s
+end
+
+
+
+function string_exact{T<:ArbFloat}(x::T, mdigits::Int)::String
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, mdigits, 2%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
 
-function string_inexact{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits(), rdigits::Int=radius_digits())::String
+function string_inexact{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
     mid = string_exact(midpoint(x), mdigits)
     rad = string_exact(radius(x), rdigits)
     return string(mid, "±", rad)
