@@ -1,6 +1,6 @@
 @inline digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639811952137)
 
-function string{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)
+function string{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)::String
     n = max(1,min(abs(ndigits), digitsRequired(P)))
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, flags)
     s = unsafe_string(cstr)
@@ -16,7 +16,24 @@ function string{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)
     return s
 end
 
-function string{P}(x::ArbFloat{P}, flags::UInt)
+function string_nonfinite{P}(x::ArbFloat{P})::String
+    return(
+        if isnan(x)
+            "NaN"
+        elseif ispositive(x)
+            "+Inf"
+        elseif isnegative(x)
+            "-Inf"
+        else
+            "±Inf"
+        end
+        )
+end
+
+function string{P}(x::ArbFloat{P}, flags::UInt)::String
+    if !isfinite(x)
+        return string_nonfinite(x)
+    end
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt),
                  &x, digitsRequired(P), flags)
     s = unsafe_string(cstr)
@@ -34,6 +51,9 @@ end
 
 # n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
 function string{P}(x::ArbFloat{P}, ndigits::Int)
+    if !isfinite(x)
+        return string_nonfinite(x)
+    end
     s = string(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
     return s
 end
