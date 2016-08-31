@@ -252,12 +252,11 @@ which is intrinsically more informing and none which relays the value of that
 floating point realization more accurately – none with fewer digits, none with  
 more digits, none of greater magnitude, none of lesser magnitude.  
 
-An `ArbFloat` is an extended precision float architected to evince  
-transparency. It informs without leading or misleading. An ArbFloat,  
-when viewed, appears as an extended precision floating point value.   
-When any of the exported arithmetic, elementary or special functions   
-is applied to an ArbFloat, the value transforms as an extended precision 
-floating point interval.  
+An `ArbFloat` is an extended precision float architected to evince transparency.   
+It informs without leading or misleading. An ArbFloat, when viewed, appears as   
+an extended precision floating point value.  When any of the exported arithmetic,   
+elementary or special functions is applied to an ArbFloat, the value transforms   
+as an extended precision floating point interval.  
 
 
 
