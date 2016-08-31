@@ -196,13 +196,13 @@ TaylorSeries
 *partially compatible*  
 Roots (accepts ArbFloats, results are Float64)
 
-If you have a package that accepts AbstractFloats or Reals and does not “just
-work” with ArbFloats, please note it as an issue. If you have a package that
-works well with ArbFloats, do let us know.
+If you have a package that accepts AbstractFloats or Reals and does not “just work”   
+with ArbFloats, please note it as an issue. If you have a package that works well   
+with ArbFloats, do let us know.
 
 #### Rough Spots
 
-This package does whatever it may through the Arb C library.  On rare occasion, 
+This package does whatever it may through the Arb C library.  On rare occasion,   
 this may give a result which makes sense within Arb yet runs counter-intuitive  
 to the general practices we strive to evince.  These things are remedyable with  
 some extra work and checking.  This package has made itself around such things.
@@ -216,16 +216,16 @@ as seen by taking the bounds ( 0.999999998, 3.000000002 ) or using showall,
 
 ### About Arb and using Nemo's libraries
 
-This work is constructed atop a state-of-the-art C library for working with
-*midpoint ± radius* intervals, `Arb`. Arb is designed and written by Fredrik
-Johansson, who graciously allows Julia to use it under the MIT License.
+This work is constructed atop a state-of-the-art C library for working with  
+*midpoint ± radius* intervals, `Arb`. Arb is designed and written by Fredrik  
+Johansson, who graciously allows Julia to use it under the MIT License.  
 
-The C libraries that this package accesses are some of the shared libraries that
-Nemo.jl requires and builds; and, with permission, I call them directly.
+The C libraries that this package accesses are some of the shared libraries that  
+Nemo.jl requires and builds; and, with permission, I call them directly.  
 
-It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius
-– and sometimes they are. When an ArbFloat has a nonzero radius, the user sees
-only those digits that remain after rounding the ArbFloat to subsume the radius.
+It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius  
+– and sometimes they are. When an ArbFloat has a nonzero radius, the user sees  
+only those digits that remain after rounding the ArbFloat to subsume the radius.  
 
 
 ### Appropriateness
