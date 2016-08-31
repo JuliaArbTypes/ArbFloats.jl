@@ -188,7 +188,7 @@ succ(thicker, thinner)
 
 **using ArbFloats \# goes anywhere**  
 DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,  
-Plots, Polynomials, Quaternions, , others
+Plots, Polynomials, Quaternions, others
 
 **using ArbFloats \# goes last!**  
 TaylorSeries
@@ -198,7 +198,7 @@ Roots (accepts ArbFloats, results are Float64)
 
 If you have a package that accepts AbstractFloats or Reals and does not “just
 work” with ArbFloats, please note it as an issue. If you have a package that
-works well with ArbFloats, let us know.
+works well with ArbFloats, do let us know.
 
 #### Rough Spots
 
