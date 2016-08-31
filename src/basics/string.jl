@@ -32,6 +32,10 @@ function set_radius_digits_shown(rdigits::Int)
     return nothing
 end
 
+# prepare the scence for balanced in displaybles interfacing
+set_midpoint_digits_shown(midpoint_digits())
+set_radius_digits_shown(radius_digits())
+
 const nonfinite_strings = ["NaN", "+Inf", "-Inf", "±Inf"];
 
 function string_nonfinite{T<:ArbFloat}(x::T)::String
