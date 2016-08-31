@@ -28,29 +28,41 @@ end
 function (≃){T<:ArbFloat}(a::T, b::T)
     return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), &a, &b))
 end
+simeq{T<:ArbFloat}(a::T, b::T) = (≃)(a,b)
+
 function (≄){T<:ArbFloat}(a::T, b::T)
     return !Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), &a, &b))
 end
-function (≼){T<:ArbFloat}(a::T, b::T)
+nsime{T<:ArbFloat}(a::T, b::T) = (≄)(a,b)
+
+function (⪯){T<:ArbFloat}(a::T, b::T)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo < blo) || ((alo == blo) & (ahi <= bhi))
 end
+preceq{T<:ArbFloat}(a::T, b::T) = (⪯)(a,b)
+
 function (≺){T<:ArbFloat}(a::T, b::T) # (a ≼ b) & (a ≄ b)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo < blo) || ((alo == blo) & (ahi < bhi))
 end
-function (≽){T<:ArbFloat}(a::T, b::T)
+prec{T<:ArbFloat}(a::T, b::T) = (≺)(a,b)
+
+function (⪰){T<:ArbFloat}(a::T, b::T)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo > blo) || ((alo == blo) & (ahi >= bhi))
 end
+succeq{T<:ArbFloat}(a::T, b::T) = (⪰)(a,b)
+
 function (≻){T<:ArbFloat}(a::T, b::T)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo > blo) || ((alo == blo) & (ahi > bhi))
 end
+succ{T<:ArbFloat}(a::T, b::T) = (≻)(a,b)
+
 
 # for sorted ordering
 isequal{T<:ArbFloat}(a::T, b::T) = !(a != b)
