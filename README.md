@@ -212,7 +212,7 @@ a very small portion of the working precision. Ideally, the radius is kept withi
 8*eps(midpoint). One way of weighing results that are given as an midpoint+radius   
 is to make as a measure of each _finite_ interval `the crispness of its novelty`:    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; log2( eps(x)/radius(x) )   
-given two, (a, b), one may ascertain their relative perspicacity:  
+given two, (a, b), one may ascertain their `relative perspicacity`:   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a_rel_b = log( abs(a), abs(b) ), b_rel_a = log( abs(b), abs(a) )   
 
 
