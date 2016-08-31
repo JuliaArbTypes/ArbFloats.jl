@@ -1,12 +1,47 @@
 @inline digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639811952137)
 
 # default values for summary view
-const midpoint_digits = 12;
-const radius_digits   =  9;
-const midpoint_bits   = 40;
-const radius_bits     = 30;
+const midpointDigits = 12;  const midpoint_digits_shown = [ midpointDigits ];
+const radiusDigits   =  9;  const radius_digits_shown   = [ radiusDigits   ];
+const midpointBits   = 40;  const midpoint_bits_shown   = [ midpointBits   ];
+const radiusBits     = 30;  const midpoint_bits_shown   = [ radiusBits     ];
 
-function string{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits, rdigits::Int=radius_digits)::String
+midpoint_digits() = midpoint_digits_shown[1]
+radius_digits()   = radius_digits_shown[1]
+midpoint_bits()   = midpoint_bits_shown[1]
+radius_bits()     = radius_bits_shown[1]
+
+digits_offer_bits(ndigits::Int) = convert(Int, div(abs(ndigits)*log2(10), 1))
+
+get_midpoint_digits_shown() = midpoint_digits()
+get_radius_digits_shown()   = radius_digits()
+
+function set_midpoint_digits_shown(mdigits::Int)
+    global midpoint_digits_shown, midpoint_bits_shown
+    0 < mdigits <= 4096 || throw(ErrorException("Interface Exception: midpoint cannot show $mdigits digits"))
+    midpoint_digits_shown[1] = mdigits
+    midpoint_bits_shown[1]   = digits_offer_bits(mdigits)
+    return nothing
+end
+
+function set_radius_digits_shown(rdigits::Int)
+    global radius_digits_shown, radius_bits_shown
+    0 < rdigits <= 22 || throw(ErrorException("Interface Exception: radius cannot show $rdigits digits"))
+    radius_digits_shown[1] = rdigits
+    radius_bits_shown[1]   = digits_offer_bits(rdigits)
+    return nothing
+end
+
+const nonfinite_strings = ["NaN", "+Inf", "-Inf", "±Inf"];
+
+function string_nonfinite{T<:ArbFloat}(x::T)::String
+    global nonfinite_strings
+    idx = isnan(x) + isinf(x)<<2 - ispositive(x)<<1 - isnegative(x)
+    return nonfinite_strings[idx]
+end
+
+
+function string{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits(), rdigits::Int=radius_digits())::String
     return (
       if isfinite(x)
           isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
@@ -16,16 +51,16 @@ function string{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits, rdigits::Int=ra
     )
 end
 
-function string_exact{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits)::String
+function string_exact{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits())::String
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, mdigits, 2%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
 
-function string_inexact{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits, rdigits::Int=radius_digits)::String
+function string_inexact{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits(), rdigits::Int=radius_digits())::String
     mid = string_exact(midpoint(x), mdigits)
     rad = string_exact(radius(x), rdigits)
-    return string(mid, "±", rad)
+    return string(mid, " ±", rad)
 end
 
 function cleanup_numstring(numstr::String, isaInteger::Bool)::String
@@ -40,20 +75,6 @@ function cleanup_numstring(numstr::String, isaInteger::Bool)::String
         s = string(s, "0")
     end
     return s
-end
-
-function string_nonfinite{P}(x::ArbFloat{P})::String
-    return(
-        if isnan(x)
-            "NaN"
-        elseif ispositive(x)
-            "+Inf"
-        elseif isnegative(x)
-            "-Inf"
-        else
-            "±Inf"
-        end
-        )
 end
 
 

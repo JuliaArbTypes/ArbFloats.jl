@@ -55,8 +55,8 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        doublefactorial, risingfactorial, rgamma, agm, polylog,
        relativeError, relativeAccuracy, midpointPrecision, trimmed,
        PI,SQRTPI,LOG2,LOG10,EXP1,EULER,CATALAN,KHINCHIN,GLAISHER,APERY, # constants
-       MullerKahanChallenge
-
+       get_midpoint_digits_shown, get_radius_digits_shown,  # some interface control
+       set_midpoint_digits_shown, set_radius_digits_shown
 
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 
