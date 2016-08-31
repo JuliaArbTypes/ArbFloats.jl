@@ -169,25 +169,47 @@ function minmax{T<:ArbFloat}(x::T, y::T)
    return min(x,y), max(x,y) # ((x<=y) | !(y>x)) ? (x,y) : (y,x)
 end
 
+"""
+Returns the effective relative error of x measured in bits,
+  defined as the difference between the position of the
+  top bit in the radius and the top bit in the midpoint, plus one.
+  The result is clamped between plus/minus ARF_PREC_EXACT.
+"""
 function relativeError{T<:ArbFloat}(x::T)
     z = precision(T)
     ccall(@libarb(arb_rel_error_bits), Void, (Ptr{Int}, Ptr{T}), &z, &x)
     return z
 end
 
+"""
+Returns the effective relative accuracy of x measured in bits,
+  equal to the negative of the return value from relativeError().
+"""
 function relativeAccuracy{T<:ArbFloat}(x::T)
     z = precision(T)
     ccall(@libarb(arb_rel_accuracy_bits), Void, (Ptr{Int}, Ptr{T}), &z, &x)
     return z
 end
 
+"""
+Returns the number of bits needed to represent the absolute value
+  of the mantissa of the midpoint of x, i.e. the minimum precision
+  sufficient to represent x exactly.
+  Returns 0 if the midpoint of x is a special value.
+"""
 function midpointPrecision{T<:ArbFloat}(x::T)
     z = precision(T)
     ccall(@libarb(arb_bits), Void, (Ptr{Int}, Ptr{T}), &z, &x)
     return z
 end
 
-function trimmedAccuracy{T<:ArbFloat}(x::T)
+"""
+Sets y to a trimmed copy of x: rounds x to a number of bits equal
+  to the accuracy of x (as indicated by its radius), plus a few
+  guard bits. The resulting ball is guaranteed to contain x,
+  but is more economical if x has less than full accuracy.
+"""
+function trimmed{T<:ArbFloat}(x::T)
     z = T()
     ccall(@libarb(arb_trim), Void, (Ptr{T}, Ptr{T}), &z, &x)
     return z

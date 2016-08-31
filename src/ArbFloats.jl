@@ -53,7 +53,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        contains, iscontainedby, doesnotcontain, isnotcontainedby,
        invsqrt, pow, root, tanpi, cotpi, logbase, sincos, sincospi, sinhcosh,
        doublefactorial, risingfactorial, rgamma, agm, polylog,
-       relativeError, relativeAccuracy, midpointPrecision, trimmedAccuracy,
+       relativeError, relativeAccuracy, midpointPrecision, trimmed,
        PI,SQRTPI,LOG2,LOG10,EXP1,EULER,CATALAN,KHINCHIN,GLAISHER,APERY, # constants
        MullerKahanChallenge
 
