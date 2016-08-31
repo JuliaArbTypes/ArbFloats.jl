@@ -209,7 +209,24 @@ with ArbFloats, do let us know.
 
 Arb is happiest, and performs most admirably using intervals where the radius is     
 a very small portion of the working precision. Ideally, the radius is kept within      
-8*eps(midpoint). One way of weighing results that are given as an midpoint+radius   
+8*eps(midpoint).  With Arb, you are likely ok up to twice that.  And should your  
+approach generate unhelpfully wide intervals, then a way with fewer repeated touches  
+(prefer projection techniques to recursively applicative transforms), perhaps run  
+at higher working precision, is worth trying.  A toy version is likely to behave  
+in the same manner as your the more refined software.  It is worth the look.
+
+The intervals underlying this package are kept by Arb as an extended precision  
+`midpoint` and a `radius` or halfwidth as a float of low precision & high range.
+The radius is stored as a 30 bit significand and a ~60 bit exponent.  The radius  
+is like a Float32 (24bit significand) value with a much larger exponent.  
+
+One way of think of these midpoint+radius intervals is as cereal and milk. The cereal  sources nourishment and the milk makes it easy to digest.  The midpoint associates as a valuation, and the radius engages as a capacity-limiting store of value. The more extensive the radius, the more spread out, dilute is any value stored.  Value concentrates as the midpoint magnitude increases relative to the radius.
+
+
+neighboorhood as midpoint-relative 
+facilitates our becoming nourished. the eating.   which is less easily obtained that the midpoint both constrain and relax   
+display of floating point quantities
+values the are 
 is to make as a measure of each _finite_ interval `the crispness of its novelty`:    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; log2( eps(x)/radius(x) )   
 given two, (a, b), one may ascertain their `relative perspicacity`:   
