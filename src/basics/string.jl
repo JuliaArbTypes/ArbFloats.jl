@@ -6,6 +6,8 @@ const radius_digits   =  9
 const midpoint_bits   = 40
 const radius_bits     = 30
 
+string{T<:ArbFloat}(x::T) = string(x, midpoint_bits, radius_bits)::String
+
 function string{T<:ArbFloat}(x::T, mbits::Int=midpoint_bits, rbits::Int=radius_bits)::String
     return (
       if isfinite(x)
@@ -16,8 +18,8 @@ function string{T<:ArbFloat}(x::T, mbits::Int=midpoint_bits, rbits::Int=radius_b
     )
 end
 
-function string_exact{T<:ArbFloat}(x::T, nbits::Int=midpoint_bits)::String
-    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, nbits, 2%UInt)
+function string_exact{T<:ArbFloat}(x::T, mbits::Int=midpoint_bits)::String
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, mbits, 2%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
