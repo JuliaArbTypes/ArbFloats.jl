@@ -220,6 +220,8 @@ The intervals underlying this package are kept by Arb as an extended precision
 The radius is stored as a 30 bit significand and a ~60 bit exponent.  The radius   
 is like a Float32 (24bit significand) value with a much larger exponent.  
 
+#### Warp and Weft
+
 One way of think of these midpoint+radius intervals is as cereal and milk.  
 The cereal  sources nourishment and the milk makes it easy to digest.  
 The midpoint associates as a valuation, and the radius engages as a capacity-  
@@ -230,10 +232,9 @@ increases relative to the radius.
 Another is to use the pairing of midpoint with its immediate locale (diameter)   
 as a semantic descriptor and quantify the semantics.  The veridical presentment   
 of floating point quantities is one of the primary motivators for this package.  
-Let us make as measure to _finite_ intervals  `the crispness of its novelty`:    
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; log2( eps(x)/radius(x) )   
-given two, (a, b), one may ascertain their `relative perspicacity`:   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a_rel_b = log( abs(a), abs(b) ), b_rel_a = log( abs(b), abs(a) )   
+And there is software which moves from two floats, `midpoint`+`radius`, through  
+the active preternatural simplicty of most informing whilst least misleading,  
+into the floating point value that best reflects `the crispness of its novelty`.    
 
 
 #### Rough Spots
