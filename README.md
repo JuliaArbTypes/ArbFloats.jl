@@ -205,7 +205,7 @@ If you have a package that accepts AbstractFloats or Reals and does not “just 
 with ArbFloats, please note it as an issue. If you have a package that works well   
 with ArbFloats, do let us know.
 
-#### Your Work May Be Great
+#### Hewing to the sensible
 
 Arb is happiest, and performs most admirably using intervals where the radius is     
 a very small portion of the working precision. Ideally, the radius is kept within      
