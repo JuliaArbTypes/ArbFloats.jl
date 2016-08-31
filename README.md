@@ -211,13 +211,9 @@ Arb is happiest, and performs most admirably using intervals where the radius is
 a very small portion of the working precision. Ideally, the radius is kept within      
 8*eps(midpoint). One way of weighing a result that is given as an midpoint+radius  
 is with respect to relative perspicacity or `the crispness of its novelty`:   
-&nbsp;&nbsp;log2( eps(x)/radius(x) )&nbsp;&nbsp;  
-from two such valuations, their relative perspicacities may be given with:  
-&nbsp;&nbsp;abs( (a/b) / (a+b) ), abs( (b/a) / (b+a) )   
-
-intrinsic  interval of midpoint+radius interval represented with midpoint+radius
-interval valued result    
-is to estimate `the crispness of its novelty` with log(2, eps(x)/radius(x)).
+&nbsp;&nbsp; log2( eps(x)/radius(x) )&nbsp;&nbsp;  
+given two, (a, b), their relative perspicacities may be:  
+&nbsp;&nbsp; a_rel_b = log( abs(a), abs(b) ), b_rel_a = log( abs(b), abs(a) )  
 
 
 #### Rough Spots
