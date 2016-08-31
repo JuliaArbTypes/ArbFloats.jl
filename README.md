@@ -217,8 +217,8 @@ is to estimate `the crispness of its novelty` with log(2, eps(x)/radius(x)).
 This package does whatever it may through the Arb C library.  On rare occasion,    
 this may give a result which makes Arb sense yet appears counter-intuitive here.  
 One example is Arb's ability to work with and to return projective infinity (±Inf).  
-This package now does now provide a means of working with Arb's complex intervals,
-nor is their access to any of Arb's matrix routines (det, inv, lu, charpoly). 
+This package now does now provide a means of working with Arb's complex intervals,  
+nor is their access to any of Arb's matrix routines (det, inv, lu, maybe charpoly). 
 
 ArbFloats do not lend themselves easily to higher matrix algebra (svd, eigenvals).    
 If someone implements one of the known good algorithms for getting the eigenvalues  
