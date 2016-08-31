@@ -1,17 +1,43 @@
 @inline digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639811952137)
 
-function string{P}(x::ArbFloat{P}, ndigits::Int, flags::UInt)::String
-    n = max(1,min(abs(ndigits), digitsRequired(P)))
-    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, flags)
+# default values for summary view
+const midpoint_digits = 12
+const radius_digits   =  9
+const midpoint_bits   = 40
+const radius_bits     = 30
+
+function string{T<:ArbFloat}(x::T, mbits::Int=midpoint_bits, rbits::Int=radius_bits)::String
+    return (
+      if isfinite(x)
+          isexact(x) ? string_exact(x, mbits) : string_inexact(x, mbits, rbits)
+      else
+          string_nonfinite(x)
+      end
+    )
+end
+
+function string_exact{T<:ArbFloat}(x::T, nbits::Int=midpoint_bits)::String
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, nbits, 2%UInt)
     s = unsafe_string(cstr)
-    #ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
-    if !isinteger(x)
-        s = rstrip(s, '0')
-        if s[end]=='.'
-            s = string(s, "0")
-        end
-    else
-        s = string(split(s, '.')[1])
+    return cleanup_numstring(s, isinteger(x))
+end
+
+function string_inexact{T<:ArbFloat}(x::T, mbits::Int=midpoint_bits, rbits::Int=radius_bits)::String
+    mid = string_exact(midpoint(x), mbits)
+    rad = string_exact(radius(x), rbits)
+    return string(mid, "±", rad)
+end
+
+function cleanup_numstring(numstr::String, isaInteger::Bool)::String
+    s =
+      if !isaInteger
+          rstrip(numstr, '0')
+      else
+          string(split(numstr, '.')[1])
+      end
+
+    if s[end]=='.'
+        s = string(s, "0")
     end
     return s
 end
@@ -30,47 +56,6 @@ function string_nonfinite{P}(x::ArbFloat{P})::String
         )
 end
 
-function string{P}(x::ArbFloat{P}, flags::UInt)::String
-    if !isfinite(x)
-        return string_nonfinite(x)
-    end
-    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt),
-                 &x, digitsRequired(P), flags)
-    s = unsafe_string(cstr)
-    #ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
-    if !isinteger(x)
-        s = rstrip(s, '0')
-        if s[end]=='.'
-            s = string(s, "0")
-        end
-    else
-        s = string(split(s, '.')[1])
-    end
-    return s
-end
-
-# n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
-function string{P}(x::ArbFloat{P}, ndigits::Int)
-    if !isfinite(x)
-        return string_nonfinite(x)
-    end
-    s = string(x, ndigits, UInt(2)) # midpoint only (within 1ulp), RoundNearest
-    return s
-end
-
-# n=trunc(abs(log(upperbound(x)-lowerbound(x))/log(2))) just the good bits
-function string{P}(x::ArbFloat{P})
-    s = string(x,UInt(2)) # midpoint only (within 1ulp), RoundNearest
-    return s
-end
-
-function stringTrimmed{P}(x::ArbFloat{P}, ndigitsremoved::Int)
-   n = max(1, digitsRequired(P) - max(0, ndigitsremoved))
-   cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, UInt(2))
-   s = unsafe_string(cstr)
-   # ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
-   s
-end
 
 #=
      find the smallest N such that stringTrimmed(lowerbound(x), N) == stringTrimmed(upperbound(x), N)
@@ -180,3 +165,16 @@ function stringallcompact{P}(x::ArbFloat{P})
               string(string(midpoint(x),8)," ± ", string(radius(x),10)))
 end
 
+
+
+#=
+
+function stringTrimmed{P}(x::ArbFloat{P}, ndigitsremoved::Int)
+   n = max(1, digitsRequired(P) - max(0, ndigitsremoved))
+   cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, UInt(2))
+   s = unsafe_string(cstr)
+   # ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
+   s
+end
+
+=#
