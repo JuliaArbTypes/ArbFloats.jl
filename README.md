@@ -301,20 +301,19 @@ Exports (including re-exports)
 
 >   copy, deepcopy, zero, one, eps, epsilon, isequal, notequal, isless,  
 >   (==), (!=), (<), (<=), (>=), (>),  #  Arb, strict:  a < b iff upperbound(a) < lowerbound(b)  
->   (≃), (≄), (≺), (⪯), (≻), (⪰),
-   #   non-strict total ordering  (better for convergence testing)  
->   simeq, nsime, prec, preceq, succ, succeq, # names matching binops above
+>   (≃), (≄), (≺), (⪯), (≻), (⪰),    #  non-strict total ordering  (best for convergence tests)  
+>   simeq, nsime, prec, preceq, succ, succeq, # names matching binops above  
 >   approxeq, ≊, min, max, minmax,  
 
->   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,  
->   sqrt, invsqrt, hypot, factorial, doublefactorial, risingfactorial, trunc,  
->   round, ceil, floor,  
+>   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,    
+>   sqrt, invsqrt, hypot, factorial, doublefactorial, risingfactorial, trunc,    
+>   round, ceil, floor,   
 
->   pow, root, exp, expm1, log, log1p, log2, log10, logbase, sin, cos, sincos,  
->   sincospi, tan, csc, sec, cot, asin, acos, atan, atan2, sinh, cosh, sinhcosh,  
->   tanh, csch, sech, coth, asinh, acosh, atanh,  
+>   pow, root, exp, expm1, log, log1p, log2, log10, logbase, sin, cos, sincos,    
+>   sincospi, tan, csc, sec, cot, asin, acos, atan, atan2, sinh, cosh, sinhcosh,   
+>   tanh, csch, sech, coth, asinh, acosh, atanh,    
 
->   gamma, lgamma, digamma, sinc, zeta, polylog, agm  
+>   gamma, lgamma, digamma, sinc, zeta, polylog, agm    
 
 #### Credits, References, Thanks
 
