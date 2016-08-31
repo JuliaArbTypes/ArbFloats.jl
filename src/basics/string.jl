@@ -1,14 +1,14 @@
 @inline digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639811952137)
 
 # default values for summary view
-const midpoint_digits = 12
-const radius_digits   =  9
-const midpoint_bits   = 40
-const radius_bits     = 30
+const midpoint_digits = 12;
+const radius_digits   =  9;
+const midpoint_bits   = 40;
+const radius_bits     = 30;
 
-string{P}(x::ArbFloat{P}) = string(x, midpoint_bits, radius_bits)::String
+string{T<:ArbFloat}(x::T) = string(x, midpoint_bits, radius_bits)::String
 
-function string{T<:ArbFloat}(x::T, mbits::Int=midpoint_bits, rbits::Int=radius_bits)::String
+function string{P}(x::ArbFloat{P}, mbits::Int=midpoint_bits, rbits::Int=radius_bits)::String
     return (
       if isfinite(x)
           isexact(x) ? string_exact(x, mbits) : string_inexact(x, mbits, rbits)
