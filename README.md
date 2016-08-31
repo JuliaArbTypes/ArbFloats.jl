@@ -285,6 +285,8 @@ with many others.
 William Hart and Tommy Hofmann have been gracious with their work and generous
 with their time.  
 
+=====
+
 Others have helped with conceptual subtleties, software from which I learned Julia,    
 suggesting improvements, fixing bugs, testing and other specific acts of good will:   
 &nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman,  
@@ -292,7 +294,6 @@ suggesting improvements, fixing bugs, testing and other specific acts of good wi
 &nbsp;&nbsp;&nbsp;&nbsp;David P. Sanders, Yichao Yu, Chris Rackauckas,  
 &nbsp;&nbsp;&nbsp;&nbsp;Scott Jones, Luis Benet, Galen O'Neil.
 
-=====
 =====
   
   
