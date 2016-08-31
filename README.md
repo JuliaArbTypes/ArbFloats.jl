@@ -156,6 +156,9 @@ bounds(gamma_oneThird)
 #### Display
 ```julia
 
+ArbFloat("Inf"), ArbFloat("-Inf"), ArbFloat("NaN")
+# +Inf, -Inf, NaN
+
 smartstring(exp1)
 # "2.71828182845904523536028747135266+"
 smartstring(fuzzed_e)
