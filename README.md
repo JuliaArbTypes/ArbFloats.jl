@@ -207,15 +207,21 @@ with ArbFloats, do let us know.
 
 #### Rough Spots
 
-This package does whatever it may through the Arb C library.  On rare occasion,   
-this may give a result which makes sense within Arb yet runs counter-intuitive  
-to the general practices we strive to evince.  These things are remedyable with  
-some extra work and checking.  This package has made itself around such things.
+This package does whatever it may through the Arb C library.  On rare occasion,    
+this may give a result which makes Arb sense yet appears counter-intuitive here.  
+One example is Arb's ability to work with and to return projective infinity (±Inf).  
+This package now does now provide a means of working with Arb's complex intervals.  
+
+Arb is happiest, and performs most admirably using intervals where the radius is   
+a very small portion of the working precision. Ideally, the radius is kept within   
+8*eps(midpoint).  And this works a heuristic; it lets us know when to consider  
+increasing the working precision, if that is practicable.  
 
 When the radius is rather large relative to the midpoint (midpoint_radius(2.0, 1.0),  
-the string that Arb passes back ("[+/- 3.01]") does not mean  (-3.01) .. (3.01),  
-as seen by taking the bounds ( 0.999999998, 3.000000002 ) or using showall,  
-(2 ± 1.0000000018626451).
+the string that you see looks like ("[+/- 3.01]"). That is not  (-3.01) .. (3.01),  
+as seen using showall (2 ± 1.0000000018626451).  And when the underlying interval  
+is not well-resolvable as a floating point quantity, you may be shown _1e+_ or _4e+_.  
+This are known issues, and will become gone.  
 
 
 
