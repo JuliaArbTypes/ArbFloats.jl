@@ -170,7 +170,17 @@ showpretty(ArbFloat{67}(pi),5)
 # 3.14159_26535_89793_2385
 ```
 
+#### Non-Strict Total Ordering
+```julia
+thinner  = midpoint_radius( 1000.0, 1.0)
+thicker = midpoint_radius( 1000.0, 2.0)
 
+thinner  ⪯  thicker
+# true
+succ(thicker, thinner)
+# false
+
+```
 
 ### Compatible Packages
 
