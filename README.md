@@ -72,6 +72,7 @@ quit()
 using ArbFloats
 quit()
 ```
+__It is helpful to add Nemo first, quit, then add ArbFloats and quit__.  
 
 #### Initializing ArbFloats
 
