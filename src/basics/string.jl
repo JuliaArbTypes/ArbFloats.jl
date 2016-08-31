@@ -60,7 +60,7 @@ end
 function string_inexact{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits(), rdigits::Int=radius_digits())::String
     mid = string_exact(midpoint(x), mdigits)
     rad = string_exact(radius(x), rdigits)
-    return string(mid, " ±", rad)
+    return string(mid, "±", rad)
 end
 
 function cleanup_numstring(numstr::String, isaInteger::Bool)::String

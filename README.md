@@ -2,47 +2,47 @@
 ArbFloats.jl
 ============
 
-#### Arb available as an extended precision floating point context.  
+#### Arb available as an extended precision floating point context.
 
-<p align="right">Jeffrey Sarnoff © 2016 August 31 in New York City</p>  
+<p align="right">Jeffrey Sarnoff © 2016 August 31 in New York City</p>
 
-===========  
- 
-   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
-   This package is a faster alternative to BigFloats when working with significands  
+===========
+
+   This is the sixth effort and first reasonably comprehensive ArbFloats release.
+   This package is a faster alternative to BigFloats when working with significands
    that do not exceed ~3,250 bits (~1000 digits).
 
-   The base C library implements floating point intervals and operations thereupon  
-   which are guaranteed to produce results that enclose the theoretical math value.  
+   The base C library implements floating point intervals and operations thereupon
+   which are guaranteed to produce results that enclose the theoretical math value.
    While not the package focus, full access to interval-based functions is present.
 
-   This package has been designed to offer the Julia community more performant  
-   extended precision floating point math and to offer extended floating point  
-   results as accurately as possible at a precision that does not misrepresent  
+   This package has been designed to offer the Julia community more performant
+   extended precision floating point math and to offer extended floating point
+   results as accurately as possible at a precision that does not misrepresent
    the information content of the underlying interval valuation.
 
 
 
 >
->   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
->   This package is a faster alternative to BigFloats when working with significands  
+>   This is the sixth effort and first reasonably comprehensive ArbFloats release.
+>   This package is a faster alternative to BigFloats when working with significands
 >   that do not exceed ~3,500 bits.
 >
->   The base C library implements floating point intervals and operations thereupon  
->   which are guaranteed to produce results that enclose the theoretical math value.  
+>   The base C library implements floating point intervals and operations thereupon
+>   which are guaranteed to produce results that enclose the theoretical math value.
 >   While not the package focus, full access to interval-based functions is present.
 >
->   This package has been designed to offer the Julia community more performant  
->   extended precision floating point math and to offer extended floating point  
->   results as accurately as possible at a precision that does not misrepresent  
+>   This package has been designed to offer the Julia community more performant
+>   extended precision floating point math and to offer extended floating point
+>   results as accurately as possible at a precision that does not misrepresent
 >   the information content of the underlying interval valuation.
 
 #### version 0.6.1 (for Julia v0.5+).
 
-If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
+If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).
 If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
 
-Anyone interested in contributing some time is encouraged  
+Anyone interested in contributing some time is encouraged
 to contact the author (firstname.lastname at-the-gmail).
 
 
@@ -52,9 +52,9 @@ to contact the author (firstname.lastname at-the-gmail).
 Pkg.add("ArbFloats")
 # or else Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ```
-If you have not installed Nemo before, you will see compilation notes and maybe warnings.  
-Ignore them.  This is a good time to walk the dog, go for coffee, or play shuffleboard.  
-When the prompt comes back,   quit() and restart Julia and ```julia> using ArbFloats```  
+If you have not installed Nemo before, you will see compilation notes and maybe warnings.
+Ignore them.  This is a good time to walk the dog, go for coffee, or play shuffleboard.
+When the prompt comes back,   quit() and restart Julia and ```julia> using ArbFloats```
 should precompile quickly and work well.  This is what I do, to get things set up:
 
 ```julia
@@ -72,7 +72,7 @@ quit()
 using ArbFloats
 quit()
 ```
-__It is helpful to add Nemo first, quit, then add ArbFloats and quit__.  
+__It is helpful to add Nemo first, quit, then add ArbFloats and quit__.
 
 #### Initializing ArbFloats
 
@@ -191,96 +191,90 @@ succ(thicker, thinner)
 
 ### Compatible Packages
 
-**using ArbFloats \# goes anywhere**  
-DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,  
+**using ArbFloats \# goes anywhere**
+DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,
 Plots, Polynomials, Quaternions, others
 
-**using ArbFloats \# goes last!**  
+**using ArbFloats \# goes last!**
 TaylorSeries
 
-*partially compatible*  
+*partially compatible*
 Roots (accepts ArbFloats, results are Float64)
 
-If you have a package that accepts AbstractFloats or Reals and does not “just work”   
-with ArbFloats, please note it as an issue. If you have a package that works well   
+If you have a package that accepts AbstractFloats or Reals and does not “just work”
+with ArbFloats, please note it as an issue. If you have a package that works well
 with ArbFloats, do let us know.
 
 #### Hewing to the sensible
 
-Arb is happiest, and performs most admirably using intervals where the radius is     
-a very small portion of the working precision. Ideally, the radius is kept within      
-8*eps(midpoint). One way of weighing results that are given as an midpoint+radius   
-is to make as a measure of each _finite_ interval `the crispness of its novelty`:    
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; log2( eps(x)/radius(x) )   
-given two, (a, b), one may ascertain their `relative perspicacity`:   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a_rel_b = log( abs(a), abs(b) ), b_rel_a = log( abs(b), abs(a) )   
+Arb is happiest, and performs most admirably using intervals where the radius is
+a very small portion of the working precision. Ideally, the radius is kept within
+8*eps(midpoint). One way of weighing results that are given as an midpoint+radius
+is to make as a measure of each _finite_ interval `the crispness of its novelty`:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; log2( eps(x)/radius(x) )
+given two, (a, b), one may ascertain their `relative perspicacity`:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a_rel_b = log( abs(a), abs(b) ), b_rel_a = log( abs(b), abs(a) )
 
 
 #### Rough Spots
 
-This package does whatever it may through the Arb C library.  On rare occasion,    
-this may give a result which makes Arb sense yet appears counter-intuitive here.  
-One example is Arb's ability to work with and to return projective infinity (±Inf).  
-This package now does now provide a means of working with Arb's complex intervals,  
-nor is their access to any of Arb's matrix routines (det, inv, lu, maybe charpoly). 
+This package does whatever it may through the Arb C library.  On rare occasion,
+this may give a result which makes Arb sense yet appears counter-intuitive here.
+One example is Arb's ability to work with and to return projective infinity (±Inf).
+This package now does now provide a means of working with Arb's complex intervals,
+nor is their access to any of Arb's matrix routines (det, inv, lu, maybe charpoly).
 
-ArbFloats do not lend themselves easily to higher matrix algebra (svd, eigenvals).    
-If someone implements one of the known good algorithms for getting the eigenvalues  
-or the svd of a matrix with interval-valued entries, this package is at the ready.  
+ArbFloats do not lend themselves easily to higher matrix algebra (svd, eigenvals).
+If someone implements one of the known good algorithms for getting the eigenvalues
+or the svd of a matrix with interval-valued entries, this package is at the ready.
 
 
-When the radius is rather large relative to the midpoint (midpoint_radius(2.0, 1.0),  
-the string that you see looks like ("[+/- 3.01]"). That is not  (-3.01) .. (3.01),  
-as seen using showall (2 ± 1.0000000018626451).  And when the underlying interval  
-is not well-resolvable as a floating point quantity, you may see e.g. _1e+_, _4e+_.  
-This are known issues, and will become gone.   
-
-_We use some of Nemo's libraries.  Nemo is very large, and this work needs less than 1/8th of it._  
+_We use some of Nemo's libraries.  Nemo is very large, and this work needs less than 1/8th of it._
 
 
 ### About Arb and using Nemo's libraries
 
-This work is constructed atop a state-of-the-art C library for working with  
-*midpoint ± radius* intervals, `Arb`. Arb is designed and written by Fredrik  
-Johansson, who graciously allows Julia to use it under the MIT License.  
+This work is constructed atop a state-of-the-art C library for working with
+*midpoint ± radius* intervals, `Arb`. Arb is designed and written by Fredrik
+Johansson, who graciously allows Julia to use it under the MIT License.
 
-The C libraries that this package accesses are some of the shared libraries that  
-Nemo.jl requires and builds; and, with permission, I call them directly.  
+The C libraries that this package accesses are some of the shared libraries that
+Nemo.jl requires and builds; and, with permission, I call them directly.
 
-It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius  
-– and sometimes they are. When an ArbFloat has a nonzero radius, the user sees  
-only those digits that remain after rounding the ArbFloat to subsume the radius.  
+It is a useful fiction to think of `ArbFloats` as Arb values with a zero radius
+– and sometimes they are. When an ArbFloat has a nonzero radius, the user sees
+only those digits that remain after rounding the ArbFloat to subsume the radius.
 
 
 ### Appropriateness
 
-This package is appropriate to use for extending the precision of floating point   
-computations from 64 bits [~17 digits] up to 3,250 bits [~1000 digits].  
-While Testing on many different hosts is needed to characterize a most performant  
+This package is appropriate to use for extending the precision of floating point
+computations from 64 bits [~17 digits] up to 3,250 bits [~1000 digits].
+While Testing on many different hosts is needed to characterize a most performant
 precision range, I have found working with 800 bits (~240 digits) a welcome change.
 
 #### Conceptual Background
 
-`Transparency`: a desirable quality that may obtain in the presentation of  
-numerical quantity. Where transparency exists, it may well not persist.  
-A diminution of transparency increases `opacity`, and vice versa. Presentation  
-of a floating point value either evinces transparency or furthers opacity.  
-With transparent values, ‘looking at a value’ is ‘looking through to see the  
-knowable value’. With opaque values, ‘looking at a value’ is ‘looking away from’  
-that. And it is that nonresponsive, nonparticipative engagement of cognitive   
-attention that is the opaqueness underlying opacity. 
+`Transparency`: a desirable quality that may obtain in the presentation of
+numerical quantity. Where transparency exists, it may well not persist.
+A diminution of transparency increases `opacity`, and vice versa. Presentation
+of a floating point value either evinces transparency or furthers opacity.
+With transparent values, ‘looking at a value’ is ‘looking through to see the
+knowable value’. With opaque values, ‘looking at a value’ is ‘looking away from’
+that. And it is that nonresponsive, nonparticipative engagement of cognitive
+attention that is the opaqueness underlying opacity.
 
-Presented with a transparent floating point value, the perceiver is become  
-best informed. There is no other rendition of that floating point realization  
-which is intrinsically more informing and none which relays the value of that  
-floating point realization more accurately – none with fewer digits, none with  
-more digits, none of greater magnitude, none of lesser magnitude.  
+Presented with a transparent floating point value, the perceiver is become
+best informed. There is no other rendition of that floating point realization
+which is intrinsically more informing and none which relays the value of that
+floating point realization more accurately – none with fewer digits, none with
+more digits, none of greater magnitude, none of lesser magnitude.
 
-An `ArbFloat` is an extended precision float architected to evince transparency.   
-It informs without leading or misleading. An ArbFloat, when viewed, appears as   
-an extended precision floating point value.  When any of the exported arithmetic,   
-elementary or special functions is applied to an ArbFloat, the value transforms   
-as an extended precision floating point interval.  
+An `ArbFloat` is an extended precision float architected to evince transparency.
+It informs without leading or misleading. An ArbFloat, when viewed, appears as
+an extended precision floating point value.  When any of the exported arithmetic,
+elementary or special functions is applied to an ArbFloat, the value transforms
+as an extended precision floating point interval.
 
 
 
@@ -303,49 +297,49 @@ Exports (including re-exports)
 | iszero, notzero, nonzero, isone, notone,                    | number predicates        |
 | ispositive, notpositive, isnegative, notnegative,           | numerical predicates     |
 
->   copy, deepcopy, zero, one, eps, epsilon, isequal, notequal, isless,  
->   (==), (!=), (<), (<=), (>=), (>),  #  Arb, strict:  a < b iff upperbound(a) < lowerbound(b)  
->   (≃), (≄), (≺), (⪯), (≻), (⪰),    #  non-strict total ordering  (best for convergence tests)  
->   simeq, nsime, prec, preceq, succ, succeq, # names matching binops above  
->   approxeq, ≊, min, max, minmax,  
+>   copy, deepcopy, zero, one, eps, epsilon, isequal, notequal, isless,
+>   (==), (!=), (<), (<=), (>=), (>),  #  Arb, strict:  a < b iff upperbound(a) < lowerbound(b)
+>   (≃), (≄), (≺), (⪯), (≻), (⪰),    #  non-strict total ordering  (best for convergence tests)
+>   simeq, nsime, prec, preceq, succ, succeq, # names matching binops above
+>   approxeq, ≊, min, max, minmax,
 
->   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,    
->   sqrt, invsqrt, hypot, factorial, doublefactorial, risingfactorial, trunc,    
->   round, ceil, floor,   
+>   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,
+>   sqrt, invsqrt, hypot, factorial, doublefactorial, risingfactorial, trunc,
+>   round, ceil, floor,
 
->   pow, root, exp, expm1, log, log1p, log2, log10, logbase, sin, cos, sincos,    
->   sincospi, tan, csc, sec, cot, asin, acos, atan, atan2, sinh, cosh, sinhcosh,   
->   tanh, csch, sech, coth, asinh, acosh, atanh,    
+>   pow, root, exp, expm1, log, log1p, log2, log10, logbase, sin, cos, sincos,
+>   sincospi, tan, csc, sec, cot, asin, acos, atan, atan2, sinh, cosh, sinhcosh,
+>   tanh, csch, sech, coth, asinh, acosh, atanh,
 
->   gamma, lgamma, digamma, sinc, zeta, polylog, agm    
+>   gamma, lgamma, digamma, sinc, zeta, polylog, agm
 
 #### Credits, References, Thanks
 
 This work relies on Fredrik Johansson's Arb software, using parts of that
-extensive C library.  
+extensive C library.
 He has been greatly helpful. The Arb library documentation is
-[here](http://fredrikj.net/arb/).  
+[here](http://fredrikj.net/arb/).
 
 Much of the early development was well informed from study of Nemo.jl, a number
-theory and  
+theory and
 numerical algebra package that incorporates some of Arb's capabilities along
-with many others.  
+with many others.
 William Hart and Tommy Hofmann have been gracious with their work and generous
-with their time.  
+with their time.
 
 =====
 
-Others have helped with conceptual subtleties, software from which I learned Julia,    
-suggesting improvements, fixing bugs, testing and other specific acts of good will:  
+Others have helped with conceptual subtleties, software from which I learned Julia,
+suggesting improvements, fixing bugs, testing and other specific acts of good will:
 
-&nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman, Viral Shah,     
-&nbsp;&nbsp;&nbsp;&nbsp;John Myles White, Tim Holy, Thomas Breloff, Katherine Hyatt,  
-&nbsp;&nbsp;&nbsp;&nbsp;Avik Sengupta, Yichao Yu, David P. Sanders, Chris Rackauckas,  
-&nbsp;&nbsp;&nbsp;&nbsp;Scott Jones, Luis Benet, Galen O'Neil, and Julia's community    
+&nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman, Viral Shah,
+&nbsp;&nbsp;&nbsp;&nbsp;John Myles White, Tim Holy, Thomas Breloff, Katherine Hyatt,
+&nbsp;&nbsp;&nbsp;&nbsp;Avik Sengupta, Yichao Yu, David P. Sanders, Chris Rackauckas,
+&nbsp;&nbsp;&nbsp;&nbsp;Scott Jones, Luis Benet, Galen O'Neil, and Julia's community
 
 =====
-  
-  
+
+
 [//]: # (developer info)
 
 [//]: # (#### other, sometimes overlapping, software development is with)
