@@ -288,7 +288,8 @@ with their time.
 =====
 
 Others have helped with conceptual subtleties, software from which I learned Julia,    
-suggesting improvements, fixing bugs, testing and other specific acts of good will:   
+suggesting improvements, fixing bugs, testing and other specific acts of good will:  
+
 &nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman,  
 &nbsp;&nbsp;&nbsp;&nbsp;John Myles White,  Tim Holy, Thomas Breloff,  
 &nbsp;&nbsp;&nbsp;&nbsp;David P. Sanders, Yichao Yu, Chris Rackauckas,  
