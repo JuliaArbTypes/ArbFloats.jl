@@ -3,30 +3,28 @@
 # default values for summary view
 const midpoint_digits = 12;
 const radius_digits   =  9;
-const midpoint_bits   = 40;
-const radius_bits     = 30;
+const midpoint_digits   = 40;
+const radius_digits     = 30;
 
-string{T<:ArbFloat}(x::T) = string(x, midpoint_bits, radius_bits)::String
-
-function string{P}(x::ArbFloat{P}, mbits::Int=midpoint_bits, rbits::Int=radius_bits)::String
+function string{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits, rdigits::Int=radius_digits)::String
     return (
       if isfinite(x)
-          isexact(x) ? string_exact(x, mbits) : string_inexact(x, mbits, rbits)
+          isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
       else
           string_nonfinite(x)
       end
     )
 end
 
-function string_exact{T<:ArbFloat}(x::T, mbits::Int=midpoint_bits)::String
-    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, mbits, 2%UInt)
+function string_exact{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits)::String
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, mdigits, 2%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
 
-function string_inexact{T<:ArbFloat}(x::T, mbits::Int=midpoint_bits, rbits::Int=radius_bits)::String
-    mid = string_exact(midpoint(x), mbits)
-    rad = string_exact(radius(x), rbits)
+function string_inexact{T<:ArbFloat}(x::T, mdigits::Int=midpoint_digits, rdigits::Int=radius_digits)::String
+    mid = string_exact(midpoint(x), mdigits)
+    rad = string_exact(radius(x), rdigits)
     return string(mid, "±", rad)
 end
 
