@@ -42,9 +42,8 @@ ArbFloats.jl
 If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
 If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
 
-Anyone interested in contributing some time is encouraged to contact the author (firstname.lastname at-the-gmail).
-
-_We use some of Nemo's libraries.  Nemo is very large, and this package needs perhaps 1/8th of it to function properly._  
+Anyone interested in contributing some time is encouraged  
+to contact the author (firstname.lastname at-the-gmail).
 
 
 #### Install
@@ -205,12 +204,7 @@ If you have a package that accepts AbstractFloats or Reals and does not “just 
 with ArbFloats, please note it as an issue. If you have a package that works well   
 with ArbFloats, do let us know.
 
-#### Rough Spots
-
-This package does whatever it may through the Arb C library.  On rare occasion,    
-this may give a result which makes Arb sense yet appears counter-intuitive here.  
-One example is Arb's ability to work with and to return projective infinity (±Inf).  
-This package now does now provide a means of working with Arb's complex intervals.  
+#### Your Work May Be Great
 
 Arb is happiest, and performs most admirably using intervals where the radius is   
 a very small portion of the working precision. Ideally, the radius is kept within    
@@ -218,12 +212,26 @@ a very small portion of the working precision. Ideally, the radius is kept withi
 is to estimate `the crispness of its novelty` with log(2, eps(x)/radius(x)).
 
 
+#### Rough Spots
+
+This package does whatever it may through the Arb C library.  On rare occasion,    
+this may give a result which makes Arb sense yet appears counter-intuitive here.  
+One example is Arb's ability to work with and to return projective infinity (±Inf).  
+This package now does now provide a means of working with Arb's complex intervals,
+nor is their access to any of Arb's matrix routines (det, inv, lu, charpoly). 
+
+ArbFloats do not lend themselves easily to higher matrix algebra (svd, eigenvals).    
+If someone implements one of the known good algorithms for getting the eigenvalues  
+or the svd of a matrix with interval-valued entries, this package is at the ready.  
+
+
 When the radius is rather large relative to the midpoint (midpoint_radius(2.0, 1.0),  
 the string that you see looks like ("[+/- 3.01]"). That is not  (-3.01) .. (3.01),  
 as seen using showall (2 ± 1.0000000018626451).  And when the underlying interval  
 is not well-resolvable as a floating point quantity, you may see e.g. _1e+_, _4e+_.  
-This are known issues, and will become gone.  
+This are known issues, and will become gone.   
 
+_We use some of Nemo's libraries.  Nemo is very large, and this work needs less than 1/8th of it._  
 
 
 ### About Arb and using Nemo's libraries
