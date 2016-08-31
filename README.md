@@ -213,9 +213,10 @@ One example is Arb's ability to work with and to return projective infinity (±I
 This package now does now provide a means of working with Arb's complex intervals.  
 
 Arb is happiest, and performs most admirably using intervals where the radius is   
-a very small portion of the working precision. Ideally, the radius is kept within   
-8*eps(midpoint).  And this works a heuristic; it lets us know when to consider  
-increasing the working precision, if that is practicable.  
+a very small portion of the working precision. Ideally, the radius is kept within    
+8*eps(midpoint). One way that I quantify the usefulness of an interval result  
+is to estimate _the crispness of its novelty_ as log(2, eps(x)/radius(x)).
+
 
 When the radius is rather large relative to the midpoint (midpoint_radius(2.0, 1.0),  
 the string that you see looks like ("[+/- 3.01]"). That is not  (-3.01) .. (3.01),  
