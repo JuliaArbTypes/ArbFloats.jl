@@ -238,7 +238,7 @@ precision range, I have found working with 800 bits (~240 digits) a welcome chan
 #### Conceptual Background
 
 `Transparency`: a desirable quality that may obtain in the presentation of  
-numerical quantity. Where transparency exists, it may well not persist.
+numerical quantity. Where transparency exists, it may well not persist.  
 A diminution of transparency increases `opacity`, and vice versa. Presentation  
 of a floating point value either evinces transparency or furthers opacity.  
 With transparent values, ‘looking at a value’ is ‘looking through to see the  
