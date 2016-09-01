@@ -4,22 +4,26 @@
 # values for stringbrief, stringcompact, string, stringexpansive, stringall
 @enum EXTENT brief=1 compact=2 normative=3 expansive=4 complete=5
 
-macro I16(x) begin (:($x))%Int16 end end
+macro I16(x) 
+    begin quote
+        ($x)%Int16
+    end end
+end    
 
 const midDigits = [ @I16(8), @I16(15), @I16(25), @I16(1200) ]
 const radDigits = [ @I16(3), @I16(6),  @I16(12), @I16(100)  ]
 
-const nExtents  = length(midDigits);  const nDigits   = 1200
+const nExtents  = length(midDigits);  const nDigits = 1200;
 
 function set_midpoint_digits_shown(idx::Int, ndigits::Int)
-    1 <= idx     <= nExtents || throw(ErrorException("invalid EXTENT index ($idx)"))
-    1 <= ndigits <= nDigits  || throw(ErrorException("midpoint does not support an $(ndigits) digit count"))
+    (1 <= idx     <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
+    (1 <= ndigits <= nDigits)  || throw(ErrorException("midpoint does not support an $(ndigits) digit count"))
     midDigits[ idx ] = @I16(ndigits)
     return nothing
 end
 function set_radius_digits_shown(idx::Int, ndigits::Int)
-    1 <= idx     <= nExtents || throw(ErrorException("invalid EXTENT index ($idx)"))
-    1 <= ndigits <= nDigits  || throw(ErrorException("radius does support an ($ndigits) digit count"))
+    (1 <= idx     <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
+    (1 <= ndigits <= nDigits)  || throw(ErrorException("radius does support an ($ndigits) digit count"))
     midDigits[ idx ] = @I16(ndigits)
     return nothing
 end
@@ -28,11 +32,11 @@ set_midpoint_digits_shown(ndigits::Int) = set_midpoint_digits_shown(normative, n
 set_radius_digits_shown(ndigits::Int) = set_radius_digits_shown(normative, ndigits)
 
 function get_midpoint_digits_shown(idx::Int)
-    1 <= idx <= nExtents || throw(ErrorException("invalid EXTENT index ($idx)"))
+    (1 <= idx <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
     return midDigits[ idx ]
 end
 function get_radius_digits_shown(idx::Int)
-    1 <= idx <= nExtents || throw(ErrorException("invalid EXTENT index ($idx)"))
+    (1 <= idx <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
     return radDigits[ idx ]
 end
 
