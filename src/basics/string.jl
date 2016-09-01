@@ -124,7 +124,7 @@ stringbrief{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(brief), get_radius_digits_shown(brief))
 stringcompact{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(compact), get_radius_digits_shown(compact))
-string{T<:ArbFloat}(x::T) =
+stringnormative{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(normative), get_radius_digits_shown(normative))
 stringextensive{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(extensive), get_radius_digits_shown(extensive))
