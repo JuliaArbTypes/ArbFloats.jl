@@ -1,40 +1,53 @@
 @inline digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639811952137)
 
-# default values for summary view
-const midpointDigits = 12;  const midpoint_digits_shown = [ midpointDigits ];
-const radiusDigits   =  9;  const radius_digits_shown   = [ radiusDigits   ];
-const midpointBits   = 40;  const midpoint_bits_shown   = [ midpointBits   ];
-const radiusBits     = 30;  const radius_bits_shown     = [ radiusBits     ];
+# rubric digit display counts
+# values for stringbrief, stringcompact, string, stringexpansive, stringall
+@enum EXTENT brief=1 compact=2 normative=3 expansive=4 complete=5
 
-midpoint_digits() = midpoint_digits_shown[1]
-radius_digits()   = radius_digits_shown[1]
-midpoint_bits()   = midpoint_bits_shown[1]
-radius_bits()     = radius_bits_shown[1]
+macro I16(x) 
+    begin quote
+        ($x)%Int16
+    end end
+end    
+
+const midDigits = [ @I16(8), @I16(15), @I16(25), @I16(1200) ]
+const radDigits = [ @I16(3), @I16(6),  @I16(12), @I16(100)  ]
+
+const nExtents  = length(midDigits);  const nDigits = 1200;
+
+function set_midpoint_digits_shown(idx::Int, ndigits::Int)
+    (1 <= idx     <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
+    (1 <= ndigits <= nDigits)  || throw(ErrorException("midpoint does not support an $(ndigits) digit count"))
+    midDigits[ idx ] = @I16(ndigits)
+    return nothing
+end
+function set_radius_digits_shown(idx::Int, ndigits::Int)
+    (1 <= idx     <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
+    (1 <= ndigits <= nDigits)  || throw(ErrorException("radius does support an ($ndigits) digit count"))
+    midDigits[ idx ] = @I16(ndigits)
+    return nothing
+end
+
+set_midpoint_digits_shown(ndigits::Int) = set_midpoint_digits_shown(normative, ndigits)
+set_radius_digits_shown(ndigits::Int) = set_radius_digits_shown(normative, ndigits)
+
+function get_midpoint_digits_shown(idx::Int)
+    (1 <= idx <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
+    return midDigits[ idx ]
+end
+function get_radius_digits_shown(idx::Int)
+    (1 <= idx <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
+    return radDigits[ idx ]
+end
+
+get_midpoint_digits_shown() = midpoint_digits_shown[ normative ]
+get_radius_digits_shown()   = radius_digits_shown[ normative ]
 
 digits_offer_bits(ndigits::Int) = convert(Int, div(abs(ndigits)*log2(10), 1))
 
-get_midpoint_digits_shown() = midpoint_digits()
-get_radius_digits_shown()   = radius_digits()
 
-function set_midpoint_digits_shown(mdigits::Int)
-    global midpoint_digits_shown, midpoint_bits_shown
-    0 < mdigits <= 4096 || throw(ErrorException("Interface Exception: midpoint cannot show $mdigits digits"))
-    midpoint_digits_shown[1] = mdigits
-    midpoint_bits_shown[1]   = digits_offer_bits(mdigits)
-    return nothing
-end
+# prepare the scene for balanced in displaybles interfacing
 
-function set_radius_digits_shown(rdigits::Int)
-    global radius_digits_shown, radius_bits_shown
-    0 < rdigits <= 22 || throw(ErrorException("Interface Exception: radius cannot show $rdigits digits"))
-    radius_digits_shown[1] = rdigits
-    radius_bits_shown[1]   = digits_offer_bits(rdigits)
-    return nothing
-end
-
-# prepare the scence for balanced in displaybles interfacing
-set_midpoint_digits_shown(midpoint_digits())
-set_radius_digits_shown(radius_digits())
 
 const nonfinite_strings = ["NaN", "+Inf", "-Inf", "±Inf"];
 
@@ -46,8 +59,8 @@ end
 
 
 function string{T<:ArbFloat}(x::T)
-    mdigits = midpoint_digits()
-    rdigits = radius_digits()
+    mdigits = get_midpoint_digits_shown()
+    rdigits = get_radius_digits_shown()
 
     s = if isfinite(x)
             isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
@@ -59,8 +72,8 @@ end
 
 
 function string{T<:ArbFloat}(x::T, ndigits::Int)
-    mdigits = max(ndigits, midpoint_digits())
-    rdigits = min(ndigits, radius_digits())
+    mdigits = max(ndigits, get_midpoint_digits_shown())
+    rdigits = min(ndigits, get_radius_digits_shown())
 
     s = if isfinite(x)
             isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
@@ -106,6 +119,18 @@ function cleanup_numstring(numstr::String, isaInteger::Bool)::String
     end
     return s
 end
+
+stringbrief{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(brief), get_radius_digits_shown(brief))
+stringcompact{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(compact), get_radius_digits_shown(compact))
+stringnormative{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(normative), get_radius_digits_shown(normative))
+stringextensive{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(extensive), get_radius_digits_shown(extensive))
+stringall{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(complete), get_radius_digits_shown(complete))
+
 
 
 #=
