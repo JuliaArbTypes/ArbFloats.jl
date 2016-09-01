@@ -47,8 +47,6 @@ digits_offer_bits(ndigits::Int) = convert(Int, div(abs(ndigits)*log2(10), 1))
 
 
 # prepare the scene for balanced in displaybles interfacing
-set_midpoint_digits_shown(get_midpoint_digits_shown())
-set_radius_digits_shown(get_radius_digits_shown())
 
 
 const nonfinite_strings = ["NaN", "+Inf", "-Inf", "±Inf"];
