@@ -2,7 +2,12 @@
 
 # rubric digit display counts
 # values for stringbrief, stringcompact, string, stringexpansive, stringall
-@enum EXTENT brief=1 compact=2 normative=3 expansive=4 complete=5
+#@enum EXTENT brief=1 compact=2 normative=3 expansive=4 complete=5
+const brief=1;
+const compact=2;
+const normative=3;
+const expansive=4;
+const complete=4
 
 macro I16(x) 
     begin quote
