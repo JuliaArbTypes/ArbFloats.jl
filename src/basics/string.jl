@@ -2,12 +2,12 @@
 
 # rubric digit display counts
 # values for stringbrief, stringcompact, string, stringexpansive, stringall
-#@enum EXTENT brief=1 compact=2 normative=3 expansive=4 complete=5
+#@enum EXTENT brief=1 compact=2 normative=3 expansive=4 large=5
 const brief=1;
 const compact=2;
 const normative=3;
 const expansive=4;
-const complete=4
+const large=4
 
 macro I16(x) 
     begin quote
@@ -132,10 +132,10 @@ stringcompact{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(compact), get_radius_digits_shown(compact))
 stringnormative{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(normative), get_radius_digits_shown(normative))
-stringextensive{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(extensive), get_radius_digits_shown(extensive))
-stringall{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(complete), get_radius_digits_shown(complete))
+stringexpansive{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(expansive), get_radius_digits_shown(expansive))
+stringlarge{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(large), get_radius_digits_shown(large))
 
 
 
@@ -235,18 +235,8 @@ function stringall{P}(x::ArbFloat{P})
             string(round(radius(x),58,2))
         end
 
-    return string(sm," ± ", sr)
+    return string(sm,"±", sr)
 end
-
-function stringcompact{P}(x::ArbFloat{P})
-    string(x,8)
-end
-
-function stringallcompact{P}(x::ArbFloat{P})
-    return (isexact(x) ? string(midpoint(x)) :
-              string(string(midpoint(x),8)," ± ", string(radius(x),10)))
-end
-
 
 
 #=
