@@ -9,10 +9,31 @@ end
 
 show{T<:ArbFloat}(x::T) = show(Base.STDOUT, x)
 
+function showbrief{T<:ArbFloat}(io::IO, x::T)
+    s = stringbrief(x)
+    print(io, s)
+end
+
 function showcompact{T<:ArbFloat}(io::IO, x::T)
     s = stringcompact(x)
     print(io, s)
 end
+
+function shownormative{T<:ArbFloat}(io::IO, x::T)
+    s = stringnormative(x)
+    print(io, s)
+end
+
+function showexpansive{T<:ArbFloat}(io::IO, x::T)
+    s = stringexpansive(x)
+    print(io, s)
+end
+
+function showlarge{T<:ArbFloat}(io::IO, x::T)
+    s = stringlarge(x)
+    print(io, s)
+end
+
 
 function showall{T<:ArbFloat}(io::IO, x::T)
     s = stringall(x)
