@@ -76,7 +76,7 @@ function string{T<:ArbFloat}(x::T)
 end
 
 
-function string{T<:ArbFloat}(x::T, ndigits::Int)
+function string{T<:ArbFloat,I<:Integer}(x::T, ndigits::I)
     mdigits = max(ndigits, get_midpoint_digits_shown())
     rdigits = min(ndigits, get_radius_digits_shown())
 
@@ -88,7 +88,7 @@ function string{T<:ArbFloat}(x::T, ndigits::Int)
     return s
 end
 
-function string{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)
+function string{T<:ArbFloat,I<:Integer}(x::T, mdigits::I, rdigits::I)
     s = if isfinite(x)
             isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
         else
