@@ -33,8 +33,8 @@ function set_radius_digits_shown(idx::Int, ndigits::Int)
     return nothing
 end
 
-set_midpoint_digits_shown(ndigits::Int) = midDigits[normative] = ndigits
-set_radius_digits_shown(ndigits::Int) = radDigits[normative] = ndigits
+set_midpoint_digits_shown(ndigits::Int) = midDigits[Int(normative)] = ndigits
+set_radius_digits_shown(ndigits::Int) = radDigits[Int(normative)] = ndigits
 
 function get_midpoint_digits_shown(idx::Int)
     (1 <= idx <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
@@ -45,8 +45,8 @@ function get_radius_digits_shown(idx::Int)
     return radDigits[ idx ]
 end
 
-get_midpoint_digits_shown() = midDigits[ normative ]
-get_radius_digits_shown()   = radDigits[ normative ]
+get_midpoint_digits_shown() = midDigits[ Int(normative) ]
+get_radius_digits_shown()   = radDigits[ Int(normative) ]
 
 digits_offer_bits(ndigits::Int) = convert(Int, div(abs(ndigits)*log2(10), 1))
 
@@ -99,13 +99,13 @@ end
 
 
 
-function string_exact{T<:ArbFloat}(x::T, mdigits::Int)::String
+function string_exact{T<:ArbFloat,I<:Integer}(x::T, mdigits::I)::String
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, mdigits, 2%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
 
-function string_inexact{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
+function string_inexact{T<:ArbFloat,I<:Integer}(x::T, mdigits::I, rdigits::I)::String
     mid = string_exact(midpoint(x), mdigits)
     rad = string_exact(radius(x), rdigits)
     return string(mid, "±", rad)
