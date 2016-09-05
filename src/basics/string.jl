@@ -100,7 +100,8 @@ end
 
 
 function string_exact{T<:ArbFloat,I<:Integer}(x::T, mdigits::I)::String
-    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, mdigits, 2%UInt)
+    digs = Int(mdigits)
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, 2%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
