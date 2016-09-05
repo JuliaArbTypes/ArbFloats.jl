@@ -28,8 +28,8 @@ function set_radius_digits_shown(idx::Int, ndigits::Int)
     return nothing
 end
 
-set_midpoint_digits_shown(ndigits::Int) = set_midpoint_digits_shown(normative, ndigits)
-set_radius_digits_shown(ndigits::Int) = set_radius_digits_shown(normative, ndigits)
+set_midpoint_digits_shown(ndigits::Int) = midDigits[normative] = ndigits
+set_radius_digits_shown(ndigits::Int) = radDigits[normative] = ndigits
 
 function get_midpoint_digits_shown(idx::Int)
     (1 <= idx <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
@@ -40,8 +40,8 @@ function get_radius_digits_shown(idx::Int)
     return radDigits[ idx ]
 end
 
-get_midpoint_digits_shown() = midpoint_digits_shown[ normative ]
-get_radius_digits_shown()   = radius_digits_shown[ normative ]
+get_midpoint_digits_shown() = midDigits[ normative ]
+get_radius_digits_shown()   = radDigits[ normative ]
 
 digits_offer_bits(ndigits::Int) = convert(Int, div(abs(ndigits)*log2(10), 1))
 
