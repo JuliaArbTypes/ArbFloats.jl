@@ -41,28 +41,28 @@ function (⪰){T<:ArbFloat}(a::T, b::T)
     blo, bhi = bounds(b)
     return (alo < blo) || ((alo == blo) & (ahi <= bhi))
 end
-preceq{T<:ArbFloat}(a::T, b::T) = (⪰)(a,b)
+succeq{T<:ArbFloat}(a::T, b::T) = (⪰)(a,b)
 
 function (≻){T<:ArbFloat}(a::T, b::T) # (a ≼ b) & (a ≄ b)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo < blo) || ((alo == blo) & (ahi < bhi))
 end
-prec{T<:ArbFloat}(a::T, b::T) = (≻)(a,b)
+succ{T<:ArbFloat}(a::T, b::T) = (≻)(a,b)
 
 function (⪯){T<:ArbFloat}(a::T, b::T)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo > blo) || ((alo == blo) & (ahi >= bhi))
 end
-succeq{T<:ArbFloat}(a::T, b::T) = (⪯)(a,b)
+preceq{T<:ArbFloat}(a::T, b::T) = (⪯)(a,b)
 
 function (≺){T<:ArbFloat}(a::T, b::T)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo > blo) || ((alo == blo) & (ahi > bhi))
 end
-succ{T<:ArbFloat}(a::T, b::T) = (≺)(a,b)
+prec{T<:ArbFloat}(a::T, b::T) = (≺)(a,b)
 
 
 # for sorted ordering
