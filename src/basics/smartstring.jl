@@ -9,7 +9,7 @@
       round to match values with the desired fractional resolution.
 
 =#
-@inline digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639812)
+# digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639812)
 
 function smartarbstring{P}(x::ArbFloat{P})::String
      digts = digitsRequired(P)

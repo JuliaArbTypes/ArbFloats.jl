@@ -1,3 +1,5 @@
+@inline digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639812)
+
 # rubric digit display counts
 # values for stringsmall, stringcompact, string, stringlarge, stringall
 #@enum EXTENT small=1 compact=2 medium=3 large=4 all=5
@@ -64,11 +66,11 @@ end
 
 
 function string{T<:ArbFloat}(x::T)
-    mdigits = get_midpoint_digits_shown()
-    rdigits = get_radius_digits_shown()
+    ndigits = digitsRequired(precision(T))
 
     s = if isfinite(x)
-            isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
+            string_exact(x, ndigits) 
+            #isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
         else
             string_nonfinite(x)
         end
