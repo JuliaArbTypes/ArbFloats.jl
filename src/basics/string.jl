@@ -133,8 +133,8 @@ stringmedium{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(medium), get_radius_digits_shown(medium))
 stringlarge{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(large), get_radius_digits_shown(large))
-stringall{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(all), get_radius_digits_shown(all))
+#stringall{T<:ArbFloat}(x::T) =
+#    string(x, get_midpoint_digits_shown(all), get_radius_digits_shown(all))
 
 function stringall{P}(x::ArbFloat{P})
     if isexact(x)
