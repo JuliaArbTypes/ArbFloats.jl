@@ -116,6 +116,8 @@ function string_inexact{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
     return string(mid, "±", rad)
 end
 @inline string_inexact{T<:ArbFloat}(x::T, mdigits::Int16, rdigits::Int16) = string_inexact(x, mdigits%Int, rdigits%Int)
+@inline string_inexact{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int16) = string_inexact(x, mdigits, rdigits%Int)
+@inline string_inexact{T<:ArbFloat}(x::T, mdigits::Int16, rdigits::Int) = string_inexact(x, mdigits%Int, rdigits)
 
 function cleanup_numstring(numstr::String, isaInteger::Bool)::String
     s =
