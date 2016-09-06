@@ -5,7 +5,6 @@
        the Arb C library's implementation of eq,ne,lt,le,gt,ge.
 
     The predecessor/successor symbols {≃,≄,≺,≼,≻,≽} are defined from
-       (and using the antisense of the ordering given in)
        Hend Dawood's non-strict total ordering for interval values.
        (q.v. Hend's Master's thesis:
         Interval Mathematics Foundations, Algebraic Structures, and Applications)
