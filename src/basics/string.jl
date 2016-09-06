@@ -77,11 +77,10 @@ end
 
 
 function string{T<:ArbFloat,I<:Integer}(x::T, ndigits::I)
-    mdigits = max(ndigits, get_midpoint_digits_shown())
     rdigits = min(ndigits, get_radius_digits_shown())
 
     s = if isfinite(x)
-            isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
+            isexact(x) ? string_exact(x, ndigits) : string_inexact(x, mdigits, rdigits)
         else
             string_nonfinite(x)
         end
