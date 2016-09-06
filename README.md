@@ -37,7 +37,7 @@ ArbFloats.jl
 >   results as accurately as possible at a precision that does not misrepresent  
 >   the information content of the underlying interval valuation.
 
-#### version 0.6.1 (for Julia v0.5+).
+#### version 0.1.0 (for Julia v0.5+).
 
 If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
 If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
