@@ -14,11 +14,11 @@ function showsmall{T<:ArbFloat}(io::IO, x::T)
 end
 showsmall{T<:ArbFloat}(x::T) = showsmall(STDOUT, x)
 
-function showsmall_interval{T<:ArbFloat}(io::IO, x::T)
-    s = stringsmall_interval(x)
+function showsmall_pm{T<:ArbFloat}(io::IO, x::T)
+    s = stringsmall_pm(x)
     print(io, s)
 end
-showsmall_interval{T<:ArbFloat}(x::T) = showsmall_interval(STDOUT, x)
+showsmall_pm{T<:ArbFloat}(x::T) = showsmall_pm(STDOUT, x)
 
 function showcompact{T<:ArbFloat}(io::IO, x::T)
     s = stringcompact(x)
@@ -26,11 +26,11 @@ function showcompact{T<:ArbFloat}(io::IO, x::T)
 end
 showcompact{T<:ArbFloat}(x::T) = showcompact(STDOUT, x)
 
-function showcompact_interval{T<:ArbFloat}(io::IO, x::T)
-    s = stringcompact_interval(x)
+function showcompact_pm{T<:ArbFloat}(io::IO, x::T)
+    s = stringcompact_pm(x)
     print(io, s)
 end
-showcompact_interval{T<:ArbFloat}(x::T) = showcompact_interval(STDOUT, x)
+showcompact_pm{T<:ArbFloat}(x::T) = showcompact_pm(STDOUT, x)
 
 function showmedium{T<:ArbFloat}(io::IO, x::T)
     s = stringmedium(x)
@@ -38,11 +38,11 @@ function showmedium{T<:ArbFloat}(io::IO, x::T)
 end
 showmedium{T<:ArbFloat}(x::T) = showmedium(STDOUT, x)
 
-function show_interval{T<:ArbFloat}(io::IO, x::T)
-    s = stringmedium_interval(x)
+function show_pm{T<:ArbFloat}(io::IO, x::T)
+    s = stringmedium_pm(x)
     print(io, s)
 end
-show_interval{T<:ArbFloat}(x::T) = show_interval(STDOUT, x)
+show_pm{T<:ArbFloat}(x::T) = show_pm(STDOUT, x)
 
 function showlarge{T<:ArbFloat}(io::IO, x::T)
     s = stringlarge(x)
@@ -50,11 +50,11 @@ function showlarge{T<:ArbFloat}(io::IO, x::T)
 end
 showlarge{T<:ArbFloat}(x::T) = showlarge(STDOUT, x)
 
-function showlarge_interval{T<:ArbFloat}(io::IO, x::T)
-    s = stringlarge_interval(x)
+function showlarge_pm{T<:ArbFloat}(io::IO, x::T)
+    s = stringlarge_pm(x)
     print(io, s)
 end
-showlarge_interval{T<:ArbFloat}(x::T) = showlarge_interval(STDOUT, x)
+showlarge_pm{T<:ArbFloat}(x::T) = showlarge_pm(STDOUT, x)
 
 function showall{T<:ArbFloat}(io::IO, x::T)
     s = stringall(x)
@@ -62,11 +62,11 @@ function showall{T<:ArbFloat}(io::IO, x::T)
 end
 showall{T<:ArbFloat}(x::T) = showall(STDOUT, x)
 
-function showall_interval{T<:ArbFloat}(io::IO, x::T)
-    s = stringall_interval(x)
+function showall_pm{T<:ArbFloat}(io::IO, x::T)
+    s = stringall_pm(x)
     print(io, s)
 end
-showall_interval{T<:ArbFloat}(x::T) = showall_interval(STDOUT, x)
+showall_pm{T<:ArbFloat}(x::T) = showall_pm(STDOUT, x)
 
 function showallcompact{T<:ArbFloat}(io::IO, x::T)
     s = stringallcompact(x)
@@ -146,11 +146,11 @@ for (F,S) in [(:showsmall, :stringsmall), (:showcompact, :stringcompact),
   end
 end
 
-for (F,S) in [(:showsmall_interval, :stringsmall_interval), 
-              (:showcompact_interval, :stringcompact_interval),
-              (:show_interval, :stringmedium_interval), 
-              (:showlarge_interval, :stringlarge_interval), 
-              (:showall_interval, :stringall_interval)]
+for (F,S) in [(:showsmall_pm, :stringsmall_pm), 
+              (:showcompact_pm, :stringcompact_pm),
+              (:show_pm, :stringmedium_pm), 
+              (:showlarge_pm, :stringlarge_pm), 
+              (:showall_pm, :stringall_pm)]
   @eval begin
      ($F){P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, $S)
      ($F){P,N}(x::NTuple{N,ArbFloat{P}}) = showmany(STDOUT, x, $S)
