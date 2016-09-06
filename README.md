@@ -208,7 +208,7 @@ showpretty(ArbFloat{67}(pi),5)
 thinner = midpoint_radius( 1000.0, 1.0);
 thicker = midpoint_radius( 1000.0, 2.0);
 
-thicker  ⪯  thinner, thinner ≻  thicker, thicker≻  thicnner thinner  ⪯  thicker
+thicker  ⪯  thinner, thinner ≻  thicker, thicker≻ thinner, thinner  ⪯  thicker
 # (true, true, false, false)
 succ(thicker, thinner), succ(thinner, thicker)
 # false, true
