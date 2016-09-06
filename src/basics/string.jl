@@ -65,7 +65,7 @@ function string_nonfinite{T<:ArbFloat}(x::T)::String
 end
 
 
-function string{T<:ArbFloat}(x::T)
+function string{T<:ArbFloat}(x::T)::String
     ndigits = digitsRequired(precision(T))
 
     s = if isfinite(x)
@@ -78,7 +78,7 @@ function string{T<:ArbFloat}(x::T)
 end
 
 
-function string{T<:ArbFloat,I<:Integer}(x::T, ndigits::I)
+function string{T<:ArbFloat,I<:Signed}(x::T, ndigits::I)::String
     rdigits = min(ndigits, get_radius_digits_shown())
 
     s = if isfinite(x)
@@ -89,7 +89,7 @@ function string{T<:ArbFloat,I<:Integer}(x::T, ndigits::I)
     return s
 end
 
-function string{T<:ArbFloat,I<:Integer}(x::T, mdigits::I, rdigits::I)
+function string{T<:ArbFloat,I<:Signed}(x::T, mdigits::I, rdigits::I)::String
     s = if isfinite(x)
             isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
         else
@@ -100,14 +100,14 @@ end
 
 
 
-function string_exact{T<:ArbFloat,I<:Integer}(x::T, mdigits::I)::String
+function string_exact{T<:ArbFloat,I<:Signed}(x::T, mdigits::I)::String
     digs = Int(mdigits)
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, 2%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
 
-function string_inexact{T<:ArbFloat,I<:Integer}(x::T, mdigits::I, rdigits::I)::String
+function string_inexact{T<:ArbFloat,I<:Signed}(x::T, mdigits::I, rdigits::I)::String
     mid = string_exact(midpoint(x), mdigits)
     rad = string_exact(radius(x), rdigits)
     return string(mid, "±", rad)
@@ -140,8 +140,15 @@ interval_stringSmall{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(small), get_radius_digits_shown(small))
 interval_stringCompact{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(compact), get_radius_digits_shown(compact))
-interval_string{T<:ArbFloat}(x::T) =
-    string(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(medium)), get_radius_digits_shown(medium))
+
+function interval_string{T<:ArbFloat}(x::T)
+    P = precision(T)
+    mdigs = min(digitsRequired(P),get_midpoint_digits_shown(medium))
+    rdigs = get_radius_digits_shown(medium)
+    s = string(x, mdigs, rdigs)
+    return s
+end
+
 interval_stringLarge{T<:ArbFloat}(x::T) =
     string(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(large)), get_radius_digits_shown(large))
 #stringall{T<:ArbFloat}(x::T) =
