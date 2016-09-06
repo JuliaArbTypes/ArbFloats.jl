@@ -133,46 +133,30 @@ end
 showmany{T<:ArbFloat}(x::Vector{T}, stringformer::Function) =
     showmany(STDOUT,x,stringformer)
 
+for (F,S) in [(:showsmall, :stringsmall), (:showcompact, :stringcompact),
+              (:show, :stringmedium), (:showlarge, :stringlarge), 
+              (:showall, :stringall), (:showsmart, :smartstring)]
+  @eval begin
+     ($F){P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, $S)
+     ($F){P,N}(x::NTuple{N,ArbFloat{P}}) = showmany(STDOUT, x, $S)
+     ($F){P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, $S)
+     ($F){P}(x::Vector{ArbFloat{P}}) = showmany(STDOUT, x, $S)
+     ($F){P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, $S)
+     ($F){P,N}(x::Vararg{ArbFloat{P},N}) = showmany(STDOUT, x, $S)
+  end
+end
 
-show{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, string)
-showsmall{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, stringsmall)
-showcompact{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, stringcompact)
-showlarge{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, stringlarge)
-showmedium{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, stringmedium)
-showall{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, stringall)
-
-show_interval{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, stringmedium_interval)
-showsmall_interval{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, stringsmall_interval)
-showcompact_interval{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, stringcompact_interval)
-showlarge_interval{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, stringlarge_interval)
-showmedium_interval{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, stringmedium_interval)
-showall_interval{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, stringall_interval)
-
-# showsmart is not a Base show function, it needs explict version without io parameter
-showsmart{P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, smartstring)
-showsmart{P,N}(x::NTuple{N,ArbFloat{P}}) = showmany(STDOUT, x, smartstring)
-
-show{P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, string)
-showall{P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, stringall)
-showsmall{P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, stringsmall)
-showcompact{P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, stringcompact)
-show_interval{P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, stringmedium_interval)
-showsmall_interval{P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, stringsmall_interval)
-showcompact_interval{P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, stringcompact_interval)
-showall_interval{P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, stringall_interval)
-# showsmart is not a Base show function, it needs explict version without io parameter
-showsmart{P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, smartstring)
-showsmart{P}(x::Vector{ArbFloat{P}}) = showmany(STDOUT, x, smartstring)
-
-show{P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, string)
-showsmall{P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, stringsmall)
-showcompact{P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, stringcompact)
-showall{P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, stringall)
-show_interval{P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, stringmedium_interval)
-showsmall_interval{P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, stringsmall_interval)
-showcompact_interval{P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, stringcompact_interval)
-showall_interval{P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, stringall_interval)
-# showsmart is not a Base show function, it needs explict version without io parameter
-showsmart{P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, smartstring)
-showsmart{P,N}(x::Vararg{ArbFloat{P},N}) = showmany(STDOUT, x, smartstring)
-
+for (F,S) in [(:showsmall_interval, :stringsmall_interval), 
+              (:showcompact_interval, :stringcompact_interval),
+              (:show_interval, :stringmedium_interval), 
+              (:showlarge_interval, :stringlarge_interval), 
+              (:showall_interval, :stringall_interval)]
+  @eval begin
+     ($F){P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, $S)
+     ($F){P,N}(x::NTuple{N,ArbFloat{P}}) = showmany(STDOUT, x, $S)
+     ($F){P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, $S)
+     ($F){P}(x::Vector{ArbFloat{P}}) = showmany(STDOUT, x, $S)
+     ($F){P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, $S)
+     ($F){P,N}(x::Vararg{ArbFloat{P},N}) = showmany(STDOUT, x, $S)
+  end
+end
