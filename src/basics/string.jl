@@ -1,13 +1,13 @@
 @inline digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639811952137)
 
 # rubric digit display counts
-# values for stringbrief, stringcompact, string, stringexpansive, stringall
-#@enum EXTENT brief=1 compact=2 normative=3 expansive=4 large=5
-const brief=1;
+# values for stringsmall, stringcompact, string, stringlarge, stringall
+#@enum EXTENT small=1 compact=2 medium=3 large=4 all=5
+const small=1;
 const compact=2;
-const normative=3;
-const expansive=4;
-const large=4
+const medium=3;
+const large=4;
+const all=5;
 
 macro I16(x) 
     begin quote
@@ -15,38 +15,40 @@ macro I16(x)
     end end
 end    
 
-const midDigits = [ @I16(8), @I16(15), @I16(25), @I16(1200) ]
-const radDigits = [ @I16(3), @I16(6),  @I16(12), @I16(100)  ]
+const midDigits = [ @I16(8), @I16(15), @I16(25), @I16(50), @I16(1200) ]
+const radDigits = [ @I16(3), @I16(6),  @I16(12), @I16(25), @I16(100)  ]
 
-const nExtents  = length(midDigits);  const nDigits = 1200;
+const nExtents  = length(midDigits);  const maxDigits = 1200;
 
 function set_midpoint_digits_shown(idx::Int, ndigits::Int)
     (1 <= idx     <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
-    (1 <= ndigits <= nDigits)  || throw(ErrorException("midpoint does not support an $(ndigits) digit count"))
-    midDigits[ idx ] = @I16(ndigits)
-    return nothing
+    (1 <= ndigits <= maxDigits)  || throw(ErrorException("midpoint does not support an $(ndigits) digit count"))
+    @inbounds midDigits[ idx ] = @I16(ndigits)
+    return ndigits
 end
 function set_radius_digits_shown(idx::Int, ndigits::Int)
     (1 <= idx     <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
-    (1 <= ndigits <= nDigits)  || throw(ErrorException("radius does support an ($ndigits) digit count"))
-    midDigits[ idx ] = @I16(ndigits)
-    return nothing
+    (1 <= ndigits <= maxDigits)  || throw(ErrorException("radius does support an ($ndigits) digit count"))
+    @inbounds midDigits[ idx ] = @I16(ndigits)
+    return ndigits
 end
 
-set_midpoint_digits_shown(ndigits::Int) = midDigits[Int(normative)] = ndigits
-set_radius_digits_shown(ndigits::Int) = radDigits[Int(normative)] = ndigits
+set_midpoint_digits_shown(ndigits::Int) = midDigits[Int(medium)] = ndigits
+set_radius_digits_shown(ndigits::Int) = radDigits[Int(medium)] = ndigits
 
 function get_midpoint_digits_shown(idx::Int)
     (1 <= idx <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
-    return midDigits[ idx ]
+    @inbounds m = midDigits[ idx ]
+    return m
 end
 function get_radius_digits_shown(idx::Int)
     (1 <= idx <= nExtents) || throw(ErrorException("invalid EXTENT index ($idx)"))
-    return radDigits[ idx ]
+    @inbounds r = radDigits[ idx ]
+    return r
 end
 
-get_midpoint_digits_shown() = midDigits[ Int(normative) ]
-get_radius_digits_shown()   = radDigits[ Int(normative) ]
+get_midpoint_digits_shown() = midDigits[ Int(medium) ]
+get_radius_digits_shown()   = radDigits[ Int(medium) ]
 
 digits_offer_bits(ndigits::Int) = convert(Int, div(abs(ndigits)*log2(10), 1))
 
@@ -126,16 +128,31 @@ function cleanup_numstring(numstr::String, isaInteger::Bool)::String
     return s
 end
 
-stringbrief{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(brief), get_radius_digits_shown(brief))
+stringsmall{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(small), get_radius_digits_shown(small))
 stringcompact{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(compact), get_radius_digits_shown(compact))
-stringnormative{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(normative), get_radius_digits_shown(normative))
-stringexpansive{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(expansive), get_radius_digits_shown(expansive))
+stringmedium{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(medium), get_radius_digits_shown(medium))
 stringlarge{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(large), get_radius_digits_shown(large))
+stringall{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(all), get_radius_digits_shown(all))
+
+function stringall{P}(x::ArbFloat{P})
+    if isexact(x)
+        return string(x)
+    end
+    sm = string(midpoint(x))
+    sr = try
+            string(Float64(radius(x)))
+         catch
+            string(round(radius(x),58,2))
+         end
+
+    return string(sm,"±", sr)
+end
+
 
 
 
@@ -223,21 +240,6 @@ function smartstring{T<:ArbFloat}(x::T)
     end
     return sa_str
 end
-
-function stringall{P}(x::ArbFloat{P})
-    if isexact(x)
-        return string(x)
-    end
-    sm = string(midpoint(x))
-    sr = try
-            string(Float64(radius(x)))
-        catch
-            string(round(radius(x),58,2))
-        end
-
-    return string(sm,"±", sr)
-end
-
 
 #=
 

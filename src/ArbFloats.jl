@@ -2,7 +2,8 @@ __precompile__()
 
 module ArbFloats
 
-import Base: hash, convert, promote_rule, isa,
+import Base: STDOUT,
+    hash, convert, promote_rule, isa,
     string, show, showcompact, showall, parse,
     finalizer, decompose, precision, setprecision,
     serialize, deserialize,
@@ -36,10 +37,9 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        upperbound, lowerbound, bounds,
        midpoint, radius, midpoint_radius,
        bounding_midpoint, bounding_radius, bounding_midpoint_radius,
-       stringbreif, stringcompact, stringnormative, stringexpansive, 
-       stringlarge, stringall, stringallcompact, stringpretty,
+       stringsmall, stringcompact, stringlarge, stringall, stringpretty,
        smartvalue, smartstring, showsmart, showallcompact, showpretty,
-       showbreif, showcompact, shownormative, showexpansive, showlarge,
+       showsmall, showcompact, showlarge,
        two, three, four, copymidpoint, copyradius, deepcopyradius,
        get_emax, get_emin, bounded, boundedrange,
        decompose, isexact, notexact,
