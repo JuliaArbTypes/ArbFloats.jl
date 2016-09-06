@@ -14,7 +14,7 @@ macro I16(x)
 end    
 
 const midDigits = [ @I16(8), @I16(15), @I16(25), @I16(50), @I16(1200) ]
-const radDigits = [ @I16(3), @I16(6),  @I16(12), @I16(25), @I16(100)  ]
+const radDigits = [ @I16(3), @I16(6),  @I16(12), @I16(25), @I16(64)   ]
 
 const nExtents  = length(midDigits);  const maxDigits = 1200;
 

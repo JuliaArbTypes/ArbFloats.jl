@@ -33,17 +33,17 @@ end
 function smartarbstring_inexact{P}(x::ArbFloat{P})::String
      digts = digitsRequired(P)
      lb, ub = bounds(x)
-     lbs = string(lb, digts, UInt(2))
-     ubs = string(ub, digts, UInt(2))
+     lbs = string_exact(lb, digts)
+     ubs = string_exact(ub, digts)
      if lbs[end]==ubs[end] && lbs==ubs
          return ubs
      end
      for i in (digts-2):-2:4
-         lbs = string(lb, i, UInt(2))
-         ubs = string(ub, i, UInt(2))
+         lbs = string_exact(lb, i)
+         ubs = string_exact(ub, i)
          if lbs[end]==ubs[end] && lbs==ubs # tests rounding to every other digit position
-            us = string(ub, i+1, UInt(2))
-            ls = string(lb, i+1, UInt(2))
+            us = string_exact(ub, i+1)
+            ls = string_exact(lb, i+1)
             if us[end] == ls[end] && us==ls # tests rounding to every digit position
                ubs = lbs = us
             end
@@ -51,7 +51,7 @@ function smartarbstring_inexact{P}(x::ArbFloat{P})::String
          end
      end
      if lbs != ubs
-        ubs = string(x, 3, UInt(2))
+        ubs = stringcompact(x)
      end
      s = rstrip(ubs,'0')
      if s[end]=='.'
