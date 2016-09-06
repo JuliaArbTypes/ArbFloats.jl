@@ -4,7 +4,7 @@ ArbFloats.jl
 
 #### Arb available as an extended precision floating point context.  
 
-<p align="center">Jeffrey Sarnoff © 2016 Aug 31 in New York, USA</p>
+<p align="center">Jeffrey Sarnoff © 2016 Sep 06 in New York, USA</p>
 
 ===========  
  
@@ -37,7 +37,7 @@ ArbFloats.jl
 >   results as accurately as possible at a precision that does not misrepresent  
 >   the information content of the underlying interval valuation.
 
-#### version 0.1.0 (for Julia v0.5+).
+#### version 0.1.2 (for Julia v0.5+).
 
 If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
 If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
@@ -95,6 +95,7 @@ d = @ArbFloat(200,12); # use specified precision, at compile time
 # to see elementary function evaluations rounded to (at least) N significand bits, 
 #   using setprecision(ArbFloat, N+10) is recommended and at least N+7 is suggested
 #   setprecisionAugmented(ArbFloat, N) does the N+10 automatically
+#   setprecisionAugmented(ArbFloat, N, d) uses N+d for the precision
 
 #==
           remember to do this        and           to avoid this
@@ -111,45 +112,61 @@ d = @ArbFloat(200,12); # use specified precision, at compile time
 ```julia
 using ArbFloats
 
-exp1 = exp(ArbFloat(1))
-# 2.7182818284590452353602874713526625
-showall(exp1)
-# 2.7182818284590452353602874713526625 ± 4.857142666566002e-35
+setprecision(ArbFloat, 80)
 
-stringsmall(exp1), stringcompact(exp1)
-# ("2.7182818","2.71828182845905")
-stringsmall_pm(exp1), stringcompact(exp1)
-# ("2.7182818±4.86e-35","2.71828182845905±4.85714e-35")
-
-fuzzed_e = tan(atanh(tanh(atan(exp1))))
-# 2.7182818284590452353602874713527
-showall(fuzzed_e)
-# 2.7182818284590452353602874713526622 ± 7.883680925764943e-33
-
+exp1 = exp(ArbFloat(1));
+stringsmall(exp1),stringcompact(exp1),string(exp1),stringall(exp1)
+("2.7182818","2.71828182845905","2.71828182845904523536029","2.71828182845904523536029")
+showall_pm(exp1)
+# 2.718281828459045235360286±3.3216471534462276e-24
 bounds(exp1)
-# ( 2.7182818284590452353602874713526624, 2.7182818284590452353602874713526626 )
+# ( 2.71828182845904523536028,  2.718281828459045235360293 )
+
+setprecision(ArbFloat, 116); # the initial default precision
+
+fuzzed_e = tan(atanh(tanh(atan(exp(one(ArbFloat))))))
+# 2.718281828459045235360287
+showall(fuzzed_e)
+# 2.7182818284590452353602874713527
+
 bounds(fuzzed_e)
-# ( 2.7182818284590452353602874713526543, 2.7182818284590452353602874713526701 )
+# ( 2.718281828459045235360287,
+#   2.718281828459045235360287 )
+# they are not really the same ...    
+lo, hi = bounds(fuzzed_e);
+showall(lo,hi)
+# ( 2.7182818284590452353602874713526543,
+    2.7182818284590452353602874713526701 )
+    
+# use values of the same precision with interval operators
+
+precision(exp1), precision(fuzzed_e)
+# 80, 116
+overlap(exp1, fuzzed_e), contains(fuzzed_e, exp1), iscontainedby(exp1, fuzzed_e)
+# ( true. false, false )
+exp1 = exp(ArbFloat(1.0))
+precision(exp1), precision(fuzzed_e)
+# (116, 116)
 overlap(exp1, fuzzed_e), contains(fuzzed_e, exp1), iscontainedby(exp1, fuzzed_e)
 # ( true. true, true )
 
 
-smartvalue(exp1)
-# 2.71828182845904523536028747135266
-smartvalue(fuzzed_e)
-# 2.7182818284590452353602874713527
+smartstring(exp1)
+# "2.71828182845904523536028747135266+"
+smartstring(fuzzed_e)
+# "2.7182818284590452353602874713527-"
 
 
 # Float32 and ArbFloat32
-# typealias ArbFloat32 ArbFloat{24}  # predefined
-setprecision(ArbFloat, 24)
+typealias ArbFloat32 ArbFloat{24} 
+setprecision(ArbFloat, 24) # it is good to keep precisions in concert
 
 fpOneThird = 1.0f0 / 3.0f0
 # 0.3333334f0
 
-oneThird = ArbFloat(1) / ArbFloat(3)
+oneThird = ArbFloat32(1) / ArbFloat32(3)
 # 0.3333333
-showall(oneThird)
+showall_pm(oneThird)
 # 0.33333331 ± 2.9802322387695312e-8
 
 # gamma(1/3) is 2.6789_3853_4707_7476_3365_5692_9409_7467_7644~
@@ -170,10 +187,10 @@ ArbFloat("Inf"), ArbFloat("-Inf"), ArbFloat("NaN")
 one(ArbFloat)/ArbFloat(Inf), ArbFloat("Inf")+ArbFloat("-Inf")
 # 0, NaN
 
-smartstring(exp1)
-# "2.71828182845904523536028747135266+"
-smartstring(fuzzed_e)
-# "2.7182818284590452353602874713527-"
+showmart(exp1)
+# 2.71828182845904523536028747135266+
+showsmart(fuzzed_e)
+# 2.7182818284590452353602874713527-
 
 pi66bits=ArbFloat{66}(pi)
 # 3.141592653589793238
@@ -181,20 +198,20 @@ showpretty(ArbFloat{66}(pi))
 # 3.141_592_653_589_793_238
 
 pi67bits=ArbFloat{67}(pi)
- 3.1415926535897932385
+# 3.1415926535897932385
 showpretty(ArbFloat{67}(pi),5)
 # 3.14159_26535_89793_2385
 ```
 
 #### Non-Strict Total Ordering
 ```julia
-thinner = midpoint_radius( 1000.0, 1.0)
-thicker = midpoint_radius( 1000.0, 2.0)
+thinner = midpoint_radius( 1000.0, 1.0);
+thicker = midpoint_radius( 1000.0, 2.0);
 
-thinner  ⪯  thicker
-# true
-succ(thicker, thinner)
-# false
+thicker  ⪯  thinner, thinner ≻  thicker, thicker≻  thicnner thinner  ⪯  thicker
+# (true, true, false, false)
+succ(thicker, thinner), succ(thinner, thicker)
+# false, true
 
 ```
 
