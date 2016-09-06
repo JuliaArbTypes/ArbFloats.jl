@@ -206,7 +206,7 @@ showpretty(ArbFloat{67}(pi),5)
 #### Non-Strict Total Ordering
 ```julia
 thinner = midpoint_radius( 1000.0, 1.0);
-thicker = midpoint_radius( 1000.0, 2.0);
+thicker = midpoint_radius( "1000.0", "2.0");
 
 thicker  ⪯  thinner, thinner ≻  thicker, thicker≻ thinner, thinner  ⪯  thicker
 # (true, true, false, false)
