@@ -145,7 +145,7 @@ function interval_string{T<:ArbFloat}(x::T)
     P = precision(T)
     mdigs = min(digitsRequired(P),get_midpoint_digits_shown(medium))
     rdigs = get_radius_digits_shown(medium)
-    s = string(x, mdigs, rdigs)
+    s = isexact(x) ? string_exact(x, mdigs) : string_inexact(x, mdigs, rdigs)
     return s
 end
 
