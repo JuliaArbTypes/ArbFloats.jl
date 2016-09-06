@@ -133,18 +133,18 @@ function cleanup_numstring(numstr::String, isaInteger::Bool)::String
     return s
 end
 
-stringSmall{T<:ArbFloat}(x::T) =
+stringsmall{T<:ArbFloat}(x::T) =
     string_exact(x, get_midpoint_digits_shown(small))
-stringCompact{T<:ArbFloat}(x::T) =
+stringcompact{T<:ArbFloat}(x::T) =
     string_exact(x, get_midpoint_digits_shown(compact))
-stringMedium{T<:ArbFloat}(x::T) =
+stringmedium{T<:ArbFloat}(x::T) =
     string_exact(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(medium)))
-stringLarge{T<:ArbFloat}(x::T) =
+stringlarge{T<:ArbFloat}(x::T) =
     string_exact(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(large)))
 
-interval_stringSmall{T<:ArbFloat}(x::T) =
+stringsmall_interval{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(small), get_radius_digits_shown(small))
-interval_stringCompact{T<:ArbFloat}(x::T) =
+stringcompact_interval{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(compact), get_radius_digits_shown(compact))
 
 function interval_string{T<:ArbFloat}(x::T)
@@ -155,14 +155,17 @@ function interval_string{T<:ArbFloat}(x::T)
     return s
 end
 
-interval_stringLarge{T<:ArbFloat}(x::T) =
-    string(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(large)), get_radius_digits_shown(large))
-#stringall{T<:ArbFloat}(x::T) =
-#    string(x, get_midpoint_digits_shown(all), get_radius_digits_shown(all))
+function stringlarge_interval{T<:ArbFloat}(x::T)
+    P = precision(T)
+    mdigs = min(digitsRequired(P),get_midpoint_digits_shown(large))
+    rdigs = get_radius_digits_shown(large)
+    s = isexact(x) ? string_exact(x, mdigs) : string_inexact(x, mdigs, rdigs)
+    return s
+end
 
-stringAll{P}(x::ArbFloat{P}) = string_exact(x, digitsRequired(P))
+stringall{P}(x::ArbFloat{P}) = string_exact(x, digitsRequired(P))
 
-function interval_stringAll{P}(x::ArbFloat{P})
+function stringall_interval{P}(x::ArbFloat{P})
     if isexact(x)
         return string(x)
     end
