@@ -80,6 +80,7 @@ include("basics/convert.jl")
 include("basics/compare.jl")
 
 include("basics/string.jl")
+include("basics/smartstring.jl")
 include("basics/show.jl")
 include("basics/serialize.jl")
 
