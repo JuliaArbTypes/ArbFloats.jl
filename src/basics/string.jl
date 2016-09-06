@@ -78,7 +78,7 @@ function string{T<:ArbFloat}(x::T)::String
 end
 
 
-function string{T<:ArbFloat,I<:Signed}(x::T, ndigits::I)::String
+function string{T<:ArbFloat}(x::T, ndigits::Int)::String
     rdigits = min(ndigits, get_radius_digits_shown())
 
     s = if isfinite(x)
@@ -88,8 +88,9 @@ function string{T<:ArbFloat,I<:Signed}(x::T, ndigits::I)::String
         end
     return s
 end
+@inline string{T<:ArbFloat}(x::T, ndigits::Int16) = string(x, ndigits%Int)
 
-function string{T<:ArbFloat,I<:Signed}(x::T, mdigits::I, rdigits::I)::String
+function string{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
     s = if isfinite(x)
             isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
         else
@@ -97,21 +98,24 @@ function string{T<:ArbFloat,I<:Signed}(x::T, mdigits::I, rdigits::I)::String
         end
     return s
 end
+@inline string{T<:ArbFloat}(x::T, mdigits::Int16, rdigits::Int16) = string(x, mdigits%Int, rdigits%Int)
 
 
 
-function string_exact{T<:ArbFloat,I<:Signed}(x::T, mdigits::I)::String
+function string_exact{T<:ArbFloat}(x::T, mdigits::Int)::String
     digs = Int(mdigits)
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, 2%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
+@inline string_exact{T<:ArbFloat}(x::T, mdigits::Int16) = string_exact(x, mdigits%Int)
 
-function string_inexact{T<:ArbFloat,I<:Signed}(x::T, mdigits::I, rdigits::I)::String
+function string_inexact{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
     mid = string_exact(midpoint(x), mdigits)
     rad = string_exact(radius(x), rdigits)
     return string(mid, "±", rad)
 end
+@inline string_inexact{T<:ArbFloat}(x::T, mdigits::Int16, rdigits::Int16) = string_inexact(x, mdigits%Int, rdigits%Int)
 
 function cleanup_numstring(numstr::String, isaInteger::Bool)::String
     s =
