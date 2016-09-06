@@ -128,13 +128,13 @@ function cleanup_numstring(numstr::String, isaInteger::Bool)::String
 end
 
 stringSmall{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(small))
+    string_exact(x, get_midpoint_digits_shown(small))
 stringCompact{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(compact))
+    string_exact(x, get_midpoint_digits_shown(compact))
 stringMedium{T<:ArbFloat}(x::T) =
-    string(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(medium)))
+    string_exact(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(medium)))
 stringLarge{T<:ArbFloat}(x::T) =
-    string(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(large)))
+    string_exact(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(large)))
 
 interval_stringSmall{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(small), get_radius_digits_shown(small))
@@ -147,7 +147,7 @@ interval_stringLarge{T<:ArbFloat}(x::T) =
 #stringall{T<:ArbFloat}(x::T) =
 #    string(x, get_midpoint_digits_shown(all), get_radius_digits_shown(all))
 
-stringAll{P}(x::ArbFloat{P}) = string(x, digitsRequired(P))
+stringAll{P}(x::ArbFloat{P}) = string_exact(x, digitsRequired(P))
 
 function interval_stringAll{P}(x::ArbFloat{P})
     if isexact(x)
