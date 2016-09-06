@@ -86,12 +86,16 @@ precision(ArbFloat) # show the current default precision
 setprecision(ArbFloat, 120) # change the current default precision
 # 100
 
-a = ArbFloat(12)  # use the default precision, at run time
-b = @ArbFloat(12) # use the default precision, at compile time
-c = ArbFloat{200}(12) # use specified precision, at run time
-d = @ArbFloat(200,12) # use specified precision, at compile time
+a = ArbFloat(12);  # use the default precision, at run time
+b = @ArbFloat(12); # use the default precision, at compile time
+c = ArbFloat{200}(12); # use specified precision, at run time
+d = @ArbFloat(200,12); # use specified precision, at compile time
 
-setprecision(ArbFloat, 64);
+# setprecision(ArbFloat, 53+0); # akin to setprecision(BigFloat, 53)
+# to see elementary function evaluations rounded to (at least) N significand bits, 
+#   using setprecision(ArbFloat, N+10) is recommended and at least N+7 is suggested
+#   setprecisionAugmented(ArbFloat, N) does the N+10 automatically
+
 #==
           remember to do this        and           to avoid this
 ==#
@@ -111,6 +115,11 @@ exp1 = exp(ArbFloat(1))
 # 2.7182818284590452353602874713526625
 showall(exp1)
 # 2.7182818284590452353602874713526625 ± 4.857142666566002e-35
+
+stringsmall(exp1), stringcompact(exp1)
+# ("2.7182818","2.71828182845905")
+stringsmall_pm(exp1), stringcompact(exp1)
+# ("2.7182818±4.86e-35","2.71828182845905±4.85714e-35")
 
 fuzzed_e = tan(atanh(tanh(atan(exp1))))
 # 2.7182818284590452353602874713527
