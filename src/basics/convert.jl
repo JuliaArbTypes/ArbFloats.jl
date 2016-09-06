@@ -192,7 +192,7 @@ end
 
 
 function convert{T<:ArbFloat}(::Type{BigFloat}, x::T)
-     s = smartarbstring(x)
+     s = string(midpoint(x))
      return parse(BigFloat, s)
 end
 
