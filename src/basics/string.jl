@@ -142,12 +142,13 @@ stringmedium{T<:ArbFloat}(x::T) =
 stringlarge{T<:ArbFloat}(x::T) =
     string_exact(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(large)))
 
-stringsmall_interval{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(small), get_radius_digits_shown(small))
-stringcompact_interval{T<:ArbFloat}(x::T) =
+stringsmall_pm{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(small), get_radius_digits_shown(small))     
+stringcompact_pm{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(compact), get_radius_digits_shown(compact))
+stringmedium_pm{T<:ArbFloat}(x::T) = string_pm(x)
 
-function interval_string{T<:ArbFloat}(x::T)
+function string_pm{T<:ArbFloat}(x::T)
     P = precision(T)
     mdigs = min(digitsRequired(P),get_midpoint_digits_shown(medium))
     rdigs = get_radius_digits_shown(medium)
@@ -155,7 +156,7 @@ function interval_string{T<:ArbFloat}(x::T)
     return s
 end
 
-function stringlarge_interval{T<:ArbFloat}(x::T)
+function stringlarge_pm{T<:ArbFloat}(x::T)
     P = precision(T)
     mdigs = min(digitsRequired(P),get_midpoint_digits_shown(large))
     rdigs = get_radius_digits_shown(large)
@@ -165,7 +166,7 @@ end
 
 stringall{P}(x::ArbFloat{P}) = string_exact(x, digitsRequired(P))
 
-function stringall_interval{P}(x::ArbFloat{P})
+function stringall_pm{P}(x::ArbFloat{P})
     if isexact(x)
         return string(x)
     end
@@ -178,6 +179,5 @@ function stringall_interval{P}(x::ArbFloat{P})
 
     return string(sm,"±", sr)
 end
-
 
 
