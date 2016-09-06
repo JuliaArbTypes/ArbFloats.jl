@@ -15,9 +15,9 @@ function smartarbstring{P}(x::ArbFloat{P})::String
      digts = digitsRequired(P)
      if isexact(x)
         if isinteger(x)
-            return string(x, digts, UInt(2))
+            return string(x, digts)
         else
-            s = rstrip(string(x, digts, UInt(2)),'0')
+            s = rstrip(string(x, digts),'0')
             if s[end]=='.'
                s = string(s, "0")
             end
