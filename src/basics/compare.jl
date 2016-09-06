@@ -4,7 +4,8 @@
     The conventional symbols {==,!=,<,<=,>,>=} are defined using
        the Arb C library's implementation of eq,ne,lt,le,gt,ge.
 
-    The precesessor/successor symbols {≃,≄,≺,≼,≻,≽} are defined from
+    The predecessor/successor symbols {≃,≄,≺,≼,≻,≽} are defined from
+       (and using the antisense of the ordering given in)
        Hend Dawood's non-strict total ordering for interval values.
        (q.v. Hend's Master's thesis:
         Interval Mathematics Foundations, Algebraic Structures, and Applications)
@@ -35,33 +36,33 @@ function (≄){T<:ArbFloat}(a::T, b::T)
 end
 nsime{T<:ArbFloat}(a::T, b::T) = (≄)(a,b)
 
-function (⪯){T<:ArbFloat}(a::T, b::T)
+function (⪰){T<:ArbFloat}(a::T, b::T)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo < blo) || ((alo == blo) & (ahi <= bhi))
 end
-preceq{T<:ArbFloat}(a::T, b::T) = (⪯)(a,b)
+preceq{T<:ArbFloat}(a::T, b::T) = (⪰)(a,b)
 
-function (≺){T<:ArbFloat}(a::T, b::T) # (a ≼ b) & (a ≄ b)
+function (≻){T<:ArbFloat}(a::T, b::T) # (a ≼ b) & (a ≄ b)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo < blo) || ((alo == blo) & (ahi < bhi))
 end
-prec{T<:ArbFloat}(a::T, b::T) = (≺)(a,b)
+prec{T<:ArbFloat}(a::T, b::T) = (≻)(a,b)
 
-function (⪰){T<:ArbFloat}(a::T, b::T)
+function (⪯){T<:ArbFloat}(a::T, b::T)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo > blo) || ((alo == blo) & (ahi >= bhi))
 end
-succeq{T<:ArbFloat}(a::T, b::T) = (⪰)(a,b)
+succeq{T<:ArbFloat}(a::T, b::T) = (⪯)(a,b)
 
-function (≻){T<:ArbFloat}(a::T, b::T)
+function (≺){T<:ArbFloat}(a::T, b::T)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo > blo) || ((alo == blo) & (ahi > bhi))
 end
-succ{T<:ArbFloat}(a::T, b::T) = (≻)(a,b)
+succ{T<:ArbFloat}(a::T, b::T) = (≺)(a,b)
 
 
 # for sorted ordering
