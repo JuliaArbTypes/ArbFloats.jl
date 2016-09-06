@@ -80,7 +80,7 @@ function string{T<:ArbFloat,I<:Integer}(x::T, ndigits::I)
     rdigits = min(ndigits, get_radius_digits_shown())
 
     s = if isfinite(x)
-            isexact(x) ? string_exact(x, ndigits) : string_inexact(x, mdigits, rdigits)
+            isexact(x) ? string_exact(x, ndigits) : string_inexact(x, ndigits, rdigits)
         else
             string_nonfinite(x)
         end
