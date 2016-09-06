@@ -29,6 +29,10 @@ function setprecision(::Type{ArbFloat}, x::Int)
     return x
 end
 
+function setprecisionAugmented(::Type{ArbFloat}, x::Int, offset::Int=10)
+    return setprecision(ArbFloat, x+offset)
+end    
+
 
 # a type specific hash function helps the type to 'just work'
 const hash_arbfloat_lo = (UInt === UInt64) ? 0x37e642589da3416a : 0x5d46a6b4

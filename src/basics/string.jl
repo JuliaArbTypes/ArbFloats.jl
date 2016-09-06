@@ -66,11 +66,9 @@ end
 
 
 function string{T<:ArbFloat}(x::T)::String
-    ndigits = digitsRequired(precision(T))
-
+    ndigits = min(digitsRequired(precision(T)),get_midpoint_digits_shown(medium))
     s = if isfinite(x)
             string_exact(x, ndigits) 
-            #isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
         else
             string_nonfinite(x)
         end
