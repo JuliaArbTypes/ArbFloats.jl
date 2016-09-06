@@ -127,18 +127,29 @@ function cleanup_numstring(numstr::String, isaInteger::Bool)::String
     return s
 end
 
-stringsmall{T<:ArbFloat}(x::T) =
+stringSmall{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(small))
+stringCompact{T<:ArbFloat}(x::T) =
+    string(x, get_midpoint_digits_shown(compact))
+stringMedium{T<:ArbFloat}(x::T) =
+    string(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(medium)))
+stringLarge{T<:ArbFloat}(x::T) =
+    string(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(large)))
+
+interval_stringSmall{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(small), get_radius_digits_shown(small))
-stringcompact{T<:ArbFloat}(x::T) =
+interval_stringCompact{T<:ArbFloat}(x::T) =
     string(x, get_midpoint_digits_shown(compact), get_radius_digits_shown(compact))
-stringmedium{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(medium), get_radius_digits_shown(medium))
-stringlarge{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(large), get_radius_digits_shown(large))
+interval_string{T<:ArbFloat}(x::T) =
+    string(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(medium)), get_radius_digits_shown(medium))
+interval_stringLarge{T<:ArbFloat}(x::T) =
+    string(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(large)), get_radius_digits_shown(large))
 #stringall{T<:ArbFloat}(x::T) =
 #    string(x, get_midpoint_digits_shown(all), get_radius_digits_shown(all))
 
-function stringall{P}(x::ArbFloat{P})
+stringAll{P}(x::ArbFloat{P}) = string(x, digitsRequired(P))
+
+function interval_stringAll{P}(x::ArbFloat{P})
     if isexact(x)
         return string(x)
     end
