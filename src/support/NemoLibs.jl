@@ -12,15 +12,15 @@ isfile(libflint) || throw(ErrorException("libflint not found"))
 
 # prepare the libraries for use
 
-@static if is_linux() || is_bsd() || is_unix()
+if is_linux() || is_bsd()
     libarb = String(split(libarb,".so")[1])
     libflint = String(split(libflint,".so")[1])
 end
-@static if is_apple()
+if is_apple()
     libarb = String(split(libarb,".dynlib")[1])
     libflint = String(split(libflint,".dynlib")[1])
 end
-@static if is_windows()
+if is_windows()
     libarb = String(split(libarb,".dll")[1])
     libflint = String(split(libflint,".dll")[1])
 end

@@ -386,19 +386,3 @@ suggesting improvements, fixing bugs, testing and other specific acts of good wi
 &nbsp;&nbsp;&nbsp;&nbsp;Avik Sengupta, Yichao Yu, David P. Sanders, Chris Rackauckas,   
 &nbsp;&nbsp;&nbsp;&nbsp;Scott Jones, Luis Benet, Galen O'Neil, and Julia's community     
 
-=====
-  
-  
-[//]: # (developer info)
-
-[//]: # (#### other, sometimes overlapping, software development is with)
-
-[//]: # ([ArbDecimals](https://github.com/JuliaArbTypes/ArbDecimals.jl))
-[//]: # ([ArbReals](https://github.com/JuliaArbTypes/ArbReals.jl))
-
-[//]: # (### current flows are in)
-
-[//]: # ([the ArbFloats gitter](https://gitter.im/JuliaArbTypes/ArbFloats.jl)  )
-[//]: # ([the ArbReals wiki](https://github.com/JuliaArbTypes/ArbReals.jl/wiki) )
-[//]: # (and [ongitter](https://gitter.im/JuliaArbTypes/ArbReals.jl) )
-
