@@ -1,9 +1,9 @@
 site_name:           ArbFloats
 site_url:            https://github.com/JuliaArbTypes/ArbFloats.jl
 repo_url:            https://github.com/JuliaArbTypes/ArbFloats.jl
-site_description:    Faster floating point math with 100..4000 bits
+site_description:    faster extended precision floating point math
 site_author:         Jeffrey Sarnoff
-copyright:           © 2016 by Jeffrey Sarnoff.  The MIT license applies.
+copyright:           Jeffrey Sarnoff © 2016
 theme:               readthedocs
 
 markdown_extensions:
@@ -12,15 +12,11 @@ markdown_extensions:
   - fenced_code
   - extra
   - footnotes
-  - toc
-  - abbr
   - nl2br
   - smart_strong
-  - sane_lists
   - attr_list
   - def_list
   - smarty
-  - mdx_math
 
 extra_css:
   - assets/Documenter.css
@@ -32,16 +28,16 @@ extra_javascript:
 docs_dir: 'build'
 
 pages:
-- Introduction: index.md
+- Introduction: intro.md
 - Tutorial:
-  - Overview: tutorial/page1.md
-  - Getting Started: tutorial/page2.md
-  - Floating Point Math: tutorial/page3.md
-  - Guidelines: tutorial/page4.md
+  - Overview: tutorial/overview.md
+  - Getting Started: tutorial/gettingStarted.md
+  - Floating Point Math: tutorial/floatingPointMath.md
+  - Guidelines: tutorial/guidelines.md
 - Reference:
-  - Scope: reference/page1.md
-  - Precision: reference/page2.md
-  - Types: reference/page3.md
-  - Basic Functions: reference/page3.md
-  - Math Functions: reference/page3.md
-  - Support Functions: reference/page4.md
+  - Scope: reference/scope.md
+  - Precision: reference/onPrecision.md
+  - Types: reference/libraryTypes.md
+  - Basic Functions: reference/computationalFunctions.md
+  - Math Operators: reference/mathematicalOperators.md
+  - Supporting Operations: reference/supportingOperations.md
