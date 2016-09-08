@@ -1,6 +1,6 @@
 using Documenter, ArbFloats
 
-makedocs(modules=[Arbfloats], doctest=true)
+makedocs(modules=[ArbFloats], doctest=true)
 
 deploydocs(deps = Deps.pip("mkdocs", "python-markdown-math"),
     repo = "github.com/JuliaArbTypes/ArbFloats.jl.git",
