@@ -1,7 +1,7 @@
 # ArbFloats
 
-ArbFloats provides faster floating point math at medium significand precisions.
+### ArbFloats provide faster floating point math at extended precisions.
 
-## floats from intervals at their most informative and least misleading
+### ArbFloats show narrow intervals as the most informative and least misleading float value.
 
 
