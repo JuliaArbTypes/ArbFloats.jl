@@ -1,15 +1,26 @@
 site_name:           ArbFloats
+site_url:            https://github.com/JuliaArbTypes/ArbFloats.jl
 repo_url:            https://github.com/JuliaArbTypes/ArbFloats.jl
 site_description:    Faster floating point math with 100..4000 bits
 site_author:         Jeffrey Sarnoff
+copyright:           © 2016 by Jeffrey Sarnoff.  The MIT license applies.
 theme:               readthedocs
 
 markdown_extensions:
   - codehilite
-  - extra
   - tables
   - fenced_code
-  - mdx_math # For LaTeX
+  - extra
+  - footnotes
+  - toc
+  - abbr
+  - nl2br
+  - smart_strong
+  - sane_lists
+  - attr_list
+  - def_list
+  - smarty
+  - mdx_math
 
 extra_css:
   - assets/Documenter.css
