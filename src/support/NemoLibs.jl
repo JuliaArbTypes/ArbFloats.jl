@@ -1,12 +1,19 @@
 
 # ensure the requisite libraries are available
 
-isdir(Pkg.dir("Nemo")) || throw(ErrorException("Nemo not found"))
+function package_directory(pkgName::String)
+    pkgdir = Base.find_in_path(pkgName)
+    nothing == pkgdir && throw(ErrorException("please Pkg.add(\"$pkgName\")"))
+    pkgdir = abspath(joinpath( split( pkgdir, pkgName)[1], pkgName))
+    return pkgdir
+end    
 
-const NemoLibsDir = Pkg.dir("Nemo/local/lib");
+const NemoLibsDir = abspath(joinpath( package_directory("Nemo"), "local/lib"))
+
 libFiles = readdir(NemoLibsDir);
 libarb   = joinpath(NemoLibsDir,libFiles[findfirst([startswith(x,"libarb") for x in libFiles])])
 libflint = joinpath(NemoLibsDir,libFiles[findfirst([startswith(x,"libflint") for x in libFiles])])
+
 isfile(libarb)   || throw(ErrorException("libarb not found"))
 isfile(libflint) || throw(ErrorException("libflint not found"))
 
