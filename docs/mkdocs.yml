@@ -1,0 +1,36 @@
+site_name:           ArbFloats
+repo_url:            https://github.com/JuliaArbTypes/ArbFloats.jl
+site_description:    Faster floating point math with 100..4000 bits
+site_author:         Jeffrey Sarnoff
+theme:               readthedocs
+
+markdown_extensions:
+  - codehilite
+  - extra
+  - tables
+  - fenced_code
+  - mdx_math # For LaTeX
+
+extra_css:
+  - assets/Documenter.css
+
+extra_javascript:
+  - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
+  - assets/mathjaxhelper.js
+
+docs_dir: 'build'
+
+pages:
+- Introduction: index.md
+- Tutorial:
+  - Overview: tutorial/page1.md
+  - Getting Started: tutorial/page2.md
+  - Floating Point Math: tutorial/page3.md
+  - Guidelines: tutorial/page4.md
+- Reference:
+  - Scope: reference/page1.md
+  - Precision: reference/page2.md
+  - Types: reference/page3.md
+  - Basic Functions: reference/page3.md
+  - Math Functions: reference/page3.md
+  - Support Functions: reference/page4.md
