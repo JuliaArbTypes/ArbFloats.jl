@@ -3,10 +3,10 @@
 
 isdir(Pkg.dir("Nemo")) || throw(ErrorException("Nemo not found"))
 
-libDir = Pkg.dir("Nemo/local/lib");
-libFiles = readdir(libDir);
-libarb   = joinpath(libDir,libFiles[findfirst([startswith(x,"libarb") for x in libFiles])])
-libflint = joinpath(libDir,libFiles[findfirst([startswith(x,"libflint") for x in libFiles])])
+const NemoLibsDir = Pkg.dir("Nemo/local/lib");
+libFiles = readdir(NemoLibsDir);
+libarb   = joinpath(NemoLibsDir,libFiles[findfirst([startswith(x,"libarb") for x in libFiles])])
+libflint = joinpath(NemoLibsDir,libFiles[findfirst([startswith(x,"libflint") for x in libFiles])])
 isfile(libarb)   || throw(ErrorException("libarb not found"))
 isfile(libflint) || throw(ErrorException("libflint not found"))
 
