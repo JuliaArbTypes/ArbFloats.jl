@@ -4,6 +4,8 @@
 const noNemo = "Nemo.jl is not found:\n  Pkg.rm(\"Nemo\"); Pkg.add(\"Nemo\"); quit()\n  Pkg.rm(\"ArbFloats\");Pkg.add(\"ArbFloats\");"
 const reNemo = "Nemo.jl is not as expected:\n  Pkg.rm(\"Nemo\"); Pkg.add(\"Nemo\"); quit()\n  Pkg.rm(\"ArbFloats\");Pkg.add(\"ArbFloats\");"
 
+const NemoLibsDir = abspath(joinpath( package_directory("Nemo"), "local/lib"))
+
 function package_directory(pkgName::String)
     pkgdir = Base.find_in_path(pkgName)
     nothing == pkgdir && throw(ErrorException(noNemo))
@@ -15,7 +17,6 @@ function library_filepath(libsdir::String, filenames::Vector{String}, libname::S
     return joinpath( libsdir, libfile )
 end
 
-NemoLibsDir = abspath(joinpath( package_directory("Nemo"), "local/lib"))
 libFiles = readdir(NemoLibsDir)
 
 libarb   = library_filepath( NemoLibsDir, libFiles, "libarb"  )
@@ -23,22 +24,6 @@ libflint = library_filepath( NemoLibsDir, libFiles, "libflint")
 
 isfile(libarb)   || throw(ErrorException(reNemo))
 isfile(libflint) || throw(ErrorException(reNemo))
-
-function package_directory(pkgName::String)
-    pkgdir = Base.find_in_path(pkgName)
-    nothing == pkgdir && throw(ErrorException("please Pkg.add(\"$pkgName\")"))
-    pkgdir = abspath(joinpath( split( pkgdir, pkgName)[1], pkgName))
-    return pkgdir
-end    
-
-const NemoLibsDir = abspath(joinpath( package_directory("Nemo"), "local/lib"))
-
-libFiles = readdir(NemoLibsDir);
-libarb   = joinpath(NemoLibsDir,libFiles[findfirst([startswith(x,"libarb") for x in libFiles])])
-libflint = joinpath(NemoLibsDir,libFiles[findfirst([startswith(x,"libflint") for x in libFiles])])
-
-isfile(libarb)   || throw(ErrorException("libarb not found"))
-isfile(libflint) || throw(ErrorException("libflint not found"))
 
 # prepare the libraries for use
 
