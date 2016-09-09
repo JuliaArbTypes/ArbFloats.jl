@@ -1,7 +1,7 @@
 using Documenter, ArbFloats
 
 makedocs(
-    sitename = "ArbFloats.jl"
+    sitename = "ArbFloats.jl",
     modules  = [ArbFloats], 
     format   = Documenter.Formats.HTML,
     clean    = false,
