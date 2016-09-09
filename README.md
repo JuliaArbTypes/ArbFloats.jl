@@ -380,7 +380,7 @@ with their time.
 
 Many have helped me.  Some with their prior acts of good will.    
 Others by explaining subtleties, sharing exemplary Julian ways,  
-suggusting improvements, providing fixes, or doing testing.
+suggesting improvements, providing fixes, or doing testing.
 
 >> Stefan Karpinski, Jeff Bezanson, Alan Edelman, Viral Shah,     
 >> John Myles White, Tim Holy, Thomas Breloff, Katherine Hyatt,   
