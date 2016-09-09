@@ -385,6 +385,6 @@ suggesting improvements, providing fixes, or doing testing.
 >> Stefan Karpinski, Jeff Bezanson, Alan Edelman, Viral Shah,     
 >> John Myles White, Tim Holy, Thomas Breloff, Katherine Hyatt,   
 >> Avik Sengupta, Yichao Yu, David P. Sanders, Chris Rackauckas,   
->> Scott Jones, Luis Benet, Galen O'Neil, you the unnamed few,
+>> Scott Jones, Luis Benet, Galen O'Neil, others by oversight,  
 >> and Julia's community     
 
