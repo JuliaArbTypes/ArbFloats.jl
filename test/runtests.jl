@@ -11,7 +11,7 @@ else
     const Test = BaseTestNext
 end
 
-d = joinpath(Pkg.dir("ArbFloats"),"tests")
+d = joinpath(Pkg.dir("ArbFloats"),"test")
 test_files = [
                 joinpath(d,"TestAsType.jl"),
                 joinpath(d,"TestAsNumber.jl"),
