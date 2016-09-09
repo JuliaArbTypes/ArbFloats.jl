@@ -37,7 +37,7 @@ ArbFloats.jl
 >   results as accurately as possible at a precision that does not misrepresent  
 >   the information content of the underlying interval valuation.
 
-#### version 0.1.2 (for Julia v0.5+).
+#### version 0.1.3 (for Julia v0.5+).
 
 If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
 If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
@@ -384,7 +384,6 @@ suggesting improvements, providing fixes, or doing testing.
 
 >> Stefan Karpinski, Jeff Bezanson, Alan Edelman, Viral Shah,     
 >> John Myles White, Tim Holy, Thomas Breloff, Katherine Hyatt,   
->> Avik Sengupta, Yichao Yu, David P. Sanders, Chris Rackauckas,   
->> Scott Jones, Luis Benet, Galen O'Neil, others by oversight,  
->> and Julia's community     
+>> Avik Sengupta, David P. Sanders, Yichao Yu, Chris Rackauckas,
+>> Scott Jones, Luis Benet, Galen O'Neil, and Julia's community     
 
