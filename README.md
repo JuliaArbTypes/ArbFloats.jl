@@ -155,10 +155,11 @@ smartstring(exp1)
 # "2.71828182845904523536028747135266+"
 smartstring(fuzzed_e)
 # "2.7182818284590452353602874713527-"
+```
 
-
-# Float32 and ArbFloat32
-typealias ArbFloat32 ArbFloat{24} 
+####Float32 and ArbFloat32
+```julia
+typealias ArbFloat32 ArbFloat{24} # Float32 has 24 significand bits
 setprecision(ArbFloat, 24) # it is good to keep precisions in concert
 
 fpOneThird = 1.0f0 / 3.0f0
@@ -166,8 +167,9 @@ fpOneThird = 1.0f0 / 3.0f0
 
 oneThird = ArbFloat32(1) / ArbFloat32(3)
 # 0.3333333
-showall_pm(oneThird)
-# 0.33333331 ± 2.9802322387695312e-8
+show_pm(oneThird)
+# 0.33333331±2.98023223877e-8
+
 
 # gamma(1/3) is 2.6789_3853_4707_7476_3365_5692_9409_7467_7644~
 gamma( fpOneThird )
@@ -177,10 +179,22 @@ gamma_oneThird = gamma( oneThird )
 # 2.6789_4
 bounds(gamma_oneThird)
 # (2.6789_362, 2.6789_401)
+showsmall(gamma_oneThird)
 ```
 
 #### Display
 ```julia
+
+# e.g. stringsmall & showsmall, stringsmall_pm & showsmall_pm
+# {string,show}{small, compact, all, small_pm, compact_pm, all_pm}
+stringsmall(oneThird), stringsmall_pm(oneThird)
+("0.3333333",  "0.33333331±2.98e-8")
+
+# show works with vectors and tuples and varargs of ArbFloat
+showsmall([oneThird, oneThird]);showsmall((oneThird,oneThird));showsmall(oneThird,oneThird)
+# [ 0.3333333,      ( 0.3333333,      ( 0.3333333,
+#   0.3333333 ]       0.3333333 )       0.3333333 )
+
 
 ArbFloat("Inf"), ArbFloat("-Inf"), ArbFloat("NaN")
 # +Inf, -Inf, NaN
