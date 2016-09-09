@@ -381,8 +381,8 @@ with their time.
 Others have helped with conceptual subtleties, software from which I learned Julia,    
 suggesting improvements, fixing bugs, testing and other specific acts of good will:  
 
-&nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman, Viral Shah,     
-&nbsp;&nbsp;&nbsp;&nbsp;John Myles White, Tim Holy, Thomas Breloff, Katherine Hyatt,   
-&nbsp;&nbsp;&nbsp;&nbsp;Avik Sengupta, Yichao Yu, David P. Sanders, Chris Rackauckas,   
-&nbsp;&nbsp;&nbsp;&nbsp;Scott Jones, Luis Benet, Galen O'Neil, and Julia's community     
+>> Stefan Karpinski, Jeff Bezanson, Alan Edelman, Viral Shah,     
+>> John Myles White, Tim Holy, Thomas Breloff, Katherine Hyatt,   
+>> Avik Sengupta, Yichao Yu, David P. Sanders, Chris Rackauckas,   
+>> Scott Jones, Luis Benet, Galen O'Neil, and Julia's community     
 
