@@ -8,6 +8,8 @@ julia:
   - nightly
 notifications:
   email: false
+before_install:
+  - openssl aes-256-cbc -K $encrypted_14bd5302f72f_key -iv $encrypted_14bd5302f72f_iv -in .documenter.enc -out .documenter -d  
 # uncomment the following lines to override the default test script
 #script:
 #  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
