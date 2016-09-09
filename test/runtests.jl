@@ -36,7 +36,4 @@ for f in test_files
 end
 #println("Done testing.")
 
-#= end tests =#
-
-
-end # Test ArbFloats
+# end testing ArbFloats
