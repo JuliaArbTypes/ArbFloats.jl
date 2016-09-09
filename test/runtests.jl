@@ -1,17 +1,17 @@
 # Test ArbFloats.jl
 
-using Compat
+using Base.Test
 using ArbFloats
 
 
-if VERSION >= v"0.5.0-"
-    using Base.Test
-else
-    using BaseTestNext
-    const Test = BaseTestNext
-end
 
-d = joinpath(Pkg.dir("ArbFloats"),"test")
+function package_directory(pkgName::String)
+    pkgdir = Base.find_in_path(pkgName)
+    nothing == pkgdir && throw(ErrorException(string("Package $pkgName not found.")))
+    return abspath(joinpath(split(pkgdir, pkgName)[1], pkgName))
+end    
+
+d = joinpath(package_directory("ArbFloats"),"test")
 test_files = [
                 joinpath(d,"TestAsType.jl"),
                 joinpath(d,"TestAsNumber.jl"),
