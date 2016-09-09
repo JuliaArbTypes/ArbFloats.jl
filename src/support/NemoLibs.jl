@@ -4,7 +4,6 @@
 const noNemo = "Nemo.jl is not found:\n  Pkg.rm(\"Nemo\"); Pkg.add(\"Nemo\"); quit()\n  Pkg.rm(\"ArbFloats\");Pkg.add(\"ArbFloats\");"
 const reNemo = "Nemo.jl is not as expected:\n  Pkg.rm(\"Nemo\"); Pkg.add(\"Nemo\"); quit()\n  Pkg.rm(\"ArbFloats\");Pkg.add(\"ArbFloats\");"
 
-const NemoLibsDir = abspath(joinpath( package_directory("Nemo"), "local/lib"))
 
 function package_directory(pkgName::String)
     pkgdir = Base.find_in_path(pkgName)
@@ -17,6 +16,8 @@ function library_filepath(libsdir::String, filenames::Vector{String}, libname::S
     return joinpath( libsdir, libfile )
 end
 
+
+NemoLibsDir = abspath(joinpath( package_directory("Nemo"), "local/lib"))
 libFiles = readdir(NemoLibsDir)
 
 libarb   = library_filepath( NemoLibsDir, libFiles, "libarb"  )
