@@ -210,7 +210,7 @@
 
 			// "Speficy the base level for headers"
 			// Specify a number or "false" to disable.
-			"base-header-level": 2,
+			"base-header-level": 4,
 
 			// Apply code classes to all indented code blocks. N.B.:
 			// does not apply to fenced code, which must still be
