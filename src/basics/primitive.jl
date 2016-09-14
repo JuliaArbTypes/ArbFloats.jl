@@ -34,7 +34,7 @@ end
 weakcopy{P}(x::ArbFloat{P}) = WeakRef(x)
 
 function copy{T<:ArbFloat}(x::T)
-    z = initialize_arb(T)
+    z = T()
     ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
     finalizer(z, release_arb)
     return z
