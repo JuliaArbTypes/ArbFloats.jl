@@ -82,14 +82,14 @@ function radius{T<:ArbFloat}(x::T)::T
         return T(Float64(x))
     catch
         z = T()
-        ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)        lo,hi = bounds(x - midpoint(x))
+        ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)    
         return z
     end
     # ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     # not used because
     # julia> n=330;a1=ArbFloat{n}("77617.0");b1=ArbFloat{n}("33096.0");bb1=b1+b1;rbb1=inv(bb1);arbb1=a1*rbb1;c1=a1/bb1;
     # julia> radius(c1) 9.143899130258199857726268e-1
-    # and so with n=
+    #             lo,hi = bounds(x - midpoint(x)); (hi-lo)*0.5
 end
 
 function diameter{T<:ArbFloat}(x::T)
