@@ -74,16 +74,21 @@ function midpoint{T<:ArbFloat}(x::T)
     return z
 end
 
+function arb_radius{T<:ArbFloat}(x::T)::T
+    z = T()
+    ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    return z
+end
+
 function radius{T<:ArbFloat}(x::T)::T
     if isexact(x)
         return zero(T)
     end
-    z = T()
-    ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    z = arb_radius(x)
     sr = try
            T(Float64(z))
          catch
-            round(z,58,2)
+           throw(ErrorException("extracting radii smaller than 1.0e-300 is not currently supported"))
          end
     return sr
     # ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
