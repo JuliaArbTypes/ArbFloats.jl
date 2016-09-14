@@ -75,7 +75,9 @@ function midpoint{T<:ArbFloat}(x::T)
 end
 
 function radius{T<:ArbFloat}(x::T)
-    return x-midpoint(x)
+    z = T()
+    ccall(@libarb(arb_get_mid_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    return z
 end
 
 function diameter{T<:ArbFloat}(x::T)
@@ -101,26 +103,6 @@ function lowerbound{T<:ArbFloat}(x::T)
 end
 
 bounds{T<:ArbFloat}(x::T) = ( lowerbound(x), upperbound(x) )
-
-function upperBound{T<:ArbFloat}(x::T, prec::Int)
-    P = precision(T)
-    a = ArfFloat{P}()
-    z = T()
-    ccall(@libarb(arb_get_ubound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, prec)
-    ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
-    return z
-end
-
-function lowerBound{T<:ArbFloat}(x::T, prec::Int)
-    P = precision(T)
-    a = ArfFloat{P}()
-    z = T()
-    ccall(@libarb(arb_get_lbound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &a, &x, prec)
-    ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}), &z, &a)
-    return z
-end
-
-lohiBounds{T<:ArbFloat}(x::T, prec::Int) = ( lowerBound(x, prec), upperBound(x, prec) )
 
 
 function max{T<:ArbFloat}(x::T, y::T)
