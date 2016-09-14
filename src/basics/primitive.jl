@@ -42,12 +42,12 @@ for fn in (:copy, :deepcopy)
     end
     function ($fn){T<:ArbFloat}(x::T)
         z = T()
-        ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+        ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
         return z
     end
   end
 end
-  
+
 function copyradius{T<:ArbFloat}(target::T, source::T)
     z = deepcopy(target)
     z.radius_exponentOf2 = source.radius_exponentOf2
