@@ -64,20 +64,19 @@ function string_nonfinite{T<:ArbFloat}(x::T)::String
     return nonfinite_strings[idx]
 end
 
-
+#=
 function string{T<:ArbFloat}(x::T)::String
-    ndigits = min(digitsRequired(precision(T)),get_midpoint_digits_shown(medium))
     s = if isfinite(x)
-            string_exact(x, ndigits) 
+            stringmedium(x, ndigits) 
         else
             string_nonfinite(x)
         end
     return s
 end
-
+=#
 
 function string{T<:ArbFloat}(x::T, ndigits::Int)::String
-    rdigits = min(ndigits, get_radius_digits_shown())
+    rdigits = min(ndigits, get_radius_digits_shown(medium))
 
     s = if isfinite(x)
             isexact(x) ? string_exact(x, ndigits) : string_inexact(x, ndigits, rdigits)
@@ -131,21 +130,7 @@ function cleanup_numstring(numstr::String, isaInteger::Bool)::String
     return s
 end
 
-stringsmall{T<:ArbFloat}(x::T) =
-    string_exact(x, get_midpoint_digits_shown(small))
-stringcompact{T<:ArbFloat}(x::T) =
-    string_exact(x, get_midpoint_digits_shown(compact))
-stringmedium{T<:ArbFloat}(x::T) =
-    string_exact(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(medium)))
-stringlarge{T<:ArbFloat}(x::T) =
-    string_exact(x, min(digitsRequired(precision(T)),get_midpoint_digits_shown(large)))
-
-stringsmall_pm{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(small), get_radius_digits_shown(small))     
-stringcompact_pm{T<:ArbFloat}(x::T) =
-    string(x, get_midpoint_digits_shown(compact), get_radius_digits_shown(compact))
-stringmedium_pm{T<:ArbFloat}(x::T) = string_pm(x)
-
+#=
 function string_pm{T<:ArbFloat}(x::T)
     P = precision(T)
     mdigs = min(digitsRequired(P),get_midpoint_digits_shown(medium))
@@ -153,20 +138,44 @@ function string_pm{T<:ArbFloat}(x::T)
     s = isexact(x) ? string_exact(x, mdigs) : string_inexact(x, mdigs, rdigs)
     return s
 end
+=#
 
-function stringlarge_pm{T<:ArbFloat}(x::T)
-    P = precision(T)
-    mdigs = min(digitsRequired(P),get_midpoint_digits_shown(large))
-    rdigs = get_radius_digits_shown(large)
-    s = isexact(x) ? string_exact(x, mdigs) : string_inexact(x, mdigs, rdigs)
-    return s
-end
 
-stringall{P}(x::ArbFloat{P}) = string_exact(x, digitsRequired(P))
-
-function stringall_pm{P}(x::ArbFloat{P})
+function stringsmall_pm{P}(x::ArbFloat{P})::String
     if isexact(x)
-        return string(x)
+        return stringsmall(x)
+    end
+    sm = stringsmall(midpoint(x))
+    sr = try
+            string(Float32(radius(x)))
+         catch
+            string(round(radius(x),24,2))
+         end
+
+    return string(sm,"±", sr)
+end
+stringsmall{P}(x::ArbFloat{P})::String =
+    string_exact(x, min(get_midpoint_digits_shown(small),digitsRequired(P)))
+
+function stringcompact_pm{P}(x::ArbFloat{P})::String
+    if isexact(x)
+        return stringcompact(x)
+    end
+    sm = stringcompact(midpoint(x))
+    sr = try
+            string(Float32(radius(x)))
+         catch
+            string(round(radius(x),24,2))
+         end
+
+    return string(sm,"±", sr)
+end
+stringcompact{P}(x::ArbFloat{P})::String = 
+    string_exact(x, min(get_midpoint_digits_shown(compact),digitsRequired(P)))
+
+function stringmedium_pm{P}(x::ArbFloat{P})::String
+    if isexact(x)
+        return stringmedium(x)
     end
     sm = string(midpoint(x))
     sr = try
@@ -177,5 +186,42 @@ function stringall_pm{P}(x::ArbFloat{P})
 
     return string(sm,"±", sr)
 end
+stringmedium{P}(x::ArbFloat{P})::String =
+    string_exact(x, min(get_midpoint_digits_shown(medium),digitsRequired(P)))
+
+@inline string_pm{P}(x::ArbFloat{P}) = stringmedium_pm(x)
+@inline string{P}(x::ArbFloat{P}) = stringmedium(x)
+
+function stringlarge_pm{P}(x::ArbFloat{P})::String
+    if isexact(x)
+        return stringlarge(x)
+    end
+    sm = string(midpoint(x))
+    sr = try
+            string(Float64(radius(x)))
+         catch
+            string(round(radius(x),58,2))
+         end
+
+    return string(sm,"±", sr)
+end
+stringlarge{P}(x::ArbFloat{P})::String =
+    string_exact(x, min(get_midpoint_digits_shown(large),digitsRequired(P)))
+
+function stringall_pm{P}(x::ArbFloat{P})::String
+    if isexact(x)
+        return stringall(x)
+    end
+    sm = string(midpoint(x))
+    sr = try
+            string(Float64(radius(x)))
+         catch
+            string(round(radius(x),58,2))
+         end
+
+    return string(sm,"±", sr)
+end
+stringall{P}(x::ArbFloat{P})::String = 
+    string_exact(x, digitsRequired(P))
 
 
