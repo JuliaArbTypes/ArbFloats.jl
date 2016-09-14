@@ -33,18 +33,21 @@ end
 
 weakcopy{P}(x::ArbFloat{P}) = WeakRef(x)
 
-function copy{T<:ArbFloat}(x::T)
-    z = T()
-    ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
-    return z
+for fn in (:copy, :deepcopy)
+  @eval begin
+    function ($fn){P}(x::ArbFloat{P})
+        z = (ArbFloat{P})()
+        ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+        return z
+    end
+    function ($fn){T<:ArbFloat}(x::T)
+        z = T()
+        ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+        return z
+    end
+  end
 end
-
-function deepcopy{T<:ArbFloat}(x::T)
-    z = T()
-    ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
-    return z
-end
-
+  
 function copyradius{T<:ArbFloat}(target::T, source::T)
     z = deepcopy(target)
     z.radius_exponentOf2 = source.radius_exponentOf2
