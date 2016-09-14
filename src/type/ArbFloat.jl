@@ -75,9 +75,9 @@ function midpoint{T<:ArbFloat}(x::T)
 end
 
 function radius{T<:ArbFloat}(x::T)
-    z = T()
-    ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-    return z
+    #z = T()
+    #ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    return bounding_radius(x)
 end
 
 function diameter{T<:ArbFloat}(x::T)
