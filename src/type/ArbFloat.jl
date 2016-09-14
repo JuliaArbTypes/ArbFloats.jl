@@ -75,25 +75,11 @@ function midpoint{T<:ArbFloat}(x::T)
 end
 
 function radius{T<:ArbFloat}(x::T)
-    r = try
-            T(Float64(radius(x)))
-        catch
-            z = T()
-            ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-            z
-        end
-    return r
+    return x-midpoint(x)
 end
 
 function diameter{T<:ArbFloat}(x::T)
-        r = try
-            T(Float64(radius(x)))*2
-        catch
-            z = T()
-            ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-            z*2
-        end
-    return r
+    return 2.0*radius(x)
 end
 
 function upperbound{T<:ArbFloat}(x::T)
