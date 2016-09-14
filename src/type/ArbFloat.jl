@@ -74,19 +74,22 @@ function midpoint{T<:ArbFloat}(x::T)
     return z
 end
 
-function radius{T<:ArbFloat}(x::T)
-    z =
-        if isexact(x)
-            zero(T)
-        else
-            lo,hi = bounds(x - midpoint(x))
-            (hi - lo) * 0.5
-        end
-    return z
+function radius{T<:ArbFloat}(x::T)::T
+    if isexact(x)
+        return zero(T)
+    end
+    try
+        return T(Float64(x))
+    else
+        z = T()
+        ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)        lo,hi = bounds(x - midpoint(x))
+        return z
+    end
     # ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     # not used because
     # julia> n=330;a1=ArbFloat{n}("77617.0");b1=ArbFloat{n}("33096.0");bb1=b1+b1;rbb1=inv(bb1);arbb1=a1*rbb1;c1=a1/bb1;
     # julia> radius(c1) 9.143899130258199857726268e-1
+    # and so with n=
 end
 
 function diameter{T<:ArbFloat}(x::T)
