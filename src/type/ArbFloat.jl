@@ -74,13 +74,13 @@ function midpoint{T<:ArbFloat}(x::T)
     return z
 end
 
-function arb_radius{T<:ArbFloat}(x::T)::T
+function arb_radius{T<:ArbFloat}(x::T)
     z = T()
     ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     return z
 end
 
-function radius{T<:ArbFloat}(x::T)::T
+function radius{T<:ArbFloat}(x::T)
     if isexact(x)
         return zero(T)
     end
