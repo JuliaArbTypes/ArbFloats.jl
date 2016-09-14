@@ -79,7 +79,9 @@ function radius{T<:ArbFloat}(x::T)::T
         return zero(T)
     end
     try
-        return T(Float64(x))
+        z = T()
+        ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)    
+        return T(Float64(z))
     catch
         z = T()
         ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)    
