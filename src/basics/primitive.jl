@@ -37,7 +37,7 @@ for fn in (:copy, :deepcopy)
   @eval begin
     function ($fn){P}(x::ArbFloat{P})
         z = (ArbFloat{P})()
-        ccall(@libarb(arb_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+        ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
         return z
     end
     function ($fn){T<:ArbFloat}(x::T)
