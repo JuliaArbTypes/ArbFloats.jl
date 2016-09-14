@@ -78,10 +78,12 @@ function radius{T<:ArbFloat}(x::T)::T
     if isexact(x)
         return zero(T)
     end
+    z = T()
+    ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     sr = try
-           T(Float64(radius(x)))
+           T(Float64(z))
          catch
-            round(radius(x),58,2)
+            round(z,58,2)
          end
     return sr
     # ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
