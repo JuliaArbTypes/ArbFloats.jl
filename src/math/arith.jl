@@ -41,6 +41,10 @@ for (op,cfunc) in ((:+,:arb_add), (:-, :arb_sub), (:/, :arb_div), (:hypot, :arb_
     ($op){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = ($op)(promote(x,y)...)
     ($op){T<:ArbFloat, F<:AbstractFloat}(x::T, y::F) = ($op)(x, convert(T, y))
     ($op){T<:ArbFloat, F<:AbstractFloat}(x::F, y::T) = ($op)(convert(T, x), y)
+    ($op){T<:ArbFloat, R<:Rational}(x::T, y::R) = ($op)(x, convert(T, y))
+    ($op){T<:ArbFloat, R<:Rational}(x::R, y::T) = ($op)(convert(T, x), y)
+    ($op){T<:ArbFloat, R<:Real}(x::T, y::R) = ($op)(x, convert(T, y))
+    ($op){T<:ArbFloat, R<:Real}(x::R, y::T) = ($op)(convert(T, x), y)
   end
 end
 
@@ -50,6 +54,13 @@ function (*){T<:ArbFloat}(x::T, y::T)
     ccall(@libarb(arb_mul), Void, (Ptr{T}, Ptr{T}, Ptr{T}, Int), &z, &x, &y, P)
     return z
 end
+(*)){T<:ArbFloat, F<:AbstractFloat}(x::T, y::F) = (*)(x, convert(T, y))
+(*){T<:ArbFloat, F<:AbstractFloat}(x::F, y::T) = (*)(convert(T, x), y)
+(*){T<:ArbFloat, R<:Rational}(x::T, y::R) = (*)(x, convert(T, y))
+(*){T<:ArbFloat, R<:Rational}(x::R, y::T) = (*)(convert(T, x), y)
+(*){T<:ArbFloat, R<:Real}(x::T, y::R) = (*)(x, convert(T, y))
+(*){T<:ArbFloat, R<:Real}(x::R, y::T) = (*)(convert(T, x), y)
+
 
 (+){T<:ArbFloat}(x::T, y::T, z::T) = (x + y) + z
 
