@@ -80,7 +80,7 @@ function clearArbFloat{P}(x::ArbFloat{P})
 end
 
 function initializer{P}(::Type{ArbFloat{P}})
-    z = ArbFloat{P}(0,0,0,0,0,0)
+    z = ArbFloat{P}()
     ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &z)
     finalizer(z, clearArbFloat)
     z
