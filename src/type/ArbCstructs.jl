@@ -9,7 +9,7 @@ type MagFloat <: AbstractFloat
     radius_significand::UInt   ## radius is unsigned (nonnegative), by definition
 
     function MagFloat()
-         z = new()
+         z = new(0,0%UInt)
          ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
          finalizer(z, c_release_mag)
          return z
@@ -31,7 +31,7 @@ type ArfFloat{P} <: AbstractFloat
     significand2::UInt         ##   the significand words are unsigned (sign is in nwords_sign)
 
     function ArfFloat()
-         z = new{P}()
+         z = new{P}(0,0%UInt,0%UInt,0%UInt)
          ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), &z)
          finalizer(z, c_release_arf)
          return z
