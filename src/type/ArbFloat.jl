@@ -88,7 +88,7 @@ function radius{T<:ArbFloat}(x::T)
     sr = try
            T(Float64(z))
          catch
-           throw(ErrorException("extracting radii smaller than 1.0e-300 is not currently supported"))
+           T(BigFloat(z))
          end
     return sr
     # ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
