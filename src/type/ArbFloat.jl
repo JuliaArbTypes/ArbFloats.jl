@@ -79,7 +79,6 @@ end
 function radius{P}(x::ArbFloat{P})
     z = ArbFloat{P}()
     ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-    println("radius")
     return z
 end
 #=
