@@ -56,7 +56,7 @@ type ArbFloat{P} <: AbstractFloat
     radius_significand::UInt   ####      radius_significand
 
     function ArbFloat()
-         z = new{P}()
+         z = new{P}(0,0%UInt,0%UInt,0%UInt,0,0%UInt)
          ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
          finalizer(z, c_release_arb)
          return z
