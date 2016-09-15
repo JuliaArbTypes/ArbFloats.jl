@@ -79,7 +79,24 @@ function arb_radius{T<:ArbFloat}(x::T)
     ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     return z
 end
-
+function arb_radius{P}(x::ArbFloat{P})
+    z = ArbFloat{P}()
+    ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    return z
+end
+function radius{P}(x::ArbFloat{P}}
+    if isexact(x)
+        return zero(ArbFloat{P})
+    end
+    z = arb_radius(x)
+    sr = try
+           ArbFloat{P}(Float64(z))
+         catch
+           ArbFloat{P}(BigFloat(z))
+         end
+    return sr
+end
+#=
 function radius{T<:ArbFloat}(x::T)
     if isexact(x)
         return zero(T)
@@ -97,6 +114,7 @@ function radius{T<:ArbFloat}(x::T)
     # julia> radius(c1) 9.143899130258199857726268e-1
     #             lo,hi = bounds(x - midpoint(x)); (hi-lo)*0.5
 end
+=#
 
 function diameter{T<:ArbFloat}(x::T)
     return 2.0*radius(x)
