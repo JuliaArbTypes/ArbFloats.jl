@@ -84,7 +84,7 @@ function arb_radius{P}(x::ArbFloat{P})
     ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     return z
 end
-function radius{P}(x::ArbFloat{P}}
+function radius{P}(x::ArbFloat{P})
     if isexact(x)
         return zero(ArbFloat{P})
     end
