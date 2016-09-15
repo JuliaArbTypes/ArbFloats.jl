@@ -146,7 +146,12 @@ function stringsmall_pm{P}(x::ArbFloat{P})::String
         return stringsmall(x)
     end
     sm = stringsmall(midpoint(x))
-    sr = string(round(radius(x),24,2))
+    sr = try
+            string(Float32(radius(x)))
+         catch
+            string(round(radius(x),23,2))
+         end
+
     return string(sm,"±", sr)
 end
 stringsmall{P}(x::ArbFloat{P})::String =
@@ -157,7 +162,11 @@ function stringcompact_pm{P}(x::ArbFloat{P})::String
         return stringcompact(x)
     end
     sm = stringcompact(midpoint(x))
-    sr = string(round(radius(x),24,2))
+    sr = try
+            string(Float32(radius(x)))
+         catch
+            string(round(radius(x),23,2))
+         end
 
     return string(sm,"±", sr)
 end
