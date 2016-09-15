@@ -199,7 +199,8 @@ end
 =#
 function convert{T<:ArbFloat}(::Type{BigFloat}, x::T)
     ptr2mid = ptr_to_midpoint(x)
-    bf = ccall(@libarb(arf_get_mpfr), Int, (Ptr{BigFloat}, Int), ptr2mid, 4) # round nearest
+    bf = zero(BigFloat)
+    rounddir = ccall(@libarb(arf_get_mpfr), Int, (Ptr{BigFloat}, Ptr{ArfFloat}, Int), &bf, ptr2mid, 4) # round nearest
     return bf
 end
 
