@@ -219,7 +219,7 @@ function stringall_pm{P}(x::ArbFloat{P})::String
     if isexact(x)
         return stringall(x)
     end
-    sm = string(midpoint(x))
+    sm = stringall(midpoint(x))
     sr = try
             string(Float64(radius(x)))
          catch
