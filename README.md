@@ -4,7 +4,7 @@ ArbFloats.jl
 
 #### Arb available as an extended precision floating point context.  
 
-<p align="center">Jeffrey Sarnoff © 2016 Sep 06 in New York, USA</p>
+<p align="center">Jeffrey Sarnoff © 2016 Sep 15 in New York, USA</p>
 
 ===========  
  
@@ -37,7 +37,7 @@ ArbFloats.jl
 >   results as accurately as possible at a precision that does not misrepresent  
 >   the information content of the underlying interval valuation.
 
-#### version 0.1.3 (for Julia v0.5+).
+#### version 0.1.7 (for Julia v0.5/v0.6).
 
 If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
 If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
@@ -246,6 +246,10 @@ Roots (accepts ArbFloats, results are Float64)
 If you have a package that accepts AbstractFloats or Reals and does not “just work”   
 with ArbFloats, please note it as an issue. If you have a package that works well   
 with ArbFloats, do let us know.
+
+### More Information
+
+Please the notes directory for more information about ArbFloats.
 
 #### Hewing to the sensible
 
