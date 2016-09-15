@@ -74,6 +74,31 @@ function midpoint{T<:ArbFloat}(x::T)
     return z
 end
 
+
+function clearArbFloat{P}(x::ArbFloat{P})
+     ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}},), &x)
+end
+
+function initializer{P}(::Type{ArbFloat{P}})
+    z = ArbFloat{P}(0,0,0,0,0,0)
+    ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}},), &z)
+    finalizer(z, clearArbFloat)
+    z
+end
+
+
+function midpoint{P}(x::ArbFloat{P})
+    z = initializer(ArbFloat{P})
+    ccall(@libarb(arb_get_mid_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    z
+end
+
+function radius{P}(x::ArbFloat{P})
+    z = initializer(ArbFloat{P})
+    ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    z
+end
+#=
 function arb_radius{T<:ArbFloat}(x::T)
     z = T()
     ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
@@ -96,6 +121,7 @@ function radius{P}(x::ArbFloat{P})
          end
     return sr
 end
+=#
 #=
 function radius{T<:ArbFloat}(x::T)
     if isexact(x)
