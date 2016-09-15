@@ -86,6 +86,18 @@ for (op,cfunc) in ((:^,:arb_pow), (:pow,:arb_pow))
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, &yy, P)
       return sy ? 1/z : z
     end
+    function ($op){P,R<:Rational}(x::R, y::ArbFloat{P})
+      xx = ArbFloat{P}(x)
+      z = ArbFloat{P}()
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &xx, &y, P)
+      return z
+    end
+    function ($op){P,R<:Rational}(x::ArbFloat{P}, y::R)
+      yy = ArbFloat{P}(y)
+      z = ArbFloat{P}()
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, &yy, P)
+      return z
+    end
     function ($op){P,R<:Real}(x::R, y::ArbFloat{P})
       xx = ArbFloat{P}(x)
       z = ArbFloat{P}()
