@@ -121,17 +121,20 @@ end
 @inline string_inexact{T<:ArbFloat}(x::T, mdigits::Int16, rdigits::Int) = string_inexact(x, mdigits%Int, rdigits)
 
 function cleanup_numstring(numstr::String, isaInteger::Bool)::String
-    s =
-      if !isaInteger
-          rstrip(numstr, '0')
-      else
-          string(split(numstr, '.')[1])
-      end
-
-    if s[end]=='.'
-        s = string(s, "0")
+    # is there an exponent
+    body,expn = ('e' in numstr) ? split(numstr, 'e') : (numstr, "")
+    if !isaInteger
+        body = rstrip(body, '0')
+    elseif '.' in body
+        body = string(split(numstr, '.')[1])
     end
-    return s
+    if expn != ""
+        body = string(body,"e",expn)
+    end
+    if body[end]=='.'
+        body = string(body,"0")
+    end
+    return body
 end
 
 #=
