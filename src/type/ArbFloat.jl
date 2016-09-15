@@ -68,62 +68,20 @@ end
     return ccall(@libarb(arb_rad_ptr), Ptr{ArfFloat}, (Ptr{T}, ), &x)
 end
 
-function midpoint{T<:ArbFloat}(x::T)
-    z = T()
+function midpoint{P}(x::ArbFloat{P})
+    z = ArbFloat{P}()
     ccall(@libarb(arb_get_mid_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     return z
 end
 
-
-
 function radius{P}(x::ArbFloat{P})
-    z = ArbFloat{P}()
-    ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-    return z
-end
-#=
-function arb_radius{T<:ArbFloat}(x::T)
-    z = T()
-    ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-    return z
-end
-function arb_radius{P}(x::ArbFloat{P})
-    z = ArbFloat{P}()
-    ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-    return z
-end
-function radius{P}(x::ArbFloat{P})
-    if isexact(x)
-        return zero(ArbFloat{P})
+    z = zero(ArbFloat{P})
+    T = ArbFloat{P}
+    if !isexact(x)
+        ccall(@libarb(arb_get_rad_arb), Void, (Ptr{T}, Ptr{T}), &z, &x)
     end
-    z = arb_radius(x)
-    sr = try
-           ArbFloat{P}(Float64(z))
-         catch
-           ArbFloat{P}(BigFloat(z))
-         end
-    return sr
+    return z
 end
-=#
-#=
-function radius{T<:ArbFloat}(x::T)
-    if isexact(x)
-        return zero(T)
-    end
-    z = arb_radius(x)
-    sr = try
-           T(Float64(z))
-         catch
-           T(BigFloat(z))
-         end
-    return sr
-    # ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-    # not used because
-    # julia> n=330;a1=ArbFloat{n}("77617.0");b1=ArbFloat{n}("33096.0");bb1=b1+b1;rbb1=inv(bb1);arbb1=a1*rbb1;c1=a1/bb1;
-    # julia> radius(c1) 9.143899130258199857726268e-1
-    #             lo,hi = bounds(x - midpoint(x)); (hi-lo)*0.5
-end
-=#
 
 function diameter{T<:ArbFloat}(x::T)
     return 2.0*radius(x)
