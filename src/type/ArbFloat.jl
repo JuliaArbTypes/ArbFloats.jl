@@ -74,7 +74,7 @@ function midpoint{P}(x::ArbFloat{P})
     return z
 end
 
-function radius{P}(x::ArbFloat{P})
+@generated function radius{P}(x::ArbFloat{P})
     z = zero(ArbFloat{P})
     T = ArbFloat{P}
     if !isexact(x)
