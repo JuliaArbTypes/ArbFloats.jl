@@ -74,11 +74,10 @@ function midpoint{P}(x::ArbFloat{P})
     return z
 end
 
-@generated function radius{P}(x::ArbFloat{P})
+function radius{P}(x::ArbFloat{P})
     z = zero(ArbFloat{P})
-    T = ArbFloat{P}
     if !isexact(x)
-        ccall(@libarb(arb_get_rad_arb), Void, (Ptr{T}, Ptr{T}), &z, &x)
+        ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     end
     return z
 end
