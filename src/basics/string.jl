@@ -97,7 +97,11 @@ function string{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
 end
 @inline string{T<:ArbFloat}(x::T, mdigits::Int16, rdigits::Int16) = string(x, mdigits%Int, rdigits%Int)
 
-
+function arb_string{P}(x::ArbFloat{P}, digs::Int, mode::Int)::String
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, mode%UInt)
+    s = unsafe_string(cstr)
+    return s
+end    
 
 function string_exact{T<:ArbFloat}(x::T, mdigits::Int)::String
     digs = Int(mdigits)
