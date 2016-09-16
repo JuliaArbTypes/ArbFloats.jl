@@ -152,7 +152,9 @@ function stringsmall_pm{P}(x::ArbFloat{P})::String
     if isexact(x)
         return stringsmall(x)
     end
-    sm = stringsmall(midpoint(x))
+    digs = min(digitsRequired(P), get_midpoint_digits_shown(small))
+    sm = string_exact(midpoint(x), digs)
+    
     sr = try
             string(Float32(radius(x)))
          catch
@@ -168,7 +170,9 @@ function stringcompact_pm{P}(x::ArbFloat{P})::String
     if isexact(x)
         return stringcompact(x)
     end
-    sm = stringcompact(midpoint(x))
+    digs = min(digitsRequired(P), get_midpoint_digits_shown(compact))
+    sm = string_exact(midpoint(x), digs)
+
     sr = try
             string(Float32(radius(x)))
          catch
@@ -184,7 +188,8 @@ function stringmedium_pm{P}(x::ArbFloat{P})::String
     if isexact(x)
         return stringmedium(x)
     end
-    sm = string(midpoint(x))
+    digs = min(digitsRequired(P), get_midpoint_digits_shown(medium))
+    sm = string_exact(midpoint(x), digs)
     sr = try
             string(Float64(radius(x)))
          catch
@@ -203,7 +208,8 @@ function stringlarge_pm{P}(x::ArbFloat{P})::String
     if isexact(x)
         return stringlarge(x)
     end
-    sm = string(midpoint(x))
+    digs = min(digitsRequired(P), get_midpoint_digits_shown(large))
+    sm = string_exact(midpoint(x), digs)
     sr = try
             string(Float64(radius(x)))
          catch
@@ -219,7 +225,7 @@ function stringall_pm{P}(x::ArbFloat{P})::String
     if isexact(x)
         return stringall(x)
     end
-    sm = stringall(midpoint(x))
+    sm = string_exact(midpoint(x), digitsRequired(P))
     sr = try
             string(Float64(radius(x)))
          catch
