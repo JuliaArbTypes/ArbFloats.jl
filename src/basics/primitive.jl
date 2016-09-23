@@ -87,9 +87,8 @@ function bounds{T<:ArbFloat}(lower::T, upper::T)
     # rad = (hi - lo) * 0.5
     mid = hi*0.5 + lo*0.5
     rad = hi - mid
-    if mid - lo > rad
-        rad = mid - lo
-    end
+    r = Float32(rad)
+    r = r + 3*eps(r)
     z = midpoint_radius(mid, rad)
     tstlo, tsthi = bounds(z)
     if (tstlo > lo) || (tsthi < hi)
