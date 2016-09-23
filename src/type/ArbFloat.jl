@@ -57,6 +57,20 @@ realmax{P}(::Type{ArbFloat{P}}) = ArbFloat{P}(2)^(P+29)
 realmin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}(2)^(-P-29)
 
 
+function zero{T<:ArbFloat}(::Type{T})
+   z = T()
+   return z
+end
+zero{T<:ArbFloat}(x::T) = zero(T)
+
+function one{T<:ArbFloat}(::Type{T})
+    z = T()
+    ccall(@libarb(arb_set_si), Void, (Ptr{ArfFloat}, Int), &z, one(Int))
+    return z
+end
+one{T<:ArbFloat}(x::T) = one(T)
+
+
 
 # parts and aspects
 # midpoint, radius, lowerbound, upperbound
