@@ -27,14 +27,19 @@ function zero(::Type{MagFloat})
     # ccall(@libarb(mag_set_ui), Void, (Ptr{MagFloat}, UInt64), &z, zero(UInt64))
     return z
 end
-zero(x::MagFloat) = zero(MagFloat)
+#zero(x::MagFloat) = zero(MagFloat)
+function zero(x::MagFloat)
+    return zero(MagFloat)
+end
 
-function one{T<:MagFloat}(::Type{T})
+function one(::Type{MagFloat})
     z = MagFloat()
     ccall(@libarb(mag_set_ui), Void, (Ptr{MagFloat}, UInt64), &z, one(UInt64))
     return z
 end
-one(x::MagFloat) = one(MagFloat)
+function one(x::MagFloat)
+    return one(MagFloat)
+end
 
 #=
 # how to write
