@@ -78,7 +78,7 @@ end
 function one{T<:ArbFloat}(x::T)
     P = precision(T)
     return one( ArbFloat{P} )
-emd
+end
 
 
 
