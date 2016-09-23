@@ -31,7 +31,7 @@ end
 
 function setprecisionAugmented(::Type{ArbFloat}, x::Int, offset::Int=10)
     return setprecision(ArbFloat, x+offset)
-end    
+end
 
 
 # a type specific hash function helps the type to 'just work'
@@ -105,6 +105,21 @@ function lowerbound{T<:ArbFloat}(x::T)
 end
 
 bounds{T<:ArbFloat}(x::T) = ( lowerbound(x), upperbound(x) )
+
+function bounds{T<:ArbFloat}(lower::T, upper::T)
+     lowerlo, lowerhi = bounds(lower)
+     upperlo, upperhi = bounds(upper)
+     lo = min(lowerlo, upperlo)
+     hi = max(lowerhi, upperhi)
+     rad    = (hi - lo) * 0.5
+     mid   = hi*0.5 + lo*0.5
+     z = midpoint_radius(mid, rad)
+     tstlo, tsthi = bounds(z)
+     if (tstlo > lo) || (tsthi < hi)
+         z = midpoint_radius(mid, rad+2*eps(rad))
+     end
+     return z
+end
 
 
 function max{T<:ArbFloat}(x::T, y::T)
