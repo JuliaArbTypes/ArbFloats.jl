@@ -60,7 +60,7 @@ end
 function one{T<:ArfFloat}(x::T)
     P = precision(T)
     return one( ArfFloat{P} )
-emd
+end
 
 
 function isnan{T<:ArfFloat}(x::T)
