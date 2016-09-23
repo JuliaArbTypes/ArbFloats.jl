@@ -9,7 +9,7 @@ type MagFloat <: AbstractFloat
     radius_significand::UInt   ## radius is unsigned (nonnegative), by definition
 
     function MagFloat()
-         z = new(0,0%UInt)
+         z = new(zero(Int), zero(UInt64))
          ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
          finalizer(z, c_release_mag)
          return z

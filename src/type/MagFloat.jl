@@ -11,6 +11,7 @@ type MagFloat
 end
 =#
 
+
 # define hash so other things work
 const hash_arbmag_lo = (UInt === UInt64) ? 0x29f934c433d9a758 : 0x2578e2ce
 const hash_0_arbmag_lo = hash(zero(UInt), hash_arbmag_lo)
