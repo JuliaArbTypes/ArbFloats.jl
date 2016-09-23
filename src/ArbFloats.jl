@@ -63,7 +63,9 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        relativeError, relativeAccuracy, midpointPrecision, trimmed,
        PI,SQRTPI,LOG2,LOG10,EXP1,EULER,CATALAN,KHINCHIN,GLAISHER,APERY, # constants
        get_midpoint_digits_shown, get_radius_digits_shown,  # some interface control
-       set_midpoint_digits_shown, set_radius_digits_shown
+       set_midpoint_digits_shown, set_radius_digits_shown,
+       isolate_nonnegative_content, isolate_positive_content, # for interval algorithms
+       force_nonnegative_content, force_positive_conent
 
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 

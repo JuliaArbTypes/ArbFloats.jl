@@ -121,6 +121,73 @@ function bounds{T<:ArbFloat}(lower::T, upper::T)
      return z
 end
 
+"""
+isolate_nonnegative_content(x::ArbFloat)
+returns x without any content < 0
+if x is strictly < 0, returns ArbFloat's NaN
+"""
+function isolate_nonnegative_content{T<:ArbFloat}(x::T)
+    lo, hi = bounds(x)
+    z = if lo > 0
+              x
+          elseif hi < 0
+              T(NaN)
+          else
+              bounds(zero(T), hi)
+          end
+    return z
+end
+
+"""
+isolate_positive_content(x::ArbFloat)
+returns x without any content <= 0
+if x is strictly <= 0, returns ArbFloats' NaN
+"""
+function isolate_positive_content{T<:ArbFloat}(x::T)
+    lo, hi = bounds(x)
+    z = if lo > 0
+              x
+          elseif hi <= 0
+              T(NaN)
+          else
+              bounds( eps(hi), hi )
+          end
+    return z
+end
+
+"""
+force_nonnegative_content(x::ArbFloat)
+returns x without any content < 0
+if x is strictly < 0, returns 0
+"""
+function force_nonnegative_content{T<:ArbFloat}(x::T)
+    lo, hi = bounds(x)
+    z = if lo > 0
+              x
+          elseif hi < 0
+              zero(T)
+          else
+              bounds( zero(T), hi )
+          end
+    return z
+end
+
+"""
+force_positive_content(x::ArbFloat)
+returns x without any content <= 0
+if x is strictly <= 0, returns eps(lowerbound(x))
+"""
+function force_positive_content{T<:ArbFloat}(x::T)
+    lo, hi = bounds(x)
+    z = if lo > 0
+              x
+          elseif hi < 0
+              eps(lo)
+          else
+              bounds( eps(hi), hi )
+          end
+    return z
+end
 
 function max{T<:ArbFloat}(x::T, y::T)
     return (x + y + abs(x - y))/2
