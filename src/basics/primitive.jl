@@ -82,10 +82,10 @@ end
 function bounds{T<:ArbFloat}(lower::T, upper::T)
     lowerlo, lowerhi = bounds(lower)
     upperlo, upperhi = bounds(upper)
-    lo = min(lowerlo, upperlo)
-    hi = max(lowerhi, upperhi)
+    lo = lowerlo <= upperlo ? lowerlo : upperlo
+    hi = lowerhi >= upperhi ? lowerhi : upperhi
     rad = (hi - lo) * 0.5
-    mid   = hi*0.5 + lo*0.5
+    mid = hi*0.5 + lo*0.5
     z = midpoint_radius(mid, rad)
     tstlo, tsthi = bounds(z)
     if (tstlo > lo) || (tsthi < hi)

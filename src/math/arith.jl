@@ -11,6 +11,7 @@ end
 
 function abs{T<:ArbFloat}(x::T)
     lo,hi = bounds(x)
+
     lo = signbit(lo) ? -lo : lo
     hi = signbit(hi) ? -hi : hi
     if lo > hi
