@@ -61,17 +61,19 @@ function zero{T<:ArbFloat}(::Type{T})
    z = T()
    return z
 end
+
 #zero{P}(x::ArbFloat{P}) = zero(ArbFloat{P})
 function zero{T<:ArbFloat}(x::T)
     P = precision(T)
     return zero( ArbFloat{P} )
-emd
+end
 
 function one{T<:ArbFloat}(::Type{T})
     z = T()
     ccall(@libarb(arb_set_si), Void, (Ptr{ArfFloat}, Int), &z, one(Int))
     return z
 end
+
 #one{P}(x::ArbFloat{P}) = one(ArbFloat{P})
 function one{T<:ArbFloat}(x::T)
     P = precision(T)
