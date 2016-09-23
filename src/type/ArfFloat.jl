@@ -40,15 +40,18 @@ function deepcopy{T<:ArfFloat}(x::T)
 end
 
 
-zero{T<:ArfFloat}(::Type{T}) = T()
+function zero{T<:ArfFloat}(::Type{T})
+   z = T()
+   return z
+end
+zero{T<:ArfFloat}(x::T) = zero(T)
 
 function one{T<:ArfFloat}(::Type{T})
     z = T()
-    z.exponentOf2 = 1
-    z.nwords_sign = 2
-    z.significand1 =  one(UInt) + ((-1 % UInt)>>1)
+    ccall(@libarb(arf_set_si), Void, (Ptr{ArfFloat}, Int), &z, one(Int))
     return z
 end
+one{T<:ArfFloat}(x::T) = one(T)
 
 function isnan{T<:ArfFloat}(x::T)
     zero(Cint) != ccall(@libarb(arf_is_nan), Cint, (Ptr{T},), &x)

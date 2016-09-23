@@ -22,13 +22,19 @@ else
 end
 
 # initialize and zero a variable of type MagFloat
-zero{T<:MagFloat}(::Type{T}) = T()
-
-function one{T<:MagFloat}(::Type{T})
-    z = T()
-    z.radius_significand = (~UInt64(1)) >> 34
+function zero(::Type{MagFloat})
+    z = MagFloat()
+    # ccall(@libarb(mag_set_ui), Void, (Ptr{MagFloat}, UInt64), &z, zero(UInt64))
     return z
 end
+zero(x::MagFloat) = zero(MagFloat)
+
+function one{T<:MagFloat}(::Type{T})
+    z = MagFloat()
+    ccall(@libarb(mag_set_ui), Void, (Ptr{MagFloat}, UInt64), &z, one(UInt64))
+    return z
+end
+one(x::MagFloat) = one(MagFloat)
 
 #=
 # how to write
