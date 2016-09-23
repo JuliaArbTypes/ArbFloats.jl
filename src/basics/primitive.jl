@@ -79,6 +79,20 @@ function midpoint_radius{T<:ArbFloat}(midpoint::T, radius::Float64)
     return midpoint_radius(midpoint, rad)
 end
 
+function bounds{T<:ArbFloat}(lower::T, upper::T)
+    lowerlo, lowerhi = bounds(lower)
+    upperlo, upperhi = bounds(upper)
+    lo = min(lowerlo, upperlo)
+    hi = max(lowerhi, upperhi)
+    rad = (hi - lo) * 0.5
+    mid   = hi*0.5 + lo*0.5
+    z = midpoint_radius(mid, rad)
+    tstlo, tsthi = bounds(z)
+    if (tstlo > lo) || (tsthi < hi)
+        z = midpoint_radius(mid, rad+2*eps(rad))
+    end
+    return z
+end
 
 """
 Rounds x to a number of bits equal to the accuracy of x (as indicated by its radius), plus a few guard bits.
