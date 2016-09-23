@@ -119,7 +119,14 @@ function isolate_nonnegative_content{T<:ArbFloat}(x::T)
           elseif hi < 0
               T(NaN)
           else
-              bounds(zero(T), hi)
+              mid = hi * 0.5
+              r = Float32(mid)
+              dr = eps(r) * 0.125
+              m = Float64(mid)
+              while Float64(r) > m
+                  r = r - dr
+              end
+              midpoint_radius(mid, r)
           end
     return z
 end
@@ -136,7 +143,14 @@ function isolate_positive_content{T<:ArbFloat}(x::T)
           elseif hi <= 0
               T(NaN)
           else
-              bounds( eps(hi), hi )
+              mid = hi * 0.5
+              r = Float32(mid)
+              dr = 0.125 * eps(r)
+              m = Float64(mid)
+              while Float64(r) >= m
+                  r = r - dr
+              end
+              midpoint_radius(mid, r)
           end
     return z
 end
@@ -148,12 +162,12 @@ if x is strictly < 0, returns 0
 """
 function force_nonnegative_content{T<:ArbFloat}(x::T)
     lo, hi = bounds(x)
-    z = if lo > 0
+    z = if lo >= 0
               x
           elseif hi < 0
               zero(T)
           else
-              bounds( zero(T), hi )
+              isolate_nonnegative_content(x)
           end
     return z
 end
@@ -170,7 +184,7 @@ function force_positive_content{T<:ArbFloat}(x::T)
           elseif hi < 0
               eps(lo)
           else
-              bounds( eps(hi), hi )
+              isolate_positive_content(x)
           end
     return z
 end
