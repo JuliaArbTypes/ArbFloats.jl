@@ -59,7 +59,7 @@ realmin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}(2)^(-P-29)
 
 
 # parts and aspects
-# midpoint, radius, lowerbound, upperbound, bounds
+# midpoint, radius, lowerbound, upperbound
 
 @inline function ptr_to_midpoint{T<:ArbFloat}(x::T) # Ptr{ArfFloat}
     return ccall(@libarb(arb_mid_ptr), Ptr{ArfFloat}, (Ptr{T}, ), &x)
@@ -106,20 +106,6 @@ end
 
 bounds{T<:ArbFloat}(x::T) = ( lowerbound(x), upperbound(x) )
 
-function bounds{T<:ArbFloat}(lower::T, upper::T)
-     lowerlo, lowerhi = bounds(lower)
-     upperlo, upperhi = bounds(upper)
-     lo = min(lowerlo, upperlo)
-     hi = max(lowerhi, upperhi)
-     rad    = (hi - lo) * 0.5
-     mid   = hi*0.5 + lo*0.5
-     z = midpoint_radius(mid, rad)
-     tstlo, tsthi = bounds(z)
-     if (tstlo > lo) || (tsthi < hi)
-         z = midpoint_radius(mid, rad+2*eps(rad))
-     end
-     return z
-end
 
 """
 isolate_nonnegative_content(x::ArbFloat)

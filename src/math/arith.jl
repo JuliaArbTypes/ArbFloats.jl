@@ -9,7 +9,24 @@ function signbit{T<:ArbFloat}(x::T)
     0 != ccall(@libarb(arb_is_negative), Int, (Ptr{T},), &x)
 end
 
-for (op,cfunc) in ((:-,:arb_neg), (:abs, :arb_abs), (:sign, :arb_sgn))
+function abs{T<:ArbFloat}(x::T)
+    lo,hi = bounds(x)
+    lo = signbit(lo) ? -lo : lo
+    hi = signbit(hi) ? -hi : hi
+    if lo > hi
+       lo, hi = hi, lo
+    end
+    return bounds( lo, hi )
+end
+
+function abs2{T<:ArbFloat}(x::T)
+    lo, hi = bounds(abs(x))
+    lo = lo^2
+    hi = hi^2
+    return bounds( lo, hi )
+end
+
+for (op,cfunc) in ((:-,:arb_neg), (:sign, :arb_sgn))
   @eval begin
     function ($op){T<:ArbFloat}(x::T)
       z = T()
