@@ -44,14 +44,22 @@ function zero{T<:ArfFloat}(::Type{T})
    z = T()
    return z
 end
-zero{P}(x::ArfFloat{P}) = zero(ArfFloat{P})
+#zero{P}(x::ArfFloat{P}) = zero(ArfFloat{P})
+function zero{T<:ArfFloat}(x::T)
+    P = precision(T)
+    return zero( ArfFloat{P} )
+emd
 
 function one{T<:ArfFloat}(::Type{T})
     z = T()
     ccall(@libarb(arf_set_si), Void, (Ptr{ArfFloat}, Int), &z, one(Int))
     return z
 end
-one{P}(x::ArfFloat{P}) = one(ArfFloat{P})
+function one{T<:ArfFloat}(x::T)
+    P = precision(T)
+    return one( ArfFloat{P} )
+emd
+
 
 function isnan{T<:ArfFloat}(x::T)
     zero(Cint) != ccall(@libarb(arf_is_nan), Cint, (Ptr{T},), &x)
