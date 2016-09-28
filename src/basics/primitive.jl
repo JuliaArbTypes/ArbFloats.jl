@@ -65,13 +65,14 @@ function bounds{T<:ArbFloat}(lower::T, upper::T)
     hi = lowerhi >= upperhi ? lowerhi : upperhi
     # rad = (hi - lo) * 0.5
     mid = hi*0.5 + lo*0.5
-    rad = hi - mid
+    rad = max(hi-mid, mid-lo)
     r = Float32(rad)
-    dr = 0.5 * eps(r)
+    dr = 0.25 * eps(r)
     z = midpoint_radius(mid, r)
     tstlo, tsthi = bounds(z)
     while (tstlo > lo) || (tsthi < hi)
-        z = midpoint_radius(mid, r+dr)
+        r  = r + dr
+        z = midpoint_radius(mid, r)
         tstlo, tsthi = bounds(z)
     end
     return z
