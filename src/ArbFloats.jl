@@ -67,7 +67,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        set_midpoint_digits_shown, set_radius_digits_shown,
        isolate_nonnegative_content, isolate_positive_content, # for interval algorithms
        force_nonnegative_content, force_positive_content,
-       strictsort                                             # uses weak total ordering over intervals 
+       sortIntervals                                          # uses weak total ordering over intervals 
 
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 
