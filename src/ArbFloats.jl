@@ -27,7 +27,7 @@ import Base: STDOUT,
     sinh, cosh, tanh, csch, sech, coth, asinh, acosh, atanh,
     sinc, gamma, lgamma, digamma, zeta, factorial,
     in, union, intersect,
-    rand, randn,
+    rand, randn, sort,
     BigInt, BigFloat, Rational
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
@@ -86,6 +86,7 @@ include("basics/IEEEfp.jl")
 include("basics/predicates.jl")
 include("basics/convert.jl")
 include("basics/compare.jl")
+include("basics/sort.jl")
 
 include("basics/string.jl")
 include("basics/smartstring.jl")
