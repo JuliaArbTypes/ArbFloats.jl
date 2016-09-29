@@ -6,6 +6,21 @@ type ArfFloat{P}  <: Real
   significand1::UInt # significand_struct
   significand2::UInt
 end
+
+#define arf_rnd_t fmpr_rnd_t
+#define ARF_RND_DOWN FMPR_RND_DOWN
+#define ARF_RND_UP FMPR_RND_UP
+#define ARF_RND_FLOOR FMPR_RND_FLOOR
+#define ARF_RND_CEIL FMPR_RND_CEIL
+#define ARF_RND_NEAR FMPR_RND_NEAR
+
+
+#define fmpr_rnd_t int
+#define FMPR_RND_DOWN 0
+#define FMPR_RND_UP 1
+#define FMPR_RND_FLOOR 2
+#define FMPR_RND_CEIL 3
+#define FMPR_RND_NEAR 4
 =#
 
 precision{P}(x::ArfFloat{P}) = P
@@ -149,6 +164,11 @@ function convert{P}(::Type{ArfFloat{P}}, x::Float64)
     z
 end
 convert(::Type{ArfFloat}, x::Float64) = convert(ArfFloat{precision(ArfFloat)}, x)
+
+function convert{P}(::Type{Float64}, x::ArfFloat{P})
+    z = ccall(@libarb(arf_get_d), Float64, (Ptr{ArfFloat{P}}, Int), &x,  4)
+    z
+end
 
 midpoint{P}(x::ArfFloat{P}) = x
 

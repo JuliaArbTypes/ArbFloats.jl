@@ -67,6 +67,11 @@ for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
   end
 end
 
+function convert(::Type{Float64}, x::MagFloat)
+    z = ccall(libarb(mag_get_d), Float64, (Ptr{MagFloat},), &z)
+    return z
+end
+
 MagFloat(radius_exponentOf2::Int, radius_significand::Int64) =
     MagFloat(radius_exponentOf2, radius_significand % UInt64)
 

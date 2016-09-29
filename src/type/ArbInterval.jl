@@ -56,7 +56,7 @@ union{T<:ArbFloat}(a::T) = a
 
 function union{T<:ArbFloat}(a::T, b::T)
     P = precision(T)
-    z = T()
+    z = zero(T)
     ccall(@libarb(arb_union), Void, (Ptr{T}, Ptr{T}, Ptr{T}, Int), &z, &a, &b, P)
     return z
 end
