@@ -45,6 +45,19 @@ hash{P}(z::ArbFloat{P}, h::UInt) =
          (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arbfloat_lo)
             $ hash_0_arbfloat_lo))
 
+
+function release{P}(x::ArbFloat{P})
+    ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
+    return nothing
+end
+
+function initializer{P}(::Type{ArbFloat{P}})
+    z = ArbFloat{P}(zero(Int), zero(UInt64), zero(Int64), zero(Int64), zero(Int), zero(UInt64))
+    ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
+    finalizer(z, release)
+    return z
+end
+
 # empty constructor
 ArbFloat() = ArbFloat{precision(ArbFloat)}()
 
@@ -70,7 +83,7 @@ end
 
 function one{T<:ArbFloat}(::Type{T})
     z = T()
-    ccall(@libarb(arb_set_si), Void, (Ptr{ArfFloat}, Int), &z, one(Int))
+    ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat}, Int), &z, one(Int))
     return z
 end
 
