@@ -69,12 +69,12 @@ function smartstring{P}(x::ArbFloat{P})
     s = smartarbstring(x)
     a = ArbFloat{P}(s)
     if notexact(x)
-       s = string(s,upperbound(x) < a ? '-' : (lowerbound(x) > a ? '+' : '~'))
+       s = string(s,upperbound(x) < a ? '₋' : (lowerbound(x) > a ? '₊' : 'ₒ'))
     end
     return s
 end
 
-function smartstring{T<:ArbFloat}(x::T)
+function smarterstring{T<:ArbFloat}(x::T)
     absx   = abs(x)
     sa_str = smartarbstring(absx)  # smart arb string
     sa_val = (T)(absx)             # smart arb value
@@ -94,7 +94,11 @@ function smartstring{T<:ArbFloat}(x::T)
                 sa_str = string(sa_str,"₋")
             end
         else
-            sa_str = string(sa_str,"~")
+            if sa_val-hi >= ufp2(rd)
+                sa_str = string(sa_str,"ᵒ")
+            else
+                sa_str = string(sa_str,"ₒ")
+            end
         end
     end
     return sa_str
