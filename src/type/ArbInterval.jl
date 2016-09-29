@@ -56,21 +56,35 @@ union{T<:ArbFloat}(a::T) = a
 
 function union{T<:ArbFloat}(a::T, b::T)
     P = precision(T)
-    z = ArbFloat{P}{}
-    ccall(@libarb(arb_union), Void, (Ptr{T}, Ptr{T}, Ptr{T}, Clong), &z, &a, &b, P)
+    z = T()
+    ccall(@libarb(arb_union), Void, (Ptr{T}, Ptr{T}, Ptr{T}, Int), &z, &a, &b, P)
     return z
 end
-function union{T<:ArbFloat}(a::T, b::T, c::T)
-    z1 = union(a,b)
-    z2 = union(z1,c)
-    return z2
+function union{T<:ArbFloat}(a::Vector{T})
+    return reduce(union, zero(T), a)
 end
-function union{T<:ArbFloat}(a::T, b::T, c::T, d::T)
-    z1 = union(a,b)
-    z2 = union(z1,c)
-    z3 = union(z2,d)
-    return z3
+function union{T<:ArbFloat}(xs...)
+    return reduce(union, zero(T), [xs...])
 end
+
+
+intersect{T<:ArbFloat}(a::T) = a
+
+function intersect{T<:ArbFloat}(a::T, b::T)
+    P = precision(T)
+    z = T()
+    if donotoverlap(a,b)
+      ccall(@libarb(arb_indeterminate), Void, (Ptr{T},), &z)
+    else
+        alo,ahi = bounds(a)
+        blo,bhi = bounds(b)
+        lo,hi = minmax(max(alo,blo), min(ahi,bhi))
+        z = union(lo, hi)
+    end
+    return z
+end
+
+
 
 narrow{T<:ArbFloat}(a::T) = a
 
@@ -101,33 +115,6 @@ function narrow{T<:ArbFloat}(a::T, b::T, c::T, d::T)
     return union(lo,hi)
 end
 
-intersect{T<:ArbFloat}(a::T) = a
-
-function intersect{T<:ArbFloat}(a::T, b::T)
-    P = precision(T)
-    z = ArbFloat{P}()
-    if donotoverlap(a,b)
-        ccall(@libarb(arb_indeterminate), Void, (Ptr{T},), &z)
-    else
-        alo,ahi = bounds(a)
-        blo,bhi = bounds(b)
-        lo,hi = minmax(max(alo,blo), min(ahi,bhi))
-        bounded(z, lo, hi)
-    end
-    return z
-end
-
-function intersect{T<:ArbFloat}(a::T, b::T, c::T)
-   i1 = intersect(a,b)
-   i2 = intersect(i1,c)
-   return i2
-end
-
-function intersect{T<:ArbFloat}(a::T, b::T, c::T, d::T)
-   i1 = intersect(a,b)
-   i2 = intersect(c,d)
-   return intersect(i1,i2)
-end
 
 function bounded{P}(z::ArbFloat{P}, lo::ArbFloat{P}, hi::ArbFloat{P})
     lo2 = convert(ArfFloat{P}, lo)
