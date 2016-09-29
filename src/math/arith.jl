@@ -31,7 +31,7 @@ for (op,cfunc) in ((:-,:arb_neg), (:sign, :arb_sgn))
     function ($op){T<:ArbFloat}(x::T)
       z = T()
       ccall(@libarb($cfunc), Void, (Ptr{T}, Ptr{T}), &z, &x)
-      z
+      return z
     end
   end
 end
@@ -77,7 +77,6 @@ end
 (*){T<:ArbFloat, R<:Rational}(x::R, y::T) = (*)(convert(T, x), y)
 (*){T<:ArbFloat, R<:Real}(x::T, y::R) = (*)(x, convert(T, y))
 (*){T<:ArbFloat, R<:Real}(x::R, y::T) = (*)(convert(T, x), y)
-
 
 (+){T<:ArbFloat}(x::T, y::T, z::T) = (x + y) + z
 
@@ -136,4 +135,3 @@ end
 
 muladd{T<:ArbFloat}(a::T, b::T, c::T) = addmul(c,a,b)
 mulsub{T<:ArbFloat}(a::T, b::T, c::T) = addmul(-c,a,b)
-
