@@ -10,23 +10,27 @@ function signbit{T<:ArbFloat}(x::T)
 end
 
 function abs{T<:ArbFloat}(x::T)
-    lo,hi = bounds(x)
-    lo = signbit(lo) ? -lo : lo
-    hi = signbit(hi) ? -hi : hi
-    if lo > hi
-       lo, hi = hi, lo
-    end
-    return bounds( lo, hi )
+    P = precision(T)
+    z  = T()
+    lo = ArfFloat{P}()
+    hi = ArfFloat{P}()
+    ccall(@libarb(arb_get_abs_lbound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &lo, &x, P) 
+    ccall(@libarb(arb_get_abs_hbound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &hi, &x, P)
+    ccall(@libarb(arb_set_interval_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}, Ptr{ArfFloat}, Int), &z, &lo, &hi, P)
+    return z
 end
 
 function abs2{T<:ArbFloat}(x::T)
-    lo, hi = bounds(abs(x))
-    lo = lo^2
-    hi = hi^2
-    return bounds( lo, hi )
+    a = abs(x)
+    return a*a
 end
 
-for (op,cfunc) in ((:-,:arb_neg), (:sign, :arb_sgn))
+function absz2{T<:ArbFloat}(x::T)
+    a = absz(x)
+    return a*a
+end
+
+for (op,cfunc) in ((:-,:arb_neg), (:sign, :arb_sgn), (:absz, :arb_abs))
   @eval begin
     function ($op){T<:ArbFloat}(x::T)
       z = T()
