@@ -21,7 +21,7 @@ function rand{P}(::Type{ArbFloat{P}})
     end
     r = reduce(*, one(ArbFloat{P}), rs)
     if n > 1
-       if == 2
+       if n == 2
           r = sqrt(r)
        else
           r = r^(1/n)
