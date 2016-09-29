@@ -15,7 +15,7 @@ function abs{T<:ArbFloat}(x::T)
     lo = ArfFloat{P}()
     hi = ArfFloat{P}()
     ccall(@libarb(arb_get_abs_lbound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &lo, &x, P) 
-    ccall(@libarb(arb_get_abs_hbound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &hi, &x, P)
+    ccall(@libarb(arb_get_abs_ubound_arf), Void, (Ptr{ArfFloat}, Ptr{ArbFloat}, Int), &hi, &x, P)
     ccall(@libarb(arb_set_interval_arf), Void, (Ptr{ArbFloat}, Ptr{ArfFloat}, Ptr{ArfFloat}, Int), &z, &lo, &hi, P)
     return z
 end
