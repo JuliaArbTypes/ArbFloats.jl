@@ -41,3 +41,24 @@ end
 
 
 
+function randn{P}(::Type{ArbFloat{P}})
+    n = cld(P,64)
+    rs = zeros(ArbFloat{P}, n)
+    for i in 1:n
+        rs[i] = randn(Float64)
+    end
+    r = reduce(*, one(ArbFloat{P}), rs)
+    return n==1 ? r : (n==2 ? sqrt(r) : r^(1/n))
+end
+
+function randn{P}(::Type{ArbFloat{P}}, N::Int)
+    n = max(1,N)
+    rs = zeros(ArbFloat{P}, n)
+    for i in 1:n
+        rs[i] = randn(ArbFloat{P})
+     end
+     return rs
+end
+
+
+
