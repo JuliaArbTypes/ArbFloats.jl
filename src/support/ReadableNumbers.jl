@@ -90,11 +90,7 @@ function stringpretty(val::Real,
        ty = typeof(val)
        throw(ErrorException("type $ty is not supported"))
     end
-    s = try
-          stringall(val)
-        catch
-          string(val)
-        end
+    s = string(val)
     prettyFloat(s, intGroup, fracGroup, intSep, fltSep)
 end
 stringpretty(val::Real, intGroup::Int, fracGroup::Int, sep::Char=betweenFlts()) =
