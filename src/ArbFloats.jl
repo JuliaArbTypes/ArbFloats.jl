@@ -27,8 +27,8 @@ import Base: STDOUT,
     sinh, cosh, tanh, csch, sech, coth, asinh, acosh, atanh,
     sinc, gamma, lgamma, digamma, zeta, factorial,
     in, union, intersect,
-    BigInt, BigFloat, Float64, Float32, Int128, Int64, Int32, Rational,
-    Cint
+    rand,
+    BigInt, BigFloat, Rational
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
        @ArbFloat,     # converts string form of argument, precision is optional first arg
@@ -99,7 +99,7 @@ include("math/constants.jl")
 include("math/special.jl")
 
 include("math/rounding.jl")
-
+include("math/rand.jl")
 include("math/arrayops.jl")
 
 
