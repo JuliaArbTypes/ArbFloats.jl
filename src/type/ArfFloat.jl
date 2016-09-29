@@ -21,10 +21,6 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
          (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arffloat_lo) $ hash_0_arffloat_lo))
 
 
-# empty constructor
-ArfFloat() = ArfFloat{precision(ArfFloat)}()
-
-
 weakcopy{P}(x::ArfFloat{P}) = WeakRef(x)
 
 function copy{T<:ArfFloat}(x::T)
@@ -32,6 +28,23 @@ function copy{T<:ArfFloat}(x::T)
     ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
     return z
 end
+
+# initialize and zero a variable of type ArfFloat
+function release{P}(x::ArfFloat{P})
+    ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
+    return nothing
+end
+
+function initializer{P}(::Type{ArfFloat{P}})
+    z = ArfFloat{P}(zero(Int), zero(UInt64), zero(Int64), zero(Int64))
+    ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), &z)
+    finalizer(z, release)
+    return z
+end
+
+# empty constructor
+ArfFloat() = initializer(ArfFloat{precision(ArfFloat)})
+
 
 function deepcopy{T<:ArfFloat}(x::T)
     z = T()
