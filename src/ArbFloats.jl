@@ -27,7 +27,7 @@ import Base: STDOUT,
     sinh, cosh, tanh, csch, sech, coth, asinh, acosh, atanh,
     sinc, gamma, lgamma, digamma, zeta, factorial,
     in, union, intersect,
-    rand,
+    rand, randn,
     BigInt, BigFloat, Rational
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
