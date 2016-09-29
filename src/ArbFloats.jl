@@ -41,7 +41,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        stringsmall, stringcompact, stringmedium, stringlarge, stringall,
        stringsmall_pm, stringcompact_pm, string_pm,
        stringlarge_pm, stringall_pm,
-       showsmall, showcompact, showlarge, showallcompact, showpretty,
+       showsmall, showcompact, showlarge, showall, showpretty,
        showsmall_pm, showcompact_pm, show_pm,
        showlarge_pm, showall_pm,
        stringpretty, smartvalue, smartstring, showsmart,
