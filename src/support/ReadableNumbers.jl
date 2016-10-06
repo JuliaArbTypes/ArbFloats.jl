@@ -241,11 +241,7 @@ prettyFloat{T<:AbstractFloat}(val::T,  group::Int, span::Char) =
 
 # handle integer and float strings
 
-if VERSION > v"0.4.999"
-   splitstr(str::String, at::String) = map(String, split(str, at))
-else
-   splitstr(str::String, at::String) = map(bytestring, split(str, at))
-end
+splitstr(str::String, at::String) = map(String, split(str, at))
 
 prettyInteger(s::String, group::Int, span::Char) =
     integerString(s, group, span)
@@ -284,7 +280,7 @@ function nonnegIntegerString(s::String, group::Int, span::Char)
 
     sinteger, sexponentOf2 =
         if contains(s,"e")
-           strsplit(s,"e")
+           splitstr(s,"e")
         else
            s, ""
         end
