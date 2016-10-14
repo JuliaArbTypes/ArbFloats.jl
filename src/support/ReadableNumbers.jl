@@ -54,6 +54,8 @@ function stringpretty{T<:Signed}(val::Rational{T})
     stringpretty(val, group, sep)
 end
 
+# use the string() function for the type given
+
 stringpretty(val::AbstractFloat,
         intGroup::Int, fracGroup::Int, intSep::Char, fltSep::Char) =
     prettyFloat(val, intGroup, fracGroup, intSep, fltSep)
@@ -112,6 +114,69 @@ function stringpretty(val::Real)
     stringpretty(val, group, group, sep, sep)
 end
 
+# use the supplied string() function for the type given
+
+stringpretty(val::AbstractFloat,
+        intGroup::Int, fracGroup::Int, intSep::Char, fltSep::Char, strfun::Function) =
+    prettyFloat(val, intGroup, fracGroup, intSep, fltSep, strfun)
+stringpretty(val::AbstractFloat,
+        intGroup::Int, fracGroup::Int, sep::Char=betweenFlts(), strfun::Function) =
+    stringpretty(val, intGroup, fracGroup, sep, sep, strfun)
+stringpretty(val::AbstractFloat,
+        group::Int, intSep::Char, fltSep::Char, strfun::Function) =
+    stringpretty(val, group, group, intSep, fltSep, strfun)
+stringpretty(val::AbstractFloat,
+        group::Int, sep::Char=betweenFlts(), strfun::Function) =
+    stringpretty(val, group, group, sep, sep, strfun)
+stringpretty(val::AbstractFloat,
+        intSep::Char, fltSep::Char, intGroup::Int, fracGroup::Int, strfun::Function) =
+    stringpretty(val, intGroup, fracGroup, intSep, fltSep, strfun)
+stringpretty(val::AbstractFloat,
+        intSep::Char, fltSep::Char, group::Int, strfun::Function) =
+    stringpretty(val, group, group, intSep, fltSep, strfun)
+stringpretty(val::AbstractFloat,
+        sep::Char, intGroup::Int, fracGroup::Int, strfun::Function) =
+    stringpretty(val, intGroup, fracGroup, sep, sep, strfun)
+stringpretty(val::AbstractFloat,
+        sep::Char, group::Int=fltsSpanned(), strfun::Function) =
+    stringpretty(val, group, group, sep, sep, strfun)
+function stringpretty(val::AbstractFloat, strfun::Function)
+    group, sep = fltsSpanned(), betweenFlts()
+    stringpretty(val, group, group, sep, sep, strfun)
+end
+
+
+function stringpretty(val::Real,
+          intGroup::Int, fracGroup::Int, intSep::Char, fltSep::Char, strfun::Function)
+    if !prettyfiable(val)
+       ty = typeof(val)
+       throw(ErrorException("type $ty is not supported"))
+    end
+    s = strfun(val)
+    prettyFloat(s, intGroup, fracGroup, intSep, fltSep)
+end
+stringpretty(val::Real, intGroup::Int, fracGroup::Int, sep::Char=betweenFlts(), strfun::Function) =
+    stringpretty(val, intGroup, fracGroup, sep, sep, strfun)
+stringpretty(val::Real, group::Int, intSep::Char, fltSep::Char, strfun::Function) =
+    stringpretty(val, group, group, intSep, fltSep, strfun)
+stringpretty(val::Real, group::Int, sep::Char=betweenFlts(), strfun::Function) =
+    stringpretty(val, group, group, sep, sep, strfun)
+stringpretty(val::Real, intSep::Char, fltSep::Char, intGroup::Int, fracGroup::Int, strfun::Function) =
+    stringpretty(val, intGroup, fracGroup, intSep, fltSep, strfun)
+stringpretty(val::Real, intSep::Char, fltSep::Char, group::Int, strfun::Function) =
+    stringpretty(val, group, group, intSep, fltSep, strfun)
+stringpretty(val::Real, sep::Char, intGroup::Int, fracGroup::Int, strfun::Function) =
+    stringpretty(val, intGroup, fracGroup, sep, sep, strfun)
+stringpretty(val::Real, sep::Char, group::Int=fltsSpanned(), strfun::Function) =
+    stringpretty(val, group, group, sep, sep, strfun)
+function stringpretty(val::Real, strfun::Function)
+    group, sep = fltsSpanned(), betweenFlts()
+    stringpretty(val, group, group, sep, sep, strfun)
+end
+
+
+
+
 # show easy-to-read numbers
 
 showpretty(io::IO, val::Signed, group::Int, sep::Char=betweenInts()) =
@@ -147,6 +212,23 @@ end
 showpretty(io::IO, val::AbstractFloat, prettyFormat...) =
     print(io, stringpretty(val, prettyFormat...))
 
+
+# with specified string() function
+
+function showpretty(io::IO, val::AbstractFloat, strfun::Function)
+    group, sep = fltsSpanned(), betweenFlts()
+    print(io, stringpretty(val, group, group, sep, sep, strfun))
+end
+function showpretty(io::IO, val::AbstractFloat, group::Int, strfun::Function)
+    sep = betweenFlts()
+    print(io, stringpretty(val, group, group, sep, sep, strfun))
+end
+function showpretty(io::IO, val::AbstractFloat, sep::Char, strfun::Function)
+    group = fltsSpanned()
+    print(io, stringpretty(val, group, group, sep, sep, strfun))
+end
+showpretty(io::IO, val::AbstractFloat, prettyFormat...) =
+    print(io, stringpretty(val, prettyFormat...))
 
 
 function showpretty(io::IO, val::Real,
@@ -204,6 +286,18 @@ showpretty(val::AbstractFloat, sep::Char)  =
 showpretty(val::AbstractFloat, prettyFormat...) =
     showpretty(Base.STDOUT, val, prettyFormat...)
 
+# using specified string() function
+
+
+function showpretty(val::AbstractFloat, intGroup::Int, fracGroup::Int, intSep::Char, fltSep::Char, strfun::Function)
+    showpretty(Base.STDOUT, val, intGroup, fracGroup, intSep, fltSep, strfun)
+end
+showpretty(val::AbstractFloat, group::Int, strfun::Function)) =
+    showpretty(Base.STDOUT, val, group, strfun)
+showpretty(val::AbstractFloat, sep::Char, strfun::Function))  =
+    showpretty(Base.STDOUT, val, sep, strfun)
+showpretty(val::AbstractFloat, prettyFormat...) =
+    showpretty(Base.STDOUT, val, prettyFormat...)
 
 function showpretty{T<:Real}(val::T, intGroup::Int, fracGroup::Int, intSep::Char, fltSep::Char)
     if !prettyfiable(val)
