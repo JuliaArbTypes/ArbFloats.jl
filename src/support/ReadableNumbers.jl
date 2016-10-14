@@ -263,8 +263,9 @@ showpretty(val::AbstractFloat, group::Int) =
     showpretty(Base.STDOUT, val, group)
 showpretty(val::AbstractFloat, sep::Char)  =
     showpretty(Base.STDOUT, val, sep)
-showpretty(val::AbstractFloat, prettyFormat...) =
-    showpretty(Base.STDOUT, val, prettyFormat...)
+# handled in next section
+#showpretty(val::AbstractFloat, prettyFormat...) =
+#    showpretty(Base.STDOUT, val, prettyFormat...)
 
 # using specified string() function
 
