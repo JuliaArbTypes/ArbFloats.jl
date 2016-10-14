@@ -188,8 +188,9 @@ function showpretty(io::IO, val::AbstractFloat, sep::Char)
     group = fltsSpanned()
     print(io, stringpretty(val, group, group, sep, sep))
 end
-showpretty(io::IO, val::AbstractFloat, prettyFormat...) =
-    print(io, stringpretty(val, prettyFormat...))
+# covered in next section
+#showpretty(io::IO, val::AbstractFloat, prettyFormat...) =
+#    print(io, stringpretty(val, prettyFormat...))
 
 
 # with specified string() function
@@ -271,9 +272,9 @@ showpretty(val::AbstractFloat, prettyFormat...) =
 function showpretty(val::AbstractFloat, intGroup::Int, fracGroup::Int, intSep::Char, fltSep::Char, strfun::Function)
     showpretty(Base.STDOUT, val, intGroup, fracGroup, intSep, fltSep, strfun)
 end
-showpretty(val::AbstractFloat, group::Int, strfun::Function)) =
+showpretty(val::AbstractFloat, group::Int, strfun::Function) =
     showpretty(Base.STDOUT, val, group, strfun)
-showpretty(val::AbstractFloat, sep::Char, strfun::Function))  =
+showpretty(val::AbstractFloat, sep::Char, strfun::Function)  =
     showpretty(Base.STDOUT, val, sep, strfun)
 showpretty(val::AbstractFloat, prettyFormat...) =
     showpretty(Base.STDOUT, val, prettyFormat...)
