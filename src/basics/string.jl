@@ -103,6 +103,14 @@ function arb_string{P}(x::ArbFloat{P}, digs::Int, mode::Int)::String
     return s
 end    
 
+function string_exact{T<:ArbFloat}(x::T, mdigits::Int, rounding::Int)::String
+    digs = Int(mdigits)
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, rounding%UInt)
+    s = unsafe_string(cstr)
+    return cleanup_numstring(s, isinteger(x))
+end
+
+
 function string_exact{T<:ArbFloat}(x::T, mdigits::Int)::String
     digs = Int(mdigits)
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, 2%UInt)
