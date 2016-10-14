@@ -59,7 +59,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        areequal, notequal, approxeq, (≊),
        narrow, overlap, donotoverlap,
        contains, iscontainedby, doesnotcontain, isnotcontainedby,
-       absz, abz2, invsqrt, pow, root, 
+       absz, absz2, invsqrt, pow, root, 
        tanpi, cotpi, logbase, sincos, sincospi, sinhcosh,
        doublefactorial, risingfactorial, rgamma, agm, polylog,
        relativeError, relativeAccuracy, midpointPrecision, trimmed,
