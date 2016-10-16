@@ -8,7 +8,6 @@ ArbFloats.jl
 
 ===========  
  
-   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
    This package is a faster alternative to BigFloats when working with significands  
    that do not exceed ~3,250 bits (~1000 digits).
 
@@ -16,26 +15,10 @@ ArbFloats.jl
    which are guaranteed to produce results that enclose the theoretical math value.  
    While not the package focus, full access to interval-based functions is present.
 
-   This package has been designed to offer the Julia community more performant  
-   extended precision floating point math and to offer extended floating point  
-   results as accurately as possible at a precision that does not misrepresent  
-   the information content of the underlying interval valuation.
+   ArbFloats provides more performant extended precision floating point math 
+   and will show results as accurately as possible by using a precision that
+   does not misrepresent the information content of the underlying interval.
 
-
-
->
->   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
->   This package is a faster alternative to BigFloats when working with significands  
->   that do not exceed ~3,500 bits.
->
->   The base C library implements floating point intervals and operations thereupon  
->   which are guaranteed to produce results that enclose the theoretical math value.  
->   While not the package focus, full access to interval-based functions is present.
->
->   This package has been designed to offer the Julia community more performant  
->   extended precision floating point math and to offer extended floating point  
->   results as accurately as possible at a precision that does not misrepresent  
->   the information content of the underlying interval valuation.
 
 #### version 0.1.8 (for Julia v0.5).
 
