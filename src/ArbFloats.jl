@@ -1,30 +1,23 @@
 __precompile__()
 
 """
-using ArbFloats
+precision(ArbFloat)           # show the current default precision
+setprecision(ArbFloat, 120)   # change the current default precision
+setprecision(ArbFloat, 53+7)  # akin to setprecision(BigFloat, 53)
 
-precision(ArbFloat) # show the current default precision
-
-setprecision(ArbFloat, 120) # change the current default precision
-
-setprecision(ArbFloat, 53+7); # akin to setprecision(BigFloat, 53)
-
-a = ArbFloat(12);  # use the default precision, at run time
-
-b = @ArbFloat(12); # use the default precision, at compile time
-
-c = ArbFloat{200}(12); # use specified precision, at run time
-
-d = @ArbFloat(200,12); # use specified precision, at compile time
+ArbFloat(12)       # use the default precision, at run time
+@ArbFloat(12)      # use the default precision, at compile time
+ArbFloat{200}(12)  # use specified precision, at run time
+@ArbFloat(200,12)  # use specified precision, at compile time
 
 @ArbFloat(1.2345) == ArbFloat("1.2345")
 
           remember to do this        and           to avoid this
 
-    goodValue = @ArbFloat(1.2345);        wrongValue = ArbFloat(1.2345);
+    goodValue = @ArbFloat(1.2345)         wrongValue = ArbFloat(1.2345);
         1.234500000000000000                   1.2344999999999999307
 
-     ArbFloat(12345)/ArbFloat(1000);       ArbFloat(12.345)/ArbFloat(10)
+     ArbFloat(12345)/ArbFloat(1000)        ArbFloat(12.345)/ArbFloat(10)
         1.234500000000000000                   1.234500000000000064
 
 
@@ -42,10 +35,9 @@ showall_pm(exp1)
 bounds(exp1)
 > ( 2.71828182845904523536028,  2.718281828459045235360293 )
 
+```
 setprecision(ArbFloat, 116); # the initial default precision
-
 fuzzed_e = tan(atanh(tanh(atan(exp(one(ArbFloat))))))
-
 > 2.718281828459045235360287
 showall(fuzzed_e)
 > 2.7182818284590452353602874713527
@@ -56,11 +48,11 @@ bounds(fuzzed_e)
 lo, hi = bounds(fuzzed_e); showall(lo,hi)
 > ( 2.7182818284590452353602874713526543,  
     2.7182818284590452353602874713526701 )
-
+```
 smartstring(exp1)  
-> "2.71828182845904523536028747135266+"
+\> "2.71828182845904523536028747135266+"
 smartstring(fuzzed_e)  
-> "2.7182818284590452353602874713527-"
+\> "2.7182818284590452353602874713527-"
 """
 module ArbFloats
 
