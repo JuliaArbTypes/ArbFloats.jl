@@ -1,14 +1,14 @@
 __precompile__()
 
 """
-precision(ArbFloat)           # show the current default precision
-setprecision(ArbFloat, 120)   # change the current default precision
-setprecision(ArbFloat, 53+7)  # akin to setprecision(BigFloat, 53)
+precision(ArbFloat)           # show the current default precision  
+setprecision(ArbFloat, 120)   # change the current default precision  
+setprecision(ArbFloat, 53+7)  # akin to setprecision(BigFloat, 53)  
 
-ArbFloat(12)       # use the default precision, at run time
-@ArbFloat(12)      # use the default precision, at compile time
-ArbFloat{200}(12)  # use specified precision, at run time
-@ArbFloat(200,12)  # use specified precision, at compile time
+ArbFloat(12)       # use the default precision, at run time  
+@ArbFloat(12)      # use the default precision, at compile time  
+ArbFloat{200}(12)  # use specified precision, at run time  
+@ArbFloat(200,12)  # use specified precision, at compile time  
 
 @ArbFloat(1.2345) == ArbFloat("1.2345")
 
@@ -21,38 +21,33 @@ ArbFloat{200}(12)  # use specified precision, at run time
         1.234500000000000000                   1.234500000000000064
 
 
-
+```
 setprecision(ArbFloat, 80)
 
 exp1 = exp(ArbFloat(1));
-
 stringsmall(exp1),stringcompact(exp1),string(exp1),stringall(exp1)
-
-("2.7182818","2.71828182845905","2.71828182845904523536029","2.71828182845904523536029")
-
+> ("2.7182818","2.71828182845905","2.71828182845904523536029","2.71828182845904523536029")
 showall_pm(exp1)
 > 2.718281828459045235360286±3.3216471534462276e-24
 bounds(exp1)
 > ( 2.71828182845904523536028,  2.718281828459045235360293 )
 
-```
 setprecision(ArbFloat, 116); # the initial default precision
 fuzzed_e = tan(atanh(tanh(atan(exp(one(ArbFloat))))))
 > 2.718281828459045235360287
 showall(fuzzed_e)
 > 2.7182818284590452353602874713527
-
 bounds(fuzzed_e)
-> ( 2.718281828459045235360287,   2.718281828459045235360287 )
+> ( 2.718281828459045235360287,   
+    2.718281828459045235360287 )
 > they are not really the same ...    
 lo, hi = bounds(fuzzed_e); showall(lo,hi)
 > ( 2.7182818284590452353602874713526543,  
     2.7182818284590452353602874713526701 )
-```
-smartstring(exp1)  
-\> "2.71828182845904523536028747135266+"
+
 smartstring(fuzzed_e)  
-\> "2.7182818284590452353602874713527-"
+> "2.7182818284590452353602874713527-"
+```
 """
 module ArbFloats
 
