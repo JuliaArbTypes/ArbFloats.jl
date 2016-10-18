@@ -5,14 +5,14 @@
    muladd(a,b,c), fma(a,b,c)
 =#
 
-function signbit{P}(x::ArbFloat{P}}
+function signbit{P}(x::ArbFloat{P})
     0 != ccall(@libarb(arb_is_negative), Int, (Ptr{ArbFloat{P}},), &x)
 end
 function signbit{T<:ArbFloat}(x::T)
     0 != ccall(@libarb(arb_is_negative), Int, (Ptr{ArbFloat},), &x)
 end
 
-function abs(x::ArbFloat{P}}
+function abs{P}(x::ArbFloat{P})
     z  = initializer(ArbFloat{P})
     lo = initializer(ArfFloat{P})
     hi = initializer(ArfFloat{P})
@@ -44,7 +44,7 @@ end
 
 for (op,cfunc) in ((:-,:arb_neg), (:sign, :arb_sgn), (:absz, :arb_abs))
   @eval begin
-    function ($op){P}(x::ArbFloat{P}}
+    function ($op){P}(x::ArbFloat{P})
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &z, &x)
       return z
@@ -60,7 +60,7 @@ end
 
 for (op,cfunc) in ((:inv, :arb_inv), (:sqrt, :arb_sqrt), (:invsqrt, :arb_rsqrt))
   @eval begin
-    function ($op){P}(x::ArbFloat{P}}
+    function ($op){P}(x::ArbFloat{P})
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, P)
       return z
