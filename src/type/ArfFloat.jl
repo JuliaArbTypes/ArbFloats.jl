@@ -23,7 +23,7 @@ hash{P}(z::ArfFloat{P}, h::UInt) =
 
 weakcopy{P}(x::ArfFloat{P}) = WeakRef(x)
 
-function copy{P}(x::ArfFloat{P}}
+function copy{P}(x::ArfFloat{P})
     z = initializer(ArfFloat{P})
     ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
     return z
