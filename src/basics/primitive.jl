@@ -2,7 +2,7 @@
 for (op, i) in ((:two,:2), (:three,:3), (:four, :4))
   @eval begin
     function ($op){P}(::Type{ArbFloat{P}})
-        z = ArbFloat{P}()
+        z = initializer(ArbFloat{P})
         ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat}, Int), &z, $i)
         return z
     end
@@ -15,12 +15,13 @@ weakcopy{P}(x::ArbFloat{P}) = WeakRef(x)
 for fn in (:copy, :deepcopy)
   @eval begin
     function ($fn){P}(x::ArbFloat{P})
-        z = (ArbFloat{P})()
+        z = initializer(ArbFloat{P})
         ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
         return z
     end
     function ($fn){T<:ArbFloat}(x::T)
-        z = T()
+        P = precision(T)
+        z = initializer(ArbFloat{P})
         ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
         return z
     end
@@ -82,8 +83,14 @@ Rounds x to a number of bits equal to the accuracy of x (as indicated by its rad
 The resulting ball is guaranteed to contain x, but is more economical if x has less than full accuracy.
 (from arb_trim documentation)
 """
+function trim{P}(x::ArbFloat{P})
+    z = initializer(ArbFloat{P})
+    ccall(@libarb(arb_trim), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    return z
+end
 function trim{T<:ArbFloat}(x::T)
-    z = T()
+    P = precision(T)
+    z = initializer(ArbFloat{P})
     ccall(@libarb(arb_trim), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     return z
 end
