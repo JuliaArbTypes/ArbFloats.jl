@@ -252,7 +252,7 @@ end
 
 function convert{T<:ArbFloat,S}(::Type{T}, x::Irrational{S})
     P = precision(T)
-    a = ArbFloat{P}()
+    a = initializer(ArbFloat{P})
     setprecision(BigFloat, precision(T)+24) do
          a = convert(T, BigFloat(x))
     end
