@@ -55,7 +55,7 @@ end
 for (op,cfunc) in ((:+,:arb_add), (:-, :arb_sub), (:/, :arb_div), (:hypot, :arb_hypot))
   @eval begin
     function ($op){P}(x::ArbFloat{P}, y::ArbFloat{P})
-      z = initializer(AbFloat{P})
+      z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{AbFloat{P}}, Ptr{AbFloat{P}}, Ptr{AbFloat{P}}, Int), &z, &x, &y, P)
       z
     end
