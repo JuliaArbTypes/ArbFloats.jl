@@ -49,10 +49,6 @@ function initializer{P}(::Type{ArfFloat{P}})
 end
 
 # empty constructor
-# empty constructor
-@inline function ArfFloat{P}() 
-     return initializer(ArfFloat{P})
-end            
 @inline function ArfFloat() 
      P = precision(ArfFloat)
      return initializer(ArfFloat{P})
