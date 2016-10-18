@@ -58,8 +58,10 @@ function initializer{P}(::Type{ArbFloat{P}})
 end
 
 # empty constructor
-ArbFloat() = initializer(ArbFloat{precision(ArbFloat)})
-
+@inline function ArbFloat()
+     P = precision(ArbFloat)
+     return initializer(ArbFloat{P})
+end
 
 # typemax,realmax realmax,realmin
 
