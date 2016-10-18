@@ -23,8 +23,8 @@ end
 
 # initialize and zero a variable of type MagFloat
 function zero(::Type{MagFloat})
-    z = MagFloat()
-    # ccall(@libarb(mag_set_ui), Void, (Ptr{MagFloat}, UInt64), &z, zero(UInt64))
+    z = MagFloat(0,0x0000000000000000)
+    @libarb(mag_set_ui), Void, (Ptr{MagFloat}, UInt64), &z, 0x0000000000000000)
     return z
 end
 #zero(x::MagFloat) = zero(MagFloat)
@@ -33,12 +33,14 @@ function zero(x::MagFloat)
 end
 
 function one(::Type{MagFloat})
-    z = MagFloat()
+    z = MagFloat(0, 0x0000000000000000)
     ccall(@libarb(mag_set_ui), Void, (Ptr{MagFloat}, UInt64), &z, one(UInt64))
     return z
 end
 function one(x::MagFloat)
-    return one(MagFloat)
+    z = MagFloat(0, 0x0000000000000000)
+    ccall(@libarb(mag_set_ui), Void, (Ptr{MagFloat}, UInt64), &z,  0x0000000000000001)
+    return z
 end
 
 #=
