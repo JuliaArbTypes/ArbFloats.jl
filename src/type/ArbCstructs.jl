@@ -7,13 +7,14 @@
 type MagFloat <: AbstractFloat
     radius_exponentOf2::Int
     radius_significand::UInt   ## radius is unsigned (nonnegative), by definition
-
+#=
     function MagFloat()
          z = new(zero(Int), zero(UInt64))
          ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
          finalizer(z, c_release_mag)
          return z
     end
+=#    
 end
 
 function c_release_mag(x::MagFloat)
@@ -29,13 +30,14 @@ type ArfFloat{P} <: AbstractFloat
     nwords_sign::Int           ## Int, as words is an offset; lsb holds sign of significand
     significand1::UInt         ## UInt, as each significand word is a subspan of significand
     significand2::UInt         ##   the significand words are unsigned (sign is in nwords_sign)
-
+#=
     function ArfFloat()
          z = new{P}(0,0%UInt,0%UInt,0%UInt)
          ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), &z)
          finalizer(z, c_release_arf)
          return z
     end
+=#    
 end
 
 
@@ -54,13 +56,14 @@ type ArbFloat{P} <: AbstractFloat
                                ###    ArbMag{P}
     radius_exponentOf2::Int    ####      radius_exponentOf2
     radius_significand::UInt   ####      radius_significand
-
+#=
     function ArbFloat()
-         z = new{P}(0,0%UInt,0%UInt,0%UInt,0,0%UInt)
+         z = new{P}(0,0,0,0,0,0)#(0,0%UInt,0%UInt,0%UInt,0,0%UInt)
          ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
          finalizer(z, c_release_arb)
          return z
     end
+=#    
 end
 
 function c_release_arb{P}(x::ArbFloat{P})
