@@ -60,7 +60,7 @@ end
 
 
 
-function deepcopy{P}(x::ArfFloat{P}}
+function deepcopy{P}(x::ArfFloat{P})
     z = initializer(ArfFloat{P})
     ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
     return z
