@@ -45,7 +45,7 @@ for (op,cfunc) in ((:inv, :arb_inv), (:sqrt, :arb_sqrt), (:invsqrt, :arb_rsqrt))
   @eval begin
     function ($op){T<:ArbFloat}(x::T)
       P = precision(T)
-      z = ArbFloat{P}()
+      z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{T}, Ptr{T}, Int), &z, &x, P)
       return z
     end
@@ -54,10 +54,15 @@ end
 
 for (op,cfunc) in ((:+,:arb_add), (:-, :arb_sub), (:/, :arb_div), (:hypot, :arb_hypot))
   @eval begin
+    function ($op){P}(x::ArbFloat{P}, y::ArbFloat{P})
+      z = initializer(AbFloat{P})
+      ccall(@libarb($cfunc), Void, (Ptr{AbFloat{P}}, Ptr{AbFloat{P}}, Ptr{AbFloat{P}}, Int), &z, &x, &y, P)
+      z
+    end
     function ($op){T<:ArbFloat}(x::T, y::T)
       P = precision(T)
-      z = initializer(ArbFloat{P})
-      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, &y, P)
+      z = initializer(T)
+      ccall(@libarb($cfunc), Void, (Ptr{T}, Ptr{T}, Ptr{T}, Int), &z, &x, &y, P)
       z
     end
     ($op){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = ($op)(promote(x,y)...)
