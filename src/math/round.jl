@@ -37,7 +37,7 @@ end
 function ceil{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     sig = max(1, abs(sig))
     sigbits = sigBitsToUse(P, sig, base)
-    z = ArbFloat{P}()
+    z = initializer(ArbFloat{P})
     ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
@@ -45,7 +45,7 @@ end
 function floor{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     sig = max(1, abs(sig))
     sigbits = sigBitsToUse(P, sig, base)
-    z = ArbFloat{P}()
+    z = initializer(ArbFloat{P})
     ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
@@ -53,7 +53,7 @@ end
 function trunc{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     sig = max(1, abs(sig))
     sigbits = sigBitsToUse(P, sig, base)
-    z = ArbFloat{P}()
+    z = initializer(ArbFloat{P})
     if signbit(x)
         ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     else
