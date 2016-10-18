@@ -97,7 +97,7 @@ for (op,cfunc) in ((:+,:arb_add), (:-, :arb_sub), (:/, :arb_div), (:hypot, :arb_
   end
 end
 
-function (*){P}(x::ArbFloat{P})
+function (*){P}(x::ArbFloat{P}, y::ArbFloat{P})
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_mul), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
     return z
