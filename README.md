@@ -71,8 +71,8 @@ setprecision(ArbFloat, 120) # change the current default precision
 
 a = ArbFloat(12);  # use the default precision, at run time
 b = @ArbFloat(12); # use the default precision, at compile time
-c = ArbFloat{200}(12); # use specified precision, at run time
-d = @ArbFloat(200,12); # use specified precision, at compile time
+c = ArbFloat{200}(golden); # use specified precision, at run time
+d = @ArbFloat(200,golden); # use specified precision, at compile time
 
 # setprecision(ArbFloat, 53+0); # akin to setprecision(BigFloat, 53)
 # to see elementary function evaluations rounded to (at least) N significand bits, 
