@@ -28,6 +28,7 @@ If you write something that improves this for others, submit it as a [pull reque
 Anyone interested in contributing some time is encouraged  
 to contact the author (firstname.lastname at-the-gmail).
 
+[Performance relative to BigFloats](https://github.com/JuliaArbTypes/ArbFloats.jl/blob/master/PERFORMANCE.md)
 
 #### Install
 
