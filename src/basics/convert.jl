@@ -6,10 +6,23 @@ macro ArfFloat(p,x)
 end
 
 macro ArbFloat(x)
-    convert(ArbFloat, string(:($x)))
+    quote
+       if isa($x, Irrational)
+           convert(ArbFloat, $x)
+       else
+            convert(ArbFloat, string($x))
+       end
+    end
 end
+    
 macro ArbFloat(p,x)
-    convert(ArbFloat{:($p)}, string(:($x)))
+    quote
+       if isa($x, Irrational)
+           convert(ArbFloat{$p}, $x)
+       else
+           convert(ArbFloat{$p}, string($x))
+       end
+    end
 end
 
 convert{T<:ArfFloat}(::Type{T}, x::T) = x
