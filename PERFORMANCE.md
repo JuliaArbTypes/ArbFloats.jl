@@ -42,6 +42,18 @@ Precision = 3000 bits
 | /           |   63.2    |  62            |
 | log         |  207.5    | 206          |
 
+Precision = 4096 bits (design limit)
  
+|function     | rel. time | rel. speedup   | 
+|:------------|:---------:|:--------------:|
+| sin         |   1.0    | 0           |
+| atan        |   1.7    | 1           |
+| +           |    2.3    |  1          |
+| exp         |   3.5    | 3           |
+| *           |    3.8    |  3           |
+| log         |   2.8    | 2           |
+| zeta        |   26.4    | 25           |
+| /           |   147.5    | 146           |
+
 
 
