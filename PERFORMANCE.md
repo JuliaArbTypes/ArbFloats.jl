@@ -29,6 +29,19 @@ Precision = 1024 bits
 | log         |   69.1    | 68           |
 | zeta        |   98.3    | 97           |
 
+Precision = 2048 bits
+
+|function     | rel. time | rel. speedup   | 
+|:------------|:---------:|:--------------:|
+| +           |    1.8    |  1           |
+| *           |    2.5    |  2           |
+| sin         |   11.4    | 10           |
+| exp         |   21.6    | 21           |
+| zeta        |   24.6    | 24           |
+| /           |   36.4    | 35           |
+| atan        |   64.7    | 64           |
+| log         |  141.7    | 141          |
+
 Precision = 3000 bits
 
 |function     | rel. time | rel. speedup   | 
