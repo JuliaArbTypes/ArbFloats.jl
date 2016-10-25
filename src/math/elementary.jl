@@ -24,7 +24,7 @@ for (op,cfunc) in ((:exp,:arb_exp), (:expm1, :arb_expm1),
   @eval begin
     function ($op){P}(x::ArbFloat{P})
       z = initializer(ArbFloat{P})
-      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}, Int), &z, &x, P)
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, P)
       z
     end
   end
