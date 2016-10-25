@@ -20,19 +20,18 @@ Jeffrey Sarnoff © 2016 Sep 15 in New York, USA
    does not misrepresent the information content of the underlying interval.
 
 
-#### version 0.1.8 (for Julia v0.5).
+#### version 0.1.9 (for Julia v0.5).
+
+[Performance relative to BigFloats](https://github.com/JuliaArbTypes/ArbFloats.jl/blob/master/PERFORMANCE.md)
 
 If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
 If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
 
-Anyone interested in contributing some time is encouraged  
-to contact the author (firstname.lastname at-the-gmail).
-
-[Performance relative to BigFloats](https://github.com/JuliaArbTypes/ArbFloats.jl/blob/master/PERFORMANCE.md)
-
 #### Install
 
 ```julia
+Pkg.update()
+Pkg.add("Nemo") # for Win, follow this with Pkg.build("Nemo")
 Pkg.add("ArbFloats")
 # or else Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ```
