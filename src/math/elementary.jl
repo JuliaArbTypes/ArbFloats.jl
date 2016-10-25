@@ -126,7 +126,7 @@ function root{P}(x::ArbFloat{P}, y::Integer)
      if y>=0
        yy = UInt64(y)
       z = initializer(ArbFloat{P})
-       ccall(@libarb(arb_root_ui), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{UInt64}, Int), &z, &x, &yy, P)
+       ccall(@libarb(arb_root_ui), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, UInt64, Int), &z, &x, yy, P)
        z
     else
       pow(ArbFloat{P}(x), inv(y))
