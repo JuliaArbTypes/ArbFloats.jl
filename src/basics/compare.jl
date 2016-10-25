@@ -72,9 +72,7 @@ isequal{T<:ArbFloat}(a::T, b::Void) = false
 isless{ T<:ArbFloat}(a::Void, b::T) = true
 isless{ T<:ArbFloat}(a::T, b::Void) = true
 
-min{T<:ArbFloat}(a::T, b::T) = smartvalue(a) < smartvalue(b) ? a : b
-max{T<:ArbFloat}(a::T, b::T) = smartvalue(b) < smartvalue(a) ? a : b
-#=
+
 function max{T<:ArbFloat}(x::T, y::T)
     return (x + y + abs(x - y))/2
 end
@@ -82,8 +80,10 @@ end
 function min{T<:ArbFloat}(x::T, y::T)
     return (x + y - abs(x - y))/2
 end
-=#
 #=
+min{T<:ArbFloat}(a::T, b::T) = smartvalue(a) < smartvalue(b) ? a : b
+max{T<:ArbFloat}(a::T, b::T) = smartvalue(b) < smartvalue(a) ? a : b
+
 function min2{T<:ArbFloat}(x::T, y::T)
     return
         if donotoverlap(x,y)
