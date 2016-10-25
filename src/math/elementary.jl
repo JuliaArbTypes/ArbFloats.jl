@@ -84,7 +84,7 @@ for (op,cfunc) in ((:^,:arb_pow), (:pow,:arb_pow))
       yy = ArbFloat{P}(ay)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &yy, P)
-      return sy ? 1/z : z
+      return sy ? inv(z) : z
     end
     function ($op){P,R<:Rational}(x::R, y::ArbFloat{P})
       xx = ArbFloat{P}(x)
