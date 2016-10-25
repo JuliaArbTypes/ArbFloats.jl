@@ -63,7 +63,7 @@ end
      return initializer(ArbFloat{P})
 end
 
-# typemax,realmax realmax,realmin
+# typemax,typemin realmax,realmin
 
 typemax{P}(::Type{ArbFloat{P}}) = ArbFloat{P}("Inf")
 typemin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}("-Inf")
