@@ -4,59 +4,41 @@ ArbFloats.jl
 
 #### Arb available as an extended precision floating point context.  
 
-<p align="center">Jeffrey Sarnoff © 2016 Sep 06 in New York, USA</p>
+Jeffrey Sarnoff © 2016 Sep 15 in New York, USA
 
 ===========  
  
-   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
    This package is a faster alternative to BigFloats when working with significands  
-   that do not exceed ~3,250 bits (~1000 digits).
+   that do not exceed ~4,000 bits (~1200 digits).
 
    The base C library implements floating point intervals and operations thereupon  
    which are guaranteed to produce results that enclose the theoretical math value.  
    While not the package focus, full access to interval-based functions is present.
 
-   This package has been designed to offer the Julia community more performant  
-   extended precision floating point math and to offer extended floating point  
-   results as accurately as possible at a precision that does not misrepresent  
-   the information content of the underlying interval valuation.
+   ArbFloats provides more performant extended precision floating point math 
+   and will show results as accurately as possible by using a precision that
+   does not misrepresent the information content of the underlying interval.
 
 
+#### version 0.1.9 (for Julia v0.5).
 
->
->   This is the sixth effort and first reasonably comprehensive ArbFloats release.  
->   This package is a faster alternative to BigFloats when working with significands  
->   that do not exceed ~3,500 bits.
->
->   The base C library implements floating point intervals and operations thereupon  
->   which are guaranteed to produce results that enclose the theoretical math value.  
->   While not the package focus, full access to interval-based functions is present.
->
->   This package has been designed to offer the Julia community more performant  
->   extended precision floating point math and to offer extended floating point  
->   results as accurately as possible at a precision that does not misrepresent  
->   the information content of the underlying interval valuation.
-
-#### version 0.1.2 (for Julia v0.5+).
+[Performance relative to BigFloats](https://github.com/JuliaArbTypes/ArbFloats.jl/blob/master/PERFORMANCE.md)
 
 If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
 If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
 
-Anyone interested in contributing some time is encouraged  
-to contact the author (firstname.lastname at-the-gmail).
-
-
 #### Install
 
 ```julia
+Pkg.update()
+Pkg.add("Nemo") # for Win, if Nemo was not already present, follow this with Pkg.build("Nemo")
 Pkg.add("ArbFloats")
-# or else Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ```
-If you have not installed Nemo before, you will see compilation notes and maybe warnings.  
-Ignore them.  This is a good time to walk the dog, go for coffee, or play shuffleboard.  
-When the prompt comes back,   quit() and restart Julia and ```julia> using ArbFloats```  
-should precompile quickly and work well.  This is what I do, to get things set up:
-
+If you have not installed Nemo before, you will see compilation notes and maybe warnings.   
+Ignore them.  This is a good time to walk the dog, go for coffee, or play shuffleboard.   
+When the prompt comes back,   quit() and restart Julia and `julia> using ArbFloats`   
+should precompile quickly and work well.  This is what I do, to get things set up:  
+  
 ```julia
 Pkg.update()
 # get current Nemo, if needed do
@@ -83,13 +65,15 @@ using ArbFloats
 
 precision(ArbFloat) # show the current default precision
 # 116
-setprecision(ArbFloat, 120) # change the current default precision
-# 100
+setprecision(ArbFloat, 200) # change the current default precision
+# 200
+typealias ArbFloat{200} Arb200 # A Good Idea, and shaves cycles in use
 
-a = ArbFloat(12);  # use the default precision, at run time
-b = @ArbFloat(12); # use the default precision, at compile time
-c = ArbFloat{200}(12); # use specified precision, at run time
-d = @ArbFloat(200,12); # use specified precision, at compile time
+a = ArbFloat(12);          # use the default precision, at run time
+b = @ArbFloat(12);         # use the default precision, at compile time
+c = ArbFloat{200}(golden); # use specified precision, at run time
+d = @ArbFloat(200,golden); # use specified precision, at compile time
+e = Arb200(12);            # use named precision, assuming prior typealias
 
 # setprecision(ArbFloat, 53+0); # akin to setprecision(BigFloat, 53)
 # to see elementary function evaluations rounded to (at least) N significand bits, 
@@ -155,10 +139,11 @@ smartstring(exp1)
 # "2.71828182845904523536028747135266+"
 smartstring(fuzzed_e)
 # "2.7182818284590452353602874713527-"
+```
 
-
-# Float32 and ArbFloat32
-typealias ArbFloat32 ArbFloat{24} 
+####Float32 and ArbFloat32
+```julia
+typealias ArbFloat32 ArbFloat{24} # Float32 has 24 significand bits
 setprecision(ArbFloat, 24) # it is good to keep precisions in concert
 
 fpOneThird = 1.0f0 / 3.0f0
@@ -166,8 +151,9 @@ fpOneThird = 1.0f0 / 3.0f0
 
 oneThird = ArbFloat32(1) / ArbFloat32(3)
 # 0.3333333
-showall_pm(oneThird)
-# 0.33333331 ± 2.9802322387695312e-8
+show_pm(oneThird)
+# 0.33333331±2.98023223877e-8
+
 
 # gamma(1/3) is 2.6789_3853_4707_7476_3365_5692_9409_7467_7644~
 gamma( fpOneThird )
@@ -177,10 +163,22 @@ gamma_oneThird = gamma( oneThird )
 # 2.6789_4
 bounds(gamma_oneThird)
 # (2.6789_362, 2.6789_401)
+showsmall(gamma_oneThird)
 ```
 
 #### Display
 ```julia
+
+# e.g. stringsmall & showsmall, stringsmall_pm & showsmall_pm
+# {string,show}{small, compact, all, small_pm, compact_pm, all_pm}
+stringsmall(oneThird), stringsmall_pm(oneThird)
+("0.3333333",  "0.33333331±2.98e-8")
+
+# show works with vectors and tuples and varargs of ArbFloat
+showsmall([oneThird, oneThird]);showsmall((oneThird,oneThird));showsmall(oneThird,oneThird)
+# [ 0.3333333,      ( 0.3333333,      ( 0.3333333,
+#   0.3333333 ]       0.3333333 )       0.3333333 )
+
 
 ArbFloat("Inf"), ArbFloat("-Inf"), ArbFloat("NaN")
 # +Inf, -Inf, NaN
@@ -232,6 +230,10 @@ Roots (accepts ArbFloats, results are Float64)
 If you have a package that accepts AbstractFloats or Reals and does not “just work”   
 with ArbFloats, please note it as an issue. If you have a package that works well   
 with ArbFloats, do let us know.
+
+### More Information
+
+Please the notes directory for more information about ArbFloats.
 
 #### Hewing to the sensible
 
@@ -376,12 +378,3 @@ with many others.
 William Hart and Tommy Hofmann have been gracious with their work and generous
 with their time.  
 
-=====
-
-Others have helped with conceptual subtleties, software from which I learned Julia,    
-suggesting improvements, fixing bugs, testing and other specific acts of good will:  
-
-&nbsp;&nbsp;&nbsp;&nbsp;Stefan Karpinski, Jeff Bezanson, Alan Edelman, Viral Shah,     
-&nbsp;&nbsp;&nbsp;&nbsp;John Myles White, Tim Holy, Thomas Breloff, Katherine Hyatt,   
-&nbsp;&nbsp;&nbsp;&nbsp;Avik Sengupta, Yichao Yu, David P. Sanders, Chris Rackauckas,   
-&nbsp;&nbsp;&nbsp;&nbsp;Scott Jones, Luis Benet, Galen O'Neil, and Julia's community     
