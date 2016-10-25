@@ -314,4 +314,4 @@ promote_rule{P,Q}(::Type{ArbFloat{P}}, ::Type{ArbFloat{Q}}) =
 @vectorize_1arg(ArbFloat, Int128)
 @vectorize_1arg(ArbFloat, Int64)
 @vectorize_1arg(ArbFloat, Int32)
-@vectorize_1arg(ArbFloat, Rationa)
+@vectorize_1arg(ArbFloat, Rational)
