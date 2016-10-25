@@ -9,7 +9,7 @@ Jeffrey Sarnoff © 2016 Sep 15 in New York, USA
 ===========  
  
    This package is a faster alternative to BigFloats when working with significands  
-   that do not exceed ~3,250 bits (~1000 digits).
+   that do not exceed ~4,000 bits (~1200 digits).
 
    The base C library implements floating point intervals and operations thereupon  
    which are guaranteed to produce results that enclose the theoretical math value.  
