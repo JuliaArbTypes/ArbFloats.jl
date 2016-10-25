@@ -31,15 +31,14 @@ If you write something that improves this for others, submit it as a [pull reque
 
 ```julia
 Pkg.update()
-Pkg.add("Nemo") # for Win, follow this with Pkg.build("Nemo")
+Pkg.add("Nemo") # for Win, if Nemo was not already present, follow this with Pkg.build("Nemo")
 Pkg.add("ArbFloats")
-# or else Pkg.clone("https://github.com/JuliaArbTypes/ArbFloats.jl")
 ```
-If you have not installed Nemo before, you will see compilation notes and maybe warnings.  
-Ignore them.  This is a good time to walk the dog, go for coffee, or play shuffleboard.  
-When the prompt comes back,   quit() and restart Julia and ```julia> using ArbFloats```  
-should precompile quickly and work well.  This is what I do, to get things set up:
-
+If you have not installed Nemo before, you will see compilation notes and maybe warnings.   
+Ignore them.  This is a good time to walk the dog, go for coffee, or play shuffleboard.   
+When the prompt comes back,   quit() and restart Julia and `julia> using ArbFloats`   
+should precompile quickly and work well.  This is what I do, to get things set up:  
+  
 ```julia
 Pkg.update()
 # get current Nemo, if needed do
