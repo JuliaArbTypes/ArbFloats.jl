@@ -74,6 +74,54 @@ isless{ T<:ArbFloat}(a::T, b::Void) = true
 
 min{T<:ArbFloat}(a::T, b::T) = smartvalue(a) < smartvalue(b) ? a : b
 max{T<:ArbFloat}(a::T, b::T) = smartvalue(b) < smartvalue(a) ? a : b
+#=
+function max{T<:ArbFloat}(x::T, y::T)
+    return (x + y + abs(x - y))/2
+end
+
+function min{T<:ArbFloat}(x::T, y::T)
+    return (x + y - abs(x - y))/2
+end
+=#
+#=
+function min2{T<:ArbFloat}(x::T, y::T)
+    return
+        if donotoverlap(x,y)
+            x < y ? x : y
+        else
+            xlo, xhi = bounds(x)
+            ylo, yhi = bounds(y)
+            lo,hi = min(xlo, ylo), min(xhi, yhi)
+            md = (hi+lo)/2
+            rd = (hi-lo)/2
+            midpoint_radius(md, rd)
+        end
+end
+
+function max2{T<:ArbFloat}(x::T, y::T)
+    return
+        if donotoverlap(x,y)
+            return x > y ? x : y
+        else
+            xlo, xhi = bounds(x)
+            ylo, yhi = bounds(y)
+            lo,hi = max(xlo, ylo), max(xhi, yhi)
+            md = (hi+lo)/2
+            rd = (hi-lo)/2
+            return midpoint_radius(md, rd)
+        end
+end
+=#
+#=
+function max{T<:ArbFloat}(x::T, y::T)
+    return ((x>=y) | !(y<x)) ? x : y
+end
+=#
+
+function minmax{T<:ArbFloat}(x::T, y::T)
+   return min(x,y), max(x,y) # ((x<=y) | !(y>x)) ? (x,y) : (y,x)
+end
+
 
 # experimental ≖ ≗
 (eq){T<:ArbFloat}(x::T, y::T) = !(x != y)
