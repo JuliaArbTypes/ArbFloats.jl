@@ -266,14 +266,16 @@ for F in (:BigInt, :Rational)
   end
 end
 
-function convert{T<:ArbFloat,S}(::Type{T}, x::Irrational{S})
+function convert{T<:ArbFloat,Sym}(::Type{T}, x::Irrational{Sym})
     P = precision(T)
-    a = initializer(ArbFloat{P})
-    setprecision(BigFloat, precision(T)+24) do
-         a = convert(T, BigFloat(x))
-    end
-    return a
+    bf_precision = precision(BigFloat)
+    setprecision(BigFloat, precision(T)+24)        
+    bf_x = convert(BigFloat, x)
+    z = convert(ArbFloat{P}, bf_x)
+    setprecision(BigFloat, bf_precision)
+    return z
 end
+
 
 
 function convert{P}(::Type{BigInt}, x::ArbFloat{P})
