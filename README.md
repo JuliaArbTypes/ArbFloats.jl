@@ -22,7 +22,7 @@ Jeffrey Sarnoff © 2016 Sep 15 in New York, USA
 
 #### version 0.1.9 (for Julia v0.5).
 
-[Performance relative to BigFloats](https://github.com/JuliaArbTypes/ArbFloats.jl/blob/master/PERFORMANCE.md)
+[Click for performance relative to BigFloats](https://github.com/JuliaArbTypes/ArbFloats.jl/blob/master/PERFORMANCE.md)
 
 If you find something to be an issue for you, submit it as an [issue](https://github.com/JuliaArbTypes/ArbFloats.jl/issues).  
 If you write something that improves this for others, submit it as a [pull request](https://github.com/JuliaArbTypes/ArbFloats.jl/pulls).
