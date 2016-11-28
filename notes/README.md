@@ -1,5 +1,11 @@
 
-#### Package Concepts:  
+#### Essential Concepts and Important Capabilities  
+
+a means of dterminaiton determination of value.
+
+
+| Value in its local context Perspective |
+                                           |========================================|
 
 
 ```ruby
