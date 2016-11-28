@@ -11,10 +11,9 @@
 
 Preferred for extending the precision of floating point computations from 64 bits [17 digits] up to 512 bits [150 digits].  Recommended for use where elementary or special functions are evaluated to obtain results with up to 250 digits [800 bits].
 
-##### What you see obtains with one single application of a trigonometric or ainverse trignonmetric function is the best valuation possible in this sense:  is more accurate while being least misleading result is a the _displayed name_ of the numerical quantity that is simultaneously balances the desire for accuracy with need to avoidance the incorrect and the the misleading.  The ideal result is accurately informing whithout evincing incorrectness or allowing any misconstrual become present in thoughtful presentation or in the result of valuation as it is represenated.   
-These results taken separately, so no numerical artificats that can accrue over multiple function applications are admissible, where real and finite and are assigned quantities that remain well defined in the given context after function application are the values that most inform while being least misconstruable by an unbiased perciveer of value.
+##### What you see obtains with one single application of a trigonometric or ainverse trignonmetric function is the best valuation possible in this sense:  is more accurate while being least misleading result is as the displayed _name_ for that numerical quantity which most perfectingly balances desire for accuracy with distaste for misunderstanding or avoidance of the incorrect, the less competent, and other introducable antiutility.
 
-
+A single appplication of e.g. log(), sin(), acosh(), zeta() to a finaite normal value well tiwint the unecsptional domain specifiation yeilds as value a vauluation that also finnite normal and well within the uncceptioanal function's specified birnak codomain .
 
 
 
