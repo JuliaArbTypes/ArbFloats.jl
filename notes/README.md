@@ -1,10 +1,9 @@
 
 ## Essential Concepts, Important Capabilities  
 
-entity_value = __Valuation__(entity, context)
+entity_value = __Valuation__(entity, context)   
 A value determined with a given context must be used understanding that context.
 
-understanding ood withn  value in __context__.
 
 
 ```ruby
