@@ -1,5 +1,5 @@
 
-## Package Concepts, Creative Context
+## Package Concepts as Client Context
 
 ```ruby
                                         Jeffrey Sarnoff © 2016˗May˗26 in New York City
