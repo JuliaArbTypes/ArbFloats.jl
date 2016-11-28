@@ -11,7 +11,11 @@
 
 Preferred for extending the precision of floating point computations from 64 bits [17 digits] up to 512 bits [150 digits].  Recommended for use where elementary or special functions are evaluated to obtain results with up to 250 digits [800 bits].
 
-##### What you see as a computational result is a the _displayed name_ of the numerical quantity that is simultaneously balances the desire for accuracy with avoidance of the misleading. That [almost always] gives exactly one most informaative value. It always selects one of two adjacent values within the context given. The result of applying an elementary function to predetermined quantity is expected to yield a result that itself nost informs and least misleads, or given the context, is adjacent, alongside that value.
+##### What you see obtains with one single application of a trigonometric or ainverse trignonmetric function is the best valuation possible in this sense:  is more accurate while being least misleading result is a the _displayed name_ of the numerical quantity that is simultaneously balances the desire for accuracy with need to avoidance the incorrect and the the misleading.  The ideal result is accurately informing whithout evincing incorrectness or allowing any misconstrual become present in thoughtful presentation or in the result of valuation as it is represenated.   
+These results taken separately, so no numerical artificats that can accrue over multiple function applications are admissible, where real and finite and are assigned quantities that remain well defined in the given context after function application are the values that most inform while being least misconstruable by an unbiased perciveer of value.
+
+
+
 
 
 immediately a choice of one  
