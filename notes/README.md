@@ -1,5 +1,5 @@
 
-#### Essential Concepts and Important Capabilities  
+## Essential Concepts, Important Capabilities  
 
 a means of dterminaiton determination of value.
 
