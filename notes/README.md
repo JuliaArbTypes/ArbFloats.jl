@@ -1,10 +1,6 @@
 
 ## Essential Concepts, Important Capabilities  
 
-entity_value = __Valuation__(entity, context)   
-A value determined with a given context must be used understanding that context.
-
-
 
 ```ruby
                                         Jeffrey Sarnoff © 2016˗May˗26 in New York City
@@ -15,6 +11,14 @@ A value determined with a given context must be used understanding that context.
 
 Preferred for extending the precision of floating point computations from 64 bits [17 digits] up to 512 bits [150 digits].  Recommended for use where elementary or special functions are evaluated to obtain results with up to 250 digits [800 bits].
 
+#### What you see as a computational result is a the _displayed name_ of the numerical quantity that is simultaneously balances the desire for accuracy with avoidance of the misleading. That [almost always] gives exactly one most informaative value. It always selects one of two adjacent values within the context given. The result of applying an elementary function to predetermined quantity is expected to yield a result that itself nost informs and least misleads, or given the context, is adjacent, alongside that value.
+
+
+immediately a choice of one  
+ncorrectness and avoidance of misleading information. 
+disapproval of misleading regard interest in  the undesired te to within at least 1 ulp of the most perfect value indicable and dispelling of incorrect (including errors of specious overprecision)
+
+ly accurrate misleading    theoretically ideal value true valueepsilon (1 ulp)    informative that realizes  most correctly conveys properly and value for  symbol umeric pattern  representation is a a most accurrate and least misleading  representation of the value 
 ####Conceptual Background
 
 `Transparency`: a desirable quality that may obtain in the presentation of numerical quantity. Where `transparency` exists, it may well not persist. A diminution of `transparency` increases `opacity`, and vice versa. Presentation of a floating point value either evinces `transparency` or furthers `opacity`.  With `transparent` values, 'looking at a value' is 'looking through to see the knowable value'.  With `opaque` values, 'looking at a value' is 'looking away from' that.  And it is that nonresponsive, nonparticipative engagement of cognitive attention that is the `opaqueness` underlying `opacity`. 
