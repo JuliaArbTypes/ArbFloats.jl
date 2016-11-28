@@ -1,11 +1,10 @@
 
 ## Essential Concepts, Important Capabilities  
 
-a means of dterminaiton determination of value.
+entity_value = __Valuation__(entity, context)
+A value determined with a given context must be used understanding that context.
 
-
-| Value in its local context Perspective |
-                                           |========================================|
+understanding ood withn  value in __context__.
 
 
 ```ruby
