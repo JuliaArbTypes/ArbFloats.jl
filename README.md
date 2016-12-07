@@ -439,9 +439,7 @@ with their time.
 Many have helped me.  Some with their prior acts of good will.    
 Others by explaining subtleties, sharing exemplary Julian ways,  
 suggesting improvements, providing fixes, or doing testing.
+The list of names outgrew this space, see Notes for more.
 
->> Stefan Karpinski, Jeff Bezanson, Alan Edelman, Viral Shah,     
->> John Myles White, Tim Holy, Thomas Breloff, Katherine Hyatt,   
->> Avik Sengupta, David P. Sanders, Yichao Yu, Chris Rackauckas,  
->> Scott Jones, Luis Benet, Galen O'Neil, Tony Kelman.
+Please alert me to any issues, miscues or inartful expressions.
 
