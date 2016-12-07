@@ -15,7 +15,7 @@ These results were obtained using BenchmarkTools.jl on one desktop system.
  - Relative Speedup     
     - big    ≝   mean(execution time using BigFloats at the given precision)    
     - arb    ≝   mean(execution time using ArbFloats at the given precision)    
-    - Relative Speedup = round(Int, abs( arb - big ) / arb )
+    - Relative Speedup = _round( abs(arb-big) / arb )_
     - Relative Speed = Relative Speedup + 1
 
 #### ArbFloat operations performed during one BigFloat operation
