@@ -30,8 +30,10 @@ These results were obtained using BenchmarkTools.jl on one desktop system.
 | log         |   25    | 68      | 140 |  200 |
 | zeta        |   40    | 100     | 24  |  28 |
 
-===========  
- 
+---------------
+---------------
+#### Overview
+
    This package is a faster alternative to BigFloats when working with significands  
    that do not exceed ~3,500 bits (~1050 digits).
 
