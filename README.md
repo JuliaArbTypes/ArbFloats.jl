@@ -20,7 +20,7 @@ Jeffrey Sarnoff © 2016 Sep 15 in New York, USA
    does not misrepresent the information content of the underlying interval.
 
 
-#### version 0.1.10 (for Julia v0.5).
+#### version 0.1.10 on 2016-Dec-06 for Julia v0.5
 
 These results were obtained using BenchmarkTools.jl on one system with the precisions for BigFloats and ArbFloats set as shown, using variables preassigned BigFloat(0.25) or ArbFloat(0.25).  Relative times use the median time reported.
 
