@@ -44,9 +44,9 @@ These results were obtained using BenchmarkTools.jl on one desktop system.
    which are guaranteed to produce results that enclose the theoretical math value.  
    While not the package focus, full access to interval-based functions is present.
 
-   ArbFloats provides more performant extended precision floating point math 
-   and will show results as accurately as possible by using a precision that
-   does not misrepresent the information content of the underlying interval.
+   ArbFloats provides more performant extended precision floating point math   
+   and will show results as accurately as possible by using a precision that  
+   does not misrepresent the information content of the underlying interval.  
 
 
 __Version 0.1.00__ released 2016-Sep-15.   
