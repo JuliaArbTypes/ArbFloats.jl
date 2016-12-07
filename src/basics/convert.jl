@@ -301,12 +301,17 @@ promote_rule{P}(::Type{ArbFloat{P}}, ::Type{Rational{BigInt}}) = Rational{BigInt
 promote_rule{P,Q}(::Type{ArbFloat{P}}, ::Type{ArbFloat{Q}}) =
     ifelse(P>Q, ArbFloat{P}, ArbFloat{Q})
 
+
 # convert a vector of ArbFloats to another numeric type
 for T in (:BigFloat, :Float64, :Float32, :BigInt, :Int128, :Int64, :Int32, :Rational)
     @eval ($T){P}(x::Array{ArbFloat{P},1}) = ($T).(x)
 end
 # convert a numeric vector into ArbFloats
 for T in (:Float64, :Float32, :BigInt, :Int128, :Int64, :Int32, :Rational)
-    @eval ArbFloat{P}(x::Array{($T),1}) = ArbFloat{P}.(x)
+    @eval begin
+        function ArbFloat(x::Array{($T),1})
+             P=precision(ArbFloat)
+             return map(v->ArbFloat{P}(v), x)
+        end
+    end
 end
-
