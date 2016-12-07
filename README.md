@@ -97,7 +97,7 @@ should precompile quickly and work well.  This is what I do, to get things set u
   
 ```julia
 Pkg.update()
-# get current Nemo, if needed do
+# get current Nemo, if you have an old version of Nemo, do
 # Pkg.rm("Nemo"); Pkg.rm("Nemo");
 Pkg.add("Nemo")
 quit()
