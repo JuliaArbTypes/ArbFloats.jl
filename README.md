@@ -28,11 +28,11 @@ These results were obtained using BenchmarkTools.jl on one desktop system.
 | add         |    1    |  3      | 2   | 2 |
 | multiply    |    2    |  4      | 3   | 4 |
 | divide      |    3    |  8      | 35  | 60 |
-| sin         |   10    | 12      | 10  |  12 |
-| atan        |   16    | 18      | 64  | 45 |
-| exp         |   18    | 68      | 20  |  24 |
-| log         |   25    | 68      | 140 |  200 |
-| zeta        |   40    | 100     | 24  |  28 |
+| sine         |   10    | 12      | 10  |  12 |
+| arctangent        |   16    | 18      | 64  | 45 |
+| exponential         |   18    | 68      | 20  |  24 |
+| logarithm         |   25    | 68      | 140 |  200 |
+| Riemann zeta        |   40    | 100     | 24  |  28 |
 
 #   
 
