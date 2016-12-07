@@ -4,8 +4,8 @@ ArbFloats.jl
 
 #### Arb available as an extended precision floating point context.  
 
-```ruby
-Copyright 2016 by Jeffrey Sarnoff.  -Sep-15 from New York, USA
+```lua
+'Copyright © 2016 by Jeffrey Sarnoff'
 ```
 
 ### ArbFloats calculate faster than BigFloats at medium precisions
