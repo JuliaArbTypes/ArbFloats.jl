@@ -27,21 +27,23 @@ These results were obtained using BenchmarkTools.jl on one desktop system.
  - Relative Speedup     
     - big    ≝   mean(execution time using BigFloats at the given precision)    
     - arb    ≝   mean(execution time using ArbFloats at the given precision)    
-    - Relative Speedup = round(Int, abs( arb - big ) / arb )    
+    - Relative Speedup = round(Int, abs( arb - big ) / arb )
+    - Relative Speed = Relative Speedup + 1
 
 ### ArbFloats calculate faster than BigFloats at medium precisions
-#### ArbFloat speedups relative to BigFloat calculation times
+#### ArbFloat operations performed during one BigFloat operation
+
 
 |function     | 256 bits | 1024 bits | 2048 bits | 3000 bits | 
 |:------------|:---------:|:--------------:|:--------------:|:--------------:|
-| +           |    0    |  2      | 1   | 1 |
-| *           |    1    |  3      | 2   | 3 |
-| /           |    2    |  7      | 35  | 62 |
+| +           |    1    |  3      | 2   | 2 |
+| *           |    2    |  4      | 3   | 4 |
+| /           |    3    |  8      | 35  | 60 |
 | sin         |   10    | 12      | 10  |  12 |
 | atan        |   16    | 18      | 64  | 45 |
-| exp         |   18    | 68      | 21  |  24 |
-| log         |   25    | 68      | 141 |  206 |
-| zeta        |   40    | 97      | 24  |  28 |
+| exp         |   18    | 68      | 20  |  24 |
+| log         |   25    | 68      | 140 |  200 |
+| zeta        |   40    | 100     | 24  |  28 |
 
 
 #### Install
