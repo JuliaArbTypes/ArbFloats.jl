@@ -301,19 +301,12 @@ promote_rule{P}(::Type{ArbFloat{P}}, ::Type{Rational{BigInt}}) = Rational{BigInt
 promote_rule{P,Q}(::Type{ArbFloat{P}}, ::Type{ArbFloat{Q}}) =
     ifelse(P>Q, ArbFloat{P}, ArbFloat{Q})
 
-@vectorize_1arg(BigFloat, ArbFloat)
-@vectorize_1arg(Float64, ArbFloat)
-@vectorize_1arg(Float32, ArbFloat)
-@vectorize_1arg(BigInt, ArbFloat)
-@vectorize_1arg(Int128, ArbFloat)
-@vectorize_1arg(Int64, ArbFloat)
-@vectorize_1arg(Int32, ArbFloat)
-@vectorize_1arg(Rational, ArbFloat)
+# convert a vector of ArbFloats to another numeric type
+for T in (:BigFloat, :Float64, :Float32, :BigInt, :Int128, :Int64, :Int32, :Rational)
+    @eval ($T){P}(x::Array{ArbFloat{P},1}) = ($T).(x)
+end
+# convert a numeric vector into ArbFloats
+for T in (:Float64, :Float32, :BigInt, :Int128, :Int64, :Int32, :Rational)
+    @eval ArbFloat{P}(x::Array{($T),1}) = ArbFloat{P}.(x)
+end
 
-@vectorize_1arg(ArbFloat, Float64)
-@vectorize_1arg(ArbFloat, Float32)
-@vectorize_1arg(ArbFloat, BigInt)
-@vectorize_1arg(ArbFloat, Int128)
-@vectorize_1arg(ArbFloat, Int64)
-@vectorize_1arg(ArbFloat, Int32)
-@vectorize_1arg(ArbFloat, Rational)
