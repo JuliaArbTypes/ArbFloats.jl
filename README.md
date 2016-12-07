@@ -49,7 +49,7 @@ These results were obtained using BenchmarkTools.jl on one desktop system.
    does not misrepresent the information content of the underlying interval.
 
 
-##### _Ver 0.1.0_ released 2016-Sep-15. _Ver 0.1.11_ released 2016-Dec-07.
+##### _Version 0.1.0_ released 2016-Sep-15. _v"0.1.11"_ released 2016-Dec-07.
 
 ### Install
 
