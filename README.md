@@ -4,7 +4,7 @@ ArbFloats.jl
 
 #### Arb available as an extended precision floating point context.  
 
-```latex
+```lua
 'Copyright © 2016 by Jeffrey Sarnoff'
 ```
 
