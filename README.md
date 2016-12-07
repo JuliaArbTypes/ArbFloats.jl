@@ -6,6 +6,30 @@ ArbFloats.jl
 
 Jeffrey Sarnoff © 2016 Sep 15 in New York, USA
 
+### ArbFloats calculate faster than BigFloats at medium precisions
+
+These results were obtained using BenchmarkTools.jl on one desktop system.
+
+ - Relative Speedup     
+    - big    ≝   mean(execution time using BigFloats at the given precision)    
+    - arb    ≝   mean(execution time using ArbFloats at the given precision)    
+    - Relative Speedup = round(Int, abs( arb - big ) / arb )
+    - Relative Speed = Relative Speedup + 1
+
+#### ArbFloat operations performed during one BigFloat operation
+
+
+|function     | 256 bits | 1024 bits | 2048 bits | 3000 bits | 
+|:------------|:---------:|:--------------:|:--------------:|:--------------:|
+| +           |    1    |  3      | 2   | 2 |
+| *           |    2    |  4      | 3   | 4 |
+| /           |    3    |  8      | 35  | 60 |
+| sin         |   10    | 12      | 10  |  12 |
+| atan        |   16    | 18      | 64  | 45 |
+| exp         |   18    | 68      | 20  |  24 |
+| log         |   25    | 68      | 140 |  200 |
+| zeta        |   40    | 100     | 24  |  28 |
+
 ===========  
  
    This package is a faster alternative to BigFloats when working with significands  
@@ -22,31 +46,7 @@ Jeffrey Sarnoff © 2016 Sep 15 in New York, USA
 
 #### version 0.1.10 on 2016-Dec-06 for Julia v0.5
 
-These results were obtained using BenchmarkTools.jl on one desktop system.
-
- - Relative Speedup     
-    - big    ≝   mean(execution time using BigFloats at the given precision)    
-    - arb    ≝   mean(execution time using ArbFloats at the given precision)    
-    - Relative Speedup = round(Int, abs( arb - big ) / arb )
-    - Relative Speed = Relative Speedup + 1
-
-### ArbFloats calculate faster than BigFloats at medium precisions
-#### ArbFloat operations performed during one BigFloat operation
-
-
-|function     | 256 bits | 1024 bits | 2048 bits | 3000 bits | 
-|:------------|:---------:|:--------------:|:--------------:|:--------------:|
-| +           |    1    |  3      | 2   | 2 |
-| *           |    2    |  4      | 3   | 4 |
-| /           |    3    |  8      | 35  | 60 |
-| sin         |   10    | 12      | 10  |  12 |
-| atan        |   16    | 18      | 64  | 45 |
-| exp         |   18    | 68      | 20  |  24 |
-| log         |   25    | 68      | 140 |  200 |
-| zeta        |   40    | 100     | 24  |  28 |
-
-
-#### Install
+### Install
 
 ```julia
 Pkg.update()
