@@ -4,10 +4,8 @@ ArbFloats.jl
 
 #### Arb available as an extended precision floating point context.  
 
-```julia
-'  
-                      Copyright © 2016 by Jeffrey Sarnoff  
-'
+```latex
+'Copyright © 2016 by Jeffrey Sarnoff'
 ```
 
 ### ArbFloats calculate faster than BigFloats at medium precisions
