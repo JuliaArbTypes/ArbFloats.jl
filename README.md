@@ -265,7 +265,8 @@ Please the notes directory for more information about ArbFloats.
 Arb is happiest, and performs most admirably using intervals where the radius is     
 a very small portion of the working precision. Ideally, the radius is kept within      
 8*eps(midpoint).  With Arb, you are likely ok up to twice that.  And should your  
-approach generate unhelpfully wide intervals, then a way with fewer repeated touches  
+approach generate overly wide intervals, then it is worth trying an algorithm   
+that is designed to visit each extended precision variable less often.
 (prefer projection techniques to recursively applicative transforms), perhaps run  
 at higher working precision, is worth trying.  A toy version is likely to behave  
 in the same manner as your the more refined software.  It is worth the look.
