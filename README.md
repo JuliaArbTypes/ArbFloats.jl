@@ -29,7 +29,8 @@ These results were obtained using BenchmarkTools.jl on one desktop system.
     - arb    ≝   mean(execution time using ArbFloats at the given precision)    
     - Relative Speedup = round(Int, abs( arb - big ) / arb )    
 
-### Precision Relative Speedup using ArbFloats instead of BigFloats
+### ArbFloats calculate faster than BigFloats at medium precisions
+#### ArbFloat speedups relative to BigFloat calculation times
 
 |function     | 256 bits | 1024 bits | 2048 bits | 3000 bits | 
 |:------------|:---------:|:--------------:|:--------------:|:--------------:|
