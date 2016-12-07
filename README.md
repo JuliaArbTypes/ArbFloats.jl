@@ -438,8 +438,8 @@ with their time.
 
 Many have helped me.  Some with their prior acts of good will.    
 Others by explaining subtleties, sharing exemplary Julian ways,  
-suggesting improvements, providing fixes, or doing testing.
-The list of names outgrew this space, see Notes for more.
+suggesting improvements, providing fixes, or doing testing.    
+The list of names outgrew this space, see [this](https://github.com/JuliaArbTypes/ArbFloats.jl/blob/master/notes/help_along_the_way.md) for more.  
 
 Please alert me to any issues, miscues or inartful expressions.
 
