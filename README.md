@@ -49,8 +49,8 @@ These results were obtained using BenchmarkTools.jl on one desktop system.
    does not misrepresent the information content of the underlying interval.
 
 
-#### version 0.1.0 on 2016-Sep-15 for Julia v0.4
-#### version 0.1.10 on 2016-Dec-06 for Julia v0.5
+##### version 0.1.0  on 2016-Sep-15 for Julia v0.4
+##### version 0.1.11 on 2016-Dec-07 for Julia v0.5
 
 ### Install
 
