@@ -21,7 +21,7 @@ These results were obtained using BenchmarkTools.jl on one desktop system.
 #### ArbFloat operations performed during one BigFloat operation
 
 
-|function     | 256 bits | 1024 bits | 2048 bits | 3000 bits | 
+| precision     :| 256 bits | 1024 bits | 2048 bits | 3000 bits | 
 |:------------|:---------:|:--------------:|:--------------:|:--------------:|
 | +           |    1    |  3      | 2   | 2 |
 | *           |    2    |  4      | 3   | 4 |
