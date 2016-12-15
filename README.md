@@ -50,7 +50,7 @@ These results were obtained using BenchmarkTools.jl on one desktop system.
 
 
 __Version 0.1.00__ released 2016-Sep-15.   
-__Version 0.1.11__ released 2016-Dec-07.
+__Version 0.1.12__ released 2016-Dec-15.
 
 ### Install
 
