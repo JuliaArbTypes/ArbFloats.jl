@@ -5,7 +5,7 @@ macro setprecisions(nbits)
     quote begin
         setprecision(BigFloat, $nbits)
         setprecision(ArbFloat, $nbits)
-    end   end
+    end end
 end
 
 macro getvalues(val)
