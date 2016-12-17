@@ -80,6 +80,9 @@ import Base: STDOUT,
     rand, randn, sort,
     BigInt, BigFloat, Rational
 
+import ReadableNumbers: readable, PrettyNumberStyle,
+                        stringpretty, showpretty 
+
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
        @ArbFloat,     # converts string form of argument, precision is optional first arg
        setprecisionAugmented,
@@ -95,6 +98,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        showsmall_pm, showcompact_pm, show_pm,
        showlarge_pm, showall_pm,
        stringpretty, smartvalue, smartstring, showsmart,
+       readable, PrettyNumberStyle,
        two, three, four, copymidpoint, copyradius, deepcopyradius,
        get_emax, get_emin, bounded, boundedrange,
        decompose, isexact, notexact,
