@@ -2,11 +2,13 @@
 ArbFloats.jl
 ============
 
-#### Arb available as an extended precision floating point context.  
 
 ```lua
 '                       Copyright © 2016 by Jeffrey Sarnoff                        '
 ```
+
+#### [![Build Status](https://travis-ci.org/JuliaArbTypes/ArbFloats.jl.svg?branch=master)](https://travis-ci.org/JuliaArbTypes/ArbFloats.jl)
+
 
 ### ArbFloats calculate faster than BigFloats at medium precisions
 
