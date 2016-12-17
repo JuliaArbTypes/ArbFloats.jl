@@ -24,3 +24,6 @@ macro bench(f,val)
     return bfns.times[1]
   end end
 end
+
+
+
