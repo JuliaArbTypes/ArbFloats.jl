@@ -122,9 +122,9 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 
 include("support/NemoLibs.jl")                 # for precompiled libraries
-include("support/ReadableNumbers.jl")          # digit subsequence separators
 
-using .ReadableNumbers
+# include("support/ReadableNumbers.jl")          # digit subsequence separators
+using ReadableNumbers
 
 include("type/ArbCstructs.jl")
 include("type/MagFloat.jl")
