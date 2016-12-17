@@ -8,6 +8,7 @@ macro setprecisions(nbits)
     end end
 end
 
+# bigfloat_val, reciprocal_bigfloat_val, arbfloat_val, reciprocal_arbfloat_val = getvalues( 6.125 )
 macro getvalues(val)
     quote begin
         local strval, bigfloat, bigrecip, arbfloat, arbrecip
