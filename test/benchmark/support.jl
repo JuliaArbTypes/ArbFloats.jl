@@ -18,8 +18,7 @@ macro getvalues(val)
         arbfloat = ArbFloat(strval)
         arbrecip = one(ArbFloat)//arbfloat
         return (bigfloat, arbfloat, bigrecip, arbrecip)
-        end
-    end end  1
+    end end 
 end
 
         
