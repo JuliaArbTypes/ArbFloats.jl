@@ -123,6 +123,24 @@ zeta_slowerby = nbit_bigfloat_slowerby( (zeta), v0, fp_precise_bits);println( " 
 println();println( "    bits: ",fp_precise_bits' )
 
 
+println("     *      : ",mul_slowerby' )
+println("     /      : ", div_slowerby' )
+println("    cbrt    : ", cbrt_slowerby' )
+println( "    exp    : ", exp_slowerby' ) 
+println( "    log    : ", log_slowerby' )
+println( "    cos    : ", cos_slowerby' )
+println( "    tan    : ", tan_slowerby' )
+println( "    acos   : ", acos_slowerby' )
+println( "    atan   : ", atan_slowerby' )
+println( "    cosh   : ", cosh_slowerby' )
+println( "    tanh   : ", tanh_slowerby' )
+println( "    acosh  : ", acosh_slowerby' )
+println( "    atanh  : ", atanh_slowerby' )
+
+println( "    gamma  : ", gamma_slowerby' )
+println( "    digamma: ", digamma_slowerby' )
+println( "    zeta   : ", zeta_slowerby' )
+
 #=
 #const fp_precise_bits = [128, 256, 512, 768, 1024, 1280, 1536, 2048, 2560, 3072, 3584];
 const fp_precise_bits = [128*i for i in 1:26];
