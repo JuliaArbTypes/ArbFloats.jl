@@ -83,33 +83,21 @@ function nbit_bigfloat_onearg_slowerby(fn, val, vecnbits)
 end
 
 
-function nbit_bigfloat_twoarg_slowerby(fn, val, vecnbits)
-    nprecisions = length(vecnbits)
-    slowerby = zeros(Int, nprecisions)
-    for i in 1:nprecisions
-         slowerby[i] = benchbits_coverted_twoargs_rel(fn, val, vecnbits[i])
-    end
-    return slowerby
-end
-
-
-
 function nbit_bigfloat_twoarg_slowerby(fn, val1, val2, vecnbits)
     nprecisions = length(vecnbits)
     slowerby = zeros(Int, nprecisions)
     for i in 1:nprecisions
-         slowerby[i] = nbits_coverted_twoarg_rel(fn, val1, val2, vecnbits[i])
+         slowerby[i] = benchbits_converted_twoargs_rel(fn, val1, val2, vecnbits[i])
     end
     return slowerby
 end
 
-  
 BenchmarkTools.DEFAULT_PARAMETERS.seconds = 1
 BenchmarkTools.DEFAULT_PARAMETERS.samples = 25
 
 const fp_precise_bits = [128, 256, 512, 1024, 2048, 3072, 4096, 8192];
 
-mul_slowerby = nbit_bigfloat_twoarg_slowerby( mul, pi, golden, 512)
+mul_slowerby = nbit_bigfloat_twoarg_slowerby( mul, pi, golden, fp_precise_bits)
 
 
 
