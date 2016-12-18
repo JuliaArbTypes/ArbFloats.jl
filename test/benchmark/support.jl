@@ -17,10 +17,6 @@ macro setprecisions(nbits)
   end end
 end
 
-function big_and_arb_vals(v)
-    str = string(v)
-    return parse(BigFloat, str), parse(ArbFloat, str)
-end    
 
 
 function bench(f,val)
