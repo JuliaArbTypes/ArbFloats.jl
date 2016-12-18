@@ -8,7 +8,7 @@ macro setprecisions(nbits)
   end end
 end
 
-macro vals(v)
+macro big_and_arb_vals(v)
    quote 
      convert(BigFloat,$v), convert(ArbFloat,$v)
    end     
@@ -28,9 +28,9 @@ end
 macro bench2relative(f,val)
   quote begin
       local val_big, val_arb, bench_big, bench_arb, relspeed
-      val_big, val_arb = vals($val)
-      bench_big = @bench(f, val_big)
-      bench_arb = @bench(f, val_arb)
+      val_big, val_arb = @big_and_arb_vals($val)
+      bench_big = @bench($f, val_big)
+      bench_arb = @bench($f, val_arb)
       relspeed = (abs(bench_big-bench_arb)/bench_arb)+1
       return relspeed
    end end
