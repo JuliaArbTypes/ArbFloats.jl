@@ -77,7 +77,7 @@ function nbit_bigfloat_slowerby(fn, val, vecnbits)
     nprecisions = length(vecnbits)
     slowerby = zeros(Int, nprecisions)
     for i in 1:nprecisions
-         slowerby[i] = benchbits_coverted_rel(fn, val, vecnbits[i])
+         slowerby[i] = benchbits_converted_rel(fn, val, vecnbits[i])
     end
     return slowerby
 end
