@@ -22,13 +22,19 @@ function bench(f,val)
     return(firstquintile)
 end
 
-function relbench(f,val)
+function bench_rel(f,val)
     bigval, arbval = big_and_arb_vals(val)
     bigbench = bench(f,bigval)
     arbbench = bench(f,arbval)
     big_slowdown = bigbench/arbbench
-    return big_slowdown > 1 ? trunc(Int, big_slowdown+0.335) : trunc(Int,-1/big_slowdown)
+    return Float16(big_slowdown)
 end      
 
 
+function benchbits_rel(f,val,nbits)
+    @setprecisions( nbits) 
+   return bench_rel(f,val)
+end
 
+function bitbenches_rel(f, val, vecnbits)
+  
