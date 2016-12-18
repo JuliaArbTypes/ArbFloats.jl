@@ -26,8 +26,8 @@ function relbench(f,val)
     bigval, arbval = big_and_arb_vals(val)
     bigbench = bench(f,bigval)
     arbbench = bench(f,arbval)
-    speedup = abs(bigbench-arbbench)/arbbench
-    return speedup
+    big_slowdown = bigbench/arbbench
+    return big_slowdown > 1 ? trunc(Int, big_slowdown+0.335) : trunc(Int,-1/big_slowdown)
 end      
 
 
