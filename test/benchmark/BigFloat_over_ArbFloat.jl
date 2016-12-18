@@ -139,8 +139,9 @@ println( "    gamma  : ", gamma_slowerby' );
 println( "    digamma: ", digamma_slowerby' );
 println( "    zeta   : ", zeta_slowerby' );
 
-bf_slower_table = [fp_precise_bits 
-    exp_slowerby log_slowerby 
-    cos_slowerby tan_slowerby acos_slowerby atan_slowerby 
-    cosh_slowerby tanh_slowerby acosh_slowerby atanh_slowerby 
-    gamma_slowerby digamma_slowerby zeta_slowerby]
+# fp_precise_bits and
+bf_slower_by = hcat(  exp_slowerby ,log_slowerby, 
+           cos_slowerby ,tan_slowerby ,acos_slowerby, atan_slowerby, 
+           cosh_slowerby, tanh_slowerby, acosh_slowerby, atanh_slowerby, 
+           gamma_slowerby, digamma_slowerby ,zeta_slowerby)
+
