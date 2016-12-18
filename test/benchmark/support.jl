@@ -1,7 +1,7 @@
 using BenchmarkTools
 using ArbFloats
 
-round2(x) = round(x*100)/100
+round2(x) = round(x*100.0)/100.0
 
 function roundn(x,n::Unsigned)
   tenpow = 10^n
@@ -73,7 +73,7 @@ function benchbits_converted_rel(f,val1,val2,nbits)
   
     bigbench = bench(f,bigval1,bigval2)
     arbbench = bench(f,arbval1,arbval2)
-    big_slowdown = bigbench/arbbench
+    big_slowdown = Float64(bigbench)/Float64(arbbench)
     return round2(big_slowdown)
 end
 
@@ -109,8 +109,8 @@ const fp_precise_bits = [128*i for i in 1:16];
 println( "    bits: ",fp_precise_bits' );println()
 
 g = Float64(golden); recipg = 1/g; ten=10.0; tenth = (1/ten);
-mul_slowerby = nbit_bigfloat_slowerby( (*), g, recipg, fp_precise_bits); println("    mul :",mul_slowerby' )
-div_slowerby = nbit_bigfloat_slowerby( (/), g, recipg, fp_precise_bits); println("    div :", div_slowerby' )
+#mul_slowerby = nbit_bigfloat_slowerby( (*), g, recipg, fp_precise_bits); println("    mul :",mul_slowerby' )
+#div_slowerby = nbit_bigfloat_slowerby( (/), g, recipg, fp_precise_bits); println("    div :", div_slowerby' )
 # sqrt_slowerby = nbit_bigfloat_slowerby( (sqrt), v1, v2, fp_precise_bits); println("    sqrt :", sqrt_slowerby' )
 exp_slowerby = nbit_bigfloat_slowerby( (exp), g, fp_precise_bits);   println( "    exp : ", exp_slowerby' ) 
 log_slowerby = nbit_bigfloat_slowerby( (log), g, fp_precise_bits);   println( "    log : ", log_slowerby' )
@@ -130,8 +130,8 @@ zeta_slowerby = nbit_bigfloat_slowerby( (zeta), g, fp_precise_bits);println( "  
 println();println( "    bits: ",fp_precise_bits' )
 
 
-println("     *      : ", mul_slowerby' );
-println("     /      : ", div_slowerby' );
+#println("     *      : ", mul_slowerby' );
+#println("     /      : ", div_slowerby' );
 #println("    cbrt    : ", cbrt_slowerby' );
 println( "    exp    : ", exp_slowerby' ); 
 println( "    log    : ", log_slowerby' );
