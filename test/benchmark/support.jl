@@ -21,7 +21,7 @@ function bench(f,val)
 end
 
 
-function bench(f,val1,val2
+function bench(f,val1,val2)
     benchrunner = @benchmarkable ($f)($val1,$val2)
     tune!(benchrunner)
     benchcatcher = run(benchrunner).times
