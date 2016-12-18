@@ -41,7 +41,7 @@ function benchbits_parsed_rel(f,val,nbits)
     bigbench = bench(f,bigval)
     arbbench = bench(f,arbval)
     big_slowdown = bigbench/arbbench
-    return Float64(Float16(big_slowdown))
+    return Float64(Float32(big_slowdown))
   end
 
 function benchbits_converted_rel(f,val,nbits)
@@ -52,7 +52,7 @@ function benchbits_converted_rel(f,val,nbits)
     bigbench = bench(f,bigval)
     arbbench = bench(f,arbval)
     big_slowdown = bigbench/arbbench
-    return Float64(Float16(big_slowdown))
+    return Float64(Float32(big_slowdown))
 end
 
 function benchbits_converted_rel(f,val1,val2,nbits)
@@ -75,7 +75,7 @@ end
 
 function nbit_bigfloat_slowerby(fn, val, vecnbits)
     nprecisions = length(vecnbits)
-    slowerby = zeros(Int, nprecisions)
+    slowerby = zeros(Float64, nprecisions)
     for i in 1:nprecisions
          slowerby[i] = benchbits_converted_rel(fn, val, vecnbits[i])
     end
