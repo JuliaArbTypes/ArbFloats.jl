@@ -32,15 +32,6 @@ function bench_twoargs(f,val1,val2)
 end
 
 
-function bench_rel(f,val)
-    bigval, arbval = big_and_arb_vals(val)
-    bigbench = bench(f,bigval)
-    arbbench = bench(f,arbval)
-    big_slowdown = bigbench/arbbench
-    return Float16(big_slowdown)
-end      
-
-
 function benchbits_parsed_rel(f,val,nbits)
     setprecision(BigFloat, nbits) 
     setprecision(ArbFloat, nbits)
@@ -63,6 +54,24 @@ function benchbits_converted_rel(f,val,nbits)
     big_slowdown = bigbench/arbbench
     return floor(Int, 0.25 + Float16(big_slowdown))
 end
+
+function benchbits_converted_twoargs_rel(f,val1,val2,nbits)
+    setprecision(BigFloat, nbits) 
+    setprecision(ArbFloat, nbits)
+  
+    bigval1 = convert(BigFloat,val1)
+    bigval2 = convert(BigFloat,val2)
+    arbval1 = convert(ArbFloat,val1)
+    arbval2 = convert(ArbFloat,val2)
+  
+    bigbench = bench(f,bigval1,bigval2)
+    arbbench = bench(f,arbval1,arbval2)
+    big_slowdown = bigbench/arbbench
+    return floor(Int, 0.25 + Float16(big_slowdown))
+end
+
+
+
 
 function nbit_bigfloat_slowerby(fn, val, vecnbits)
     nprecisions = length(vecnbits)
