@@ -3,12 +3,6 @@ using ArbFloats
 
 round2(x) = round(x*100.0)/100.0
 
-function roundn(x,n::Unsigned)
-  tenpow = 10^n
-  x = round(x*tenpow)
-  return x/tenpow
-end
-
 
 macro setprecisions(nbits)
   quote begin
