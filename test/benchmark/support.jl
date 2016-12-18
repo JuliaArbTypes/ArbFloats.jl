@@ -97,18 +97,20 @@ BenchmarkTools.DEFAULT_PARAMETERS.samples = 15
 
 #const fp_precise_bits = [128, 256, 512, 768, 1024, 1280, 1536, 2048, 2560, 3072, 3584];
 # const fp_precise_bits = [128, 256, 512, 1024, 1280, 1536, 2048, 2560, 3072];
-const fp_precise_bits = [256*i for i in 1:16];
+const fp_precise_bits = [128*i for i in 1:16];
 
 println( "    bits: ",fp_precise_bits' );println()
 
-# mul_slowerby = nbit_bigfloat_slowerby( (*), pi, golden, fp_precise_bits); println("    mul :",mul_slowerby' )
-# div_slowerby = nbit_bigfloat_slowerby( (/), pi, golden, fp_precise_bits); println("    div :", div_slowerby' )
-exp_slowerby = nbit_bigfloat_slowerby( (exp), golden, fp_precise_bits);   println( "    exp : ", exp_slowerby' ) 
-log_slowerby = nbit_bigfloat_slowerby( (log), golden, fp_precise_bits);   println( "    log : ", log_slowerby' )
-tan_slowerby = nbit_bigfloat_slowerby( (tan), golden, fp_precise_bits);   println( "    tan : ", tan_slowerby' )
-atan_slowerby = nbit_bigfloat_slowerby( (atan), golden, fp_precise_bits); println( "    atan: ", atan_slowerby' )
-tanh_slowerby = nbit_bigfloat_slowerby( (tan), golden, fp_precise_bits);  println( "    tanh: ", tanh_slowerby' )
-atanh_slowerby = nbit_bigfloat_slowerby( (atan), golden, fp_precise_bits);println( "    atanh: ", atanh_slowerby' )
+v0 = Float64(golden); v1 = sqrt(v0); v2 = 1/sqrt(5);
+# mul_slowerby = nbit_bigfloat_slowerby( (*), v1, v2, fp_precise_bits); println("    mul :",mul_slowerby' )
+# div_slowerby = nbit_bigfloat_slowerby( (/), v1, v2, fp_precise_bits); println("    div :", div_slowerby' )
+exp_slowerby = nbit_bigfloat_slowerby( (exp), v0, fp_precise_bits);   println( "    exp : ", exp_slowerby' ) 
+log_slowerby = nbit_bigfloat_slowerby( (log), v0, fp_precise_bits);   println( "    log : ", log_slowerby' )
+tan_slowerby = nbit_bigfloat_slowerby( (tan), v0, fp_precise_bits);   println( "    tan : ", tan_slowerby' )
+atan_slowerby = nbit_bigfloat_slowerby( (atan), v0, fp_precise_bits); println( "    atan: ", atan_slowerby' )
+tanh_slowerby = nbit_bigfloat_slowerby( (tan), v0, fp_precise_bits);  println( "    tanh: ", tanh_slowerby' )
+atanh_slowerby = nbit_bigfloat_slowerby( (atan), v0, fp_precise_bits);println( "    atanh: ", atanh_slowerby' )
+zeta_slowerby = nbit_bigfloat_slowerby( (zeta), v0, fp_precise_bits);println( "     zeta:  ", zeta_slowerby' )
 
 println();println( "    bits: ",fp_precise_bits' )
 
