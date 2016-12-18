@@ -8,33 +8,27 @@ macro setprecisions(nbits)
   end end
 end
 
-macro big_and_arb_vals(v)
-   quote 
-     convert(BigFloat,$v), convert(ArbFloat,$v)
-   end     
+function big_and_arb_vals(v)
+    str = string(v)
+    return parse(BigFloat, str), parse(ArbFloat, str)
 end    
 
 
-macro bench(f,val)
-  quote begin
-    local benchrunner, benchcatcher
+function bench(f,val)
     benchrunner = @benchmarkable ($f)($val)
     tune!(benchrunner)
     benchcatcher = run(benchrunner)
-    return benchcatcher.times[1]
-  end end
+    firstquintile = mean(benchcatcher.times[1:fld( length(benchcatcher.times), 5)])
+    return(firstquintile)
 end
 
-macro bench2relative(f,val)
-  quote begin
-      local val_big, val_arb, bench_big, bench_arb, relspeed
-      val_big, val_arb = @big_and_arb_vals($val)
-      bench_big = @bench($f, val_big)
-      bench_arb = @bench($f, val_arb)
-      relspeed = (abs(bench_big-bench_arb)/bench_arb)+1
-      return relspeed
-   end end
-end
+function relbench(f,val)
+    bigval, arbval = big_and_arb_vals(val)
+    bigbench = bench(f,bigval)
+    arbbench = benc(f,arbval(
+    speedup = abs(bigbench-arbbench)/arbbench
+    return speedup
+end      
 
 
 
