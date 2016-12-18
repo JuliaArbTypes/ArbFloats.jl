@@ -111,9 +111,10 @@ cos_slowerby = nbit_bigfloat_slowerby( (cos), v0, fp_precise_bits);   println( "
 tan_slowerby = nbit_bigfloat_slowerby( (tan), v0, fp_precise_bits);   println( "    tan : ", tan_slowerby' )
 acos_slowerby = nbit_bigfloat_slowerby( (acos), v0, fp_precise_bits); println( "    acos: ", acos_slowerby' )
 atan_slowerby = nbit_bigfloat_slowerby( (atan), v0, fp_precise_bits); println( "    atan: ", atan_slowerby' )
-tanh_slowerby = nbit_bigfloat_slowerby( (tan), v0, fp_precise_bits);  println( "    tanh: ", tanh_slowerby' )
-atanh_slowerby = nbit_bigfloat_slowerby( (atan), v0, fp_precise_bits);println( "    atanh: ", atanh_slowerby' )
-erf_slowerby = nbit_bigfloat_slowerby( (erf), v0, fp_precise_bits);println( "    erf: ", erf_slowerby' )
+cosh_slowerby = nbit_bigfloat_slowerby( (cosh), v0, fp_precise_bits);  println( "    cosh: ", cosh_slowerby' )
+tanh_slowerby = nbit_bigfloat_slowerby( (tanh), v0, fp_precise_bits);  println( "    tanh: ", tanh_slowerby' )
+acosh_slowerby = nbit_bigfloat_slowerby( (acosh), v0, fp_precise_bits);println( "    acosh: ", acosh_slowerby' )
+atanh_slowerby = nbit_bigfloat_slowerby( (atanh), v0, fp_precise_bits);println( "    atanh: ", atanh_slowerby' )
 
 gamma_slowerby = nbit_bigfloat_slowerby( (gamma), v0, fp_precise_bits);println( "    gamma:  ", gamma_slowerby' )
 digamma_slowerby = nbit_bigfloat_slowerby( (digamma), v0, fp_precise_bits);println( "    digamma:  ", digamma_slowerby' )
