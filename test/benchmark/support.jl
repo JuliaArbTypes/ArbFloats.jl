@@ -31,10 +31,36 @@ function bench_rel(f,val)
 end      
 
 
-function benchbits_rel(f,val,nbits)
-    @setprecisions( nbits) 
-   return bench_rel(f,val)
+function benchbits_parsed_rel(f,val,nbits)
+    setprecision(BigFloat, nbits) 
+    setprecision(ArbFloat, nbits)
+    str = string(val)
+    bigval = parse(BigFloat,str)
+    arbval = parse(ArbFloat,str)
+    bigbench = bench(f,bigval)
+    arbbench = bench(f,arbval)
+    big_slowdown = bigbench/arbbench
+    return floor(Int, 0.25 + Float16(big_slowdown))
 end
 
-function bitbenches_rel(f, val, vecnbits)
+function benchbits_converted_rel(f,val,nbits)
+    setprecision(BigFloat, nbits) 
+    setprecision(ArbFloat, nbits)
+    bigval = convert(BigFloat,val)
+    arbval = convert(ArbFloat,val)
+    bigbench = bench(f,bigval)
+    arbbench = bench(f,arbval)
+    big_slowdown = bigbench/arbbench
+    return floor(Int, 0.25 + Float16(big_slowdown))
+end
+
+function nbit_bigfloat_slowerby(fn, val, vecnbits)
+    nprecisions = length(vecnbits)
+    slowerby = zeros(Int, nprecisions)
+    for i in 1:nprecisions
+         slowerby[i] = benchbits_coverted_rel(fn, val, vecnbits[i])
+    end
+    return slowerby
+end
+
   
