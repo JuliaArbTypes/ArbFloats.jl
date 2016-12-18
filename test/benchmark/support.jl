@@ -102,8 +102,8 @@ const fp_precise_bits = [128*i for i in 1:16];
 println( "    bits: ",fp_precise_bits' );println()
 
 v0 = Float64(golden); v1 = sqrt(v0); v2 = 1/sqrt(5);
-# mul_slowerby = nbit_bigfloat_slowerby( (*), v1, v2, fp_precise_bits); println("    mul :",mul_slowerby' )
-# div_slowerby = nbit_bigfloat_slowerby( (/), v1, v2, fp_precise_bits); println("    div :", div_slowerby' )
+mul_slowerby = nbit_bigfloat_slowerby( (*), v1, v2, fp_precise_bits); println("    mul :",mul_slowerby' )
+div_slowerby = nbit_bigfloat_slowerby( (/), v1, v2, fp_precise_bits); println("    div :", div_slowerby' )
 exp_slowerby = nbit_bigfloat_slowerby( (exp), v0, fp_precise_bits);   println( "    exp : ", exp_slowerby' ) 
 log_slowerby = nbit_bigfloat_slowerby( (log), v0, fp_precise_bits);   println( "    log : ", log_slowerby' )
 tan_slowerby = nbit_bigfloat_slowerby( (tan), v0, fp_precise_bits);   println( "    tan : ", tan_slowerby' )
@@ -122,14 +122,6 @@ const fp_precise_digs = [floor(Int, 128*i*log10(2)) for i in 1:26];
 
 println( "    bits: ",fp_precise_bits' );println()
 
-# mul_slowerby = nbit_bigfloat_slowerby( (*), pi, golden, fp_precise_bits); println("    mul :",mul_slowerby' )
-# div_slowerby = nbit_bigfloat_slowerby( (/), pi, golden, fp_precise_bits); println("    div :", div_slowerby' )
-exp_slowerby = nbit_bigfloat_slowerby( (exp), golden, fp_precise_bits);   println( "    exp : ", exp_slowerby' ) 
-log_slowerby = nbit_bigfloat_slowerby( (log), golden, fp_precise_bits);   println( "    log : ", log_slowerby' )
-tan_slowerby = nbit_bigfloat_slowerby( (tan), golden, fp_precise_bits);   println( "    tan : ", tan_slowerby' )
-atan_slowerby = nbit_bigfloat_slowerby( (atan), golden, fp_precise_bits); println( "    atan: ", atan_slowerby' )
-tanh_slowerby = nbit_bigfloat_slowerby( (tan), golden, fp_precise_bits);  println( "    tanh: ", tanh_slowerby' )
-atanh_slowerby = nbit_bigfloat_slowerby( (atan), golden, fp_precise_bits);println( "    atanh: ", atanh_slowerby' )
 
 println();println( "    bits: ",fp_precise_bits' )
 
