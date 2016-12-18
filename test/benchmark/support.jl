@@ -92,8 +92,8 @@ function nbit_bigfloat_slowerby(fn, val1, val2, vecnbits)
     return slowerby
 end
 
-BenchmarkTools.DEFAULT_PARAMETERS.seconds = 0.5
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 15
+BenchmarkTools.DEFAULT_PARAMETERS.seconds = 2.0
+BenchmarkTools.DEFAULT_PARAMETERS.samples = 200
 
 #const fp_precise_bits = [128, 256, 512, 768, 1024, 1280, 1536, 2048, 2560, 3072, 3584];
 # const fp_precise_bits = [128, 256, 512, 1024, 1280, 1536, 2048, 2560, 3072];
