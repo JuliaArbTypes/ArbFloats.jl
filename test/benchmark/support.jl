@@ -44,7 +44,7 @@ function benchbits_parsed_rel(f,val,nbits)
     return floor(Int, 0.25 + Float16(big_slowdown))
 end
 
-function benchbits_converted_rel(f,val,nbits)
+function benchbits_converted_onearg_rel(f,val,nbits)
     setprecision(BigFloat, nbits) 
     setprecision(ArbFloat, nbits)
     bigval = convert(BigFloat,val)
@@ -73,13 +73,44 @@ end
 
 
 
-function nbit_bigfloat_slowerby(fn, val, vecnbits)
+function nbit_bigfloat_onearg_slowerby(fn, val, vecnbits)
     nprecisions = length(vecnbits)
     slowerby = zeros(Int, nprecisions)
     for i in 1:nprecisions
-         slowerby[i] = benchbits_coverted_rel(fn, val, vecnbits[i])
+         slowerby[i] = benchbits_coverted_onearg_rel(fn, val, vecnbits[i])
+    end
+    return slowerby
+end
+
+
+function nbit_bigfloat_twoarg_slowerby(fn, val, vecnbits)
+    nprecisions = length(vecnbits)
+    slowerby = zeros(Int, nprecisions)
+    for i in 1:nprecisions
+         slowerby[i] = benchbits_coverted_twoargs_rel(fn, val, vecnbits[i])
+    end
+    return slowerby
+end
+
+
+
+function nbit_bigfloat_twoarg_slowerby(fn, val1, val2, vecnbits)
+    nprecisions = length(vecnbits)
+    slowerby = zeros(Int, nprecisions)
+    for i in 1:nprecisions
+         slowerby[i] = nbits_coverted_twoarg_rel(fn, val1, val2, vecnbits[i])
     end
     return slowerby
 end
 
   
+BenchmarkTools.DEFAULT_PARAMETERS.seconds = 1
+BenchmarkTools.DEFAULT_PARAMETERS.samples = 25
+
+const fp_precise_bits = [128, 256, 512, 1024, 2048, 3072, 4096, 8192];
+
+mul_slowerby = nbit_bigfloat_twoarg_slowerby( mul, pi, golden, 512)
+
+
+
+
