@@ -41,8 +41,8 @@ function benchbits_parsed_rel(f,val,nbits)
     bigbench = bench(f,bigval)
     arbbench = bench(f,arbval)
     big_slowdown = bigbench/arbbench
-    return floor(Int, 0.25 + Float16(big_slowdown))
-end
+    return Float64(Float16(big_slowdown))
+  end
 
 function benchbits_converted_rel(f,val,nbits)
     setprecision(BigFloat, nbits) 
@@ -67,7 +67,7 @@ function benchbits_converted_rel(f,val1,val2,nbits)
     bigbench = bench(f,bigval1,bigval2)
     arbbench = bench(f,arbval1,arbval2)
     big_slowdown = bigbench/arbbench
-    return Float64(Float16(big_slowdown)))
+    return Float64(Float16(big_slowdown))
 end
 
 
@@ -102,9 +102,9 @@ const fp_precise_bits = [128*i for i in 1:16];
 println( "    bits: ",fp_precise_bits' );println()
 
 v0 = Float64(golden); v1 = sqrt(v0); v2 = 1/sqrt(5);
-mul_slowerby = nbit_bigfloat_slowerby( (*), v1, v2, fp_precise_bits); println("    mul :",mul_slowerby' )
-div_slowerby = nbit_bigfloat_slowerby( (/), v1, v2, fp_precise_bits); println("    div :", div_slowerby' )
-sqrt_slowerby = nbit_bigfloat_slowerby( (sqrt), v1, v2, fp_precise_bits); println("    sqrt :", sqrt_slowerby' )
+# mul_slowerby = nbit_bigfloat_slowerby( (*), v1, v2, fp_precise_bits); println("    mul :",mul_slowerby' )
+# div_slowerby = nbit_bigfloat_slowerby( (/), v1, v2, fp_precise_bits); println("    div :", div_slowerby' )
+# sqrt_slowerby = nbit_bigfloat_slowerby( (sqrt), v1, v2, fp_precise_bits); println("    sqrt :", sqrt_slowerby' )
 exp_slowerby = nbit_bigfloat_slowerby( (exp), v0, fp_precise_bits);   println( "    exp : ", exp_slowerby' ) 
 log_slowerby = nbit_bigfloat_slowerby( (log), v0, fp_precise_bits);   println( "    log : ", log_slowerby' )
 cos_slowerby = nbit_bigfloat_slowerby( (cos), v0, fp_precise_bits);   println( "    cos : ", cos_slowerby' )
