@@ -22,6 +22,16 @@ function bench(f,val)
     return(firstquintile)
 end
 
+
+function bench_twoargs(f,val1,val2)
+    benchrunner = @benchmarkable ($f)($val1,$val2)
+    tune!(benchrunner)
+    benchcatcher = run(benchrunner)
+    firstquintile = mean(benchcatcher.times[1:fld( length(benchcatcher.times), 5)])
+    return(firstquintile)
+end
+
+
 function bench_rel(f,val)
     bigval, arbval = big_and_arb_vals(val)
     bigbench = bench(f,bigval)
