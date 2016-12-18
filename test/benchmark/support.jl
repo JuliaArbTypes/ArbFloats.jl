@@ -27,7 +27,7 @@ function bench(f,val)
     benchrunner = @benchmarkable ($f)($val)
     tune!(benchrunner)
     benchcatcher = run(benchrunner)
-    return round2(mean(benchcatcher))
+    return round2(mean(benchcatcher.times))
 end
 
 
@@ -35,7 +35,7 @@ function bench(f,val1,val2)
     benchrunner = @benchmarkable ($f)($val1,$val2)
     tune!(benchrunner)
     benchcatcher = run(benchrunner)
-    return round2(mean(benchcatcher))
+    return round2(mean(benchcatcher.times))
 end
 
 
@@ -47,7 +47,7 @@ function benchbits_parsed_rel(f,val,nbits)
     arbval = parse(ArbFloat,str)
     bigbench = bench(f,bigval)
     arbbench = bench(f,arbval)
-    big_slowdown = mean(bigbench)/mean(arbbench)
+    big_slowdown = mean(bigbench.times)/mean(arbbench.times)
     return round2(big_slowdown)
   end
 
@@ -58,7 +58,7 @@ function benchbits_converted_rel(f,val,nbits)
     arbval = convert(ArbFloat,val)
     bigbench = bench(f,bigval)
     arbbench = bench(f,arbval)
-    big_slowdown = mean(bigbench)/mean(arbbench)
+    big_slowdown = mean(bigbench.times)/mean(arbbench.times)
     return round2(big_slowdown)
 end
 
@@ -73,7 +73,7 @@ function benchbits_converted_rel(f,val1,val2,nbits)
   
     bigbench = bench(f,bigval1,bigval2)
     arbbench = bench(f,arbval1,arbval2)
-    big_slowdown = mean(bigbench)/mean(arbbench)
+    big_slowdown = mean(bigbench.times)/mean(arbbench.times)
     return round2(big_slowdown)
 end
 
