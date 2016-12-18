@@ -97,14 +97,14 @@ BenchmarkTools.DEFAULT_PARAMETERS.samples = 25
 
 const fp_precise_bits = [128, 256, 512, 1024, 2048, 3072, 4096, 8192];
 
-mul_slowerby = nbit_bigfloat_slowerby( (*), pi, golden, fp_precise_bits)
-div_slowerby = nbit_bigfloat_slowerby( (/), pi, golden, fp_precise_bits)
-exp_slowerby = nbit_bigfloat_slowerby( (exp), golden, fp_precise_bits)
-log_slowerby = nbit_bigfloat_slowerby( (log), golden, fp_precise_bits)
-tan_slowerby = nbit_bigfloat_slowerby( (tan), golden, fp_precise_bits)
-atan_slowerby = nbit_bigfloat_slowerby( (atan), golden, fp_precise_bits)
-tanh_slowerby = nbit_bigfloat_slowerby( (tan), golden, fp_precise_bits)
-atanh_slowerby = nbit_bigfloat_slowerby( (atan), golden, fp_precise_bits)
+# mul_slowerby = nbit_bigfloat_slowerby( (*), pi, golden, fp_precise_bits); println( mul_slowerby' )
+# div_slowerby = nbit_bigfloat_slowerby( (/), pi, golden, fp_precise_bits); println( div_slowerby' )
+exp_slowerby = nbit_bigfloat_slowerby( (exp), golden, fp_precise_bits);   println( "exp: ", exp_slowerby' ) 
+log_slowerby = nbit_bigfloat_slowerby( (log), golden, fp_precise_bits);   println( "log: ", log_slowerby' )
+tan_slowerby = nbit_bigfloat_slowerby( (tan), golden, fp_precise_bits);   println( "tan: ", tan_slowerby' )
+atan_slowerby = nbit_bigfloat_slowerby( (atan), golden, fp_precise_bits); println( "atan: ", atan_slowerby' )
+tanh_slowerby = nbit_bigfloat_slowerby( (tan), golden, fp_precise_bits);  println( "tanh: ", tanh_slowerby' )
+atanh_slowerby = nbit_bigfloat_slowerby( (atan), golden, fp_precise_bits);println( "atanh: ", atanh_slowerby' )
 
 
 
