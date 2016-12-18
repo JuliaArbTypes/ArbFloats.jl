@@ -23,19 +23,19 @@ function big_and_arb_vals(v)
 end    
 
 
-function bench(f,val)
+function bench(f,val,simplifier=median)
     benchrunner = @benchmarkable ($f)($val)
     tune!(benchrunner)
-    benchcatcher = run(benchrunner)
-    return round2(mean(benchcatcher.times))
+    benchcatcher =  run(benchrunner).times
+    return simplifier(benchcatcher)
 end
 
 
-function bench(f,val1,val2)
+function bench(f,val1,val2,simpifier=median)
     benchrunner = @benchmarkable ($f)($val1,$val2)
     tune!(benchrunner)
-    benchcatcher = run(benchrunner)
-    return round2(mean(benchcatcher.times))
+    benchcatcher = run(benchrunner).times
+    return simplifier(benchcatcher)
 end
 
 
@@ -47,7 +47,7 @@ function benchbits_parsed_rel(f,val,nbits)
     arbval = parse(ArbFloat,str)
     bigbench = bench(f,bigval)
     arbbench = bench(f,arbval)
-    big_slowdown = bigbench/arbbench
+    big_slowdown = ratio( bigbench, arbbench )
     return round2(big_slowdown)
   end
 
@@ -58,7 +58,7 @@ function benchbits_converted_rel(f,val,nbits)
     arbval = convert(ArbFloat,val)
     bigbench = bench(f,bigval)
     arbbench = bench(f,arbval)
-    big_slowdown = bigbench/arbbench
+    big_slowdown = ratio( bigbench, arbbench )
     return round2(big_slowdown)
 end
 
@@ -73,7 +73,7 @@ function benchbits_converted_rel(f,val1,val2,nbits)
   
     bigbench = bench(f,bigval1,bigval2)
     arbbench = bench(f,arbval1,arbval2)
-    big_slowdown = Float64(bigbench)/Float64(arbbench)
+    big_slowdown = ratio( bigbench, arbbench)
     return round2(big_slowdown)
 end
 
