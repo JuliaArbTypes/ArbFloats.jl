@@ -97,6 +97,8 @@ BenchmarkTools.DEFAULT_PARAMETERS.samples = 25
 
 const fp_precise_bits = [128, 256, 512, 1024, 2048, 3072, 4096, 8192];
 
+println( fp_precise_bits' );println()
+
 # mul_slowerby = nbit_bigfloat_slowerby( (*), pi, golden, fp_precise_bits); println( mul_slowerby' )
 # div_slowerby = nbit_bigfloat_slowerby( (/), pi, golden, fp_precise_bits); println( div_slowerby' )
 exp_slowerby = nbit_bigfloat_slowerby( (exp), golden, fp_precise_bits);   println( "exp: ", exp_slowerby' ) 
@@ -106,6 +108,7 @@ atan_slowerby = nbit_bigfloat_slowerby( (atan), golden, fp_precise_bits); printl
 tanh_slowerby = nbit_bigfloat_slowerby( (tan), golden, fp_precise_bits);  println( "tanh: ", tanh_slowerby' )
 atanh_slowerby = nbit_bigfloat_slowerby( (atan), golden, fp_precise_bits);println( "atanh: ", atanh_slowerby' )
 
+println();println( fp_precise_bits' )
 
 
 
