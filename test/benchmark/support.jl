@@ -1,6 +1,15 @@
 using BenchmarkTools
 using ArbFloats
 
+round2(x) = round(x*100)/100
+
+function roundn(x,n::Unsigned)
+  tenpow = 10^n
+  x = round(x*tenpow)
+  return x/tenpow
+end
+
+
 macro setprecisions(nbits)
   quote begin
     setprecision(BigFloat, $nbits)
@@ -18,8 +27,7 @@ function bench(f,val)
     benchrunner = @benchmarkable ($f)($val)
     tune!(benchrunner)
     benchcatcher = run(benchrunner)
-    firstquintile = mean(benchcatcher.times[1:fld( length(benchcatcher.times), 5)])
-    return(firstquintile)
+    return round2(mean(benchcatcher))
 end
 
 
@@ -27,8 +35,7 @@ function bench(f,val1,val2)
     benchrunner = @benchmarkable ($f)($val1,$val2)
     tune!(benchrunner)
     benchcatcher = run(benchrunner)
-    firstquintile = mean(benchcatcher.times[1:fld( length(benchcatcher.times), 5)])
-    return(firstquintile)
+    return round2(mean(benchcatcher))
 end
 
 
@@ -41,7 +48,7 @@ function benchbits_parsed_rel(f,val,nbits)
     bigbench = bench(f,bigval)
     arbbench = bench(f,arbval)
     big_slowdown = bigbench/arbbench
-    return Float64(Float32(big_slowdown))
+    return round2(big_slowdown)
   end
 
 function benchbits_converted_rel(f,val,nbits)
@@ -52,7 +59,7 @@ function benchbits_converted_rel(f,val,nbits)
     bigbench = bench(f,bigval)
     arbbench = bench(f,arbval)
     big_slowdown = bigbench/arbbench
-    return Float64(Float32(big_slowdown))
+    return round2(big_slowdown)
 end
 
 function benchbits_converted_rel(f,val1,val2,nbits)
@@ -67,7 +74,7 @@ function benchbits_converted_rel(f,val1,val2,nbits)
     bigbench = bench(f,bigval1,bigval2)
     arbbench = bench(f,arbval1,arbval2)
     big_slowdown = bigbench/arbbench
-    return Float64(Float16(big_slowdown))
+    return round2(big_slowdown)
 end
 
 
