@@ -23,11 +23,11 @@ function big_and_arb_vals(v)
 end    
 
 
-function bench(f,val,simplifier=median)
+function bench(f,val)
     benchrunner = @benchmarkable ($f)($val)
     tune!(benchrunner)
     benchcatcher =  run(benchrunner).times
-    return simplifier(benchcatcher)
+    return benchcatcher
 end
 
 
