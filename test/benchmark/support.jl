@@ -25,7 +25,7 @@ end
 function relbench(f,val)
     bigval, arbval = big_and_arb_vals(val)
     bigbench = bench(f,bigval)
-    arbbench = benc(f,arbval)
+    arbbench = bench(f,arbval)
     speedup = abs(bigbench-arbbench)/arbbench
     return speedup
 end      
