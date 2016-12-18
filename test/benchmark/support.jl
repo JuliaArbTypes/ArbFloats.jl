@@ -309,5 +309,10 @@ println();println( "    bits: ",fp_precise_bits' )
 
 
 
+# fp_precise_bits and
+bf_slower_by = hcat(  exp_slowerby ,log_slowerby, 
+           cos_slowerby ,tan_slowerby ,acos_slowerby, atan_slowerby, 
+           cosh_slowerby, tanh_slowerby, acosh_slowerby, atanh_slowerby, 
+           gamma_slowerby, digamma_slowerby ,zeta_slowerby)
 
 
