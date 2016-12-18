@@ -67,7 +67,7 @@ function benchbits_converted_rel(f,val1,val2,nbits)
     bigbench = bench(f,bigval1,bigval2)
     arbbench = bench(f,arbval1,arbval2)
     big_slowdown = bigbench/arbbench
-    return floor(Int, 0.25 + Float16(big_slowdown))
+    return Float64(Float16(big_slowdown)))
 end
 
 
