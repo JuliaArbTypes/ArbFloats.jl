@@ -11,7 +11,7 @@ bits_to_rounded_digits(bits::Int64) = bits_to_rounded_digits(bits%Int32)
 digits_to_rounded_bits(digs::Int32) = fld((digs * 10000%Int32), 3010%Int32) + 1%Int32        
 digits_to_rounded_bits(digs::Int64) = digits_to_rounded_bits(digs%Int32)
 
-integral_digits{P}(x::ArbFloat{P}) = ceiled(Int, log10(1+floored(x)))
+integral_digits{P}(x::ArbFloat{P}) = ceiled(Int, log10(1+floored(abs(x))))
 
 function round{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
