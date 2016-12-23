@@ -11,7 +11,7 @@ bits_to_rounded_digits(bits::Int64) = bits_to_rounded_digits(bits%Int32)
 digits_to_rounded_bits(digs::Int32) = fld((digs * 10000%Int32), 3010%Int32) + 1%Int32        
 digits_to_rounded_bits(digs::Int64) = digits_to_rounded_bits(digs%Int32)
 
-integral_digits{P}(x::ArbFloat{P}) = ceil(Int, log10(1+floor(x)))
+integral_digits{P}(x::ArbFloat{P}) = ceiled(Int, log10(1+floored(x)))
 
 function round{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
@@ -19,6 +19,24 @@ function round{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
+    return z
+end
+
+
+function ceiled{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
+    ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
+    places = max(1,abs(places))
+    sigbits = base==2 ? places : digits_to_rounded_bits(places)
+    z = initializer(ArbFloat{P})
+    ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
+    return z
+end
+function floored{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
+    ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
+    places = max(1,abs(places))
+    sigbits = base==2 ? places : digits_to_rounded_bits(places)
+    z = initializer(ArbFloat{P})
+    ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
 
