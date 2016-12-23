@@ -8,7 +8,7 @@
 
 bits_to_rounded_digits(bits::Int32) = cld((bits * 3010%Int32), 10000%Int32)
 bits_to_rounded_digits(bits::Int64) = bits_to_rounded_digits(bits%Int32)
-digits_to_rounded_bits(digs::Int32) = fld((digs * 10000%Int32), 3010%Int32)        
+digits_to_rounded_bits(digs::Int32) = fld((digs * 10000%Int32), 3010%Int32) + 1%Int32        
 digits_to_rounded_bits(digs::Int64) = digits_to_rounded_bits(digs%Int32)
 
 #=
