@@ -29,7 +29,7 @@ end
 function round{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     sig = max(1, abs(sig))
     sigbits = base==2 ? sig : sigBitsToUse(P, sig, base)
-    z = ArbFloat{P}()
+    z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
