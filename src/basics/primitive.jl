@@ -129,3 +129,7 @@ function modf{P}(x::ArbFloat{P})
     end
     return (fpart, ipart)
 end
+
+function fmod{P}(fpart::ArbFloat{P}, ipart::ArbFloat{P})
+    return ipart + fpart
+end  
