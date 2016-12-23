@@ -115,3 +115,17 @@ function decompose{T<:ArbFloat}(x::T)
     setprecision(BigFloat,bfprec)
     return n,p,d
 end
+
+
+
+function modf{P}(x::ArbFloat{P})
+    isneg = signbit(x)
+    y = abs(x)
+    ipart = trunc(y)
+    fpart = y - ipart
+    if isneg
+        ipart = -ipart
+        fpart = -fpart
+    end
+    return (fpart, ipart)
+end
