@@ -6,6 +6,11 @@
 #define FMPR_RND_NEAR  4
 =#
 
+bits_to_rounded_digits(bits::Int32) = cld(($bits * 3010%Int32), 10000%Int32)
+bits_to_rounded_digits(bits::Int64) = bits_to_rounded_digits(bits%Int32)
+digits_to_rounded_bits(digs::Int32) = fld(($digs * 10000%Int32), 3010%Int32)        
+digits_to_rounded_bits(digs::Int64) = digits_to_rounded_bits(digs%Int32)
+
 #=
 sigBitsToUse(prec::Int, sig::Int, base::Int) =
     min(prec, ifelse(signbit(sig), -sig, sig) * Float64(nextfloat(Float32(nextfloat(log2(base))))))
@@ -26,33 +31,37 @@ function sigBitsToUse(prec::Int, sig::Int, base::Int)
     end
 end
 
-function round{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    sig = max(1, abs(sig))
-    sigbits = base==2 ? sig : sigBitsToUse(P, sig, base)
+function round{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
+    base==2 | base==10 || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
+    # places = max(1, abs(places))
+    sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
 
-function ceil{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    sig = max(1, abs(sig))
-    sigbits = sigBitsToUse(P, sig, base)
+function ceil{P}(x::ArbFloat{P}, sig::Int=P, base::Int=2)
+    base==2 | base==10 || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
+    # places = max(1, abs(places))
+    sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
 
-function floor{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    sig = max(1, abs(sig))
-    sigbits = sigBitsToUse(P, sig, base)
+function floor{P}(x::ArbFloat{P}, sig::Int=P, base::Int=2)
+    base==2 | base==10 || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
+    # places = max(1, abs(places))
+    sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
 
-function trunc{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
-    sig = max(1, abs(sig))
-    sigbits = sigBitsToUse(P, sig, base)
+function trunc{P}(x::ArbFloat{P}, sig::Int=P, base::Int=2)
+    base==2 | base==10 || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
+    # places = max(1, abs(places))
+    sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
     if signbit(x)
         ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
@@ -62,19 +71,19 @@ function trunc{P}(x::ArbFloat{P}, sig::Int=P, base::Int=10)
     return z
 end
 
-function round{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+function round{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=2)
     z = round(x, sig, base)
     return convert(I, z)
 end
-function ceil{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+function ceil{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=2)
     z = ceil(x, sig, base)
     return convert(I, z)
 end
-function floor{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+function floor{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=2)
     z = floor(x, sig, base)
     return convert(I, z)
 end
-function trunc{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=10)
+function trunc{I<:Integer,P}(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=2)
     z = trunc(x, sig, base)
     return convert(I, z)
 end
