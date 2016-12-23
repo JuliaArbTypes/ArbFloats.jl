@@ -36,12 +36,12 @@ ReadableNumStyle{I<:Integer}(
     ibtwn::Char, rbtwn::Char=FBTWN, idigs::I=IDIGS%I, rdigs::I=FDIGS%I, fracpt::Char=FRACPOINT
     ) =
     ReadableNumStyle(idigs, rdigs, ibtwn, rbtwn, fracpt)
-ReadableNumStyle{I<:Integer}(
-    idigs::I, ibtwn::Char, rdigs::I=FDIGS%I, rbtwn::Char=FBTWN, fracpt::Char=FRACPOINT
+ReadableNumStyle{S<:Signed}(
+    idigs::S, ibtwn::Char, rdigs::S=FDIGS%S, rbtwn::Char=FBTWN, fracpt::Char=FRACPOINT
     ) =
     ReadableNumStyle( idigs%Int32, rdigs%Int32, ibtwn, rbtwn, fracpt )
-ReadableNumStyle{I<:Integer}(
-    ibtwn::Char, idigs::I, rbtwn::Char=FBTWN, rdigs::I=FDIGS%I, fracpt::Char=FRACPOINT
+ReadableNumStyle{S<:Signed}(
+    ibtwn::Char, idigs::S, rbtwn::Char=FBTWN, rdigs::S=FDIGS%S, fracpt::Char=FRACPOINT
     ) =
     ReadableNumStyle(idigs, rdigs, ibtwn, rbtwn, fracpt)
 
