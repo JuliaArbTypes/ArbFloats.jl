@@ -55,7 +55,7 @@ end
 
 
 function atan2{P}(a::ArbFloat{P}, b::ArbFloat{P})
-    z = ArbFloat{P}()
+    z = initializer(ArbFloat{P})
     ccall(@libarb(arb_atan2), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &a, &b, P)
     z
 end
