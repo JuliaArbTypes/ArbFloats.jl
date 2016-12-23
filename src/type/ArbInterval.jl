@@ -105,7 +105,7 @@ intersect{T<:ArbFloat}(a::T) = a
 
 function intersect{T<:ArbFloat}(a::T, b::T)
     P = precision(T)
-    z = ArbFloat{P}()
+    z = initializer(ArbFloat{P})
     if donotoverlap(a,b)
         ccall(@libarb(arb_indeterminate), Void, (Ptr{T},), &z)
     else
@@ -137,12 +137,12 @@ function bounded{P}(z::ArbFloat{P}, lo::ArbFloat{P}, hi::ArbFloat{P})
 end
 function bounded{T<:ArbFloat}(lo::T, hi::T)
     P = precision(T)
-    z = ArbFloat{P}()
+    z = initializer(ArbFloat{P})
     return bounded(z,lo,hi)
 end
 function boundedrange{T<:ArbFloat}(mid::T, rad::T)
     P = precision(T)
-    z = ArbFloat{P}()
+    z = initializer(ArbFloat{P})
     lo = mid-rad
     hi = mid+rad
     return bounded(z,lo,hi)
