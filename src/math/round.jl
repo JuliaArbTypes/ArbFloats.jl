@@ -11,7 +11,7 @@ sigBitsToUse(prec::Int, sig::Int, base::Int) =
     min(prec, ifelse(signbit(sig), -sig, sig) * Float64(nextfloat(Float32(nextfloat(log2(base))))))
 =#
 sigBitsToUseRadix10(prec::Int, sig::Int) =
-    min(prec, ifelse(signbit(sig), -sig, sig) * 3.3219285) # log2(10)
+    ceil(Int, min(prec, ifelse(signbit(sig), -sig, sig) * 3.3219285)) # log2(10)
 
 sigBitsToUseRadix2(prec::Int, sig::Int) =
     min(prec, ifelse(signbit(sig), -sig, sig) * 1)         # log2(2)
