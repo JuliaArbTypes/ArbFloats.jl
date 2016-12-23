@@ -22,7 +22,10 @@ function round{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     return z
 end
 
-
+function ceiled{P,T}(::Type{T}, x::ArbFloat{P})
+    y = ceiled(x)
+    return convert(T,y)
+end    
 function ceiled{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
     places = max(1,abs(places))
@@ -31,6 +34,10 @@ function ceiled{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
+function floored{P,T}(::Type{T}, x::ArbFloat{P})
+    y = floored(x)
+    return convert(T,y)
+end    
 function floored{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
     places = max(1,abs(places))
