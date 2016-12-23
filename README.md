@@ -3,9 +3,8 @@ ArbFloats.jl
 ============
 
 
-```lua
-'                       Copyright © 2016 by Jeffrey Sarnoff                        '
-```
+#### Copyright © 2016 by Jeffrey Sarnoff.  Released under the MIT License.
+
 
 
 
