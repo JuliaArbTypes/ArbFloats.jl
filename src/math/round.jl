@@ -11,30 +11,12 @@ bits_to_rounded_digits(bits::Int64) = bits_to_rounded_digits(bits%Int32)
 digits_to_rounded_bits(digs::Int32) = fld((digs * 10000%Int32), 3010%Int32) + 1%Int32        
 digits_to_rounded_bits(digs::Int64) = digits_to_rounded_bits(digs%Int32)
 
-#=
-sigBitsToUse(prec::Int, sig::Int, base::Int) =
-    min(prec, ifelse(signbit(sig), -sig, sig) * Float64(nextfloat(Float32(nextfloat(log2(base))))))
-=#
-sigBitsToUseRadix10(prec::Int, sig::Int) =
-    ceil(Int, min(prec, ifelse(signbit(sig), -sig, sig) * 3.3219285)) # log2(10)
-
-sigBitsToUseRadix2(prec::Int, sig::Int) =
-    min(prec, ifelse(signbit(sig), -sig, sig) * 1)         # log2(2)
-
-function sigBitsToUse(prec::Int, sig::Int, base::Int)
-    if base==2
-        return sigBitsToUseRadix2(prec, sig)
-    elseif base==10
-        return sigBitsToUseRadix10(prec, sig)
-    else
-        throw(ErrorException(string("Not Implemented for radix ",base)))
-    end
-end
+integral_digits{P}(x::ArbFloat{P}) = ceil(Int, log10(1+floor(x)))
 
 function round{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
     places = max(1, abs(places))
-    sigbits = base==2 ? places : digits_to_rounded_bits(places)
+    sigbits = base==2 ? places+digits_to_rounded_bits(integral_digits(x)) : digits_to_rounded_bits(places+integral_digits(x))
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
