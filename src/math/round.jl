@@ -32,7 +32,7 @@ function sigBitsToUse(prec::Int, sig::Int, base::Int)
 end
 
 function round{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
-    (base==2 | base==10) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
+    ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
     # places = max(1, abs(places))
     sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
@@ -41,7 +41,7 @@ function round{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
 end
 
 function ceil{P}(x::ArbFloat{P}, sig::Int=P, base::Int=2)
-    base==2 | base==10 || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
+    ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
     # places = max(1, abs(places))
     sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
@@ -50,7 +50,7 @@ function ceil{P}(x::ArbFloat{P}, sig::Int=P, base::Int=2)
 end
 
 function floor{P}(x::ArbFloat{P}, sig::Int=P, base::Int=2)
-    base==2 | base==10 || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
+    ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
     # places = max(1, abs(places))
     sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
@@ -59,7 +59,7 @@ function floor{P}(x::ArbFloat{P}, sig::Int=P, base::Int=2)
 end
 
 function trunc{P}(x::ArbFloat{P}, sig::Int=P, base::Int=2)
-    base==2 | base==10 || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
+    ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
     # places = max(1, abs(places))
     sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
