@@ -98,7 +98,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        showsmall_pm, showcompact_pm, show_pm,
        showlarge_pm, showall_pm,
        stringpretty, smartvalue, smartstring, showsmart,
-       readable, PrettyNumberStyle,
+       readable, show_readable, ReadableNumStyle,
        two, three, four, copymidpoint, copyradius, deepcopyradius,
        get_emax, get_emin, bounded, boundedrange,
        fmod, decompose, isexact, notexact,
@@ -123,14 +123,13 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        force_nonnegative_content, force_positive_content,
        sortIntervals                                          # uses weak total ordering over intervals 
 
-using ReadableNumbers
 
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 
 include("support/NemoLibs.jl")                 # for precompiled libraries
 
-# include("support/ReadableNumbers.jl")          # digit subsequence separators
-using ReadableNumbers
+include("support/ReadableNumbers.jl")          # digit subsequence separators
+using .ReadableNumbers
 
 include("type/ArbCstructs.jl")
 include("type/MagFloat.jl")
