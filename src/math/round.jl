@@ -24,8 +24,8 @@ end
 
 function ceil{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
-    places = max(1, abs(places))
-    sigbits = base==2 ? places : digits_to_rounded_bits(places)
+    sigbits = base==2 ? places+digits_to_rounded_bits(integral_digits(x)) : digits_to_rounded_bits(places+integral_digits(x))
+    sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
@@ -33,8 +33,8 @@ end
 
 function floor{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
-    places = max(1, abs(places))
-    sigbits = base==2 ? places : digits_to_rounded_bits(places)
+    sigbits = base==2 ? places+digits_to_rounded_bits(integral_digits(x)) : digits_to_rounded_bits(places+integral_digits(x))
+    sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
@@ -42,8 +42,8 @@ end
 
 function trunc{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
-    places = max(1, abs(places))
-    sigbits = base==2 ? places : digits_to_rounded_bits(places)
+    sigbits = base==2 ? places+digits_to_rounded_bits(integral_digits(x)) : digits_to_rounded_bits(places+integral_digits(x))
+    sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
     if signbit(x)
         ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
