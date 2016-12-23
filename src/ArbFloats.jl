@@ -101,7 +101,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        readable, PrettyNumberStyle,
        two, three, four, copymidpoint, copyradius, deepcopyradius,
        get_emax, get_emin, bounded, boundedrange,
-       decompose, isexact, notexact,
+       fmod, decompose, isexact, notexact,
        isposinf, isneginf,
        notnan, notinf, notposinf, notneginf, notfinite,
        iszero, notzero, nonzero, isone, notone, notinteger,
