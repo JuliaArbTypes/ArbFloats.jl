@@ -9,7 +9,7 @@ function show_readable{T<:Real}(io::IO, x::T)
 end
 
 function show_readable{T<:Real}(x::T)
-    str = readable(x, etc)
+    str = readable(x)
     print(STDOUT, str)
 end    
 
