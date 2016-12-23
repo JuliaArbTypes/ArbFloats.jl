@@ -58,13 +58,13 @@ end
 
 function deepcopy{P}(x::ArfFloat{P})
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+    ccall(@libarb(arf_set), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
     return z
 end
 function deepcopy{T<:ArfFloat}(x::T)
     P = precision(T)
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+    ccall(@libarb(arf_set), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
     return z
 end
 
@@ -72,25 +72,25 @@ end
 
 function zero{P}(::Type{ArfFloat{P}})
     z = initializer( ArbFloat{P} )
-    ccall(@libarb(arf_zero), Void, (Ptr{ArfFloat}, ), &z)
+    ccall(@libarb(arf_zero), Void, (Ptr{ArfFloat{P}}, ), &z)
     return z
 end
 function zero{T<:ArfFloat}(::Type{T})
     P = precision(ArbFloat)
     z = initializer( ArfFloat{ P } )
-    ccall(@libarb(arf_zero), Void, (Ptr{ArfFloat}, ), &z)
+    ccall(@libarb(arf_zero), Void, (Ptr{ArfFloat{P}}, ), &z)
     return z
 end
 
 function one{P}(::Type{ArfFloat{P}})
     z = initializer( ArbFloat{P} )
-    ccall(@libarb(arf_one), Void, (Ptr{ArfFloat}, ), &z)
+    ccall(@libarb(arf_one), Void, (Ptr{ArfFloat{P}}, ), &z)
     return z
 end
 function one{T<:ArfFloat}(::Type{T})
     P = precision(ArbFloat)
     z = initializer( ArfFloat{ P } )
-    ccall(@libarb(arf_one), Void, (Ptr{ArfFloat}, ), &z)
+    ccall(@libarb(arf_one), Void, (Ptr{ArfFloat{P}}, ), &z)
     return z
 end
 
