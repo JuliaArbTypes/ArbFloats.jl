@@ -14,15 +14,12 @@ digits_to_rounded_bits(digs::Int64) = digits_to_rounded_bits(digs%Int32)
 
 function round{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
-    z = initializer(ArbFloat{P})
-    if places > 0
-        sigbits = base==2 ? places : digits_to_rounded_bits(places)
-        ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
-    else
-        z = trunc(x)
-        z = trunc(z / (base^(-places)))
-        z = z * base^(-places)
+    if places == 0
+        places = 1
     end
+    z = initializer(ArbFloat{P})
+    sigbits = base==2 ? places : digits_to_rounded_bits(places)
+    ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
     return z
 end
 
