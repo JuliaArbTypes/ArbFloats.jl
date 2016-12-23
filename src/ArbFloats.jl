@@ -80,8 +80,6 @@ import Base: STDOUT,
     rand, randn, sort,
     BigInt, BigFloat, Rational
 
-include("support/ReadableNumbers.jl")
-using .ReadableNumbers
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
        @ArbFloat,     # converts string form of argument, precision is optional first arg
