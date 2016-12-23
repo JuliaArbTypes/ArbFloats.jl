@@ -11,7 +11,7 @@ export ReadableNumStyle, readable, show_readable
 import Base: STDOUT, parse
 
 
-if VERSION < v"0.6"
+if typeof(Base.split("a","b")[1]) == SubString{String}
     split(str::String, sep::Char=" ") = map(String, Base.split(str, sep))  # do not work with SubStrings
 end    
 
