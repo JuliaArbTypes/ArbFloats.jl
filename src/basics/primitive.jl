@@ -133,3 +133,8 @@ end
 function fmod{P}(fpart::ArbFloat{P}, ipart::ArbFloat{P})
     return ipart + fpart
 end  
+
+
+integerpart{P}(x::ArbFloat{P}) = trunc(x)
+fractionalpart{P}(x::ArbFloat{P}) = x - trunc(x)
+decimalpart{P}(x::ArbFloat{P}) = smartvalue(fractionalpart(x))
