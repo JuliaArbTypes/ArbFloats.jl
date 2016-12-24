@@ -138,3 +138,15 @@ end
 integerpart{P}(x::ArbFloat{P}) = trunc(x)
 fractionalpart{P}(x::ArbFloat{P}) = x - trunc(x)
 decimalpart{P}(x::ArbFloat{P}) = smartvalue(fractionalpart(x))
+
+function smartmodf{P}(x::ArbFloat{P})
+    isneg = signbit(x)
+    y = abs(x)
+    ipart = trunc(y)
+    fpart = smartvalue(y - ipart)
+    if isneg
+        ipart = -ipart
+        fpart = -fpart
+    end
+    return (fpart, ipart)
+end
