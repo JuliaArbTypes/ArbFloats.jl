@@ -2,4 +2,3 @@ julia 0.5
 BinDeps 0.4
 Compat 0.9
 Nemo 0.5
-ReadableNumbers
