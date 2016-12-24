@@ -50,7 +50,7 @@ These results were obtained using BenchmarkTools.jl on one desktop system.
 
 
 __Version 0.1.00__ released 2016-Sep-15.   
-__Version 0.1.13__ released 2016-Dec-15.
+__Version 0.1.14__ released 2016-Dec-23.
 
 ### Install
 
@@ -382,13 +382,18 @@ Exports (including re-exports)
 
 >   signbit, sign, flipsign, copysign, abs, (+),(-),(\*),(/),(),(%),(\^), inv,    
 >   sqrt, invsqrt, hypot, factorial, doublefactorial, risingfactorial, trunc,    
->   round, ceil, floor,   
+>   round, ceil, floor, trunc, fld, cld, fmod, modf, 
+>   integerpart, fractionalpart,
 
 >   pow, root, exp, expm1, log, log1p, log2, log10, logbase, sin, cos, sincos,    
 >   sincospi, tan, csc, sec, cot, asin, acos, atan, atan2, sinh, cosh, sinhcosh,   
 >   tanh, csch, sech, coth, asinh, acosh, atanh,    
 
 >   gamma, lgamma, digamma, sinc, zeta, polylog, agm    
+
+>   string, stringsmall, stringlarge, stringall, 
+>   smartstring, smartvalue, 
+>   smartmodf, decimalpart, # both use smartvalue(fractionalpart)
 
 #### Credits, References, Thanks
 
