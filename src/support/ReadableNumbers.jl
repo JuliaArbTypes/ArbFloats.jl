@@ -6,9 +6,9 @@ module ReadableNumbers
     generating and showing prettier numeric strings
 =#     
 
-export ReadableNumStyle, readable, show_readable 
+export ReadableNumStyle, readable, show_readable, parse_readable 
 
-import Base: STDOUT, parse
+import Base: STDOUT
 
 
 if typeof(Base.split("a","b")[1]) == SubString{String}
