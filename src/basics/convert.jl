@@ -288,14 +288,14 @@ end
 for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16,
           :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),
           :String)
-  @eval promote_rule{P}(::Type{ArbFloat{P}}, ::Type{$T}) = ArbFloat{P}
+  @eval promote_rule{P}(::Type{ArbFloat{P}}, ::Type{$T}) = ArbFloat
 end
 
 float{P}(x::ArbFloat{P}) = x
 float{T<:ArbFloat}(x::T) = x
 
-promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigFloat}) = ArbFloat{P}
-promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigInt}) = ArbFloat{P}
+promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigFloat}) = ArbFloat
+promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigInt}) = ArbFloat
 promote_rule{P}(::Type{ArbFloat{P}}, ::Type{Rational{BigInt}}) = Rational{BigInt}
 
 promote_rule{P,Q}(::Type{ArbFloat{P}}, ::Type{ArbFloat{Q}}) =
