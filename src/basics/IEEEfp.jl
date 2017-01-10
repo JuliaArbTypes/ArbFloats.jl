@@ -219,7 +219,7 @@ ulp10(x::Integer) = ulp10(Float64(x))
 
 
 function eps{T<:ArbFloat}(x::T)
-    ieps = internal_eps(x)
+    ieps = ulp2(x) # internal_eps(x)
     return T(ieps)
 end
 eps{P}(x::ArbFloat{P}) = ArbFloat{P}( internal_eps(x) )
