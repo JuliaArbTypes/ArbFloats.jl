@@ -219,10 +219,10 @@ ulp10(x::Integer) = ulp10(Float64(x))
 
 
 function eps{T<:ArbFloat}(x::T)
-    ieps = ulp2(x) # internal_eps(x)
-    return T(ieps)
+    return radius(x)
 end
-eps{P}(x::ArbFloat{P}) = ArbFloat{P}( internal_eps(x) )
+eps{P}(x::ArbFloat{P}) = radius(x)
+#=
 eps{T<:ArbFloat}(::Type{T}) = T(internal_eps(T))
 
 internal_eps{T<:ArbFloat}(::Type{T}) = ldexp(0.5,1-precision(T)) # for intertype workings
@@ -243,11 +243,12 @@ function internal_eps{P}(x::ArbFloat{P})              # for intratype workings
         end
    return z
 end
+=#
 
 function nextfloat{P}(x::ArbFloat{P})
-    x + ulp2(x)
+    x + radius(x)
 end
 
 function prevfloat{P}(x::ArbFloat{P})
-    x - ulp2(x)
+    x - radius(x)
 end
