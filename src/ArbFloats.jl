@@ -128,8 +128,7 @@ NotImplemented(info::AbstractString="") = error(string("this is not implemented\
 
 include("support/NemoLibs.jl")                 # for precompiled libraries
 
-include("support/ReadableNumbers.jl")          # digit subsequence separators
-using .ReadableNumbers
+using ReadableNumbers
 
 include("type/ArbCstructs.jl")
 include("type/MagFloat.jl")
