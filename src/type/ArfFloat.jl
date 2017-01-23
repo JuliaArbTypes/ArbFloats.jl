@@ -48,21 +48,11 @@ end
      return initializer(ArfFloat{P})
 end            
 
-
-
 function deepcopy{P}(x::ArfFloat{P})
     z = initializer(ArfFloat{P})
     ccall(@libarb(arf_set), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
     return z
 end
-function deepcopy{T<:ArfFloat}(x::T)
-    P = precision(T)
-    z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
-    return z
-end
-
-
 
 function zero{P}(::Type{ArfFloat{P}})
     z = initializer( ArbFloat{P} )
