@@ -219,7 +219,7 @@ ulp10(x::Integer) = ulp10(Float64(x))
 
 # !!revisit!!
 function eps{T<:ArbFloat}(::Type{T})
-    return T(ulp2(one(T))
+    return T(ulp2(one(T)))
 end
 function eps{P}(x::ArbFloat{P})
     a = eps(ArbFloat{P})
