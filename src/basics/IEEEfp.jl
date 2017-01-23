@@ -222,7 +222,7 @@ function eps{T<:ArbFloat}(::Type{T})
 end
 function eps{P}(x::ArbFloat{P})
     a = eps(ArbFloat{P})
-    return midpoint(abs(x)+abs(x)*a)
+    return midpoint(abs(x)*a)
 end   
 
 function nextfloat{P}(x::ArbFloat{P})
