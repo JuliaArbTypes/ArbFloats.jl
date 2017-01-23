@@ -292,7 +292,6 @@ for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16,
 end
 
 float{P}(x::ArbFloat{P}) = x
-float{T<:ArbFloat}(x::T) = x
 
 promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigFloat}) = ArbFloat
 promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigInt}) = ArbFloat
