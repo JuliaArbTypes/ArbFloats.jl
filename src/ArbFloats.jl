@@ -59,7 +59,7 @@ import Base: STDOUT,
     typemin, typemax, realmin, realmax,
     copy, deepcopy,
     size, length,
-    zero, one, isinteger,
+    zero, one, isisinteger,
     ldexp, frexp, modf, eps,
     isequal, isless, (==),(!=),(<),(<=),(>=),(>), contains,
     min, max, minmax,
@@ -104,7 +104,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        isexact, notexact,
        isposinf, isneginf,
        notnan, notinf, notposinf, notneginf, notfinite,
-       iszero, notzero, nonzero, isone, notone, notinteger,
+       notzero, nonzero, isone, notone, notinteger,
        ispositive, notpositive, isnegative, notnegative,
        includesAnInteger, excludesIntegers, includesZero, excludesZero,
        includesPositive, excludesPositive, includesNegative, excludesNegative,
@@ -123,6 +123,11 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        force_nonnegative_content, force_positive_content,
        sortIntervals                                          # uses weak total ordering over intervals 
 
+if VERSION >= v"0.6.0-dev"
+  import iszero
+else
+  export iszero
+end          
 
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 
