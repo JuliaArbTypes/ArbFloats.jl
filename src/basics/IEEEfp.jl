@@ -92,8 +92,6 @@ function log_base(x::Real, base::Int)
    return z
 end
 log_base{P}(x::ArbFloat{P}, base::Int) = ArbFloats.logbase(x,base)
-log_base{T<:ArbFloat}(x::T, base::Int) = ArbFloats.logbase(x,base)
-
 
 #=
     position_first_place: the radix position of the most significant nonzero bit|digit
