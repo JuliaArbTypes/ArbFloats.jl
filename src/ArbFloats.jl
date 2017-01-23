@@ -124,7 +124,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        sortIntervals                                          # uses weak total ordering over intervals 
 
 if VERSION >= v"0.6.0-dev"
-  import iszero
+  import Base:iszero
 else
   export iszero
 end          
