@@ -19,12 +19,6 @@ for fn in (:copy, :deepcopy)
         ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
         return z
     end
-    function ($fn){T<:ArbFloat}(x::T)
-        P = precision(T)
-        z = initializer(ArbFloat{P})
-        ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-        return z
-    end
   end
 end
 
