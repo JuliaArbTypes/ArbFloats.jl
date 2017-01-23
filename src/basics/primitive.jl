@@ -48,10 +48,6 @@ function midpoint_radius{T<:ArbFloat}(midpt::T, radius::T)
     return z
 end
 
-function midpoint_radius{T<:ArbFloat}(midpoint::T, radius::Float64)
-    rad = convert(T, radius)
-    return midpoint_radius(midpoint, rad)
-end
 
 function bounds{T<:ArbFloat}(lower::T, upper::T)
     lowerlo, lowerhi = bounds(lower)
