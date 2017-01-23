@@ -28,12 +28,6 @@ function copy{P}(x::ArfFloat{P})
     ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
     return z
 end
-function copy{T<:ArfFloat}(x::T)
-    P = precision(T)
-    z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
-    return z
-end
 
 # initialize and zero a variable of type ArfFloat
 function release{P}(x::ArfFloat{P})
