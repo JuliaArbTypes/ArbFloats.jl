@@ -217,9 +217,10 @@ end
 ulp10{T<:AbstractFloat}(x::T) = ulp10( x, (1+Base.significand_bits(T)) )
 ulp10(x::Integer) = ulp10(Float64(x))
 
-# !!revisit!!
+
 function eps{T<:ArbFloat}(::Type{T})
-    return T(ulp2(one(T)))
+    P = precision(T)
+    return ldexp(one(T), 1-P)
 end
 function eps{P}(x::ArbFloat{P})
     a = eps(ArbFloat{P})
