@@ -222,14 +222,14 @@ function eps{T<:ArbFloat}(::Type{T})
 end
 function eps{P}(x::ArbFloat{P})
     a = eps(ArbFloat{P})
-    return abs(x)*a
+    return midpoint(abs(x)+abs(x)*a)
 end   
 
 function nextfloat{P}(x::ArbFloat{P})
-    return x + eps(x)
+    return midpoint_radius(midpoint(x) + eps(x), radius(x))
 end
 
 # !!revisit!!
 function prevfloat{P}(x::ArbFloat{P})
-    return x - eps(x)
+   return midpoint_radius(midpoint(x) - eps(x), radius(x))
 end
