@@ -96,7 +96,6 @@ function notinteger{T<:ArbFloat}(x::T)
     return 0 == ccall(@libarb(arb_is_int), Int, (Ptr{T},), &x)
 end
 
-isinteger{T<:Integer}(x::T) = true
 notinteger{T<:Integer}(x::T) = false
 
 """true iff lowerbound(x) is positive"""
