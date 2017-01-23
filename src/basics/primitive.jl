@@ -82,12 +82,6 @@ function trim{P}(x::ArbFloat{P})
     ccall(@libarb(arb_trim), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     return z
 end
-function trim{T<:ArbFloat}(x::T)
-    P = precision(T)
-    z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_trim), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
-    return z
-end
 
 """
 Rounds x to a clean estimate of x as a point value.
