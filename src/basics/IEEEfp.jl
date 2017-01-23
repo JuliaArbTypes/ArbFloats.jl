@@ -217,10 +217,9 @@ end
 ulp10{T<:AbstractFloat}(x::T) = ulp10( x, (1+Base.significand_bits(T)) )
 ulp10(x::Integer) = ulp10(Float64(x))
 
-
-function eps{T<:ArbFloat}(x::T)
-    a = one(T)
-    nextfloat(a)-a
+# !!revisit!!
+function eps{T<:ArbFloat}(::Type{T})
+    return T(ulp2(one(T))
 end
 function eps{P}(x::ArbFloat{P})
     a = eps(ArbFloat{P})
@@ -231,6 +230,7 @@ function nextfloat{P}(x::ArbFloat{P})
     return x + eps(x)
 end
 
+# !!revisit!!
 function prevfloat{P}(x::ArbFloat{P})
     return x - eps(x)
 end
