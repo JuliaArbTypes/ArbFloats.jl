@@ -70,31 +70,32 @@ typemin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}("-Inf")
 realmax{P}(::Type{ArbFloat{P}}) = ArbFloat{P}(2)^(P+29)
 realmin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}(2)^(-P-29)
 
-#=
+
 function zero{P}(::Type{ArbFloat{P}})
     z = initializer( ArbFloat{P} )
     ccall(@libarb(arb_zero), Void, (Ptr{ArbFloat}, ), &z)
     return z
 end
-=#
+#=
 function zero{T<:ArbFloat}(::Type{T})
     z = initializer( ArbFloat{ precision(ArbFloat) } )
     ccall(@libarb(arb_zero), Void, (Ptr{ArbFloat}, ), &z)
     return z
 end
-#=
+=#
+
 function one{P}(::Type{ArbFloat{P}})
     z = initializer( ArbFloat{P} )
     ccall(@libarb(arb_one), Void, (Ptr{ArbFloat}, ), &z)
     return z
 end
-=#
+#=
 function one{T<:ArbFloat}(::Type{T})
     z = initializer( ArbFloat{ precision(ArbFloat) } )
     ccall(@libarb(arb_one), Void, (Ptr{ArbFloat}, ), &z)
     return z
 end
-
+=#
 
 # parts and aspects
 # midpoint, radius, lowerbound, upperbound
