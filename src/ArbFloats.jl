@@ -106,9 +106,9 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        notnan, notinf, notposinf, notneginf, notfinite,
        notzero, nonzero, isone, notone, notinteger,
        ispositive, notpositive, isnegative, notnegative,
-       includesAnInteger, excludesIntegers, includesZero, excludesZero,
-       includesPositive, excludesPositive, includesNegative, excludesNegative,
-       includesNonpositive,  includesNonnegative,
+       includes_integer, excludes_integers, includes_zero, excludes_zero,
+       includes_positive, excludes_positive, includes_negative, excludes_negative,
+       includes_nonpositive,  includes_nonnegative,
        areequal, notequal, approxeq, (≊),
        narrow, overlap, donotoverlap,
        contains, iscontainedby, doesnotcontain, isnotcontainedby,
@@ -121,7 +121,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        set_midpoint_digits_shown, set_radius_digits_shown,
        isolate_nonnegative_content, isolate_positive_content, # for interval algorithms
        force_nonnegative_content, force_positive_content,
-       sortIntervals                                          # uses weak total ordering over intervals 
+       sort_intervals                                         # uses weak total ordering over intervals 
 
 if VERSION >= v"0.6.0-dev"
   import Base:iszero
