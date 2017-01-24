@@ -22,4 +22,8 @@ afInf = ArbFloat(Inf)
 @test  upperbound(asin(log(atanh(tanh(exp(sin(afhalf))))))) >= afhalf
 @test  lowerbound(asin(log(atanh(tanh(exp(sin(afhalf))))))) <= afhalf
 
+@test midpoint(half) != midpoint(prevfloat(half))
+@test midpoint(half) != midpoint(nextfloat(half))
+
+
 end # module
