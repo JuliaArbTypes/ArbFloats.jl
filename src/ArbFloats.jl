@@ -6,8 +6,9 @@ setprecision(ArbFloat, 120)   # change the current default precision
 setprecision(ArbFloat, 53+7)  # akin to setprecision(BigFloat, 53)  
 
 ArbFloat(12)       # use the default precision, at run time  
-@ArbFloat(12)      # use the default precision, at compile time  
 ArbFloat{200}(12)  # use specified precision, at run time  
+ArbFloat(200,"12") # use the specified precision, at run time  
+@ArbFloat(12)      # use the default precision, at compile time  
 @ArbFloat(200,12)  # use specified precision, at compile time  
 
 @ArbFloat(1.2345) == ArbFloat("1.2345")
