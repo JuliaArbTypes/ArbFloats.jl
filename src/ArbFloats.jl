@@ -80,6 +80,7 @@ import Base: STDOUT,
     rand, randn, sort,
     BigInt, BigFloat, Rational
 
+import Base.Rounding: rounding_raw, setrounding_raw, rounding, setrounding
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
        @ArbFloat,     # converts string form of argument, precision is optional first arg
