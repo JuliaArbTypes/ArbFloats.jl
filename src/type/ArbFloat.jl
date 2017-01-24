@@ -22,15 +22,12 @@ precision(::Type{ArbFloat}) = ArbFloatPrecision[1]
 precision(::Type{Type{Val{:ArbFloats}}}) = precision(ArbFloat)
 precision(m::Module) = precision(Type{Val{Symbol(m)}})
 
-function setprecision(::Type{ArbFloat}, x::Int)
+function setprecision(::Type{ArbFloat}, x::Int; augmentby::Int=0)
+    x = x + augmentby        
     x = max(11, abs(x))
     x > 4095 && warn("ArbFloats are designed to work best at precisions < 4096 bits")
     ArbFloatPrecision[1] = x
     return x
-end
-
-function setprecisionAugmented(::Type{ArbFloat}, x::Int, offset::Int=10)
-    return setprecision(ArbFloat, x+offset)
 end
 
 
