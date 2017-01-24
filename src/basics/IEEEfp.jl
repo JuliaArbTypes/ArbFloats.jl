@@ -227,13 +227,13 @@ end
 
 function nextfloat{P}(x::ArbFloat{P})
     y = one(ArbFloat{P}) + eps(x)
-    z = midpoint(x) * y
+    z = midpoint(x) * midpoint(y)
     return midpoint_radius(midpoint(z), radius(x))
 end
 
 # !!revisit!!
 function prevfloat{P}(x::ArbFloat{P})
     y = one(ArbFloat{P}) - eps(x)
-    z = midpoint(x) * y
+    z = midpoint(x) * midpoint(y)
     return midpoint_radius(midpoint(z), radius(x))
 end
