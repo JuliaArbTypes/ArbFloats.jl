@@ -184,41 +184,41 @@ for F in (:overlap, :donotoverlap, :contains, :doesnotcontain, :iscontainedby, :
 end
 
 """true iff x contains an integer"""
-function includesAnInteger{T<:ArbFloat}(x::T)
+function includes_integer{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_contains_int), Int, (Ptr{T},), &x)
 end
 
 """true iff x does not contain an integer"""
-function excludesIntegers{T<:ArbFloat}(x::T)
+function excludes_integer{T<:ArbFloat}(x::T)
     return 0 == ccall(@libarb(arb_contains_int), Int, (Ptr{T},), &x)
 end
 
 """true iff x contains zero"""
-function includesZero{T<:ArbFloat}(x::T)
+function includes_zero{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_contains_int), Int, (Ptr{T},), &x)
 end
 
 """true iff x does not contain zero"""
-function excludesZero{T<:ArbFloat}(x::T)
+function excludes_zero{T<:ArbFloat}(x::T)
     return 0 == ccall(@libarb(arb_contains_int), Int, (Ptr{T},), &x)
 end
 
 """true iff x contains a positive value"""
-function includesPositive{T<:ArbFloat}(x::T)
+function includes_positive{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_contains_positive), Int, (Ptr{T},), &x)
 end
 
 """true iff x contains a negative value"""
-function includesNegative{T<:ArbFloat}(x::T)
+function includes_negative{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_contains_negative), Int, (Ptr{T},), &x)
 end
 
 """true iff x contains a nonpositive value"""
-function includesNonpositive{T<:ArbFloat}(x::T)
+function includes_nonpositive{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_contains_nonpositive), Int, (Ptr{T},), &x)
 end
 
 """true iff x contains a nonnegative value"""
-function includesNonnegative{T<:ArbFloat}(x::T)
+function includes_nonnegative{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_contains_nonnegative), Int, (Ptr{ArbFloat{T}},), &x)
 end
