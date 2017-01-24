@@ -11,6 +11,8 @@ type ArbFloat{P}  <: Real     # field and struct names from arb.h
 end
 =#
 
+ArbFloat(s::String, prec::Int) = ArbFloat{prec}(s)
+
 # get and set working precision for ArbFloat
 
 const ArbFloatPrecision = [116,]
