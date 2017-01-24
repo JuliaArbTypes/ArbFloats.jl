@@ -115,7 +115,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        absz, absz2, invsqrt, pow, root, 
        tanpi, cotpi, logbase, sincos, sincospi, sinhcosh,
        doublefactorial, risingfactorial, rgamma, agm, polylog,
-       relativeError, relativeAccuracy, midpointPrecision, trimmed,
+       relative_error, relative_accuracy, midpoint_precision, trimmed,
        PI,SQRTPI,LOG2,LOG10,EXP1,EULER,CATALAN,KHINCHIN,GLAISHER,APERY, # constants
        get_midpoint_digits_shown, get_radius_digits_shown,  # some interface control
        set_midpoint_digits_shown, set_radius_digits_shown,
