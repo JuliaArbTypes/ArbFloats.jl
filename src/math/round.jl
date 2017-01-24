@@ -13,7 +13,7 @@ digits_to_rounded_bits(digs::Int64) = digits_to_rounded_bits(digs%Int32)
 
 integral_digits{P}(x::ArbFloat{P}) = ceiled(Int, log10(1+floored(abs(x))))
 
-function round{P}(x::ArbFloat{P}, places::Int=P, base::Int=2)
+function round{P}(x::ArbFloat{P}, places::Int=integral_digits(P), base::Int=10)
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
     sigbits = base==2 ? places+digits_to_rounded_bits(integral_digits(x)) : digits_to_rounded_bits(places+integral_digits(x))
     sigbits = max(1, sigbits) # library call chokes on a value of zero
