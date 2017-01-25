@@ -226,14 +226,17 @@ function eps{P}(x::ArbFloat{P})
 end   
 
 function nextfloat{P}(x::ArbFloat{P})
-    y = one(ArbFloat{P}) + eps(x)
-    z = midpoint(x) * midpoint(y)
-    return midpoint_radius(midpoint(z), radius(x))
+    m,r = midpoint_radius(x)
+    m = midpoint(m + 2*eps(m))
+    return midpoint_radius(m, r)
 end
 
 # !!revisit!!
 function prevfloat{P}(x::ArbFloat{P})
-    y = one(ArbFloat{P}) - eps(x)
-    z = midpoint(x) * midpoint(y)
-    return midpoint_radius(midpoint(z), radius(x))
+    m,r = midpoint_radius(x)
+    m = midpoint(m - eps(m))
+    return midpoint_radius(m, r)
+    #y = one(ArbFloat{P}) - eps(x)
+    #z = midpoint(x) * midpoint(y)
+    #return midpoint_radius(midpoint(z), radius(x))
 end
