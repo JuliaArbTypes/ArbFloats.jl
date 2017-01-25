@@ -59,21 +59,9 @@ function zero{P}(::Type{ArfFloat{P}})
     ccall(@libarb(arf_zero), Void, (Ptr{ArfFloat{P}}, ), &z)
     return z
 end
-function zero{T<:ArfFloat}(::Type{T})
-    P = precision(ArbFloat)
-    z = initializer( ArfFloat{ P } )
-    ccall(@libarb(arf_zero), Void, (Ptr{ArfFloat{P}}, ), &z)
-    return z
-end
 
 function one{P}(::Type{ArfFloat{P}})
     z = initializer( ArbFloat{P} )
-    ccall(@libarb(arf_one), Void, (Ptr{ArfFloat{P}}, ), &z)
-    return z
-end
-function one{T<:ArfFloat}(::Type{T})
-    P = precision(ArbFloat)
-    z = initializer( ArfFloat{ P } )
     ccall(@libarb(arf_one), Void, (Ptr{ArfFloat{P}}, ), &z)
     return z
 end
