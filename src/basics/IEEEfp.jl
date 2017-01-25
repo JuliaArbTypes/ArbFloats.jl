@@ -240,7 +240,13 @@ end
 
 # !!revisit!!
 function prevfloat{P}(x::ArbFloat{P})
-    y = one(ArbFloat{P}) - eps(x)
-    z = midpoint(x) * midpoint(y)
-    return midpoint_radius(midpoint(z), radius(x))
+    m,r = midpoint_radius(x)
+    e = eps(m)
+    n = m
+    i = 1
+    while n == m
+      n = midpoint(n - i*e)
+      i += 1
+    end
+    return midpoint_radius(n, r)
 end
