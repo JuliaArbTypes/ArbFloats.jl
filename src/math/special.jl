@@ -36,6 +36,7 @@ for (op,cfunc) in ((:risingfactorial,:arb_rising),)
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
       z
     end
+    #=
     function ($op){R1<:Real,R2<:Real}(xx::R1, yy::R2)
       P = precision(ArbFloat)
       x = convert(ArbFloat{P},xx)
@@ -44,6 +45,7 @@ for (op,cfunc) in ((:risingfactorial,:arb_rising),)
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
       z
     end
+    =#
   end
 end
 
@@ -66,6 +68,7 @@ for (op,cfunc) in ((:agm, :arb_agm), (:polylog, :arb_polylog))
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
       z
     end
+    #=
     function ($op){R1<:Real,R2<:Real}(xx::R1, yy::R2)
       P = precision(ArbFloat)
       x = convert(ArbFloat{P},xx)
@@ -74,5 +77,6 @@ for (op,cfunc) in ((:agm, :arb_agm), (:polylog, :arb_polylog))
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
       z
     end
+    =#
   end
 end
