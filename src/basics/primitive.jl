@@ -38,14 +38,15 @@ function copymidpoint{T<:ArbFloat}(target::T, source::T)
     return z
 end
 
-function midpoint_radius{T<:ArbFloat}(x::T)
+function midpoint_radius{P}(x::ArbFloat{P})
     return midpoint(x), radius(x)
 end
 
-function midpoint_radius{T<:ArbFloat}(midpt::T, radius::T)
-    z = midpoint(midpt)
-    ccall(@libarb(arb_add_error), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &radius)
-    return z
+function midpoint_radius{P}(midpt::ArbFloat{P}, radius::ArbFloat{P})
+    mid = midpoint(midpt)
+    rad = midpoint(radius)
+    ccall(@libarb(arb_add_error), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &mid, &rad)
+    return mid
 end
 
 
