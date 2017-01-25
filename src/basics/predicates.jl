@@ -112,13 +112,11 @@ end
 function notpositive{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_is_nonpositive), Int, (Ptr{T},), &x)
 end
-excludesPositive{P}(x::ArbFloat{P}) = notpositive(x)
 
 """true iff lowerbound(x) is zero or positive"""
 function notnegative{T<:ArbFloat}(x::T)
     return 0 != ccall(@libarb(arb_is_nonnegative), Int, (Ptr{T},), &x)
 end
-excludesNegative{P}(x::ArbFloat{P}) = notnegative(x)
 
 # two parameter predicates
 
