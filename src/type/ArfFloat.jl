@@ -25,7 +25,7 @@ weakcopy{P}(x::ArfFloat{P}) = WeakRef(x)
 
 function copy{P}(x::ArfFloat{P})
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set), Void, (Ptr{T}, Ptr{T}), &z, &x)
+    ccall(@libarb(arf_set), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
     return z
 end
 
