@@ -43,13 +43,14 @@ function convert{P,Q}(::Type{ArfFloat{P}}, x::ArfFloat{Q})
    ccall(@libarb(arf_set_round), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{Q}}, Clong), &z, &x, Clong(P))
    return z
 end
-
+#=
 function convert{Q}(::Type{ArbFloat}, x::ArbFloat{Q})
    P = precision(ArbFloat)
    z = initializer(ArbFloat{P})
    ccall(@libarb(arb_set_round), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{Q}}, Clong), &z, &x, Clong(P))
    return z
 end
+=#
 function convert{P,Q}(::Type{ArbFloat{P}}, x::ArbFloat{Q})
    z = initializer(ArbFloat{P})
    ccall(@libarb(arb_set_round), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{Q}}, Clong), &z, &x, Clong(P))
@@ -77,13 +78,14 @@ function convert{P,Q}(::Type{ArbFloat{P}}, x::ArfFloat{Q})
     z = convert(ArbFloat{P}, y)
     return z
 end
+#=
 function convert{Q}(::Type{ArbFloat}, x::ArfFloat{Q})
     P = precision(ArbFloat)
     y = convert(ArfFloat{P}, x)
     z = convert(ArbFloat{P}, y)
     return z
 end
-
+=#
 function convert{P,Q}(::Type{ArfFloat{P}}, x::ArbFloat{Q})
     y = convert(ArbFloat{P}, x)
     z = convert(ArfFloat{P}, y)
