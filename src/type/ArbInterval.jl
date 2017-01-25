@@ -1,3 +1,14 @@
+function midpoint_radius{P}(x::ArbFloat{P})
+    return midpoint(x), radius(x)
+end
+
+function midpoint_radius{P}(midpt::ArbFloat{P}, radius::ArbFloat{P})
+    mid = midpoint(midpt)
+    rad = midpoint(radius)
+    ccall(@libarb(arb_add_error), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &mid, &rad)
+    return mid
+end
+
 function midpoint_radius(mid::Float64, rad::Float64)
     m = convert(ArbFloat, mid)
     r = convert(ArbFloat, rad)
