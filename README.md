@@ -8,6 +8,10 @@ ArbFloats.jl
 
 [![Build Status](https://travis-ci.org/JuliaArbTypes/ArbFloats.jl.svg?branch=master)](https://travis-ci.org/JuliaArbTypes/ArbFloats.jl)
 
+
+### This works with v0.6
+When you first clone nemo.jl and then checkout nemo.jl before adding this.
+
 ### ArbFloats calculate faster than BigFloats at medium precisions
 
 These results were obtained using BenchmarkTools.jl on one desktop system.
