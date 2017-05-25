@@ -4,7 +4,7 @@ function show{T<:ArbFloat}(io::IO, x::T)
     else
       s = string(x)
     end
-    print(io, s)
+    print(io, string(s,".."))
 end
 show{T<:ArbFloat}(x::T) = show(STDOUT, x)
 
