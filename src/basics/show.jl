@@ -3,6 +3,10 @@ function show{T<:ArbFloat}(io::IO, x::T)
       s = string(midpoint(x))
     else
       s = string(x)
+      chrs = length(s)
+      if chrs>30
+         s = string(s[1:20],"..",s[end-10,end])
+      end
     end
     print(io, s)
 end
