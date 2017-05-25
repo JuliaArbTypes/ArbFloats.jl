@@ -1,5 +1,5 @@
 function show{T<:ArbFloat}(io::IO, x::T)
-   s if isexact(x)
+    if isexact(x)
       s = string(midpoint(x))
     else
       s = string(x)
