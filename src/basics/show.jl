@@ -1,11 +1,10 @@
 function show{T<:ArbFloat}(io::IO, x::T)
     if isexact(x)
-      s = stringall(midpoint(x))
+      s = string(midpoint(x))
     else
       s = stringall(x)
-      chrs = length(s)
-      if chrs>30
-         s = string(s[1:20],"..",s[end-10,end])
+      if precision(T) > 128
+          s = string(s[1:20],"..",s[(end-10),end])
       end
     end
     print(io, s)
