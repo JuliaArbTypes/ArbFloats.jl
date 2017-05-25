@@ -105,7 +105,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        isexact, notexact,
        isposinf, isneginf,
        notnan, notinf, notposinf, notneginf, notfinite,
-       notzero, nonzero, isone, notone, notinteger,
+       iszero, notzero, nonzero, isone, notone, notinteger,
        ispositive, notpositive, isnegative, notnegative,
        includes_integer, excludes_integer, includes_zero, excludes_zero,
        includes_positive, excludes_positive, includes_negative, excludes_negative,
@@ -124,10 +124,8 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        force_nonnegative_content, force_positive_content,
        sort_intervals                                         # uses weak total ordering over intervals 
 
-if VERSION >= v"0.6.0-dev"
+if !isdefined(:iszero)
   import Base:iszero
-else
-  export iszero
 end          
 
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
