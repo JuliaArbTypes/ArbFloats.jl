@@ -178,7 +178,7 @@ fpOneThird = 1.0f0 / 3.0f0
 # 0.3333334f0
 
 oneThird = ArbFloat32(1) / ArbFloat32(3)
-# 0.3333333
+# 0.3333333..s
 show_pm(oneThird)
 # 0.33333331±2.98023223877e-8
 
@@ -188,10 +188,11 @@ gamma( fpOneThird )
 # 2.6789_384f0
 
 gamma_oneThird = gamma( oneThird )
-# 2.6789_4
+# 2.6789_4..
 bounds(gamma_oneThird)
 # (2.6789_362, 2.6789_401)
 showsmall(gamma_oneThird)
+# 2.67894
 ```
 
 #### Display
