@@ -9,9 +9,6 @@ ArbFloats.jl
 [![Build Status](https://travis-ci.org/JuliaArbTypes/ArbFloats.jl.svg?branch=master)](https://travis-ci.org/JuliaArbTypes/ArbFloats.jl)
 
 
-### This works with v0.6
-When you first clone nemo.jl and then checkout nemo.jl before adding this.
-
 ### ArbFloats calculate faster than BigFloats at medium precisions
 
 These results were obtained using BenchmarkTools.jl on one desktop system.
@@ -127,7 +124,9 @@ using ArbFloats
 
 setprecision(ArbFloat, 80)
 
-exp1 = exp(ArbFloat(1));
+exp1 = exp(ArbFloat(1))
+# 2.71828182845904523536029..
+
 stringsmall(exp1),stringcompact(exp1),string(exp1),stringall(exp1)
 ("2.7182818","2.71828182845905","2.71828182845904523536029","2.71828182845904523536029")
 showall_pm(exp1)
