@@ -105,7 +105,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        isexact, notexact,
        isposinf, isneginf,
        notnan, notinf, notposinf, notneginf, notfinite,
-       notzero, nonzero, isone, notone, notinteger,
+       iszero, notzero, nonzero, isone, notone, notinteger,
        ispositive, notpositive, isnegative, notnegative,
        includes_integer, excludes_integer, includes_zero, excludes_zero,
        includes_positive, excludes_positive, includes_negative, excludes_negative,
