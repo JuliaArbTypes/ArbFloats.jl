@@ -124,8 +124,10 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        force_nonnegative_content, force_positive_content,
        sort_intervals                                         # uses weak total ordering over intervals 
 
-if !isdefined(:iszero)
+if isdefined(Base,:iszero)
   import Base:iszero
+else
+  export iszero
 end          
 
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
