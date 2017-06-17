@@ -74,10 +74,26 @@ isless{ T<:ArbFloat}(a::T, b::Void) = true
 
 
 function max{T<:ArbFloat}(x::T, y::T)
+    (isnan(x) || isnan(y)) && return x
+    if isinf(x)
+       isposinf(x) && return x
+       isneginf(x) && return y
+    elseif isinf(y)
+       isposinf(y) && return y
+       isneginf(y) && return x
+    end
     return (x + y + abs(x - y))/2
 end
 
 function min{T<:ArbFloat}(x::T, y::T)
+    (isnan(x) || isnan(y)) && return x
+    if isinf(x)
+       isposinf(x) && return y
+       isneginf(x) && return x
+    elseif isinf(y)
+       isposinf(y) && return x
+       isneginf(y) && return y
+    end
     return (x + y - abs(x - y))/2
 end
 #=
