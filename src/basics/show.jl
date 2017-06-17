@@ -1,10 +1,11 @@
 function show{T<:ArbFloat}(io::IO, x::T)
-    if isexact(x)
-      s = string(midpoint(x))
+    if isfinite(x) && isexact(x)
+       s = string(midpoint(x))
     else
-      s = string(x)
-    end
-    print(io, string(s,".."))
+       s = string(x)
+    end    
+    dots = isfinite(x) ? ".." : ""
+    print(io, string(s, dots))
 end
 show{T<:ArbFloat}(x::T) = show(STDOUT, x)
 
