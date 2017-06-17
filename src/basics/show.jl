@@ -4,7 +4,7 @@ function show{T<:ArbFloat}(io::IO, x::T)
     else
        s = string(x)
     end    
-    dots = isfinite(x) ? ".." : ""
+    dots = (isfinite(x) && !isexact(x)) ? ".." : ""
     print(io, string(s, dots))
 end
 show{T<:ArbFloat}(x::T) = show(STDOUT, x)
