@@ -64,46 +64,43 @@ function string_nonfinite{T<:ArbFloat}(x::T)::String
     return nonfinite_strings[idx]
 end
 
-#=
+
 function string{T<:ArbFloat}(x::T)::String
-    s = if isfinite(x)
-            stringmedium(x, ndigits) 
-        else
-            string_nonfinite(x)
-        end
+    !isfinite(x) && return string_nonfinite(x)
+
+    s = stringmedium(x, ndigits) 
     return s
 end
-=#
+
 
 function string{T<:ArbFloat}(x::T, ndigits::Int)::String
+    !isfinite(x) && return string_nonfinite(x)
+    
     rdigits = min(ndigits, get_radius_digits_shown(medium))
-
-    s = if isfinite(x)
-            isexact(x) ? string_exact(x, ndigits) : string_inexact(x, ndigits, rdigits)
-        else
-            string_nonfinite(x)
-        end
+    s = isexact(x) ? string_exact(x, ndigits) : string_inexact(x, ndigits, rdigits)
     return s
 end
 @inline string{T<:ArbFloat}(x::T, ndigits::Int16) = string(x, ndigits%Int)
 
 function string{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
-    s = if isfinite(x)
-            isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
-        else
-            string_nonfinite(x)
-        end
+    !isfinite(x) && return string_nonfinite(x)
+
+    s = isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
     return s
 end
 @inline string{T<:ArbFloat}(x::T, mdigits::Int16, rdigits::Int16) = string(x, mdigits%Int, rdigits%Int)
 
 function arb_string{P}(x::ArbFloat{P}, digs::Int, mode::Int)::String
+    !isfinite(x) && return string_nonfinite(x)
+
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, mode%UInt)
     s = unsafe_string(cstr)
     return s
 end    
 
 function string_exact{T<:ArbFloat}(x::T, mdigits::Int, rounding::Int)::String
+    !isfinite(x) && return string_nonfinite(x)
+
     digs = Int(mdigits)
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, rounding%UInt)
     s = unsafe_string(cstr)
@@ -112,6 +109,8 @@ end
 
 
 function string_exact{T<:ArbFloat}(x::T, mdigits::Int)::String
+    !isfinite(x) && return string_nonfinite(x)
+
     digs = Int(mdigits)
     cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, 2%UInt)
     s = unsafe_string(cstr)
@@ -120,6 +119,8 @@ end
 @inline string_exact{T<:ArbFloat}(x::T, mdigits::Int16) = string_exact(x, mdigits%Int)
 
 function string_inexact{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
+    !isfinite(x) && return string_nonfinite(x)
+
     mid = string_exact(midpoint(x), mdigits)
     rad = string_exact(radius(x), rdigits)
     return string(mid, "±", rad)
@@ -157,6 +158,8 @@ end
 
 
 function stringsmall_pm{P}(x::ArbFloat{P})::String
+    !isfinite(x) && return string_nonfinite(x)
+
     if isexact(x)
         return stringsmall(x)
     end
@@ -175,6 +178,8 @@ stringsmall{P}(x::ArbFloat{P})::String =
     string_exact(x, min(get_midpoint_digits_shown(small),digitsRequired(P)))
 
 function stringcompact_pm{P}(x::ArbFloat{P})::String
+    !isfinite(x) && return string_nonfinite(x)
+
     if isexact(x)
         return stringcompact(x)
     end
@@ -193,6 +198,8 @@ stringcompact{P}(x::ArbFloat{P})::String =
     string_exact(x, min(get_midpoint_digits_shown(compact),digitsRequired(P)))
 
 function stringmedium_pm{P}(x::ArbFloat{P})::String
+    !isfinite(x) && return string_nonfinite(x)
+
     if isexact(x)
         return stringmedium(x)
     end
@@ -213,6 +220,8 @@ stringmedium{P}(x::ArbFloat{P})::String =
 @inline string{P}(x::ArbFloat{P}) = stringmedium(x)
 
 function stringlarge_pm{P}(x::ArbFloat{P})::String
+    !isfinite(x) && return string_nonfinite(x)
+
     if isexact(x)
         return stringlarge(x)
     end
@@ -230,6 +239,8 @@ stringlarge{P}(x::ArbFloat{P})::String =
     string_exact(x, min(get_midpoint_digits_shown(large),digitsRequired(P)))
 
 function stringall_pm{P}(x::ArbFloat{P})::String
+    !isfinite(x) && return string_nonfinite(x)
+
     if isexact(x)
         return stringall(x)
     end
