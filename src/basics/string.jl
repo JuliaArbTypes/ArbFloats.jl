@@ -68,7 +68,7 @@ end
 function string{T<:ArbFloat}(x::T)::String
     !isfinite(x) && return string_nonfinite(x)
 
-    s = stringmedium(x, ndigits) 
+    s = stringmedium(x) 
     return s
 end
 
