@@ -16,64 +16,64 @@ for (op,cop) in ((:(==), :(arb_eq)), (:(!=), :(arb_ne)),
                  (:(<=), :(arb_le)), (:(>=), :(arb_ge)),
                  (:(<), :(arb_lt)),  (:(>), :(arb_gt))  )
   @eval begin
-    function ($op){T<:ArbFloat}(a::T, b::T)
+    function ($op)(a::T, b::T) where {T <: ArbFloat}
         return Bool(ccall(@libarb($cop), Cint, (Ptr{T}, Ptr{T}), &a, &b) )
     end
-    ($op){P,Q}(a::ArbFloat{P}, b::ArbFloat{Q}) = ($op)(promote(a,b)...)
-    ($op){T<:ArbFloat,R<:Real}(a::T, b::R) = ($op)(promote(a,b)...)
-    ($op){T<:ArbFloat,R<:Real}(a::R, b::T) = ($op)(promote(a,b)...)
+    ($op)(a::ArbFloat{P}, b::ArbFloat{Q}) where {P,Q} = ($op)(promote(a,b)...)
+    ($op)(a::T, b::R) where {T <: ArbFloat,R <: Real} = ($op)(promote(a,b)...)
+    ($op)(a::R, b::T) where {T <: ArbFloat,R <: Real} = ($op)(promote(a,b)...)
   end
 end
 
-function (≃){T<:ArbFloat}(a::T, b::T)
+function (≃)(a::T, b::T) where {T <: ArbFloat}
     return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), &a, &b))
 end
-simeq{T<:ArbFloat}(a::T, b::T) = (≃)(a,b)
+simeq(a::T, b::T) where {T <: ArbFloat} = (≃)(a,b)
 
-function (≄){T<:ArbFloat}(a::T, b::T)
+function (≄)(a::T, b::T) where {T <: ArbFloat}
     return !Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), &a, &b))
 end
-nsime{T<:ArbFloat}(a::T, b::T) = (≄)(a,b)
+nsime(a::T, b::T) where {T <: ArbFloat} = (≄)(a,b)
 
-function (⪰){T<:ArbFloat}(a::T, b::T)
+function (⪰)(a::T, b::T) where {T <: ArbFloat}
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo < blo) || ((alo == blo) & (ahi <= bhi))
 end
-succeq{T<:ArbFloat}(a::T, b::T) = (⪰)(a,b)
+succeq(a::T, b::T) where {T <: ArbFloat} = (⪰)(a,b)
 
-function (≻){T<:ArbFloat}(a::T, b::T) # (a ≼ b) & (a ≄ b)
+function (≻)(a::T, b::T) where {T <: ArbFloat} # (a ≼ b) & (a ≄ b)
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo < blo) || ((alo == blo) & (ahi < bhi))
 end
-succ{T<:ArbFloat}(a::T, b::T) = (≻)(a,b)
+succ(a::T, b::T) where {T <: ArbFloat} = (≻)(a,b)
 
-function (⪯){T<:ArbFloat}(a::T, b::T)
+function (⪯)(a::T, b::T) where {T <: ArbFloat}
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo > blo) || ((alo == blo) & (ahi >= bhi))
 end
-preceq{T<:ArbFloat}(a::T, b::T) = (⪯)(a,b)
+preceq(a::T, b::T) where {T <: ArbFloat} = (⪯)(a,b)
 
-function (≺){T<:ArbFloat}(a::T, b::T)
+function (≺)(a::T, b::T) where {T <: ArbFloat}
     alo, ahi = bounds(a)
     blo, bhi = bounds(b)
     return (alo > blo) || ((alo == blo) & (ahi > bhi))
 end
-prec{T<:ArbFloat}(a::T, b::T) = (≺)(a,b)
+prec(a::T, b::T) where {T <: ArbFloat} = (≺)(a,b)
 
 
 # for sorted ordering
-isequal{T<:ArbFloat}(a::T, b::T) = !(a != b)
-isless{ T<:ArbFloat}(a::T, b::T) = succ(a,b)
-isequal{T<:ArbFloat}(a::Void, b::T) = false
-isequal{T<:ArbFloat}(a::T, b::Void) = false
-isless{ T<:ArbFloat}(a::Void, b::T) = true
-isless{ T<:ArbFloat}(a::T, b::Void) = true
+isequal(a::T, b::T) where {T <: ArbFloat} = !(a != b)
+isless(a::T, b::T) where {T <: ArbFloat} = succ(a,b)
+isequal(a::Void, b::T) where {T <: ArbFloat} = false
+isequal(a::T, b::Void) where {T <: ArbFloat} = false
+isless(a::Void, b::T) where {T <: ArbFloat} = true
+isless(a::T, b::Void) where {T <: ArbFloat} = true
 
 
-function max{T<:ArbFloat}(x::T, y::T)
+function max(x::T, y::T) where {T <: ArbFloat}
     (isnan(x) || isnan(y)) && return x
     if isinf(x)
        isposinf(x) && return x
@@ -85,7 +85,7 @@ function max{T<:ArbFloat}(x::T, y::T)
     return (x + y + abs(x - y))/2
 end
 
-function min{T<:ArbFloat}(x::T, y::T)
+function min(x::T, y::T) where {T <: ArbFloat}
     (isnan(x) || isnan(y)) && return x
     if isinf(x)
        isposinf(x) && return y
@@ -134,22 +134,22 @@ function max{T<:ArbFloat}(x::T, y::T)
 end
 =#
 
-function minmax{T<:ArbFloat}(x::T, y::T)
+function minmax(x::T, y::T) where {T <: ArbFloat}
    return min(x,y), max(x,y) # ((x<=y) | !(y>x)) ? (x,y) : (y,x)
 end
 
 
 # experimental ≖ ≗
-(eq){T<:ArbFloat}(x::T, y::T) = !(x != y)
-(eq){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (eq)(promote(x,y)...)
-(eq){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (eq)(promote(x,y)...)
-(eq){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (eq)(promote(x,y)...)
-(≗){T<:ArbFloat}(x::T, y::T) = !(x != y)
-(≗){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (≗)(promote(x,y)...)
-(≗){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (≗)(promote(x,y)...)
-(≗){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (≗)(promote(x,y)...)
-(neq){T<:ArbFloat}(x::T, y::T) = donotoverlap(x, y)
-(neq){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = (donotoverlap)(promote(x,y)...)
-(neq){T1<:ArbFloat,T2<:Real}(x::T1, y::T2) = (donotoverlap)(promote(x,y)...)
-(neq){T1<:ArbFloat,T2<:Real}(x::T2, y::T1) = (donotoverlap)(promote(x,y)...)
+(eq)(x::T, y::T) where {T <: ArbFloat} = !(x != y)
+(eq)(x::ArbFloat{P}, y::ArbFloat{Q}) where {P,Q} = (eq)(promote(x,y)...)
+(eq)(x::T1, y::T2) where {T1 <: ArbFloat,T2 <: Real} = (eq)(promote(x,y)...)
+(eq)(x::T2, y::T1) where {T1 <: ArbFloat,T2 <: Real} = (eq)(promote(x,y)...)
+(≗)(x::T, y::T) where {T <: ArbFloat} = !(x != y)
+(≗)(x::ArbFloat{P}, y::ArbFloat{Q}) where {P,Q} = (≗)(promote(x,y)...)
+(≗)(x::T1, y::T2) where {T1 <: ArbFloat,T2 <: Real} = (≗)(promote(x,y)...)
+(≗)(x::T2, y::T1) where {T1 <: ArbFloat,T2 <: Real} = (≗)(promote(x,y)...)
+(neq)(x::T, y::T) where {T <: ArbFloat} = donotoverlap(x, y)
+(neq)(x::ArbFloat{P}, y::ArbFloat{Q}) where {P,Q} = (donotoverlap)(promote(x,y)...)
+(neq)(x::T1, y::T2) where {T1 <: ArbFloat,T2 <: Real} = (donotoverlap)(promote(x,y)...)
+(neq)(x::T2, y::T1) where {T1 <: ArbFloat,T2 <: Real} = (donotoverlap)(promote(x,y)...)
 

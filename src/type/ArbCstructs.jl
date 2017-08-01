@@ -41,7 +41,7 @@ type ArfFloat{P} <: AbstractFloat
 end
 
 
-function c_release_arf{P}(x::ArfFloat{P})
+function c_release_arf(x::ArfFloat{P}) where {P}
   ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
 end
 
@@ -66,6 +66,6 @@ type ArbFloat{P} <: AbstractFloat
 =#    
 end
 
-function c_release_arb{P}(x::ArbFloat{P})
+function c_release_arb(x::ArbFloat{P}) where {P}
   ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
 end

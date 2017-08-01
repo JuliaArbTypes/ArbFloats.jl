@@ -22,7 +22,7 @@ for (op,cfunc) in ((:exp,:arb_exp), (:expm1, :arb_expm1),
     (:digamma, :arb_digamma), (:rgamma, :arb_rgamma)
     )
   @eval begin
-    function ($op){P}(x::ArbFloat{P})
+    function ($op)(x::ArbFloat{P}) where {P}
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, P)
       z
@@ -31,20 +31,20 @@ for (op,cfunc) in ((:exp,:arb_exp), (:expm1, :arb_expm1),
 end
 
 
-function logbase{P}(x::ArbFloat{P}, base::Int)
+function logbase(x::ArbFloat{P}, base::Int) where {P}
     b = UInt(abs(base))
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_log_base_ui), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, UInt, Int), &z, &x, b, P)
     z
 end
 
-log2{P}(x::ArbFloat{P}) = logbase(x, 2)
-log10{P}(x::ArbFloat{P}) = logbase(x, 10)
+log2(x::ArbFloat{P}) where {P} = logbase(x, 2)
+log10(x::ArbFloat{P}) where {P} = logbase(x, 10)
 
 
 for (op,cfunc) in ((:sincos, :arb_sin_cos), (:sincospi, :arb_sin_cos_pi), (:sinhcosh, :arb_sinh_cosh))
   @eval begin
-    function ($op){P}(x::ArbFloat{P})
+    function ($op)(x::ArbFloat{P}) where {P}
         sz = initializer(ArbFloat{P})
         cz = initializer(ArbFloat{P})
         ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &sz, &cz, &x, P)
@@ -54,7 +54,7 @@ for (op,cfunc) in ((:sincos, :arb_sin_cos), (:sincospi, :arb_sin_cos_pi), (:sinh
 end
 
 
-function atan2{P}(a::ArbFloat{P}, b::ArbFloat{P})
+function atan2(a::ArbFloat{P}, b::ArbFloat{P}) where {P}
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_atan2), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &a, &b, P)
     z
@@ -62,7 +62,7 @@ end
 
 for (op,cfunc) in ((:root, :arb_root_ui),)
   @eval begin
-    function ($op){P}(x::ArbFloat{P}, y::UInt)
+    function ($op)(x::ArbFloat{P}, y::UInt) where {P}
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, UInt, Int), &z, &x, &y, P)
       z
@@ -73,55 +73,55 @@ end
 
 for (op,cfunc) in ((:^,:arb_pow), (:pow,:arb_pow))
   @eval begin
-    function ($op){P,I<:Integer}(x::I, y::ArbFloat{P})
+    function ($op)(x::I, y::ArbFloat{P}) where {P,I <: Integer}
       xx = ArbFloat{P}(x)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &xx, &y, P)
       return z
     end
-    function ($op){P,I<:Integer}(x::ArbFloat{P}, y::I)
+    function ($op)(x::ArbFloat{P}, y::I) where {P,I <: Integer}
       sy,ay = signbit(y), abs(y)
       yy = ArbFloat{P}(ay)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &yy, P)
       return sy ? inv(z) : z
     end
-    function ($op){P,R<:Rational}(x::R, y::ArbFloat{P})
+    function ($op)(x::R, y::ArbFloat{P}) where {P,R <: Rational}
       xx = ArbFloat{P}(x)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &xx, &y, P)
       return z
     end
-    function ($op){P,R<:Rational}(x::ArbFloat{P}, y::R)
+    function ($op)(x::ArbFloat{P}, y::R) where {P,R <: Rational}
       yy = ArbFloat{P}(y)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &yy, P)
       return z
     end
-    function ($op){P,R<:Real}(x::R, y::ArbFloat{P})
+    function ($op)(x::R, y::ArbFloat{P}) where {P,R <: Real}
       xx = ArbFloat{P}(x)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &xx, &y, P)
       return z
     end
-    function ($op){P,R<:Real}(x::ArbFloat{P}, y::R)
+    function ($op)(x::ArbFloat{P}, y::R) where {P,R <: Real}
       yy = ArbFloat{P}(y)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &yy, P)
       return z
     end
-    function ($op){P}(x::ArbFloat{P}, y::ArbFloat{P})
+    function ($op)(x::ArbFloat{P}, y::ArbFloat{P}) where {P}
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
       z
     end
-    ($op){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = ($op)(promote(x,y)...)
+    ($op)(x::ArbFloat{P}, y::ArbFloat{Q}) where {P,Q} = ($op)(promote(x,y)...)
   end
 end
 
-root{P}(x::ArbFloat{P}, y::ArbFloat{P}) = pow(x, inv(y))
-root{P}(x::Integer, y::ArbFloat{P}) = pow(ArbFloat{P}(x), inv(y))
-function root{P}(x::ArbFloat{P}, y::Integer)
+root(x::ArbFloat{P}, y::ArbFloat{P}) where {P} = pow(x, inv(y))
+root(x::Integer, y::ArbFloat{P}) where {P} = pow(ArbFloat{P}(x), inv(y))
+function root(x::ArbFloat{P}, y::Integer) where {P}
    return (
      if y>=0
        yy = UInt64(y)

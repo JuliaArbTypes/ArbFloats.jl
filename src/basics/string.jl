@@ -80,7 +80,7 @@ function string{T<:ArbFloat}(x::T, ndigits::Int)::String
     s = isexact(x) ? string_exact(x, ndigits) : string_inexact(x, ndigits, rdigits)
     return s
 end
-@inline string{T<:ArbFloat}(x::T, ndigits::Int16) = string(x, ndigits%Int)
+@inline string(x::T, ndigits::Int16) where {T <: ArbFloat} = string(x, ndigits%Int)
 
 function string{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
     !isfinite(x) && return string_nonfinite(x)
@@ -88,7 +88,7 @@ function string{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
     s = isexact(x) ? string_exact(x, mdigits) : string_inexact(x, mdigits, rdigits)
     return s
 end
-@inline string{T<:ArbFloat}(x::T, mdigits::Int16, rdigits::Int16) = string(x, mdigits%Int, rdigits%Int)
+@inline string(x::T, mdigits::Int16, rdigits::Int16) where {T <: ArbFloat} = string(x, mdigits%Int, rdigits%Int)
 
 function arb_string{P}(x::ArbFloat{P}, digs::Int, mode::Int)::String
     !isfinite(x) && return string_nonfinite(x)
@@ -116,7 +116,7 @@ function string_exact{T<:ArbFloat}(x::T, mdigits::Int)::String
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
-@inline string_exact{T<:ArbFloat}(x::T, mdigits::Int16) = string_exact(x, mdigits%Int)
+@inline string_exact(x::T, mdigits::Int16) where {T <: ArbFloat} = string_exact(x, mdigits%Int)
 
 function string_inexact{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
     !isfinite(x) && return string_nonfinite(x)
@@ -125,9 +125,9 @@ function string_inexact{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int)::String
     rad = string_exact(radius(x), rdigits)
     return string(mid, "±", rad)
 end
-@inline string_inexact{T<:ArbFloat}(x::T, mdigits::Int16, rdigits::Int16) = string_inexact(x, mdigits%Int, rdigits%Int)
-@inline string_inexact{T<:ArbFloat}(x::T, mdigits::Int, rdigits::Int16) = string_inexact(x, mdigits, rdigits%Int)
-@inline string_inexact{T<:ArbFloat}(x::T, mdigits::Int16, rdigits::Int) = string_inexact(x, mdigits%Int, rdigits)
+@inline string_inexact(x::T, mdigits::Int16, rdigits::Int16) where {T <: ArbFloat} = string_inexact(x, mdigits%Int, rdigits%Int)
+@inline string_inexact(x::T, mdigits::Int, rdigits::Int16) where {T <: ArbFloat} = string_inexact(x, mdigits, rdigits%Int)
+@inline string_inexact(x::T, mdigits::Int16, rdigits::Int) where {T <: ArbFloat} = string_inexact(x, mdigits%Int, rdigits)
 
 function cleanup_numstring(numstr::String, isaInteger::Bool)::String
     # is there an exponent
@@ -216,8 +216,8 @@ end
 stringmedium{P}(x::ArbFloat{P})::String =
     string_exact(x, min(get_midpoint_digits_shown(medium),digitsRequired(P)))
 
-@inline string_pm{P}(x::ArbFloat{P}) = stringmedium_pm(x)
-@inline string{P}(x::ArbFloat{P}) = stringmedium(x)
+@inline string_pm(x::ArbFloat{P}) where {P} = stringmedium_pm(x)
+@inline string(x::ArbFloat{P}) where {P} = stringmedium(x)
 
 function stringlarge_pm{P}(x::ArbFloat{P})::String
     !isfinite(x) && return string_nonfinite(x)

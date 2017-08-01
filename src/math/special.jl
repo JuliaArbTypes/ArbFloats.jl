@@ -1,6 +1,6 @@
 for (op,cfunc) in ((:factorial,:arb_fac_ui), (:doublefactorial,:arb_doublefac_ui))
   @eval begin
-    function ($op){P}(x::ArbFloat{P})
+    function ($op)(x::ArbFloat{P}) where {P}
       signbit(x) && throw(ErrorException("Domain Error: argument is negative"))
       y = trunc(UInt, x)
       z = initializer(ArbFloat{P})
@@ -10,7 +10,7 @@ for (op,cfunc) in ((:factorial,:arb_fac_ui), (:doublefactorial,:arb_doublefac_ui
   end
 end
 
-function doublefactorial{R<:Real}(xx::R)
+function doublefactorial(xx::R) where {R <: Real}
    P = precision(ArbFloat)
    x = convert(ArbFloat{P},xx)
    doublefactorial(x)
@@ -18,19 +18,19 @@ end
 
 for (op,cfunc) in ((:risingfactorial,:arb_rising),)
   @eval begin
-    function ($op){P}(x::ArbFloat{P}, y::ArbFloat{P})
+    function ($op)(x::ArbFloat{P}, y::ArbFloat{P}) where {P}
       signbit(x) && throw(ErrorException("Domain Error: argument is negative"))
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
       z
     end
-    function ($op){R<:Real,P}(xx::R, y::ArbFloat{P}, prec::Int=P)
+    function ($op)(xx::R, y::ArbFloat{P}, prec::Int=P) where {R <: Real,P}
       x = convert(ArbFloat{P},xx)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
       z
     end
-    function ($op){R<:Real,P}(x::ArbFloat{P}, yy::R, prec::Int=P)
+    function ($op)(x::ArbFloat{P}, yy::R, prec::Int=P) where {R <: Real,P}
       y = convert(ArbFloat{P},yy)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
@@ -51,18 +51,18 @@ end
 
 for (op,cfunc) in ((:agm, :arb_agm), (:polylog, :arb_polylog))
   @eval begin
-    function ($op){P}(x::ArbFloat{P}, y::ArbFloat{P}, prec::Int=P)
+    function ($op)(x::ArbFloat{P}, y::ArbFloat{P}, prec::Int=P) where {P}
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
       z
     end
-    function ($op){R<:Real,P}(xx::R, y::ArbFloat{P}, prec::Int=P)
+    function ($op)(xx::R, y::ArbFloat{P}, prec::Int=P) where {R <: Real,P}
       x = convert(ArbFloat{P},xx)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
       z
     end
-    function ($op){R<:Real,P}(x::ArbFloat{P}, yy::R, prec::Int=P)
+    function ($op)(x::ArbFloat{P}, yy::R, prec::Int=P) where {R <: Real,P}
       y = convert(ArbFloat{P},yy)
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)

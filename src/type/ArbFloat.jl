@@ -19,8 +19,8 @@ end
 
 const ArbFloatPrecision = [116,]
 
-precision{P}(x::ArbFloat{P}) = P
-precision{P}(::Type{ArbFloat{P}}) = P
+precision(x::ArbFloat{P}) where {P} = P
+precision(::Type{ArbFloat{P}}) where {P} = P
 precision(::Type{ArbFloat}) = ArbFloatPrecision[1]
 # allow inquiring the precision of the module: precision(ArbFloats)
 precision(::Type{Type{Val{:ArbFloats}}}) = precision(ArbFloat)
@@ -41,17 +41,17 @@ const hash_0_arbfloat_lo = hash(zero(UInt), hash_arbfloat_lo)
 # two values of the same precision
 #    with identical midpoint significands and identical radus_exponentOf2s hash equal
 # they are the same value, one is less accurate yet centered about the other
-hash{P}(z::ArbFloat{P}, h::UInt) =
+hash(z::ArbFloat{P}, h::UInt) where {P} =
     hash(z.significand1$z.exponentOf2,
          (h $ hash(z.significand2$(~reinterpret(UInt,P)), hash_arbfloat_lo)
             $ hash_0_arbfloat_lo))
 
 
-function releaseArbFloat{P}(x::ArbFloat{P})
+function releaseArbFloat(x::ArbFloat{P}) where {P}
     ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
 end
 
-function initializer{P}(::Type{ArbFloat{P}})
+function initializer(::Type{ArbFloat{P}}) where {P}
     z = ArbFloat{P}(0,0,0,0,0,0)
     ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
     finalizer(z, releaseArbFloat)
@@ -66,31 +66,31 @@ end
 
 # typemax,typemin realmax,realmin
 
-typemax{P}(::Type{ArbFloat{P}}) = ArbFloat{P}("Inf")
-typemin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}("-Inf")
-realmax{P}(::Type{ArbFloat{P}}) = ArbFloat{P}(2)^(P+29)
-realmin{P}(::Type{ArbFloat{P}}) = ArbFloat{P}(2)^(-P-29)
+typemax(::Type{ArbFloat{P}}) where {P} = ArbFloat{P}("Inf")
+typemin(::Type{ArbFloat{P}}) where {P} = ArbFloat{P}("-Inf")
+realmax(::Type{ArbFloat{P}}) where {P} = ArbFloat{P}(2)^(P+29)
+realmin(::Type{ArbFloat{P}}) where {P} = ArbFloat{P}(2)^(-P-29)
 
 
-function zero{P}(x::ArbFloat{P})
+function zero(x::ArbFloat{P}) where {P}
     z = initializer( ArbFloat{P} )
     ccall(@libarb(arb_zero), Void, (Ptr{ArbFloat}, ), &z)
     return z
 end
-function zero{T<:ArbFloat}(::Type{T})
+function zero(::Type{T}) where {T <: ArbFloat}
     P = precision(T)
     z = initializer( ArbFloat{ P } )
     ccall(@libarb(arb_zero), Void, (Ptr{ArbFloat}, ), &z)
     return z
 end
 
-function one{P}(x::ArbFloat{P})
+function one(x::ArbFloat{P}) where {P}
     z = initializer( ArbFloat{P} )
     ccall(@libarb(arb_one), Void, (Ptr{ArbFloat}, ), &z)
     return z
 end
 
-function one{T<:ArbFloat}(::Type{T})
+function one(::Type{T}) where {T <: ArbFloat}
     P = precision(T)
     z = initializer( ArbFloat{ P } )
     ccall(@libarb(arb_one), Void, (Ptr{ArbFloat}, ), &z)
@@ -100,20 +100,20 @@ end
 # parts and aspects
 # midpoint, radius, lowerbound, upperbound
 
-@inline function ptr_to_midpoint{T<:ArbFloat}(x::T) # Ptr{ArfFloat}
+@inline function ptr_to_midpoint(x::T) where {T <: ArbFloat} # Ptr{ArfFloat}
     return ccall(@libarb(arb_mid_ptr), Ptr{ArfFloat}, (Ptr{T}, ), &x)
 end
-@inline function ptr_to_radius{T<:ArbFloat}(x::T) # Ptr{ArfFloat}
+@inline function ptr_to_radius(x::T) where {T <: ArbFloat} # Ptr{ArfFloat}
     return ccall(@libarb(arb_rad_ptr), Ptr{ArfFloat}, (Ptr{T}, ), &x)
 end
 
-function midpoint{P}(x::ArbFloat{P})
+function midpoint(x::ArbFloat{P}) where {P}
     z = initializer( ArbFloat{P} )
     ccall(@libarb(arb_get_mid_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     return z
 end
 
-function radius{P}(x::ArbFloat{P})
+function radius(x::ArbFloat{P}) where {P}
     z = initializer( ArbFloat{P} ) # is 0
     if !isexact(x)
         ccall(@libarb(arb_get_rad_arb), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
@@ -121,11 +121,11 @@ function radius{P}(x::ArbFloat{P})
     return z
 end
 
-function diameter{T<:ArbFloat}(x::T)
+function diameter(x::T) where {T <: ArbFloat}
     return 2.0*radius(x)
 end
 
-function upperbound{T<:ArbFloat}(x::T)
+function upperbound(x::T) where {T <: ArbFloat}
     P = precision(T)
     a = initializer( ArfFloat{P} )
     z = initializer( ArbFloat{P} )
@@ -134,7 +134,7 @@ function upperbound{T<:ArbFloat}(x::T)
     return z
 end
 
-function lowerbound{T<:ArbFloat}(x::T)
+function lowerbound(x::T) where {T <: ArbFloat}
     P = precision(T)
     a = initializer( ArfFloat{P} )
     z = initializer( ArbFloat{P} )
@@ -143,7 +143,7 @@ function lowerbound{T<:ArbFloat}(x::T)
     return z
 end
 
-bounds{T<:ArbFloat}(x::T) = ( lowerbound(x), upperbound(x) )
+bounds(x::T) where {T <: ArbFloat} = ( lowerbound(x), upperbound(x) )
 
 
 """
@@ -151,7 +151,7 @@ isolate_nonnegative_content(x::ArbFloat)
 returns x without any content < 0
 if x is strictly < 0, returns ArbFloat's NaN
 """
-function isolate_nonnegative_content{T<:ArbFloat}(x::T)
+function isolate_nonnegative_content(x::T) where {T <: ArbFloat}
     lo, hi = bounds(x)
     z = if lo > 0
               x
@@ -175,7 +175,7 @@ isolate_positive_content(x::ArbFloat)
 returns x without any content <= 0
 if x is strictly <= 0, returns ArbFloats' NaN
 """
-function isolate_positive_content{T<:ArbFloat}(x::T)
+function isolate_positive_content(x::T) where {T <: ArbFloat}
     lo, hi = bounds(x)
     z = if lo > 0
               x
@@ -199,7 +199,7 @@ force_nonnegative_content(x::ArbFloat)
 returns x without any content < 0
 if x is strictly < 0, returns 0
 """
-function force_nonnegative_content{T<:ArbFloat}(x::T)
+function force_nonnegative_content(x::T) where {T <: ArbFloat}
     lo, hi = bounds(x)
     z = if lo >= 0
               x
@@ -216,7 +216,7 @@ force_positive_content(x::ArbFloat)
 returns x without any content <= 0
 if x is strictly <= 0, returns eps(lowerbound(x))
 """
-function force_positive_content{T<:ArbFloat}(x::T)
+function force_positive_content(x::T) where {T <: ArbFloat}
     lo, hi = bounds(x)
     z = if lo > 0
               x
@@ -234,7 +234,7 @@ Returns the effective relative error of x measured in bits,
   top bit in the radius and the top bit in the midpoint, plus one.
   The result is clamped between plus/minus ARF_PREC_EXACT.
 """
-function relative_error{T<:ArbFloat}(x::T)
+function relative_error(x::T) where {T <: ArbFloat}
     re_bits = ccall(@libarb(arb_rel_error_bits), Int, (Ptr{ArbFloat},), &x)
     return re_bits
 end
@@ -243,7 +243,7 @@ end
 Returns the effective relative accuracy of x measured in bits,
   equal to the negative of the return value from relativeError().
 """
-function relative_accuracy{T<:ArbFloat}(x::T)
+function relative_accuracy(x::T) where {T <: ArbFloat}
     ra_bits = ccall(@libarb(arb_rel_accuracy_bits), Int, (Ptr{T},), &x)
     return ra_bits
 end
@@ -254,7 +254,7 @@ Returns the number of bits needed to represent the absolute value
   sufficient to represent x exactly.
   Returns 0 if the midpoint of x is a special value.
 """
-function midpoint_precision{T<:ArbFloat}(x::T)
+function midpoint_precision(x::T) where {T <: ArbFloat}
     mp_bits = ccall(@libarb(arb_bits), Int, (Ptr{ArbFloat},), &x)
     return mp_bits
 end
@@ -265,7 +265,7 @@ Sets y to a trimmed copy of x: rounds x to a number of bits equal
   guard bits. The resulting ball is guaranteed to contain x,
   but is more economical if x has less than full accuracy.
 """
-function trimmed{T<:ArbFloat}(x::T)
+function trimmed(x::T) where {T <: ArbFloat}
     P = precision(T)
     z = initializer( ArbFloat{P} )
     ccall(@libarb(arb_trim), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)

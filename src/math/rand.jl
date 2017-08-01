@@ -3,7 +3,7 @@
     Written to do that rather well, rather than to do that very fast.
 =#    
 
-function rand1{P}(::Type{ArbFloat{P}})
+function rand1(::Type{ArbFloat{P}}) where {P}
     i = rand(Int128)
     while i ==  typemin(Int128) || abs(i) >= (typemax(Int128)-1)
        i = rand(Int128)
@@ -13,7 +13,7 @@ function rand1{P}(::Type{ArbFloat{P}})
 end
 
 
-function rand{P}(::Type{ArbFloat{P}})
+function rand(::Type{ArbFloat{P}}) where {P}
     n = cld(P,128)
     rs = zeros(ArbFloat{P}, n)
     for i in 1:n
@@ -30,7 +30,7 @@ function rand{P}(::Type{ArbFloat{P}})
     return midpoint(r)
 end
 
-function rand{P}(::Type{ArbFloat{P}}, N::Int)
+function rand(::Type{ArbFloat{P}}, N::Int) where {P}
     n = max(1, N)
     rs = zeros(ArbFloat{P}, n)
     for i in 1:n
@@ -41,7 +41,7 @@ end
 
 
 
-function randn{P}(::Type{ArbFloat{P}})
+function randn(::Type{ArbFloat{P}}) where {P}
     n = cld(P,64)
     rs = zeros(ArbFloat{P}, n)
     for i in 1:n
@@ -51,7 +51,7 @@ function randn{P}(::Type{ArbFloat{P}})
     return n==1 ? r : (n==2 ? sqrt(r) : r^(1/n))
 end
 
-function randn{P}(::Type{ArbFloat{P}}, N::Int)
+function randn(::Type{ArbFloat{P}}, N::Int) where {P}
     n = max(1,N)
     rs = zeros(ArbFloat{P}, n)
     for i in 1:n

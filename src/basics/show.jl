@@ -1,4 +1,4 @@
-function show{T<:ArbFloat}(io::IO, x::T)
+function show(io::IO, x::T) where {T <: ArbFloat}
     if isfinite(x) && isexact(x)
        s = string(midpoint(x))
     else
@@ -7,83 +7,83 @@ function show{T<:ArbFloat}(io::IO, x::T)
     dots = (isfinite(x) && !isexact(x)) ? ".." : ""
     print(io, string(s, dots))
 end
-show{T<:ArbFloat}(x::T) = show(STDOUT, x)
+show(x::T) where {T <: ArbFloat} = show(STDOUT, x)
 
-function showsmall{T<:ArbFloat}(io::IO, x::T)
+function showsmall(io::IO, x::T) where {T <: ArbFloat}
     s = stringsmall(x)
     print(io, s)
 end
-showsmall{T<:ArbFloat}(x::T) = showsmall(STDOUT, x)
+showsmall(x::T) where {T <: ArbFloat} = showsmall(STDOUT, x)
 
-function showsmall_pm{T<:ArbFloat}(io::IO, x::T)
+function showsmall_pm(io::IO, x::T) where {T <: ArbFloat}
     s = stringsmall_pm(x)
     print(io, s)
 end
-showsmall_pm{T<:ArbFloat}(x::T) = showsmall_pm(STDOUT, x)
+showsmall_pm(x::T) where {T <: ArbFloat} = showsmall_pm(STDOUT, x)
 
-function showcompact{T<:ArbFloat}(io::IO, x::T)
+function showcompact(io::IO, x::T) where {T <: ArbFloat}
     s = stringcompact(x)
     print(io, s)
 end
-showcompact{T<:ArbFloat}(x::T) = showcompact(STDOUT, x)
+showcompact(x::T) where {T <: ArbFloat} = showcompact(STDOUT, x)
 
-function showcompact_pm{T<:ArbFloat}(io::IO, x::T)
+function showcompact_pm(io::IO, x::T) where {T <: ArbFloat}
     s = stringcompact_pm(x)
     print(io, s)
 end
-showcompact_pm{T<:ArbFloat}(x::T) = showcompact_pm(STDOUT, x)
+showcompact_pm(x::T) where {T <: ArbFloat} = showcompact_pm(STDOUT, x)
 
-function showmedium{T<:ArbFloat}(io::IO, x::T)
+function showmedium(io::IO, x::T) where {T <: ArbFloat}
     s = stringmedium(x)
     print(io, s)
 end
-showmedium{T<:ArbFloat}(x::T) = showmedium(STDOUT, x)
+showmedium(x::T) where {T <: ArbFloat} = showmedium(STDOUT, x)
 
-function show_pm{T<:ArbFloat}(io::IO, x::T)
+function show_pm(io::IO, x::T) where {T <: ArbFloat}
     s = stringmedium_pm(x)
     print(io, s)
 end
-show_pm{T<:ArbFloat}(x::T) = show_pm(STDOUT, x)
+show_pm(x::T) where {T <: ArbFloat} = show_pm(STDOUT, x)
 
-function showlarge{T<:ArbFloat}(io::IO, x::T)
+function showlarge(io::IO, x::T) where {T <: ArbFloat}
     s = stringlarge(x)
     print(io, s)
 end
-showlarge{T<:ArbFloat}(x::T) = showlarge(STDOUT, x)
+showlarge(x::T) where {T <: ArbFloat} = showlarge(STDOUT, x)
 
-function showlarge_pm{T<:ArbFloat}(io::IO, x::T)
+function showlarge_pm(io::IO, x::T) where {T <: ArbFloat}
     s = stringlarge_pm(x)
     print(io, s)
 end
-showlarge_pm{T<:ArbFloat}(x::T) = showlarge_pm(STDOUT, x)
+showlarge_pm(x::T) where {T <: ArbFloat} = showlarge_pm(STDOUT, x)
 
-function showall{T<:ArbFloat}(io::IO, x::T)
+function showall(io::IO, x::T) where {T <: ArbFloat}
     s = stringall(x)
     print(io, s)
 end
-showall{T<:ArbFloat}(x::T) = showall(STDOUT, x)
+showall(x::T) where {T <: ArbFloat} = showall(STDOUT, x)
 
-function showall_pm{T<:ArbFloat}(io::IO, x::T)
+function showall_pm(io::IO, x::T) where {T <: ArbFloat}
     s = stringall_pm(x)
     print(io, s)
 end
-showall_pm{T<:ArbFloat}(x::T) = showall_pm(STDOUT, x)
+showall_pm(x::T) where {T <: ArbFloat} = showall_pm(STDOUT, x)
 
-function showallcompact{T<:ArbFloat}(io::IO, x::T)
+function showallcompact(io::IO, x::T) where {T <: ArbFloat}
     s = stringallcompact(x)
     print(io, s)
 end
-showallcompact{T<:ArbFloat}(x::T) = showallcompact(STDOUT, x)
+showallcompact(x::T) where {T <: ArbFloat} = showallcompact(STDOUT, x)
 
 
-function showsmart{T<:ArbFloat}(io::IO, x::T)
+function showsmart(io::IO, x::T) where {T <: ArbFloat}
     s = smartstring(x)
     print(io, s)
 end
 # showsmart is not a Base show function, it needs explict version without io parameter
-showsmart{T<:ArbFloat}(x::T) = showsmart(STDOUT, x)
+showsmart(x::T) where {T <: ArbFloat} = showsmart(STDOUT, x)
 
-function showmany{T<:ArbFloat,N}(io::IO, x::NTuple{N,T}, stringformer::Function)
+function showmany(io::IO, x::NTuple{N,T}, stringformer::Function) where {T <: ArbFloat,N}
     if N==0
        print(io,"()")
        return nothing
@@ -104,11 +104,11 @@ function showmany{T<:ArbFloat,N}(io::IO, x::NTuple{N,T}, stringformer::Function)
     println(io,string("  ", ss[end], " )"))
 end
 
-showmany{T<:ArbFloat,N}(x::NTuple{N,T}, stringformer::Function) =
+showmany(x::NTuple{N,T}, stringformer::Function) where {T <: ArbFloat,N} =
    showmany(STDOUT,x,stringformer)
 
 
-function showmany{T<:ArbFloat}(io::IO, x::Vector{T}, stringformer::Function)
+function showmany(io::IO, x::Vector{T}, stringformer::Function) where {T <: ArbFloat}
     n = length(x)
 
     if n==0
@@ -131,19 +131,19 @@ function showmany{T<:ArbFloat}(io::IO, x::Vector{T}, stringformer::Function)
     println(io,string("  ", ss[end], " ]"))
 end
 
-showmany{T<:ArbFloat}(x::Vector{T}, stringformer::Function) =
+showmany(x::Vector{T}, stringformer::Function) where {T <: ArbFloat} =
     showmany(STDOUT,x,stringformer)
 
 for (F,S) in [(:showsmall, :stringsmall), (:showcompact, :stringcompact),
               (:show, :stringmedium), (:showlarge, :stringlarge), 
               (:showall, :stringall), (:showsmart, :smartstring)]
   @eval begin
-     ($F){P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, $S)
-     ($F){P,N}(x::NTuple{N,ArbFloat{P}}) = showmany(STDOUT, x, $S)
-     ($F){P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, $S)
-     ($F){P}(x::Vector{ArbFloat{P}}) = showmany(STDOUT, x, $S)
-     ($F){P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, $S)
-     ($F){P,N}(x::Vararg{ArbFloat{P},N}) = showmany(STDOUT, x, $S)
+     ($F)(io::IO, x::NTuple{N,ArbFloat{P}}) where {P,N} = showmany(io, x, $S)
+     ($F)(x::NTuple{N,ArbFloat{P}}) where {P,N} = showmany(STDOUT, x, $S)
+     ($F)(io::IO, x::Vector{ArbFloat{P}}) where {P} = showmany(io, x, $S)
+     ($F)(x::Vector{ArbFloat{P}}) where {P} = showmany(STDOUT, x, $S)
+     ($F)(io::IO, x::Vararg{ArbFloat{P},N}) where {P,N} = showmany(io, x, $S)
+     ($F)(x::Vararg{ArbFloat{P},N}) where {P,N} = showmany(STDOUT, x, $S)
   end
 end
 
@@ -153,11 +153,11 @@ for (F,S) in [(:showsmall_pm, :stringsmall_pm),
               (:showlarge_pm, :stringlarge_pm), 
               (:showall_pm, :stringall_pm)]
   @eval begin
-     ($F){P,N}(io::IO, x::NTuple{N,ArbFloat{P}}) = showmany(io, x, $S)
-     ($F){P,N}(x::NTuple{N,ArbFloat{P}}) = showmany(STDOUT, x, $S)
-     ($F){P}(io::IO, x::Vector{ArbFloat{P}}) = showmany(io, x, $S)
-     ($F){P}(x::Vector{ArbFloat{P}}) = showmany(STDOUT, x, $S)
-     ($F){P,N}(io::IO, x::Vararg{ArbFloat{P},N}) = showmany(io, x, $S)
-     ($F){P,N}(x::Vararg{ArbFloat{P},N}) = showmany(STDOUT, x, $S)
+     ($F)(io::IO, x::NTuple{N,ArbFloat{P}}) where {P,N} = showmany(io, x, $S)
+     ($F)(x::NTuple{N,ArbFloat{P}}) where {P,N} = showmany(STDOUT, x, $S)
+     ($F)(io::IO, x::Vector{ArbFloat{P}}) where {P} = showmany(io, x, $S)
+     ($F)(x::Vector{ArbFloat{P}}) where {P} = showmany(STDOUT, x, $S)
+     ($F)(io::IO, x::Vararg{ArbFloat{P},N}) where {P,N} = showmany(io, x, $S)
+     ($F)(x::Vararg{ArbFloat{P},N}) where {P,N} = showmany(STDOUT, x, $S)
   end
 end

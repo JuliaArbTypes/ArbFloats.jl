@@ -60,12 +60,12 @@ function smartarbstring_inexact{P}(x::ArbFloat{P})::String
      return s
 end
 
-function smartvalue{P}(x::ArbFloat{P})
+function smartvalue(x::ArbFloat{P}) where {P}
     s = smartarbstring(x)
     ArbFloat{P}(s)
 end
 
-function smartstring{P}(x::ArbFloat{P})
+function smartstring(x::ArbFloat{P}) where {P}
     s = smartarbstring(x)
     a = ArbFloat{P}(s)
     if notexact(x)
@@ -74,7 +74,7 @@ function smartstring{P}(x::ArbFloat{P})
     return s
 end
 
-function smarterstring{T<:ArbFloat}(x::T)
+function smarterstring(x::T) where {T <: ArbFloat}
     absx   = abs(x)
     sa_str = smartarbstring(absx)  # smart arb string
     sa_val = (T)(absx)             # smart arb value

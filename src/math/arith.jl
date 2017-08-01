@@ -5,11 +5,11 @@
    muladd(a,b,c), fma(a,b,c)
 =#
 
-function signbit{P}(x::ArbFloat{P})
+function signbit(x::ArbFloat{P}) where {P}
     0 != ccall(@libarb(arb_is_negative), Int, (Ptr{ArbFloat{P}},), &x)
 end
 
-function abs{P}(x::ArbFloat{P})
+function abs(x::ArbFloat{P}) where {P}
     z  = initializer(ArbFloat{P})
     lo = initializer(ArfFloat{P})
     hi = initializer(ArfFloat{P})
@@ -19,14 +19,14 @@ function abs{P}(x::ArbFloat{P})
     return z
 end
 
-function abs2{T<:ArbFloat}(x::T)
+function abs2(x::T) where {T <: ArbFloat}
     a = abs(x)
     return a*a
 end
 
 for (op,cfunc) in ((:-,:arb_neg), (:sign, :arb_sgn), (:absz, :arb_abs))
   @eval begin
-    function ($op){P}(x::ArbFloat{P})
+    function ($op)(x::ArbFloat{P}) where {P}
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &z, &x)
       return z
@@ -36,7 +36,7 @@ end
 
 for (op,cfunc) in ((:inv, :arb_inv), (:sqrt, :arb_sqrt), (:invsqrt, :arb_rsqrt))
   @eval begin
-    function ($op){P}(x::ArbFloat{P})
+    function ($op)(x::ArbFloat{P}) where {P}
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, P)
       return z
@@ -46,54 +46,54 @@ end
 
 for (op,cfunc) in ((:+,:arb_add), (:-, :arb_sub), (:/, :arb_div), (:hypot, :arb_hypot))
   @eval begin
-    function ($op){P}(x::ArbFloat{P}, y::ArbFloat{P})
+    function ($op)(x::ArbFloat{P}, y::ArbFloat{P}) where {P}
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
       return z
     end
-    ($op){P,Q}(x::ArbFloat{P}, y::ArbFloat{Q}) = ($op)(promote(x,y)...)
-    ($op){T<:ArbFloat, F<:AbstractFloat}(x::T, y::F) = ($op)(x, convert(T, y))
-    ($op){T<:ArbFloat, F<:AbstractFloat}(x::F, y::T) = ($op)(convert(T, x), y)
-    ($op){T<:ArbFloat, R<:Rational}(x::T, y::R) = ($op)(x, convert(T, y))
-    ($op){T<:ArbFloat, R<:Rational}(x::R, y::T) = ($op)(convert(T, x), y)
-    ($op){T<:ArbFloat, R<:Real}(x::T, y::R) = ($op)(x, convert(T, y))
-    ($op){T<:ArbFloat, R<:Real}(x::R, y::T) = ($op)(convert(T, x), y)
+    ($op)(x::ArbFloat{P}, y::ArbFloat{Q}) where {P,Q} = ($op)(promote(x,y)...)
+    ($op)(x::T, y::F) where {T <: ArbFloat,F <: AbstractFloat} = ($op)(x, convert(T, y))
+    ($op)(x::F, y::T) where {T <: ArbFloat,F <: AbstractFloat} = ($op)(convert(T, x), y)
+    ($op)(x::T, y::R) where {T <: ArbFloat,R <: Rational} = ($op)(x, convert(T, y))
+    ($op)(x::R, y::T) where {T <: ArbFloat,R <: Rational} = ($op)(convert(T, x), y)
+    ($op)(x::T, y::R) where {T <: ArbFloat,R <: Real} = ($op)(x, convert(T, y))
+    ($op)(x::R, y::T) where {T <: ArbFloat,R <: Real} = ($op)(convert(T, x), y)
   end
 end
 
-function (*){P}(x::ArbFloat{P}, y::ArbFloat{P})
+function (*)(x::ArbFloat{P}, y::ArbFloat{P}) where {P}
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_mul), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
     return z
 end
-(*){T<:ArbFloat, F<:AbstractFloat}(x::T, y::F) = (*)(x, convert(T, y))
-(*){T<:ArbFloat, F<:AbstractFloat}(x::F, y::T) = (*)(convert(T, x), y)
-(*){T<:ArbFloat, R<:Rational}(x::T, y::R) = (*)(x, convert(T, y))
-(*){T<:ArbFloat, R<:Rational}(x::R, y::T) = (*)(convert(T, x), y)
-(*){T<:ArbFloat, R<:Real}(x::T, y::R) = (*)(x, convert(T, y))
-(*){T<:ArbFloat, R<:Real}(x::R, y::T) = (*)(convert(T, x), y)
+(*)(x::T, y::F) where {T <: ArbFloat,F <: AbstractFloat} = (*)(x, convert(T, y))
+(*)(x::F, y::T) where {T <: ArbFloat,F <: AbstractFloat} = (*)(convert(T, x), y)
+(*)(x::T, y::R) where {T <: ArbFloat,R <: Rational} = (*)(x, convert(T, y))
+(*)(x::R, y::T) where {T <: ArbFloat,R <: Rational} = (*)(convert(T, x), y)
+(*)(x::T, y::R) where {T <: ArbFloat,R <: Real} = (*)(x, convert(T, y))
+(*)(x::R, y::T) where {T <: ArbFloat,R <: Real} = (*)(convert(T, x), y)
 
-(+){T<:ArbFloat}(x::T, y::T, z::T) = (x + y) + z
+(+)(x::T, y::T, z::T) where {T <: ArbFloat} = (x + y) + z
 
-(+){T<:ArbFloat,I<:Integer}(x::I, y::T, z::T) = x + (y + z)
-(+){T<:ArbFloat,I<:Integer}(x::T, y::T, z::I) = (x + y) + z
-(+){T<:ArbFloat,R<:Real}(x::T, y::T, z::R) = (x + y) + z
-(+){T<:ArbFloat,R<:Real}(x::R, y::T, z::T) =  x + (y + z)
+(+)(x::I, y::T, z::T) where {T <: ArbFloat,I <: Integer} = x + (y + z)
+(+)(x::T, y::T, z::I) where {T <: ArbFloat,I <: Integer} = (x + y) + z
+(+)(x::T, y::T, z::R) where {T <: ArbFloat,R <: Real} = (x + y) + z
+(+)(x::R, y::T, z::T) where {T <: ArbFloat,R <: Real} =  x + (y + z)
 
-(*){T<:ArbFloat}(x::T, y::T, z::T) = (x * y) * z
+(*)(x::T, y::T, z::T) where {T <: ArbFloat} = (x * y) * z
 
-(*){T<:ArbFloat,I<:Integer}(x::I, y::T, z::T) = x * (y * z)
-(*){T<:ArbFloat,I<:Integer}(x::T, y::T, z::I) = (x * y) * z
-(*){T<:ArbFloat,R<:Real}(x::T, y::T, z::R) = (x * y) * z
-(*){T<:ArbFloat,R<:Real}(x::R, y::T, z::T) =  x * (y * z)
+(*)(x::I, y::T, z::T) where {T <: ArbFloat,I <: Integer} = x * (y * z)
+(*)(x::T, y::T, z::I) where {T <: ArbFloat,I <: Integer} = (x * y) * z
+(*)(x::T, y::T, z::R) where {T <: ArbFloat,R <: Real} = (x * y) * z
+(*)(x::R, y::T, z::T) where {T <: ArbFloat,R <: Real} =  x * (y * z)
 
-(-){T<:ArbFloat}(x::T, y::T, z::T) = (x - y) - z
-(/){T<:ArbFloat}(x::T, y::T, z::T) = (x / y) / z
+(-)(x::T, y::T, z::T) where {T <: ArbFloat} = (x - y) - z
+(/)(x::T, y::T, z::T) where {T <: ArbFloat} = (x / y) / z
 
 
 for (op,cfunc) in ((:+,:arb_add_si), (:-, :arb_sub_si), (:*, :arb_mul_si), (:/, :arb_div_si))
   @eval begin
-    function ($op){P}(x::ArbFloat{P}, y::Int)
+    function ($op)(x::ArbFloat{P}, y::Int) where {P}
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int, Int), &z, &x, y, P)
       return z
@@ -101,24 +101,24 @@ for (op,cfunc) in ((:+,:arb_add_si), (:-, :arb_sub_si), (:*, :arb_mul_si), (:/, 
   end
 end
 
-(+){T<:ArbFloat}(x::Int, y::T) = (+)(y,x)
-(-){T<:ArbFloat}(x::Int, y::T) = -((-)(y,x))
-(*){T<:ArbFloat}(x::Int, y::T) = (*)(y,x)
-(/){T<:ArbFloat}(x::Int, y::T) = (/)(T(x),y)
+(+)(x::Int, y::T) where {T <: ArbFloat} = (+)(y,x)
+(-)(x::Int, y::T) where {T <: ArbFloat} = -((-)(y,x))
+(*)(x::Int, y::T) where {T <: ArbFloat} = (*)(y,x)
+(/)(x::Int, y::T) where {T <: ArbFloat} = (/)(T(x),y)
 
-(+){T<:ArbFloat}(x::T, y::Integer) = (+)(x, convert(T, y))
-(-){T<:ArbFloat}(x::T, y::Integer) = (-)(x, convert(T, y))
-(*){T<:ArbFloat}(x::T, y::Integer) = (*)(x, convert(T, y))
-(/){T<:ArbFloat}(x::T, y::Integer) = (/)(x, convert(T, y))
+(+)(x::T, y::Integer) where {T <: ArbFloat} = (+)(x, convert(T, y))
+(-)(x::T, y::Integer) where {T <: ArbFloat} = (-)(x, convert(T, y))
+(*)(x::T, y::Integer) where {T <: ArbFloat} = (*)(x, convert(T, y))
+(/)(x::T, y::Integer) where {T <: ArbFloat} = (/)(x, convert(T, y))
 
-(+){T<:ArbFloat}(x::Integer, y::T) = (+)(convert(T, x), y)
-(-){T<:ArbFloat}(x::Integer, y::T) = -((-)(y, convert(T, x)))
-(*){T<:ArbFloat}(x::Integer, y::T) = (*)(convert(T,x), y)
-(/){T<:ArbFloat}(x::Integer, y::T) = (/)(convert(T,x), y)
+(+)(x::Integer, y::T) where {T <: ArbFloat} = (+)(convert(T, x), y)
+(-)(x::Integer, y::T) where {T <: ArbFloat} = -((-)(y, convert(T, x)))
+(*)(x::Integer, y::T) where {T <: ArbFloat} = (*)(convert(T,x), y)
+(/)(x::Integer, y::T) where {T <: ArbFloat} = (/)(convert(T,x), y)
 
 for (op,cfunc) in ((:addmul,:arb_addmul), (:submul, :arb_submul))
   @eval begin
-    function ($op){P}(w::ArbFloat{P}, x::ArbFloat{P}, y::ArbFloat{P})
+    function ($op)(w::ArbFloat{P}, x::ArbFloat{P}, y::ArbFloat{P}) where {P}
       z = initializer(ArbFloat{P})
       ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &w, &x, &y, P)
       z
@@ -126,5 +126,5 @@ for (op,cfunc) in ((:addmul,:arb_addmul), (:submul, :arb_submul))
   end
 end
 
-muladd{T<:ArbFloat}(a::T, b::T, c::T) = addmul(c,a,b)
-mulsub{T<:ArbFloat}(a::T, b::T, c::T) = addmul(-c,a,b)
+muladd(a::T, b::T, c::T) where {T <: ArbFloat} = addmul(c,a,b)
+mulsub(a::T, b::T, c::T) where {T <: ArbFloat} = addmul(-c,a,b)

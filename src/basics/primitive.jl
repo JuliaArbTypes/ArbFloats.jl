@@ -1,7 +1,7 @@
 
 for (op, i) in ((:two,:2), (:three,:3), (:four, :4))
   @eval begin
-    function ($op){P}(::Type{ArbFloat{P}})
+    function ($op)(::Type{ArbFloat{P}}) where {P}
         z = initializer(ArbFloat{P})
         ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat}, Int), &z, $i)
         return z
@@ -10,11 +10,11 @@ for (op, i) in ((:two,:2), (:three,:3), (:four, :4))
   end
 end
 
-weakcopy{P}(x::ArbFloat{P}) = WeakRef(x)
+weakcopy(x::ArbFloat{P}) where {P} = WeakRef(x)
 
 for fn in (:copy, :deepcopy)
   @eval begin
-    function ($fn){P}(x::ArbFloat{P})
+    function ($fn)(x::ArbFloat{P}) where {P}
         z = initializer(ArbFloat{P})
         ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
         return z
@@ -22,14 +22,14 @@ for fn in (:copy, :deepcopy)
   end
 end
 
-function copyradius{T<:ArbFloat}(target::T, source::T)
+function copyradius(target::T, source::T) where {T <: ArbFloat}
     z = deepcopy(target)
     z.radius_exponentOf2 = source.radius_exponentOf2
     z.radius_significand = source.radius_significand
     return z
 end
 
-function copymidpoint{T<:ArbFloat}(target::T, source::T)
+function copymidpoint(target::T, source::T) where {T <: ArbFloat}
     z = deepcopy(target)
     z.exponentOf2  = source.exponentOf2
     z.nwords_sign  = source.nwords_sign
@@ -39,7 +39,7 @@ function copymidpoint{T<:ArbFloat}(target::T, source::T)
 end
 
 
-function bounds{T<:ArbFloat}(lower::T, upper::T)
+function bounds(lower::T, upper::T) where {T <: ArbFloat}
     lowerlo, lowerhi = bounds(lower)
     upperlo, upperhi = bounds(upper)
     lo = lowerlo <= upperlo ? lowerlo : upperlo
@@ -63,7 +63,7 @@ Rounds x to a number of bits equal to the accuracy of x (as indicated by its rad
 The resulting ball is guaranteed to contain x, but is more economical if x has less than full accuracy.
 (from arb_trim documentation)
 """
-function trim{P}(x::ArbFloat{P})
+function trim(x::ArbFloat{P}) where {P}
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_trim), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
     return z
@@ -72,13 +72,13 @@ end
 """
 Rounds x to a clean estimate of x as a point value.
 """
-function tidy{T<:ArbFloat}(x::T)
+function tidy(x::T) where {T <: ArbFloat}
     s = smartarbstring(x)
     return (T)(s)
 end
 
 
-function decompose{T<:ArbFloat}(x::T)
+function decompose(x::T) where {T <: ArbFloat}
     # decompose x as num * 2^pow / den
     # num, pow, den = decompose(x)
     P = precision(T)
@@ -92,7 +92,7 @@ end
 
 
 
-function modf{P}(x::ArbFloat{P})
+function modf(x::ArbFloat{P}) where {P}
     isneg = signbit(x)
     y = abs(x)
     ipart = trunc(y)
@@ -104,16 +104,16 @@ function modf{P}(x::ArbFloat{P})
     return (fpart, ipart)
 end
 
-function fmod{P}(fpart::ArbFloat{P}, ipart::ArbFloat{P})
+function fmod(fpart::ArbFloat{P}, ipart::ArbFloat{P}) where {P}
     return ipart + fpart
 end  
 
 
-integerpart{P}(x::ArbFloat{P}) = trunc(x)
-fractionalpart{P}(x::ArbFloat{P}) = x - trunc(x)
-decimalpart{P}(x::ArbFloat{P}) = smartvalue(fractionalpart(x))
+integerpart(x::ArbFloat{P}) where {P} = trunc(x)
+fractionalpart(x::ArbFloat{P}) where {P} = x - trunc(x)
+decimalpart(x::ArbFloat{P}) where {P} = smartvalue(fractionalpart(x))
 
-function smartmodf{P}(x::ArbFloat{P})
+function smartmodf(x::ArbFloat{P}) where {P}
     isneg = signbit(x)
     y = abs(x)
     ipart = trunc(y)

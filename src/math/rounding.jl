@@ -40,11 +40,11 @@ setrounding_raw(::Type{ArbFloat},i::Integer) = ARB_ROUNDING_MODE[] = (Cint)(i)
 rounding(::Type{ArbFloat}) = from_arb(rounding_raw(ArbFloat))
 setrounding(::Type{ArbFloat},r::RoundingMode) = setrounding_raw(ArbFloat,to_arb(r))
 
-rounding_raw{P}(::Type{ArbFloat{P}}) = ARB_ROUNDING_MODE[]
-setrounding_raw{P}(::Type{ArbFloat{P}},i::Integer) = ARB_ROUNDING_MODE[] = (Cint)(i)
+rounding_raw(::Type{ArbFloat{P}}) where {P} = ARB_ROUNDING_MODE[]
+setrounding_raw(::Type{ArbFloat{P}},i::Integer) where {P} = ARB_ROUNDING_MODE[] = (Cint)(i)
 
-rounding{P}(::Type{ArbFloat{P}}) = from_arb(rounding_raw(ArbFloat))
-setrounding{P}(::Type{ArbFloat{P}},r::RoundingMode) = setrounding_raw(ArbFloat,to_arb(r))
+rounding(::Type{ArbFloat{P}}) where {P} = from_arb(rounding_raw(ArbFloat))
+setrounding(::Type{ArbFloat{P}},r::RoundingMode) where {P} = setrounding_raw(ArbFloat,to_arb(r))
 
 
 

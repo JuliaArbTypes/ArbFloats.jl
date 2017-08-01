@@ -25,10 +25,10 @@ macro ArbFloat(p,x)
     end
 end
 
-convert{T<:ArfFloat}(::Type{T}, x::T) = x
-convert{T<:ArbFloat}(::Type{T}, x::T) = x
-convert{P}(::Type{ArfFloat{P}}, x::ArfFloat{P}) = x
-convert{P}(::Type{ArbFloat{P}}, x::ArbFloat{P}) = x
+convert(::Type{T}, x::T) where {T <: ArfFloat} = x
+convert(::Type{T}, x::T) where {T <: ArbFloat} = x
+convert(::Type{ArfFloat{P}}, x::ArfFloat{P}) where {P} = x
+convert(::Type{ArbFloat{P}}, x::ArbFloat{P}) where {P} = x
 
 #=
 function convert{Q}(::Type{ArfFloat}, x::ArfFloat{Q})
@@ -38,7 +38,7 @@ function convert{Q}(::Type{ArfFloat}, x::ArfFloat{Q})
    return z
 end
 =#
-function convert{P,Q}(::Type{ArfFloat{P}}, x::ArfFloat{Q})
+function convert(::Type{ArfFloat{P}}, x::ArfFloat{Q}) where {P,Q}
    z = initializer(ArfFloat{P})
    ccall(@libarb(arf_set_round), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{Q}}, Clong), &z, &x, Clong(P))
    return z
@@ -51,20 +51,20 @@ function convert{Q}(::Type{ArbFloat}, x::ArbFloat{Q})
    return z
 end
 =#
-function convert{P,Q}(::Type{ArbFloat{P}}, x::ArbFloat{Q})
+function convert(::Type{ArbFloat{P}}, x::ArbFloat{Q}) where {P,Q}
    z = initializer(ArbFloat{P})
    ccall(@libarb(arb_set_round), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{Q}}, Clong), &z, &x, Clong(P))
    return z
 end
 
 
-function convert{P}(::Type{ArbFloat{P}}, x::ArfFloat{P})
+function convert(::Type{ArbFloat{P}}, x::ArfFloat{P}) where {P}
    z = initializer(ArbFloat{P})
    ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
    return z
 end
 
-function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
+function convert(::Type{ArfFloat{P}}, x::ArbFloat{P}) where {P}
     z = initializer(ArfFloat{P})
     z.exponentOf2  = x.exponentOf2
     z.nwords_sign  = x.nwords_sign
@@ -73,7 +73,7 @@ function convert{P}(::Type{ArfFloat{P}}, x::ArbFloat{P})
     return z
 end
 
-function convert{P,Q}(::Type{ArbFloat{P}}, x::ArfFloat{Q})
+function convert(::Type{ArbFloat{P}}, x::ArfFloat{Q}) where {P,Q}
     y = convert(ArfFloat{P}, x)
     z = convert(ArbFloat{P}, y)
     return z
@@ -86,12 +86,12 @@ function convert{Q}(::Type{ArbFloat}, x::ArfFloat{Q})
     return z
 end
 =#
-function convert{P,Q}(::Type{ArfFloat{P}}, x::ArbFloat{Q})
+function convert(::Type{ArfFloat{P}}, x::ArbFloat{Q}) where {P,Q}
     y = convert(ArbFloat{P}, x)
     z = convert(ArfFloat{P}, y)
     return z
 end
-function convert{Q}(::Type{ArfFloat}, x::ArbFloat{Q})
+function convert(::Type{ArfFloat}, x::ArbFloat{Q}) where {Q}
     P = precision(ArfFloat)
     y = convert(ArbFloat{P}, x)
     z = convert(ArfFloat{P}, y)
@@ -100,62 +100,62 @@ end
 
 # convert ArbFloat with other types
 
-function convert{T<:ArbFloat}(::Type{T}, x::UInt64)
+function convert(::Type{T}, x::UInt64) where {T <: ArbFloat}
     P = precision(T)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_ui), Void, (Ptr{T}, UInt64), &z, x)
     return z
 end
-function convert{T<:ArbFloat}(::Type{T}, x::Int64)
+function convert(::Type{T}, x::Int64) where {T <: ArbFloat}
     P = precision(T)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_si), Void, (Ptr{T}, Int64), &z, x)
     return z
 end
 
-function convert{T<:ArbFloat}(::Type{T}, x::Float64)
+function convert(::Type{T}, x::Float64) where {T <: ArbFloat}
     P = precision(T)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_d), Void, (Ptr{T}, Float64), &z, x)
     return z
 end
 
-function convert{T<:ArbFloat}(::Type{T}, x::String)
+function convert(::Type{T}, x::String) where {T <: ArbFloat}
     P = precision(T)
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_set_str), Void, (Ptr{T}, Ptr{UInt8}, Int), &z, x, P)
     return z
 end
 
-convert{T<:ArbFloat}(::Type{T}, x::UInt32)  = convert(T, x%UInt64)
-convert{T<:ArbFloat}(::Type{T}, x::UInt16)  = convert(T, x%UInt64)
-convert{T<:ArbFloat}(::Type{T}, x::UInt8)   = convert(T, x%UInt64)
-convert{T<:ArbFloat}(::Type{T}, x::UInt128) = convert(T, string(x))
+convert(::Type{T}, x::UInt32) where {T <: ArbFloat}  = convert(T, x%UInt64)
+convert(::Type{T}, x::UInt16) where {T <: ArbFloat}  = convert(T, x%UInt64)
+convert(::Type{T}, x::UInt8) where {T <: ArbFloat}   = convert(T, x%UInt64)
+convert(::Type{T}, x::UInt128) where {T <: ArbFloat} = convert(T, string(x))
 
-convert{T<:ArbFloat}(::Type{T}, x::Int32)  = convert(T, x%Int64)
-convert{T<:ArbFloat}(::Type{T}, x::Int16)  = convert(T, x%Int64)
-convert{T<:ArbFloat}(::Type{T}, x::Int8)   = convert(T, x%Int64)
-convert{T<:ArbFloat}(::Type{T}, x::Int128) = convert(T, string(x))
+convert(::Type{T}, x::Int32) where {T <: ArbFloat}  = convert(T, x%Int64)
+convert(::Type{T}, x::Int16) where {T <: ArbFloat}  = convert(T, x%Int64)
+convert(::Type{T}, x::Int8) where {T <: ArbFloat}   = convert(T, x%Int64)
+convert(::Type{T}, x::Int128) where {T <: ArbFloat} = convert(T, string(x))
 
-convert{T<:ArbFloat}(::Type{T}, x::Float32) = convert(T, convert(Float64,x))
-convert{T<:ArbFloat}(::Type{T}, x::Float16) = convert(T, convert(Float64,x))
+convert(::Type{T}, x::Float32) where {T <: ArbFloat} = convert(T, convert(Float64,x))
+convert(::Type{T}, x::Float16) where {T <: ArbFloat} = convert(T, convert(Float64,x))
 
-function convert{T<:ArbFloat}(::Type{Float64}, x::T)
+function convert(::Type{Float64}, x::T) where {T <: ArbFloat}
     ptr2mid = ptr_to_midpoint(x)
     fl = ccall(@libarb(arf_get_d), Float64, (Ptr{ArfFloat}, Int), ptr2mid, 4) # round nearest
     return fl
 end
 
-function convert{T<:ArbFloat}(::Type{Float32}, x::T)
+function convert(::Type{Float32}, x::T) where {T <: ArbFloat}
     return convert(Float32, convert(Float64, x))
 end
-function convert{T<:ArbFloat}(::Type{Float16}, x::T)
+function convert(::Type{Float16}, x::T) where {T <: ArbFloat}
     return convert(Float16, convert(Float64, x))
 end
 
 for I in (:UInt64, :UInt128)
   @eval begin
-    function convert{T<:ArbFloat}(::Type{$I}, x::T)
+    function convert(::Type{$I}, x::T) where {T <: ArbFloat}
         if isinteger(x)
            if notnegative(x)
                return convert($I, convert(BigInt,x))
@@ -169,13 +169,13 @@ for I in (:UInt64, :UInt128)
   end
 end
 
-convert{T<:ArbFloat}(::Type{UInt32}, x::T) = convert(UInt32, convert(UInt64,x))
-convert{T<:ArbFloat}(::Type{UInt16}, x::T) = convert(UInt16, convert(UInt64,x))
-convert{T<:ArbFloat}(::Type{UInt8}, x::T) = convert(UInt8, convert(UInt64,x))
+convert(::Type{UInt32}, x::T) where {T <: ArbFloat} = convert(UInt32, convert(UInt64,x))
+convert(::Type{UInt16}, x::T) where {T <: ArbFloat} = convert(UInt16, convert(UInt64,x))
+convert(::Type{UInt8}, x::T) where {T <: ArbFloat} = convert(UInt8, convert(UInt64,x))
 
 for I in (:Int64, :Int128)
   @eval begin
-    function convert{T<:ArbFloat}(::Type{$I}, x::T)
+    function convert(::Type{$I}, x::T) where {T <: ArbFloat}
         if isinteger(x)
            return convert($I, convert(BigInt,x))
         else
@@ -185,11 +185,11 @@ for I in (:Int64, :Int128)
   end
 end
 
-convert{T<:ArbFloat}(::Type{Int32}, x::T) = convert(Int32, convert(Int64,x))
-convert{T<:ArbFloat}(::Type{Int16}, x::T) = convert(Int16, convert(Int64,x))
-convert{T<:ArbFloat}(::Type{Int8}, x::T) = convert(Int8, convert(Int64,x))
+convert(::Type{Int32}, x::T) where {T <: ArbFloat} = convert(Int32, convert(Int64,x))
+convert(::Type{Int16}, x::T) where {T <: ArbFloat} = convert(Int16, convert(Int64,x))
+convert(::Type{Int8}, x::T) where {T <: ArbFloat} = convert(Int8, convert(Int64,x))
 
-function parse{T<:ArbFloat}(::Type{T}, x::String)
+function parse(::Type{T}, x::String) where {T <: ArbFloat}
     return T(x)
 end
 
@@ -202,7 +202,7 @@ end
 convert(::Type{BigInt}, x::String) = parse(BigInt,x)
 convert(::Type{BigFloat}, x::String) = parse(BigFloat,x)
 
-function convert{T<:ArbFloat}(::Type{T}, x::BigFloat)
+function convert(::Type{T}, x::BigFloat) where {T <: ArbFloat}
      P = precision(T)+24
      x = round(x,P,2)
      s = string(x)
@@ -217,7 +217,7 @@ function convert{T<:ArbFloat}(::Type{BigFloat}, x::T)
      return parse(BigFloat, s)
 end
 =#
-function convert{T<:ArbFloat}(::Type{BigFloat}, x::T)
+function convert(::Type{BigFloat}, x::T) where {T <: ArbFloat}
     ptr2mid = ptr_to_midpoint(x)
     bf = zero(BigFloat)
     rounddir = ccall(@libarb(arf_get_mpfr), Int, (Ptr{BigFloat}, Ptr{ArfFloat}, Int), &bf, ptr2mid, 4) # round nearest
@@ -226,14 +226,14 @@ end
 
 
 
-function convert{I<:Integer,P}(::Type{Rational{I}}, x::ArbFloat{P})
+function convert(::Type{Rational{I}}, x::ArbFloat{P}) where {I <: Integer,P}
     bf = convert(BigFloat, x)
     return convert(Rational{I}, bf)
 end
 
 for T in (:Integer, :Signed)
   @eval begin
-    function convert{P}(::Type{$T}, x::ArbFloat{P})
+    function convert(::Type{$T}, x::ArbFloat{P}) where {P}
         y = trunc(x)
         try
            return convert(Int64, x)
@@ -250,7 +250,7 @@ end
 
 for F in (:BigInt, :Rational)
   @eval begin
-    function convert{T<:ArbFloat}(::Type{T}, x::$F)
+    function convert(::Type{T}, x::$F) where {T <: ArbFloat}
         P = precision(T)
         B = precision(BigFloat)
         if B < P+24
@@ -259,7 +259,7 @@ for F in (:BigInt, :Rational)
             return convert(ArbFloat{P}, convert(BigFloat, x))
         end
     end
-    function convert{P}(::Type{ArbFloat{P}}, x::$F)
+    function convert(::Type{ArbFloat{P}}, x::$F) where {P}
         B = precision(BigFloat)
         if B < P+24
             return convert(ArbFloat{P}, string(x))
@@ -270,7 +270,7 @@ for F in (:BigInt, :Rational)
   end
 end
 
-function convert{T<:ArbFloat,Sym}(::Type{T}, x::Irrational{Sym})
+function convert(::Type{T}, x::Irrational{Sym}) where {T <: ArbFloat,Sym}
     P = precision(T)
     bf_precision = precision(BigFloat)
     setprecision(BigFloat, precision(T)+24)        
@@ -282,7 +282,7 @@ end
 
 
 
-function convert{P}(::Type{BigInt}, x::ArbFloat{P})
+function convert(::Type{BigInt}, x::ArbFloat{P}) where {P}
    z = trunc(convert(BigFloat, x))
    return convert(BigInt, z)
 end
@@ -292,22 +292,22 @@ end
 for T in (:Int128, :Int64, :Int32, :Int16, :Float64, :Float32, :Float16,
           :(Rational{Int64}), :(Rational{Int32}), :(Rational{Int16}),
           :String)
-  @eval promote_rule{P}(::Type{ArbFloat{P}}, ::Type{$T}) = ArbFloat
+  @eval promote_rule(::Type{ArbFloat{P}}, ::Type{$T}) where {P} = ArbFloat
 end
 
-float{P}(x::ArbFloat{P}) = x
+float(x::ArbFloat{P}) where {P} = x
 
-promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigFloat}) = ArbFloat
-promote_rule{P}(::Type{ArbFloat{P}}, ::Type{BigInt}) = ArbFloat
-promote_rule{P}(::Type{ArbFloat{P}}, ::Type{Rational{BigInt}}) = Rational{BigInt}
+promote_rule(::Type{ArbFloat{P}}, ::Type{BigFloat}) where {P} = ArbFloat
+promote_rule(::Type{ArbFloat{P}}, ::Type{BigInt}) where {P} = ArbFloat
+promote_rule(::Type{ArbFloat{P}}, ::Type{Rational{BigInt}}) where {P} = Rational{BigInt}
 
-promote_rule{P,Q}(::Type{ArbFloat{P}}, ::Type{ArbFloat{Q}}) =
+promote_rule(::Type{ArbFloat{P}}, ::Type{ArbFloat{Q}}) where {P,Q} =
     ifelse(P>Q, ArbFloat{P}, ArbFloat{Q})
 
 
 # convert a vector of ArbFloats to another numeric type
 for T in (:BigFloat, :Float64, :Float32, :BigInt, :Int128, :Int64, :Int32, :Rational)
-    @eval ($T){P}(x::Array{ArbFloat{P},1}) = ($T).(x)
+    @eval ($T)(x::Array{ArbFloat{P},1}) where {P} = ($T).(x)
 end
 # convert a numeric vector into ArbFloats
 for T in (:Float64, :Float32, :BigInt, :Int128, :Int64, :Int32, :Rational)

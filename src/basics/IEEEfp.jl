@@ -19,30 +19,30 @@ prec == (1 + round(Int,log2(ufp2(midpt))) -  round(Int,log2(ulp2(midpt))))
                   [0.5,1.0)     2^expo
    x.radius   -> (radial significand, radial exponentOf2)
 """
-function frexp{P}(x::ArfFloat{P})
+function frexp(x::ArfFloat{P}) where {P}
     exponentOf2 = x.exponentOf2
     significandOf = deepcopy(x)
     significandOf.exponentOf2 = 0
     return significandOf, exponentOf2
 end
 
-function ldexp{P}(s::ArfFloat{P}, e::Int)
+function ldexp(s::ArfFloat{P}, e::Int) where {P}
     z = deepcopy(s)
     z.exponentOf2 = e
     return z
 end
 
-function frexp{P}(x::ArbFloat{P})
+function frexp(x::ArbFloat{P}) where {P}
     significandOf, exponentOf2 = frexp(ArfFloat{P}(x))
     return ArbFloat{P}(significandOf), exponentOf2
 end
 
-function ldexp{P}(s::ArbFloat{P}, e::Int)
+function ldexp(s::ArbFloat{P}, e::Int) where {P}
     z = deepcopy(s)
     z.exponentOf2 = e
     return z
 end
-ldexp{P}(x::Tuple{ArbFloats.ArbFloat{P}, Int}) = ldexp(x[1],x[2])
+ldexp(x::Tuple{ArbFloats.ArbFloat{P}, Int}) where {P} = ldexp(x[1],x[2])
 
 
 #=
@@ -91,7 +91,7 @@ function log_base(x::Real, base::Int)
         end
    return z
 end
-log_base{P}(x::ArbFloat{P}, base::Int) = ArbFloats.logbase(x,base)
+log_base(x::ArbFloat{P}, base::Int) where {P} = ArbFloats.logbase(x,base)
 
 #=
     position_first_place: the radix position of the most significant nonzero bit|digit
@@ -124,27 +124,27 @@ log_base{P}(x::ArbFloat{P}, base::Int) = ArbFloats.logbase(x,base)
 position_first_place
 determine the position of the most significant nonzero bit|digit
 """
-function pfp{T<:Real}(x::T, base::Int=2)
+function pfp(x::T, base::Int=2) where {T <: Real}
    z = 0 # if x==0.0
    if notzero(x)
        z = floor( Int, log_base(abs(x), base) )
    end
    return z
 end
-pfp{P}(x::ArbFloat{P}, base::Int=2) =
+pfp(x::ArbFloat{P}, base::Int=2) where {P} =
     return iszero(x) ? 0 : floor( Int, log_base(abs(smartvalue(x)), base) )
 """
 binary position_first_place
 determine the position of the most significant nonzero bit
 """
-pfp2{T<:Real}(x::T) = (x==zero(T) ? 0 : floor( Int, log2(abs(x)) ))
-pfp2{P}(x::ArbFloat{P}) = (iszero(x) ? 0 : floor( Int, log2(abs(smartvalue(x))) ))
+pfp2(x::T) where {T <: Real} = (x==zero(T) ? 0 : floor( Int, log2(abs(x)) ))
+pfp2(x::ArbFloat{P}) where {P} = (iszero(x) ? 0 : floor( Int, log2(abs(smartvalue(x))) ))
 """
 decimal position_first_place
 determine the position of the most significant nonzero digit
 """
-pfp10{T<:Real}(x::T) = (x==zero(T) ? 0 : floor( Int, log10(abs(x)) ))
-pfp10{P}(x::ArbFloat{P}) = (iszero(x) ? 0 : floor( Int, log10(abs(smartvalue(x))) ))
+pfp10(x::T) where {T <: Real} = (x==zero(T) ? 0 : floor( Int, log10(abs(x)) ))
+pfp10(x::ArbFloat{P}) where {P} = (iszero(x) ? 0 : floor( Int, log10(abs(smartvalue(x))) ))
 
 """
 ufp is unit_first_place
@@ -156,18 +156,18 @@ function ufp(x::AbstractFloat, base::Int=2)
    b = convert(Float64, base)
    return b^z
 end
-function ufp{P}(x::ArbFloat{P}, base::Int=2)
+function ufp(x::ArbFloat{P}, base::Int=2) where {P}
    z = pfp(x, base)
    return Float64(base)^z
 end
 ufp(x::Integer, base::Int=2) = ufp(Float64(x), base)
 "ufp2 is unit_first_place in base 2"
-ufp2{T<:Real}(x::T) = 2.0^pfp2(x)
-ufp2{P}(x::ArbFloat{P}) = 2.0^pfp2(x)
+ufp2(x::T) where {T <: Real} = 2.0^pfp2(x)
+ufp2(x::ArbFloat{P}) where {P} = 2.0^pfp2(x)
 ufp2(x::Integer) = ufp2(Float64(x))
 "ufp10 is unit_first_place in base 10"
-ufp10{T<:Real}(x::T) = 10.0^pfp10(x)
-ufp10{P}(x::ArbFloat{P}) = 10.0^pfp10(x)
+ufp10(x::T) where {T <: Real} = 10.0^pfp10(x)
+ufp10(x::ArbFloat{P}) where {P} = 10.0^pfp10(x)
 ufp10(x::Integer) = ufp10(Float64(x))
 """
 ulp   is unit_last_place
@@ -179,9 +179,9 @@ function ulp(x::Real, precision::Int, base::Int)
    twice_u = 2.0^(1-precision)
    return twice_u * unitfp
 end
-ulp{T<:AbstractFloat}(x::T, base::Int=2)  =
+ulp(x::T, base::Int=2) where {T <: AbstractFloat}  =
     ulp(x, 1+Base.significand_bits(T), base)
-ulp{P}(x::ArbFloat{P}, base::Int=2)  =
+ulp(x::ArbFloat{P}, base::Int=2) where {P}  =
     ulp(x, P, base)
 ulp(x::Integer, base::Int=2) = ulp(Float64(x), base)
 
@@ -191,12 +191,12 @@ function ulp2(x::Real, precision::Int)
    twice_u = 2.0^(1-precision)
    return (*)(promote(twice_u, unitfp)...)
 end
-function ulp2{P}(x::ArbFloat{P})
+function ulp2(x::ArbFloat{P}) where {P}
    unitfp  = ufp2(x)
    twice_u = 2.0^(1-P)
    return (*)(promote(twice_u, unitfp)...)
 end
-ulp2{T<:AbstractFloat}(x::T)  = ulp2(x, 1+Base.significand_bits(T))
+ulp2(x::T) where {T <: AbstractFloat}  = ulp2(x, 1+Base.significand_bits(T))
 ulp2(x::Integer) = ulp2(Float64(x))
 
 """ulp10 is unit_last_place base 10"""
@@ -206,27 +206,27 @@ function ulp10(x::Real, bitprecision::Int)
     twice_u10 = 10.0^(1-digitprecision)
     return twice_u10 * unit10fp
 end
-function ulp10{P}(x::ArbFloat{P})
+function ulp10(x::ArbFloat{P}) where {P}
     unit10fp = ufp10(x)
     digitprecision = lte_bits2digs(P)
     twice_u10 = 10.0^(1-digitprecision)
     return twice_u10 * unit10fp
 end
-ulp10{T<:AbstractFloat}(x::T) = ulp10( x, (1+Base.significand_bits(T)) )
+ulp10(x::T) where {T <: AbstractFloat} = ulp10( x, (1+Base.significand_bits(T)) )
 ulp10(x::Integer) = ulp10(Float64(x))
 
 
-function eps{T<:ArbFloat}(::Type{T})
+function eps(::Type{T}) where {T <: ArbFloat}
     P = precision(T)
     return ldexp(one(T), 1-P)
 end
-function eps{P}(x::ArbFloat{P})
+function eps(x::ArbFloat{P}) where {P}
     a = eps(ArbFloat{P})
     return midpoint(abs(x)*a)
 end   
 
 # !!revisit!!
-function nextfloat{P}(x::ArbFloat{P})
+function nextfloat(x::ArbFloat{P}) where {P}
     m,r = midpoint_radius(x)
     e = eps(m)
     n = m
@@ -239,7 +239,7 @@ function nextfloat{P}(x::ArbFloat{P})
 end
 
 # !!revisit!!
-function prevfloat{P}(x::ArbFloat{P})
+function prevfloat(x::ArbFloat{P}) where {P}
     m,r = midpoint_radius(x)
     e = eps(m)
     n = m
