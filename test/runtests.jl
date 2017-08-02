@@ -13,9 +13,9 @@ end
 
 d = joinpath(package_directory("ArbFloats"),"test")
 test_files = [
-                joinpath(d,"TestAsType.jl"),
-                joinpath(d,"TestAsNumber.jl"),
-                joinpath(d,"TestAsInterval.jl")
+                "TestAsType.jl",
+                "TestAsNumber.jl",
+                "TestAsInterval.jl"
               ]
 
 #= prepare to test =#
