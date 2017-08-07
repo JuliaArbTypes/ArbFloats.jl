@@ -2,4 +2,4 @@ julia 0.6.0
 BinDeps 0.4.5
 Compat 0.9.5
 Nemo 0.6.0
-ReadableNumbers 0.1.0
+ReadableNumbers 0.0.3
