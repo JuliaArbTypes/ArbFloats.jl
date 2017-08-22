@@ -11,7 +11,7 @@
 =#
 # digitsRequired(bitsOfPrecision) = ceil(Int, bitsOfPrecision*0.3010299956639812)
 
-function smartarbstring{P}(x::ArbFloat{P})::String
+function smartarbstring(x::ArbFloat{P}) where P
      digts = digitsRequired(P)
      if isexact(x)
         if isinteger(x)
@@ -30,7 +30,7 @@ function smartarbstring{P}(x::ArbFloat{P})::String
      return smartarbstring_inexact(x)
 end
 
-function smartarbstring_inexact{P}(x::ArbFloat{P})::String
+function smartarbstring_inexact(x::ArbFloat{P}) where P
      digts = digitsRequired(P)
      lb, ub = bounds(x)
      lbs = string_exact(lb, digts)
