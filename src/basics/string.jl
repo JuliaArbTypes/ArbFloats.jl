@@ -108,7 +108,7 @@ function string_exact(x::T, mdigits::Int, rounding::Int) where T <: ArbFloat
 end
 
 
-function sstring_exact(x::T, mdigits::Int) where T <: ArbFloat
+function string_exact(x::T, mdigits::Int) where T <: ArbFloat
     !isfinite(x) && return string_nonfinite(x)
 
     digs = Int(mdigits)
