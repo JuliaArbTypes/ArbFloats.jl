@@ -17,7 +17,7 @@ for (op,cop) in ((:(==), :(arb_eq)), (:(!=), :(arb_ne)),
                  (:(<), :(arb_lt)),  (:(>), :(arb_gt))  )
   @eval begin
     function ($op)(a::T, b::T) where {T <: ArbFloat}
-        return Bool(ccall(@libarb($cop), Cint, (Ptr{T}, Ptr{T}), &a, &b) )
+        return Bool(ccall(@libarb($cop), Cint, (Ptr{T}, Ptr{T}), Ref{a}, Ref{b}) )
     end
     ($op)(a::ArbFloat{P}, b::ArbFloat{Q}) where {P,Q} = ($op)(promote(a,b)...)
     ($op)(a::T, b::R) where {T <: ArbFloat,R <: Real} = ($op)(promote(a,b)...)
@@ -26,12 +26,12 @@ for (op,cop) in ((:(==), :(arb_eq)), (:(!=), :(arb_ne)),
 end
 
 function (≃)(a::T, b::T) where {T <: ArbFloat}
-    return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), &a, &b))
+    return Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), Ref{a}, Ref{b}))
 end
 simeq(a::T, b::T) where {T <: ArbFloat} = (≃)(a,b)
 
 function (≄)(a::T, b::T) where {T <: ArbFloat}
-    return !Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), &a, &b))
+    return !Bool(ccall(@libarb(arb_eq), Cint, (Ptr{T}, Ptr{T}), Ref{a}, Ref{b}))
 end
 nsime(a::T, b::T) where {T <: ArbFloat} = (≄)(a,b)
 

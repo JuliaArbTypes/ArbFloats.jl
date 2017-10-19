@@ -3,7 +3,7 @@ for (op, i) in ((:two,:2), (:three,:3), (:four, :4))
   @eval begin
     function ($op)(::Type{ArbFloat{P}}) where {P}
         z = initializer(ArbFloat{P})
-        ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat}, Int), &z, $i)
+        ccall(@libarb(arb_set_si), Void, (Ptr{ArbFloat}, Int), Ref{z}, $i)
         return z
     end
     ($op)(::Type{ArbFloat}) = ($op)(ArbFloat{precision(ArbFloat)})
@@ -16,7 +16,7 @@ for fn in (:copy, :deepcopy)
   @eval begin
     function ($fn)(x::ArbFloat{P}) where {P}
         z = initializer(ArbFloat{P})
-        ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+        ccall(@libarb(arb_set), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), Ref{z}, Ref{x})
         return z
     end
   end
@@ -65,7 +65,7 @@ The resulting ball is guaranteed to contain x, but is more economical if x has l
 """
 function trim(x::ArbFloat{P}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_trim), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), &z, &x)
+    ccall(@libarb(arb_trim), Void, (Ptr{ArbFloat}, Ptr{ArbFloat}), Ref{z}, Ref{x})
     return z
 end
 
@@ -106,7 +106,7 @@ end
 
 function fmod(fpart::ArbFloat{P}, ipart::ArbFloat{P}) where {P}
     return ipart + fpart
-end  
+end
 
 
 integerpart(x::ArbFloat{P}) where {P} = trunc(x)

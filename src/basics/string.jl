@@ -9,11 +9,11 @@ const medium=3;
 const large=4;
 const all=5;
 
-macro I16(x) 
+macro I16(x)
     begin quote
         ($x)%Int16
     end end
-end    
+end
 
 const midDigits = [ @I16(8), @I16(15), @I16(25), @I16(50), @I16(1200) ]
 const radDigits = [ @I16(3), @I16(6),  @I16(12), @I16(25), @I16(64)   ]
@@ -68,14 +68,14 @@ end
 function string(x::T) where T <: ArbFloat
     !isfinite(x) && return string_nonfinite(x)
 
-    s = stringmedium(x) 
+    s = stringmedium(x)
     return s
 end
 
 
 function string(x::T, ndigits::Int) where T <: ArbFloat
     !isfinite(x) && return string_nonfinite(x)
-    
+
     rdigits = min(ndigits, get_radius_digits_shown(medium))
     s = isexact(x) ? string_exact(x, ndigits) : string_inexact(x, ndigits, rdigits)
     return s
@@ -93,16 +93,16 @@ end
 function arb_string(x::ArbFloat{P}, digs::Int, mode::Int) where P
     !isfinite(x) && return string_nonfinite(x)
 
-    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, mode%UInt)
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), Ref{x}, digs, mode%UInt)
     s = unsafe_string(cstr)
     return s
-end    
+end
 
 function string_exact(x::T, mdigits::Int, rounding::Int) where T <: ArbFloat
     !isfinite(x) && return string_nonfinite(x)
 
     digs = Int(mdigits)
-    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, rounding%UInt)
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), Ref{x}, digs, rounding%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
@@ -112,7 +112,7 @@ function string_exact(x::T, mdigits::Int) where T <: ArbFloat
     !isfinite(x) && return string_nonfinite(x)
 
     digs = Int(mdigits)
-    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, 2%UInt)
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), Ref{x}, digs, 2%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
@@ -165,7 +165,7 @@ function stringsmall_pm(x::ArbFloat{P}) where P
     end
     digs = min(digitsRequired(P), get_midpoint_digits_shown(small))
     sm = string_exact(midpoint(x), digs)
-    
+
     sr = try
             string(Float32(radius(x)))
          catch
@@ -194,7 +194,7 @@ function stringcompact_pm(x::ArbFloat{P}) where P
 
     return string(sm,"±", sr)
 end
-stringcompact(x::ArbFloat{P}) where P = 
+stringcompact(x::ArbFloat{P}) where P =
     string_exact(x, min(get_midpoint_digits_shown(compact),digitsRequired(P)))
 
 function stringmedium_pm(x::ArbFloat{P}) where P
@@ -252,5 +252,5 @@ function stringall_pm(x::ArbFloat{P}) where P
 
     return string(sm,"±", sr)
 end
-stringall(x::ArbFloat{P}) where P = 
+stringall(x::ArbFloat{P}) where P =
     string_exact(x, digitsRequired(P))
