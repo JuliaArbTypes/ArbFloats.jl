@@ -432,10 +432,10 @@ setprecision(ArbFloat, arb_precision)
 const arb_one = one(ArbFloat)
 const arb_halfpi = ArbFloat(pi) / 2
 
-function ellipticK(x::T) where T
+function ellipticK(x::T) where {T<:ArbFloat{N}, N}
     !(zero(T) <= x <= one(T)) && throw(DomainError())
         
-    k = arb_one - ArbFloat(x)
+    k = arb_one - x
     k = sqrt(k)
     k = agm(arb_one, k)
     k = arb_halfpi / k
