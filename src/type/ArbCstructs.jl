@@ -10,15 +10,15 @@ mutable struct MagFloat <: AbstractFloat
 #=
     function MagFloat()
          z = new(zero(Int), zero(UInt64))
-         ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), &z)
+         ccall(@libarb(mag_init), Void, (Ptr{MagFloat}, ), Ref{z})
          finalizer(z, c_release_mag)
          return z
     end
-=#    
+=#
 end
 
 function c_release_mag(x::MagFloat)
-  ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), &x)
+  ccall(@libarb(mag_clear), Void, (Ptr{MagFloat}, ), Ref{x})
 end
 
 
@@ -33,16 +33,16 @@ mutable struct ArfFloat{P} <: AbstractFloat
 #=
     function ArfFloat()
          z = new{P}(0,0%UInt,0%UInt,0%UInt)
-         ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), &z)
+         ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), Ref{z})
          finalizer(z, c_release_arf)
          return z
     end
-=#    
+=#
 end
 
 
 function c_release_arf(x::ArfFloat{P}) where {P}
-  ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
+  ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), Ref{x})
 end
 
     #       P is the precision in bits as a parameter
@@ -59,13 +59,13 @@ mutable struct ArbFloat{P} <: AbstractFloat
 #=
     function ArbFloat()
          z = new{P}(0,0,0,0,0,0)#(0,0%UInt,0%UInt,0%UInt,0,0%UInt)
-         ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), &z)
+         ccall(@libarb(arb_init), Void, (Ptr{ArbFloat{P}}, ), Ref{z})
          finalizer(z, c_release_arb)
          return z
     end
-=#    
+=#
 end
 
 function c_release_arb(x::ArbFloat{P}) where {P}
-  ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), &x)
+  ccall(@libarb(arb_clear), Void, (Ptr{ArbFloat{P}}, ), Ref{x})
 end
