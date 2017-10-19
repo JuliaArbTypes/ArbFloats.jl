@@ -414,25 +414,31 @@ function ellipticK(x)
     arb_one    = one(ArbFloat)
     arb_halfpi = ArbFloat(pi)/2
         
-    k = sqrt(arb_one - ArbFloat(x))
+    k = sqrt(arb_one - ArbFloat(x))# 
     k = agm(arb_one, k)
     k = arb_halfpi / k
 
     return k
 end
+
+setprecison(ArbFloat, 250) # bits ~70 digits
+K_onehalf = ellipticK(0.5)
+
+
+
 ```
 
 If you are computing many at the same precision, this is a little faster.
 ```julia
 using ArbFloats
 
-arb_precsion = 750 # bits
+arb_precsion = 250 # bits ~70 digits
 setprecision(ArbFloat, arb_precision)
 
 const arb_one = one(ArbFloat)
 const arb_halfpi = ArbFloat(pi) / 2
 
-function ellipticK(x::T) where {T<:ArbFloat{N}, N}
+function ellipticK(x::T) where T<:ArbFloat{N} where N
     !(zero(T) <= x <= one(T)) && throw(DomainError())
         
     k = arb_one - x
