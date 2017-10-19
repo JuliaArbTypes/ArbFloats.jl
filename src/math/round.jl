@@ -8,7 +8,7 @@
 
 bits_to_rounded_digits(bits::Int32) = cld((bits * 3010%Int32), 10000%Int32)
 bits_to_rounded_digits(bits::Int64) = bits_to_rounded_digits(bits%Int32)
-digits_to_rounded_bits(digs::Int32) = fld((digs * 10000%Int32), 3010%Int32) + 1%Int32        
+digits_to_rounded_bits(digs::Int32) = fld((digs * 10000%Int32), 3010%Int32) + 1%Int32
 digits_to_rounded_bits(digs::Int64) = digits_to_rounded_bits(digs%Int32)
 
 integral_digits(x::ArbFloat{P}) where {P} = ceiled(Int, log10(1+floored(abs(x))))
@@ -18,32 +18,32 @@ function round(x::ArbFloat{P}, places::Int=integral_digits(P), base::Int=10) whe
     sigbits = base==2 ? places+digits_to_rounded_bits(integral_digits(x)) : digits_to_rounded_bits(places+integral_digits(x))
     sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
+    ccall(@libarb(arb_set_round), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{z}, Ref{x}, sigbits)
     return z
 end
 
 function ceiled(::Type{T}, x::ArbFloat{P}) where {P,T}
     y = ceiled(x)
     return convert(T,y)
-end    
+end
 function ceiled(x::ArbFloat{P}, places::Int=P, base::Int=2) where {P}
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
     places = max(1,abs(places))
     sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
+    ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{z}, Ref{x}, sigbits)
     return z
 end
 function floored(::Type{T}, x::ArbFloat{P}) where {P,T}
     y = floored(x)
     return convert(T,y)
-end    
+end
 function floored(x::ArbFloat{P}, places::Int=P, base::Int=2) where {P}
     ((base==2) | (base==10)) || throw(ErrorException(string("Expecting base in (2,10), radix ",base," is not supported.")))
     places = max(1,abs(places))
     sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
+    ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{z}, Ref{x}, sigbits)
     return z
 end
 
@@ -52,7 +52,7 @@ function ceil(x::ArbFloat{P}, places::Int=P, base::Int=2) where {P}
     sigbits = base==2 ? places+digits_to_rounded_bits(integral_digits(x)) : digits_to_rounded_bits(places+integral_digits(x))
     sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
+    ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{z}, Ref{x}, sigbits)
     return z
 end
 
@@ -61,7 +61,7 @@ function floor(x::ArbFloat{P}, places::Int=P, base::Int=2) where {P}
     sigbits = base==2 ? places+digits_to_rounded_bits(integral_digits(x)) : digits_to_rounded_bits(places+integral_digits(x))
     sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
+    ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{z}, Ref{x}, sigbits)
     return z
 end
 
@@ -71,9 +71,9 @@ function trunc(x::ArbFloat{P}, places::Int=P, base::Int=2) where {P}
     sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
     if signbit(x)
-        ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
+        ccall(@libarb(arb_ceil), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{z}, Ref{x}, sigbits)
     else
-        ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, sigbits)
+        ccall(@libarb(arb_floor), Void,  (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{z}, Ref{x}, sigbits)
     end
     return z
 end
