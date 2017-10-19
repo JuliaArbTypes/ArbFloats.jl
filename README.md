@@ -407,47 +407,28 @@ K(x) is The Complete Elliptic Integral of the First Kind
 ```julia
 using ArbFloats
 
-function ellipticK(x)
-    @assert 0 <= x <= 1.0
+function ellipticK(x::T) where T
+    !(zero(T) <= x <= one(T)) && throw(DomainError())
     x == 1.0 && return ArbFloat(Inf)
 
     arb_one    = one(ArbFloat)
     arb_halfpi = ArbFloat(pi)/2
-        
-    k = sqrt(arb_one - ArbFloat(x))# 
+    
+    k = T<:ArbFloat ? x : ArbFloat(x)
+
+    k = sqrt(arb_one - k) 
     k = agm(arb_one, k)
     k = arb_halfpi / k
 
     return k
 end
 
-setprecison(ArbFloat, 250) # bits ~70 digits
+setprecision(ArbFloat, 256) # bits 
 K_onehalf = ellipticK(0.5)
-
-
+smartstring(K_onehalf)
+"1.854074677301371918433850347195260046217598823521766905585928045056021777₋"
 
 ```
-
-If you are computing many at the same precision, this is a little faster.
-```julia
-using ArbFloats
-
-arb_precsion = 250 # bits ~70 digits
-setprecision(ArbFloat, arb_precision)
-
-const arb_one = one(ArbFloat)
-const arb_halfpi = ArbFloat(pi) / 2
-
-function ellipticK(x::T) where T<:ArbFloat{N} where N
-    !(zero(T) <= x <= one(T)) && throw(DomainError())
-        
-    k = arb_one - x
-    k = sqrt(k)
-    k = agm(arb_one, k)
-    k = arb_halfpi / k
-
-    return k
-end
 
 #### Credits, References, Thanks
 
