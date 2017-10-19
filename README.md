@@ -214,7 +214,7 @@ ArbFloat("Inf"), ArbFloat("-Inf"), ArbFloat("NaN")
 one(ArbFloat)/ArbFloat(Inf), ArbFloat("Inf")+ArbFloat("-Inf")
 # 0, NaN
 
-showmart(exp1)
+showsmart(exp1)
 # 2.71828182845904523536028747135266+
 showsmart(fuzzed_e)
 # 2.7182818284590452353602874713527-
