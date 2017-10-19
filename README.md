@@ -399,6 +399,50 @@ Exports (including re-exports)
 >   smartstring, smartvalue, 
 >   smartmodf, decimalpart, # both use smartvalue(fractionalpart)
 
+#### Adding Functions
+
+K(x) is The Complete Elliptic Integral of the First Kind    
+     over the floating point domain [0.0, .., 1.0]
+     
+```julia
+using ArbFloats
+
+function ellipticK(x)
+    @assert 0 <= x <= 1.0
+    x == 1.0 && return ArbFloat(Inf)
+
+    arb_one    = one(ArbFloat)
+    arb_halfpi = ArbFloat(pi)/2
+        
+    k = sqrt(arb_one - ArbFloat(x))
+    k = agm(arb_one, k)
+    k = arb_halfpi / k
+
+    return k
+end
+```
+
+If you are computing many at the same precision, this is a little faster.
+```julia
+using ArbFloats
+
+arb_precsion = 750 # bits
+setprecision(ArbFloat, arb_precision)
+
+const arb_one = one(ArbFloat)
+const arb_halfpi = ArbFloat(pi) / 2
+
+function ellipticK(x::T) where T
+    !(zero(T) <= x <= one(T)) && throw(DomainError())
+        
+    k = arb_one - ArbFloat(x)
+    k = sqrt(k)
+    k = agm(arb_one, k)
+    k = arb_halfpi / k
+
+    return k
+end
+
 #### Credits, References, Thanks
 
 This work relies on Fredrik Johansson's Arb software, using parts of that
