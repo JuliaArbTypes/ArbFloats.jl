@@ -411,21 +411,24 @@ function ellipticK(x::T) where T
     !(zero(T) <= x <= one(T)) && throw(DomainError())
     x == 1.0 && return ArbFloat(Inf)
 
-    arb_one    = one(ArbFloat)
+    arb_one = one(ArbFloat)
     arb_halfpi = ArbFloat(pi)/2
     
     k = T<:ArbFloat ? x : ArbFloat(x)
 
-    k = sqrt(arb_one - k) 
+    k = arb_one - k
+    k = sqrt(k)
     k = agm(arb_one, k)
     k = arb_halfpi / k
 
     return k
 end
 
-setprecision(ArbFloat, 256) # bits 
-K_onehalf = ellipticK(0.5)
-smartstring(K_onehalf)
+setprecision(ArbFloat, 256) # bits
+x = ArbFloat(0.5)
+
+k = ellipticK(x)
+string("K(", x, ") = ", smartstring(K_onehalf))
 "1.854074677301371918433850347195260046217598823521766905585928045056021777₋"
 
 ```
