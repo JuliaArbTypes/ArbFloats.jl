@@ -214,7 +214,7 @@ ArbFloat("Inf"), ArbFloat("-Inf"), ArbFloat("NaN")
 one(ArbFloat)/ArbFloat(Inf), ArbFloat("Inf")+ArbFloat("-Inf")
 # 0, NaN
 
-showsmart(exp1)
+showmart(exp1)
 # 2.71828182845904523536028747135266+
 showsmart(fuzzed_e)
 # 2.7182818284590452353602874713527-
@@ -248,7 +248,10 @@ succ(thicker, thinner), succ(thinner, thicker)
 
 **using ArbFloats \# goes anywhere**  
 DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,  
-Plots, Polynomials, Quaternions, TaylorSeries, others
+Plots, Polynomials, Quaternions, others
+
+**using ArbFloats \# goes last!**  
+TaylorSeries
 
 *partially compatible*  
 Roots (accepts ArbFloats, results are Float64)
@@ -395,40 +398,6 @@ Exports (including re-exports)
 >   string, stringsmall, stringlarge, stringall, 
 >   smartstring, smartvalue, 
 >   smartmodf, decimalpart, # both use smartvalue(fractionalpart)
-
-#### Adding Functions
-
-K(x) is The Complete Elliptic Integral of the First Kind    
-     over the floating point domain [0.0, .., 1.0]
-     
-```julia
-using ArbFloats
-
-function ellipticK(x::T) where T
-    !(zero(T) <= x <= one(T)) && throw(DomainError())
-    x == 1.0 && return ArbFloat(Inf)
-
-    arb_one = one(ArbFloat)
-    arb_halfpi = ArbFloat(pi)/2
-    
-    k = T<:ArbFloat ? x : ArbFloat(x)
-
-    k = arb_one - k
-    k = sqrt(k)
-    k = agm(arb_one, k)
-    k = arb_halfpi / k
-
-    return k
-end
-
-setprecision(ArbFloat, 256) # bits
-x = ArbFloat(0.5)
-
-k = ellipticK(x)
-string("K(", x, ") = ", smartstring(K_onehalf))
-"1.854074677301371918433850347195260046217598823521766905585928045056021777₋"
-
-```
 
 #### Credits, References, Thanks
 

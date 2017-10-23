@@ -1,11 +1,11 @@
 
 #=
-     The basic idea is to find the smallest N such that
+     The basic idea is to find the smallest N such that 
        string(rounded(lowerbound(x), N)) == string(rounded(upperbound(x), N))
        where rounded rounds fractional values to N fractional places
-
+    
     Some intervals are too wide to do that.
-    Some are not too wide but straddle an integer in a way that does not
+    Some are not too wide but straddle an integer in a way that does not 
       round to match values with the desired fractional resolution.
 
 =#
@@ -108,7 +108,7 @@ end
 
 function stringTrimmed{P}(x::ArbFloat{P}, ndigitsremoved::Int)
    n = max(1, digitsRequired(P) - max(0, ndigitsremoved))
-   cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), Ref{x}, n, UInt(2))
+   cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, n, UInt(2))
    s = unsafe_string(cstr)
    # ccall(@libflint(flint_free), Void, (Ptr{UInt8},), cstr)
    s

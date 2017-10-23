@@ -6,16 +6,16 @@
 =#
 
 function signbit(x::ArbFloat{P}) where {P}
-    0 != ccall(@libarb(arb_is_negative), Int, (Ptr{ArbFloat{P}},), Ref{x})
+    0 != ccall(@libarb(arb_is_negative), Int, (Ptr{ArbFloat{P}},), &x)
 end
 
 function abs(x::ArbFloat{P}) where {P}
     z  = initializer(ArbFloat{P})
     lo = initializer(ArfFloat{P})
     hi = initializer(ArfFloat{P})
-    ccall(@libarb(arb_get_abs_lbound_arf), Void, (Ptr{ArfFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{lo}, Ref{x}, P)
-    ccall(@libarb(arb_get_abs_ubound_arf), Void, (Ptr{ArfFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{hi}, Ref{x}, P)
-    ccall(@libarb(arb_set_interval_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}, Int), Ref{z}, Ref{lo}, Ref{hi}, P)
+    ccall(@libarb(arb_get_abs_lbound_arf), Void, (Ptr{ArfFloat{P}}, Ptr{ArbFloat{P}}, Int), &lo, &x, P) 
+    ccall(@libarb(arb_get_abs_ubound_arf), Void, (Ptr{ArfFloat{P}}, Ptr{ArbFloat{P}}, Int), &hi, &x, P)
+    ccall(@libarb(arb_set_interval_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}, Int), &z, &lo, &hi, P)
     return z
 end
 
@@ -28,7 +28,7 @@ for (op,cfunc) in ((:-,:arb_neg), (:sign, :arb_sgn), (:absz, :arb_abs))
   @eval begin
     function ($op)(x::ArbFloat{P}) where {P}
       z = initializer(ArbFloat{P})
-      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), Ref{z}, Ref{x})
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}), &z, &x)
       return z
     end
   end
@@ -38,7 +38,7 @@ for (op,cfunc) in ((:inv, :arb_inv), (:sqrt, :arb_sqrt), (:invsqrt, :arb_rsqrt))
   @eval begin
     function ($op)(x::ArbFloat{P}) where {P}
       z = initializer(ArbFloat{P})
-      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{z}, Ref{x}, P)
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, P)
       return z
     end
   end
@@ -48,7 +48,7 @@ for (op,cfunc) in ((:+,:arb_add), (:-, :arb_sub), (:/, :arb_div), (:hypot, :arb_
   @eval begin
     function ($op)(x::ArbFloat{P}, y::ArbFloat{P}) where {P}
       z = initializer(ArbFloat{P})
-      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{z}, Ref{x}, Ref{y}, P)
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
       return z
     end
     ($op)(x::ArbFloat{P}, y::ArbFloat{Q}) where {P,Q} = ($op)(promote(x,y)...)
@@ -63,7 +63,7 @@ end
 
 function (*)(x::ArbFloat{P}, y::ArbFloat{P}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_mul), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{z}, Ref{x}, Ref{y}, P)
+    ccall(@libarb(arb_mul), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &x, &y, P)
     return z
 end
 (*)(x::T, y::F) where {T <: ArbFloat,F <: AbstractFloat} = (*)(x, convert(T, y))
@@ -95,7 +95,7 @@ for (op,cfunc) in ((:+,:arb_add_si), (:-, :arb_sub_si), (:*, :arb_mul_si), (:/, 
   @eval begin
     function ($op)(x::ArbFloat{P}, y::Int) where {P}
       z = initializer(ArbFloat{P})
-      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int, Int), Ref{z}, Ref{x}, y, P)
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int, Int), &z, &x, y, P)
       return z
     end
   end
@@ -120,7 +120,7 @@ for (op,cfunc) in ((:addmul,:arb_addmul), (:submul, :arb_submul))
   @eval begin
     function ($op)(w::ArbFloat{P}, x::ArbFloat{P}, y::ArbFloat{P}) where {P}
       z = initializer(ArbFloat{P})
-      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), Ref{z}, Ref{w}, Ref{x}, Ref{y}, P)
+      ccall(@libarb($cfunc), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Ptr{ArbFloat{P}}, Int), &z, &w, &x, &y, P)
       z
     end
   end
