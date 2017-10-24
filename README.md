@@ -248,10 +248,7 @@ succ(thicker, thinner), succ(thinner, thicker)
 
 **using ArbFloats \# goes anywhere**  
 DifferentialEquations, DualNumbers, ForwardDiff, HyperDualNumbers, MappedArrays,  
-Plots, Polynomials, Quaternions, others
-
-**using ArbFloats \# goes last!**  
-TaylorSeries
+Plots, Polynomials, Quaternions, TaylorSeries, others
 
 *partially compatible*  
 Roots (accepts ArbFloats, results are Float64)
