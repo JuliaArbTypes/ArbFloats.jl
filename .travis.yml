@@ -1,21 +1,18 @@
-# Documentation:  http://docs.travis-ci.com/user/languages/julia/
 language: julia
 os:
   - linux
-  - osx
 julia:
   - 0.6
   - nightly
 notifications:
   email: false
-#before_install:
-#  - openssl aes-256-cbc -K $encrypted_14bd5302f72f_key -iv $encrypted_14bd5302f72f_iv -in .documenter.enc -out .documenter -d  
-# uncomment the following lines to override the default test script
-#script:
-#  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-#  - julia -e 'Pkg.clone(pwd()); Pkg.build("ArbFloats"); Pkg.test("ArbFloats"; coverage=true)'
+git:
+  depth: 999999 # for travis
+env:
+script:
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  - OPTIONS=$(julia -e 'isdefined(Base.JLOptions(), :use_compilecache) && print("--compilecache=no")')
+  - julia $OPTIONS -e 'Pkg.clone(pwd()); Pkg.build("ArbFloats"); Pkg.test("ArbFloats"; coverage=true)';
 after_success:
-  # push coverage results to Coveralls
-  - julia -e 'cd(Pkg.dir("ArbFloats")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-  # push coverage results to Codecov
-  - julia -e 'cd(Pkg.dir("ArbFloats")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'cd(Pkg.dir("ArbFloats")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())';
+  - julia -e 'cd(Pkg.dir("ArbFloats")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
