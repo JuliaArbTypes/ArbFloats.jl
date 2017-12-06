@@ -25,19 +25,19 @@ weakcopy(x::ArfFloat{P}) where {P} = WeakRef(x)
 
 function copy(x::ArfFloat{P}) where {P}
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
+    ccall(@libarb(arf_set), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}), z, x)
     return z
 end
 
 # initialize and zero a variable of type ArfFloat
 function release(x::ArfFloat{P}) where {P}
-    ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), &x)
+    ccall(@libarb(arf_clear), Void, (Ptr{ArfFloat{P}}, ), x)
     return nothing
 end
 
 function initializer(::Type{ArfFloat{P}}) where {P}
     z = ArfFloat{P}(zero(Int), zero(UInt64), zero(Int64), zero(Int64))
-    ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), &z)
+    ccall(@libarb(arf_init), Void, (Ptr{ArfFloat{P}}, ), z)
     finalizer(z, release)
     return z
 end
@@ -50,89 +50,89 @@ end
 
 function deepcopy(x::ArfFloat{P}) where {P}
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
+    ccall(@libarb(arf_set), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}), z, x)
     return z
 end
 
 function zero(::Type{ArfFloat{P}}) where {P}
     z = initializer( ArbFloat{P} )
-    ccall(@libarb(arf_zero), Void, (Ptr{ArfFloat{P}}, ), &z)
+    ccall(@libarb(arf_zero), Void, (Ptr{ArfFloat{P}}, ), z)
     return z
 end
 
 function one(::Type{ArfFloat{P}}) where {P}
     z = initializer( ArbFloat{P} )
-    ccall(@libarb(arf_one), Void, (Ptr{ArfFloat{P}}, ), &z)
+    ccall(@libarb(arf_one), Void, (Ptr{ArfFloat{P}}, ), z)
     return z
 end
 
 
 function isnan(x::T) where {T <: ArfFloat}
-    zero(Cint) != ccall(@libarb(arf_is_nan), Cint, (Ptr{T},), &x)
+    zero(Cint) != ccall(@libarb(arf_is_nan), Cint, (Ptr{T},), x)
 end
 function isinf(x::T) where {T <: ArfFloat}
-    zero(Cint) != ccall(@libarb(arf_is_inf), Cint, (Ptr{T},), &x)
+    zero(Cint) != ccall(@libarb(arf_is_inf), Cint, (Ptr{T},), x)
 end
 function isposinf(x::T) where {T <: ArfFloat}
-    zero(Cint) != ccall(@libarb(arf_is_pos_inf), Cint, (Ptr{T},), &x)
+    zero(Cint) != ccall(@libarb(arf_is_pos_inf), Cint, (Ptr{T},), x)
 end
 function isneginf(x::T) where {T <: ArfFloat}
-    zero(Cint) != ccall(@libarb(arf_is_neg_inf), Cint, (Ptr{T},), &x)
+    zero(Cint) != ccall(@libarb(arf_is_neg_inf), Cint, (Ptr{T},), x)
 end
 function iszero(x::T) where {T <: ArfFloat}
-    zero(Cint) != ccall(@libarb(arf_is_zero), Cint, (Ptr{T},), &x)
+    zero(Cint) != ccall(@libarb(arf_is_zero), Cint, (Ptr{T},), x)
 end
 function isone(x::T) where {T <: ArfFloat}
-    zero(Cint) != ccall(@libarb(arf_is_one), Cint, (Ptr{T},), &x)
+    zero(Cint) != ccall(@libarb(arf_is_one), Cint, (Ptr{T},), x)
 end
 function isfinite(x::T) where {T <: ArfFloat}
-    zero(Cint) != ccall(@libarb(arf_is_finite), Cint, (Ptr{T},), &x)
+    zero(Cint) != ccall(@libarb(arf_is_finite), Cint, (Ptr{T},), x)
 end
 function isnormal(x::T) where {T <: ArfFloat}
-    zero(Cint) != ccall(@libarb(arf_is_normal), Cint, (Ptr{T},), &x)
+    zero(Cint) != ccall(@libarb(arf_is_normal), Cint, (Ptr{T},), x)
 end
 function isspecial(x::T) where {T <: ArfFloat}
-    zero(Cint) != ccall(@libarb(arf_is_special), Cint, (Ptr{T},), &x)
+    zero(Cint) != ccall(@libarb(arf_is_special), Cint, (Ptr{T},), x)
 end
 
 function notnan(x::T) where {T <: ArfFloat}
-    zero(Cint) == ccall(@libarb(arf_is_nan), Cint, (Ptr{T},), &x)
+    zero(Cint) == ccall(@libarb(arf_is_nan), Cint, (Ptr{T},), x)
 end
 function notinf(x::T) where {T <: ArfFloat}
-    zero(Cint) == ccall(@libarb(arf_is_inf), Cint, (Ptr{T},), &x)
+    zero(Cint) == ccall(@libarb(arf_is_inf), Cint, (Ptr{T},), x)
 end
 function notposinf(x::T) where {T <: ArfFloat}
-    zero(Cint) == ccall(@libarb(arf_is_pos_inf), Cint, (Ptr{T},), &x)
+    zero(Cint) == ccall(@libarb(arf_is_pos_inf), Cint, (Ptr{T},), x)
 end
 function notneginf(x::T) where {T <: ArfFloat}
-    zero(Cint) == ccall(@libarb(arf_is_neg_inf), Cint, (Ptr{T},), &x)
+    zero(Cint) == ccall(@libarb(arf_is_neg_inf), Cint, (Ptr{T},), x)
 end
 function notzero(x::T) where {T <: ArfFloat}
-    zero(Cint) == ccall(@libarb(arf_is_zero), Cint, (Ptr{T},), &x)
+    zero(Cint) == ccall(@libarb(arf_is_zero), Cint, (Ptr{T},), x)
 end
 function notone(x::T) where {T <: ArfFloat}
-    zero(Cint) == ccall(@libarb(arf_is_one), Cint, (Ptr{T},), &x)
+    zero(Cint) == ccall(@libarb(arf_is_one), Cint, (Ptr{T},), x)
 end
 function notfinite(x::T) where {T <: ArfFloat}
-    zero(Cint) == ccall(@libarb(arf_is_finite), Cint, (Ptr{T},), &x)
+    zero(Cint) == ccall(@libarb(arf_is_finite), Cint, (Ptr{T},), x)
 end
 function notnormal(x::T) where {T <: ArfFloat}
-    zero(Cint) == ccall(@libarb(arf_is_normal), Cint, (Ptr{T},), &x)
+    zero(Cint) == ccall(@libarb(arf_is_normal), Cint, (Ptr{T},), x)
 end
 function notspecial(x::T) where {T <: ArfFloat}
-    zero(Cint) == ccall(@libarb(arf_is_special), Cint, (Ptr{T},), &x)
+    zero(Cint) == ccall(@libarb(arf_is_special), Cint, (Ptr{T},), x)
 end
 
 
 function convert(::Type{BigFloat}, x::ArfFloat{P}) where {P}
     z = BigFloat(0)
-    r = ccall(@libarb(arf_get_mpfr), Int, (Ptr{BigFloat}, Ptr{ArfFloat{P}}, Cint), &z, &x, 0)
+    r = ccall(@libarb(arf_get_mpfr), Int, (Ptr{BigFloat}, Ptr{ArfFloat{P}}, Cint), z, x, 0)
     return z
 end
 
 function convert(::Type{ArfFloat{P}}, x::BigFloat) where {P}
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set_mpfr), Void, (Ptr{ArfFloat{P}}, Ptr{BigFloat}), &z, &x)
+    ccall(@libarb(arf_set_mpfr), Void, (Ptr{ArfFloat{P}}, Ptr{BigFloat}), z, x)
     z
 end
 convert(::Type{ArfFloat}, x::BigFloat) = convert(ArfFloat{precision(ArfFloat)}, x)
@@ -142,14 +142,14 @@ convert(::Type{ArfFloat{P}}, x::BigInt) where {P} = convert(ArfFloat{P}, convert
 
 function convert(::Type{ArfFloat{P}}, x::Int64) where {P}
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set_si), Void, (Ptr{ArfFloat{P}}, Ptr{Int64}), &z, &x)
+    ccall(@libarb(arf_set_si), Void, (Ptr{ArfFloat{P}}, Ptr{Int64}), z, x)
     z
 end
 convert(::Type{ArfFloat}, x::Int64) = convert(ArfFloat{precision(ArfFloat)}, x)
 
 function convert(::Type{ArfFloat{P}}, x::Float64) where {P}
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set_d), Void, (Ptr{ArfFloat{P}}, Ptr{Float64}), &z, &x)
+    ccall(@libarb(arf_set_d), Void, (Ptr{ArfFloat{P}}, Ptr{Float64}), z, x)
     z
 end
 function convert(::Type{ArfFloat}, x::Float64)
@@ -173,7 +173,7 @@ radius(x::ArfFloat{P}) where {P} = ArfFloat{P}(0)
 function round(x::T, prec::Int64) where {T <: ArfFloat}
     P = precision(T)
     z = ArfFloat{P}()
-    ccall(@libarb(arf_set_round), Int, (Ptr{T}, Ptr{T}, Int64, Int), &z, &x, prec, 2)
+    ccall(@libarb(arf_set_round), Int, (Ptr{T}, Ptr{T}, Int64, Int), z, x, prec, 2)
     return z
 end
 
@@ -182,17 +182,17 @@ end
 function frexp{P}(x::ArfFloat{P})
    significand = ArfFloat{P}()
    exponentOf2 = zero(Int64)
-   ccall(@libarb(arf_frexp), Void, (Ptr{ArfFloat{P}}, Int64, Ptr{ArfFloat{P}}), &significand, exponentOf2, &x)
+   ccall(@libarb(arf_frexp), Void, (Ptr{ArfFloat{P}}, Int64, Ptr{ArfFloat{P}}), &significand, exponentOf2, x)
    significand, exponentOf2
 end
 =#
 
 function min(x::T, y::T) where {T <: ArfFloat}
-    c = ccall(@libarb(arf_cmp), Cint, (Ptr{T}, Ptr{T}), &x, &y)
+    c = ccall(@libarb(arf_cmp), Cint, (Ptr{T}, Ptr{T}), x, y)
     return (c < 0) ? x : y
 end
 
 function max(x::T, y::T) where {T <: ArfFloat}
-    c = ccall(@libarb(arf_cmp), Cint, (Ptr{T}, Ptr{T}), &x, &y)
+    c = ccall(@libarb(arf_cmp), Cint, (Ptr{T}, Ptr{T}), x, y)
     return (c > 0) ? x : y
 end

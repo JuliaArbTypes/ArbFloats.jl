@@ -34,33 +34,33 @@ convert(::Type{ArbFloat{P}}, x::ArbFloat{P}) where {P} = x
 function convert{Q}(::Type{ArfFloat}, x::ArfFloat{Q})
    P = precision(ArfFloat)
    z = initializer(ArfFloat{P})
-   ccall(@libarb(arf_set_round), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{Q}}, Clong), &z, &x, Clong(P))
+   ccall(@libarb(arf_set_round), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{Q}}, Clong), z, x, Clong(P))
    return z
 end
 =#
 function convert(::Type{ArfFloat{P}}, x::ArfFloat{Q}) where {P,Q}
    z = initializer(ArfFloat{P})
-   ccall(@libarb(arf_set_round), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{Q}}, Clong), &z, &x, Clong(P))
+   ccall(@libarb(arf_set_round), Void, (Ptr{ArfFloat{P}}, Ptr{ArfFloat{Q}}, Clong), z, x, Clong(P))
    return z
 end
 #=
 function convert{Q}(::Type{ArbFloat}, x::ArbFloat{Q})
    P = precision(ArbFloat)
    z = initializer(ArbFloat{P})
-   ccall(@libarb(arb_set_round), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{Q}}, Clong), &z, &x, Clong(P))
+   ccall(@libarb(arb_set_round), Void, (Ref{ArbFloat{P}}, Ptr{ArbFloat{Q}}, Clong), z, x, Clong(P))
    return z
 end
 =#
 function convert(::Type{ArbFloat{P}}, x::ArbFloat{Q}) where {P,Q}
    z = initializer(ArbFloat{P})
-   ccall(@libarb(arb_set_round), Void, (Ptr{ArbFloat{P}}, Ptr{ArbFloat{Q}}, Clong), &z, &x, Clong(P))
+   ccall(@libarb(arb_set_round), Void, (Ref{ArbFloat{P}}, Ptr{ArbFloat{Q}}, Clong), z, x, Clong(P))
    return z
 end
 
 
 function convert(::Type{ArbFloat{P}}, x::ArfFloat{P}) where {P}
    z = initializer(ArbFloat{P})
-   ccall(@libarb(arb_set_arf), Void, (Ptr{ArbFloat{P}}, Ptr{ArfFloat{P}}), &z, &x)
+   ccall(@libarb(arb_set_arf), Void, (Ref{ArbFloat{P}}, Ptr{ArfFloat{P}}), z, x)
    return z
 end
 
@@ -103,27 +103,27 @@ end
 function convert(::Type{T}, x::UInt64) where {T <: ArbFloat}
     P = precision(T)
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_set_ui), Void, (Ptr{T}, UInt64), &z, x)
+    ccall(@libarb(arb_set_ui), Void, (Ptr{T}, UInt64), z, x)
     return z
 end
 function convert(::Type{T}, x::Int64) where {T <: ArbFloat}
     P = precision(T)
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_set_si), Void, (Ptr{T}, Int64), &z, x)
+    ccall(@libarb(arb_set_si), Void, (Ptr{T}, Int64), z, x)
     return z
 end
 
 function convert(::Type{T}, x::Float64) where {T <: ArbFloat}
     P = precision(T)
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_set_d), Void, (Ptr{T}, Float64), &z, x)
+    ccall(@libarb(arb_set_d), Void, (Ptr{T}, Float64), z, x)
     return z
 end
 
 function convert(::Type{T}, x::String) where {T <: ArbFloat}
     P = precision(T)
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_set_str), Void, (Ptr{T}, Ptr{UInt8}, Int), &z, x, P)
+    ccall(@libarb(arb_set_str), Void, (Ptr{T}, Ptr{UInt8}, Int), z, x, P)
     return z
 end
 
