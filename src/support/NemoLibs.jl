@@ -32,15 +32,15 @@ isfile(libflint) || throw(ErrorException(reNemo))
 
 # prepare the libraries for use
 
-@static if (is_linux() || is_bsd())
+@static if (Sys.islinux() || Sys.isbsd())
     libarb = String(split(libarb,".so")[1])
     libflint = String(split(libflint,".so")[1])
 end
-@static if is_apple()
+@static if Sys.isapple()
     libarb = String(split(libarb,".dynlib")[1])
     libflint = String(split(libflint,".dynlib")[1])
 end
-@static if is_windows()
+@static if Sys.iswindows()
     libarb = String(split(libarb,".dll")[1])
     libflint = String(split(libflint,".dll")[1])
 end

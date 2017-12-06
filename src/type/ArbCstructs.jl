@@ -67,5 +67,5 @@ mutable struct ArbFloat{P} <: AbstractFloat
 end
 
 function c_release_arb(x::ArbFloat{P}) where {P}
-  ccall(@libarb(arb_clear), Void, (Ref{ArbFloat{P}}, ), x)
+  ccall(@libarb(arb_clear), Void, (Ref{ArbFloat{P}},), x)
 end

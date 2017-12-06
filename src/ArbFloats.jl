@@ -76,12 +76,14 @@ import Base: STDOUT,
     exp, expm1, log, log1p, log2, log10,
     sin, cos, tan, csc, sec, cot, asin, acos, atan, atan2,
     sinh, cosh, tanh, csch, sech, coth, asinh, acosh, atanh,
-    sinc, gamma, lgamma, digamma, zeta, factorial,
+    sinc, gamma, lgamma, factorial,
     in, union, intersect,
     rand, randn, sort,
     BigInt, BigFloat, Rational
 
 import Base.Rounding: rounding_raw, setrounding_raw, rounding, setrounding
+
+import SpecialFunctions: digamma, zeta
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
        @ArbFloat,     # converts string form of argument, precision is optional first arg

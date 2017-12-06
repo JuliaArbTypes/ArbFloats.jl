@@ -13,9 +13,9 @@ function abs(x::ArbFloat{P}) where {P}
     z  = initializer(ArbFloat{P})
     lo = initializer(ArfFloat{P})
     hi = initializer(ArfFloat{P})
-    ccall(@libarb(arb_get_abs_lbound_arf), Void, (Ptr{ArfFloat{P}}, Ref{ArbFloat{P}}, Int), &lo, x, P) 
-    ccall(@libarb(arb_get_abs_ubound_arf), Void, (Ptr{ArfFloat{P}}, Ref{ArbFloat{P}}, Int), &hi, x, P)
-    ccall(@libarb(arb_set_interval_arf), Void, (Ref{ArbFloat{P}}, Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}, Int), z, &lo, &hi, P)
+    ccall(@libarb(arb_get_abs_lbound_arf), Void, (Ref{ArfFloat{P}}, Ref{ArbFloat{P}}, Int), lo, x, P) 
+    ccall(@libarb(arb_get_abs_ubound_arf), Void, (Ref{ArfFloat{P}}, Ref{ArbFloat{P}}, Int), hi, x, P)
+    ccall(@libarb(arb_set_interval_arf), Void, (Ref{ArbFloat{P}}, Ref{ArfFloat{P}}, Ref{ArfFloat{P}}, Int), z, lo, hi, P)
     return z
 end
 
@@ -120,7 +120,7 @@ for (op,cfunc) in ((:addmul,:arb_addmul), (:submul, :arb_submul))
   @eval begin
     function ($op)(w::ArbFloat{P}, x::ArbFloat{P}, y::ArbFloat{P}) where {P}
       z = initializer(ArbFloat{P})
-      ccall(@libarb($cfunc), Void, (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, &w, x, y, P)
+      ccall(@libarb($cfunc), Void, (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, w, x, y, P)
       z
     end
   end

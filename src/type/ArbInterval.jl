@@ -66,7 +66,7 @@ union(a::T) where {T <: ArbFloat} = a
 function union(a::T, b::T) where {T <: ArbFloat}
     P = precision(T)
     z = ArbFloat{P}{}
-    ccall(@libarb(arb_union), Void, (Ptr{T}, Ptr{T}, Ptr{T}, Clong), z, &a, &b, P)
+    ccall(@libarb(arb_union), Void, (Ref{T}, Ref{T}, Ref{T}, Clong), z, a, b, P)
     return z
 end
 function union(a::T, b::T, c::T) where {T <: ArbFloat}
@@ -141,7 +141,7 @@ end
 function bounded(z::ArbFloat{P}, lo::ArbFloat{P}, hi::ArbFloat{P}) where {P}
     lo2 = convert(ArfFloat{P}, lo)
     hi2 = convert(ArfFloat{P}, hi)
-    ccall(@libarb(arb_set_interval_arf), Void, (Ref{ArbFloat{P}}, Ptr{ArfFloat{P}}, Ptr{ArfFloat{P}}, Int64), z, &lo2, &hi2, P%Int64)
+    ccall(@libarb(arb_set_interval_arf), Void, (Ref{ArbFloat{P}}, Ref{ArfFloat{P}}, Ref{ArfFloat{P}}, Int64), z, lo2, hi2, P%Int64)
     return z
 end
 function bounded(lo::T, hi::T) where {T <: ArbFloat}
@@ -156,5 +156,3 @@ function boundedrange(mid::T, rad::T) where {T <: ArbFloat}
     hi = mid+rad
     return bounded(z,lo,hi)
 end
-
-

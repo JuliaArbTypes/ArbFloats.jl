@@ -47,7 +47,7 @@ for (op,cfunc) in ((:sincos, :arb_sin_cos), (:sincospi, :arb_sin_cos_pi), (:sinh
     function ($op)(x::ArbFloat{P}) where {P}
         sz = initializer(ArbFloat{P})
         cz = initializer(ArbFloat{P})
-        ccall(@libarb($cfunc), Void, (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), &sz, &cz, x, P)
+        ccall(@libarb($cfunc), Void, (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), sz, cz, x, P)
         sz, cz
     end
   end
@@ -56,7 +56,7 @@ end
 
 function atan2(a::ArbFloat{P}, b::ArbFloat{P}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_atan2), Void, (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, &a, &b, P)
+    ccall(@libarb(arb_atan2), Void, (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, a, b, P)
     z
 end
 
