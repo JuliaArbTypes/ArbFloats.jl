@@ -4,9 +4,13 @@
 const noNemo = "Nemo.jl is not found:\n  Pkg.rm(\"Nemo\"); Pkg.add(\"Nemo\"); quit()\n  Pkg.rm(\"ArbFloats\");Pkg.add(\"ArbFloats\");"
 const reNemo = "Nemo.jl is not as expected:\n  Pkg.rm(\"Nemo\"); Pkg.add(\"Nemo\"); quit()\n  Pkg.rm(\"ArbFloats\");Pkg.add(\"ArbFloats\");"
 
+if VERSION<=v"0.6.9"
+  find_package(pgkName) = Base.find_in_path(pkgName)
+end
+
 
 function package_directory(pkgName::String)
-    pkgdir = Base.find_in_path(pkgName)
+    pkgdir = Base.find_package(pkgName)
     nothing == pkgdir && throw(ErrorException(noNemo))
     return abspath(joinpath(split(pkgdir, pkgName)[1], pkgName))
 end    
