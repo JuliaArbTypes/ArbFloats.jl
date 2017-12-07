@@ -67,13 +67,13 @@ precision(ArbFloat) # show the current default precision
 # 116
 setprecision(ArbFloat, 200) # change the current default precision
 # 200
-typealias ArbFloat{200} Arb200 # A Good Idea, and shaves cycles in use
+const Arb200 = ArbFloat{200} # A Good Idea, and shaves cycles in use
 
 a = ArbFloat(12);          # use the default precision, at run time
 b = @ArbFloat(12);         # use the default precision, at compile time
 c = ArbFloat{200}(golden); # use specified precision, at run time
 d = @ArbFloat(200,golden); # use specified precision, at compile time
-e = Arb200(12);            # use named precision, assuming prior typealias
+e = Arb200(12);            # use named precision, assuming prior type const
 
 # setprecision(ArbFloat, 53+0); # akin to setprecision(BigFloat, 53)
 # to see elementary function evaluations rounded to (at least) N significand bits, 
@@ -143,7 +143,7 @@ smartstring(fuzzed_e)
 
 ####Float32 and ArbFloat32
 ```julia
-typealias ArbFloat32 ArbFloat{24} # Float32 has 24 significand bits
+const ArbFloat32 = ArbFloat{24} # Float32 has 24 significand bits
 setprecision(ArbFloat, 24) # it is good to keep precisions in concert
 
 fpOneThird = 1.0f0 / 3.0f0
