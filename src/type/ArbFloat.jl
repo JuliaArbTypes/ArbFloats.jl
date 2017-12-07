@@ -54,7 +54,7 @@ end
 function initializer(::Type{ArbFloat{P}}) where {P}
     z = ArbFloat{P}(0,0,0,0,0,0)
     ccall(@libarb(arb_init), Void, (Ref{ArbFloat{P}}, ), z)
-    finalizer(z, releaseArbFloat)
+    finalizer(releaseArbFloat, z)
     return z
 end
 

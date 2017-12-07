@@ -1,6 +1,6 @@
 module TestAsNumber
 
-using Base.Test
+using Test
 using ArbFloats
 
 af0 = zero(ArbFloat)
