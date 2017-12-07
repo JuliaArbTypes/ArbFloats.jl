@@ -100,11 +100,11 @@ end
 # parts and aspects
 # midpoint, radius, lowerbound, upperbound
 
-@inline function ptr_to_midpoint(x::T) where {T <: ArbFloat} # Ptr{ArfFloat}
-    return ccall(@libarb(arb_mid_ptr), Ptr{ArfFloat}, (Ptr{T}, ), x)
+@inline function ptr_to_midpoint(x::T) where {T <: ArbFloat} # Ref{ArfFloat}
+    return ccall(@libarb(arb_mid_ptr), Ref{ArfFloat}, (Ref{ArbFloat}, ), x)
 end
-@inline function ptr_to_radius(x::T) where {T <: ArbFloat} # Ptr{ArfFloat}
-    return ccall(@libarb(arb_rad_ptr), Ptr{ArfFloat}, (Ptr{T}, ), x)
+@inline function ptr_to_radius(x::T) where {T <: ArbFloat} # Ref{ArfFloat}
+    return ccall(@libarb(arb_rad_ptr), Ref{ArfFloat}, (Ref{ArbFloat}, ), x)
 end
 
 function midpoint(x::ArbFloat{P}) where {P}
@@ -244,7 +244,7 @@ Returns the effective relative accuracy of x measured in bits,
   equal to the negative of the return value from relativeError().
 """
 function relative_accuracy(x::T) where {T <: ArbFloat}
-    ra_bits = ccall(@libarb(arb_rel_accuracy_bits), Int, (Ptr{T},), x)
+    ra_bits = ccall(@libarb(arb_rel_accuracy_bits), Int, (Ref{ArbFloat},), x)
     return ra_bits
 end
 

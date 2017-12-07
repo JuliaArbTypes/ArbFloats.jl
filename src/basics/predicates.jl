@@ -210,5 +210,5 @@ end
 
 """true iff x contains a nonnegative value"""
 function includes_nonnegative(x::ArbFloat{P}) where {P}
-    return 0 != ccall(@libarb(arb_contains_nonnegative), Int, (Ptr{ArbFloat{ArbFloat{P}}},), x)
+    return 0 != ccall(@libarb(arb_contains_nonnegative), Int, (Ref{ArbFloat{ArbFloat{P}}},), x)
 end

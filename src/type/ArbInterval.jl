@@ -66,7 +66,7 @@ union(a::T) where {T <: ArbFloat} = a
 function union(a::T, b::T) where {T <: ArbFloat}
     P = precision(T)
     z = ArbFloat{P}{}
-    ccall(@libarb(arb_union), Void, (Ref{T}, Ref{T}, Ref{T}, Clong), z, a, b, P)
+    ccall(@libarb(arb_union), Void, (Ref{ArbFloat}, Ref{ArbFloat}, Ref{ArbFloat}, Clong), z, a, b, P)
     return z
 end
 function union(a::T, b::T, c::T) where {T <: ArbFloat}
@@ -116,7 +116,7 @@ function intersect(a::T, b::T) where {T <: ArbFloat}
     P = precision(T)
     z = initializer(ArbFloat{P})
     if donotoverlap(a,b)
-        ccall(@libarb(arb_indeterminate), Void, (Ptr{T},), z)
+        ccall(@libarb(arb_indeterminate), Void, (Ref{ArbFloat},), z)
     else
         alo,ahi = bounds(a)
         blo,bhi = bounds(b)
