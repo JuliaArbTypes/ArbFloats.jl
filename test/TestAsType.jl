@@ -23,7 +23,6 @@ afInf = ArbFloat(Inf)
 @test typeof(af2) == ArbFloat{precision(ArbFloat)}
 
 @test string(ArbFloat{24}(pi)) == "3.141593"
-@test string(ArbFloat{53}(catalan)) == "0.915965594177219"
 
 @test promote(ArbFloat(4), 8//2) == (ArbFloat(4), ArbFloat(4))
 

@@ -123,7 +123,7 @@ end
 function convert(::Type{T}, x::String) where {T <: ArbFloat}
     P = precision(T)
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_set_str), Void, (Ref{ArbFloat}, Ref{UInt8}, Int), z, x, P)
+    ccall(@libarb(arb_set_str), Void, (Ref{ArbFloat}, Ptr{UInt8}, Int), z, x, P)
     return z
 end
 
