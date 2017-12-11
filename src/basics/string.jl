@@ -93,7 +93,7 @@ end
 function arb_string(x::ArbFloat{P}, digs::Int, mode::Int) where P
     !isfinite(x) && return string_nonfinite(x)
 
-    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, mode%UInt)
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ref{ArbFloat{P}}, Int, UInt), x, digs, mode%UInt)
     s = unsafe_string(cstr)
     return s
 end    
@@ -102,7 +102,7 @@ function string_exact(x::T, mdigits::Int, rounding::Int) where T <: ArbFloat
     !isfinite(x) && return string_nonfinite(x)
 
     digs = Int(mdigits)
-    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, rounding%UInt)
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ref{ArbFloat}, Int, UInt), x, digs, rounding%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end
@@ -112,7 +112,7 @@ function string_exact(x::T, mdigits::Int) where T <: ArbFloat
     !isfinite(x) && return string_nonfinite(x)
 
     digs = Int(mdigits)
-    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ptr{ArbFloat}, Int, UInt), &x, digs, 2%UInt)
+    cstr = ccall(@libarb(arb_get_str), Ptr{UInt8}, (Ref{ArbFloat}, Int, UInt), x, digs, 2%UInt)
     s = unsafe_string(cstr)
     return cleanup_numstring(s, isinteger(x))
 end

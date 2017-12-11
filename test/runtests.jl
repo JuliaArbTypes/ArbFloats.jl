@@ -1,12 +1,12 @@
 # Test ArbFloats.jl
 
-using Base.Test
+using Test
 using ArbFloats
 
 
 
 function package_directory(pkgName::String)
-    pkgdir = Base.find_in_path(pkgName)
+    pkgdir = Base.find_package(pkgName)
     nothing == pkgdir && throw(ErrorException(string("Package $pkgName not found.")))
     return abspath(joinpath(split(pkgdir, pkgName)[1], pkgName))
 end    

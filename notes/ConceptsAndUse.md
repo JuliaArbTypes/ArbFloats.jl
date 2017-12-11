@@ -48,7 +48,7 @@ smartstring(fuzzed_e)
 
 
 # Float32 and ArbFloat32
-# typealias ArbFloat32 ArbFloat{24}  # predefined
+# const ArbFloat32 = ArbFloat{24}  # predefined, 24 significand bits in 32bit float
 setprecision(ArbFloat, 24)
 
 
