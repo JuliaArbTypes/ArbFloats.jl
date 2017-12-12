@@ -9,7 +9,7 @@ reNemo = "Nemo.jl is not as expected:\n  Pkg.rm(\"Nemo\"); Pkg.add(\"Nemo\"); qu
 
 
 function package_directory(pkgName::String)
-    pkgdir = Base.find_in_path(pkgName)
+    pkgdir = Base.find_package(pkgName)
     nothing == pkgdir && throw(ErrorException(noNemo))
     return abspath(joinpath(split(pkgdir, pkgName)[1], pkgName))
 end    
