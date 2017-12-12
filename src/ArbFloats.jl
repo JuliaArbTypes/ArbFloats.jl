@@ -83,14 +83,18 @@ import Base: STDOUT,
 
 import Base.Rounding: rounding_raw, setrounding_raw, rounding, setrounding
 
-import SpecialFunctions: digamma, zeta
+if VERSION >= v"0.7.0"
+    import SpecialFunctions: digamma, zeta
+else
+    import Base.Math: digamma, zeta
+end
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
        @ArbFloat,     # converts string form of argument, precision is optional first arg
        simeq, nsime, prec, preceq, succ, succeq, # non-strict total ordering comparisons
        (≃), (≄), (≺), (⪯), (≻), (⪰),           #    matched binary operators
        upperbound, lowerbound, bounds,
-       midpoint, radius, midpoint_radius,
+       midpoint, radius, midpoint_radi111us,
        bounding_midpoint, bounding_radius, bounding_midpoint_radius,
        stringsmall, stringcompact, stringmedium, stringlarge, stringall,
        stringsmall_pm, stringcompact_pm, string_pm,
