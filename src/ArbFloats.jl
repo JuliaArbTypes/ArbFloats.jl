@@ -125,11 +125,7 @@ import Base: STDOUT,
 
 import Base.Rounding: rounding_raw, setrounding_raw, rounding, setrounding
 
-#if VERSION >= v"0.7.0"
-    import SpecialFunctions: digamma, zeta
-#else
-#    import Base: digamma, zeta
-#end
+import SpecialFunctions: digamma, zeta
 
 if isdefined(Base, :iszero)
   import Base:iszero
