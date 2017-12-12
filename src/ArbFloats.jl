@@ -52,49 +52,13 @@ smartstring(fuzzed_e)
 """
 module ArbFloats
 
-import Base: STDOUT,
-    hash, convert, promote_rule, isa,
-    string, show, showcompact, showall, parse,
-    finalizer, decompose, precision, setprecision,
-    serialize, deserialize,
-    typemin, typemax, realmin, realmax,
-    copy, deepcopy,
-    size, length,
-    zero, one, isinteger,
-    ldexp, frexp, modf, eps,
-    isequal, isless, (==),(!=),(<),(<=),(>=),(>), contains,
-    min, max, minmax,
-    typemax, typemin, realmax, realmin,
-    float, nextfloat, prevfloat,
-    isnan, isinf, isfinite, issubnormal,
-    signbit, sign, flipsign, copysign, abs, abs2,
-    (+),(-),(*),(/),(\),(%),(^), inv, sqrt, hypot,
-    (.+),(.-),(.*),(./),
-    trunc, round, ceil, floor,
-    fld, cld, div, mod, rem, divrem, fldmod,
-    muladd, fma,
-    exp, expm1, log, log1p, log2, log10,
-    sin, cos, tan, csc, sec, cot, asin, acos, atan, atan2,
-    sinh, cosh, tanh, csch, sech, coth, asinh, acosh, atanh,
-    sinc, gamma, lgamma, factorial,
-    in, union, intersect,
-    rand, randn, sort,
-    BigInt, BigFloat, Rational
-
-import Base.Rounding: rounding_raw, setrounding_raw, rounding, setrounding
-
-if VERSION >= v"0.7.0"
-    import SpecialFunctions: digamma, zeta
-else
-    import Base.Math: digamma, zeta
-end
 
 export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round(lo,n,10)
        @ArbFloat,     # converts string form of argument, precision is optional first arg
        simeq, nsime, prec, preceq, succ, succeq, # non-strict total ordering comparisons
        (≃), (≄), (≺), (⪯), (≻), (⪰),           #    matched binary operators
        upperbound, lowerbound, bounds,
-       midpoint, radius, midpoint_radi111us,
+       midpoint, radius, midpoint_radius,
        bounding_midpoint, bounding_radius, bounding_midpoint_radius,
        stringsmall, stringcompact, stringmedium, stringlarge, stringall,
        stringsmall_pm, stringcompact_pm, string_pm,
@@ -129,6 +93,43 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        isolate_nonnegative_content, isolate_positive_content, # for interval algorithms
        force_nonnegative_content, force_positive_content,
        sort_intervals                                         # uses weak total ordering over intervals 
+
+import Base: STDOUT,
+    hash, convert, promote_rule, isa,
+    string, show, showcompact, showall, parse,
+    finalizer, decompose, precision, setprecision,
+    serialize, deserialize,
+    typemin, typemax, realmin, realmax,
+    copy, deepcopy,
+    size, length,
+    zero, one, isinteger,
+    ldexp, frexp, modf, eps,
+    isequal, isless, (==),(!=),(<),(<=),(>=),(>), contains,
+    min, max, minmax,
+    typemax, typemin, realmax, realmin,
+    float, nextfloat, prevfloat,
+    isnan, isinf, isfinite, issubnormal,
+    signbit, sign, flipsign, copysign, abs, abs2,
+    (+),(-),(*),(/),(\),(%),(^), inv, sqrt, hypot,
+    (.+),(.-),(.*),(./),
+    trunc, round, ceil, floor,
+    fld, cld, div, mod, rem, divrem, fldmod,
+    muladd, fma,
+    exp, expm1, log, log1p, log2, log10,
+    sin, cos, tan, csc, sec, cot, asin, acos, atan, atan2,
+    sinh, cosh, tanh, csch, sech, coth, asinh, acosh, atanh,
+    sinc, gamma, lgamma, factorial,
+    in, union, intersect,
+    rand, randn, sort,
+    BigInt, BigFloat, Rational
+
+import Base.Rounding: rounding_raw, setrounding_raw, rounding, setrounding
+
+if VERSION >= v"0.7.0"
+    import SpecialFunctions: digamma, zeta
+else
+    import Base: digamma, zeta
+end
 
 if isdefined(Base, :iszero)
   import Base:iszero
