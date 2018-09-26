@@ -167,7 +167,7 @@ BenchmarkTools.DEFAULT_PARAMETERS.evals   = 1
 
 #const fp_precise_bits = [128, 256, 512, 768, 1024, 1280, 1536, 2048, 2560, 3072, 3584];
 # const fp_precise_bits = [128, 256, 512, 1024, 1280, 1536, 2048, 2560, 3072];
-const fp_precise_bits = [128*i for i in 1:16];
+fp_precise_bits = [128*i for i in 1:16];
 
 println( "    bits: ",fp_precise_bits' );println()
 
