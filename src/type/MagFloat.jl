@@ -11,6 +11,22 @@ type MagFloat
 end
 =#
 
+mutable struct MagFloat <: AbstractFloat
+    radius_exponentOf2::Int
+    radius_significand::UInt   ## radius is unsigned (nonnegative), by definition
+#=
+    function MagFloat()
+         z = new(zero(Int), zero(UInt64))
+         ccall(@libarb(mag_init), Void, (Ref{MagFloat}, ), z)
+         finalizer(z, c_release_mag)
+         return z
+    end
+=#    
+end
+
+function c_release_mag(x::MagFloat)
+  ccall(@libarb(mag_clear), Void, (Ref{MagFloat}, ), x)
+end
 
 # define hash so other things work
 const hash_arbmag_lo = (UInt === UInt64) ? 0x29f934c433d9a758 : 0x2578e2ce
