@@ -94,7 +94,7 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
 
 import Base: stdout,
     hash, convert, promote_rule, isa,
-    string, show, showcompact, showall, parse,
+    string, show, parse,
     finalizer, decompose, precision, setprecision,
     serialize, deserialize,
     typemin, typemax, realmin, realmax,
