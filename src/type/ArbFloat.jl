@@ -11,13 +11,14 @@ type ArbFloat{P}  <: Real     # field and struct names from arb.h
 end
 =#
 
-for T in (:String, :Int32, :Int64, :Float32, :Float64, :BigInt, :BigFloat)
-   @eval ArbFloat(x::$T, p::Int) = ArbFloat{p}(x)
-end
-
 # get and set working precision for ArbFloat
 
 const ArbFloatPrecision = [116,]
+
+for T in (:String, :Int32, :Int64, :Float32, :Float64, :BigInt, :BigFloat)
+   @eval ArbFloat(x::$T, p::Int) = ArbFloat{p}(x)
+   @eval ArbFloat(x::$T) = ArbFloat{ArbFloatPrecision[1]}(x)
+end
 
 precision(x::ArbFloat{P}) where {P} = P
 precision(::Type{ArbFloat{P}}) where {P} = P
