@@ -68,8 +68,8 @@ end
 
 typemax(::Type{ArbFloat{P}}) where {P} = ArbFloat{P}("Inf")
 typemin(::Type{ArbFloat{P}}) where {P} = ArbFloat{P}("-Inf")
-realmax(::Type{ArbFloat{P}}) where {P} = ArbFloat{P}(2)^(P+29)
-realmin(::Type{ArbFloat{P}}) where {P} = ArbFloat{P}(2)^(-P-29)
+floatmax(::Type{ArbFloat{P}}) where {P} = ArbFloat{P}(2)^(P+29)
+floatmin(::Type{ArbFloat{P}}) where {P} = ArbFloat{P}(2)^(-P-29)
 
 
 function zero(x::ArbFloat{P}) where {P}
