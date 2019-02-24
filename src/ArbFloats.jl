@@ -116,7 +116,7 @@ import Base: stdout,
     exp, expm1, log, log1p, log2, log10,
     sin, cos, tan, csc, sec, cot, asin, acos, atan, atan2,
     sinh, cosh, tanh, csch, sech, coth, asinh, acosh, atanh,
-    sinc, gamma, lgamma, factorial,
+    sinc, factorial,
     in, union, intersect,
     rand, randn, sort,
     BigInt, BigFloat, Rational
@@ -126,7 +126,7 @@ import Base.Rounding: rounding_raw, setrounding_raw, rounding, setrounding
 using Serialization
 using SpecialFunctions
 
-import SpecialFunctions: digamma, zeta
+import SpecialFunctions: gamma, lgamma, digamma, zeta
 
 if isdefined(Base, :iszero)
   import Base:iszero
