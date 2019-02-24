@@ -123,8 +123,10 @@ import Base: stdout,
 
 import Base.Rounding: rounding_raw, setrounding_raw, rounding, setrounding
 
-#import SpecialFunctions: digamma, zeta
-import Base: digamma, zeta
+using Serialization
+using SpecialFunctions
+
+import SpecialFunctions: digamma, zeta
 
 if isdefined(Base, :iszero)
   import Base:iszero
