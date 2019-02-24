@@ -1,8 +1,8 @@
-desc = "Extended precision floating point values, more easily read."
-keywords = ["floating-point", "extended precision"]
+desc = "Much faster than BigFloat at precisions up to 3,500 bits (1050 digits)."
+keywords = ["floating-point", "extended precision", "Arb"]
 name = "ArbFloats"
 uuid = "9689d877-bbb0-593d-8021-de8e3bedf7bf"
-repo = "https://github.com/JuliaArbTypes/ReadableNumbers.jl.git"
+repo = "https://github.com/JuliaArbTypes/ArbFloats.jl.git"
 author = "Jeffrey Sarnoff"
 license = "MIT"
 version = "v0.3.0"
