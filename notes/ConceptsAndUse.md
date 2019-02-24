@@ -116,7 +116,7 @@ ispositive, notpositive, isnegative, notnegative,   | numerical predicates
 > pow, root, 
 > exp, expm1, log, log1p, log2, log10, logbase,  
 > sin, cos, sincos, sincospi, tan, csc, sec, cot, 
-> asin, acos, atan, atan2,  
+> asin, acos, atan, atan2=atan(y,x),  
 > sinh, cosh, sinhcosh, tanh, csch, sech, coth, 
 > asinh, acosh, atanh,  
 
