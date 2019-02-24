@@ -134,7 +134,8 @@ end
 
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 
-include("support/NemoLibs.jl")                 # for precompiled libraries
+include("support/libarb.jl")                 # for precompiled libraries
+#include("support/NemoLibs.jl")                 # for precompiled libraries
 
 using ReadableNumbers
 
