@@ -35,35 +35,35 @@ INVPHI{T<:ArbFloat}(::Type{T})  =  INVPHI(ArbFloat{precision(ArbFloat)})
 
 function PI(::Type{ArbFloat{P}}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_const_pi), Void, (Ref{ArbFloat{P}}, Int), z, P)
+    ccall(@libarb(arb_const_pi), Cvoid, (Ref{ArbFloat{P}}, Int), z, P)
     return z
 end
 PI(::Type{ArbFloat}) = PI(ArbFloat{precision(ArbFloat)})
 
 function SQRTPI(::Type{ArbFloat{P}}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_const_sqrt_pi), Void, (Ref{ArbFloat{P}}, Int), z, P)
+    ccall(@libarb(arb_const_sqrt_pi), Cvoid, (Ref{ArbFloat{P}}, Int), z, P)
     return z
 end
 SQRTPI(::Type{ArbFloat}) = SQRTPI(ArbFloat{precision(ArbFloat)})
 
 function LOG2(::Type{ArbFloat{P}}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_const_log2), Void, (Ref{ArbFloat{P}}, Int), z, P)
+    ccall(@libarb(arb_const_log2), Cvoid, (Ref{ArbFloat{P}}, Int), z, P)
     return z
 end
 LOG2(::Type{ArbFloat}) = LOG2(ArbFloat{precision(ArbFloat)})
 
 function LOG10(::Type{ArbFloat{P}}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_const_log10), Void, (Ref{ArbFloat{P}}, Int), z, P)
+    ccall(@libarb(arb_const_log10), Cvoid, (Ref{ArbFloat{P}}, Int), z, P)
     return z
 end
 LOG10(::Type{ArbFloat}) = LOG10(ArbFloat{precision(ArbFloat)})
 
 function EXP1(::Type{ArbFloat{P}}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_const_e), Void, (Ref{ArbFloat{P}}, Int), z, P)
+    ccall(@libarb(arb_const_e), Cvoid, (Ref{ArbFloat{P}}, Int), z, P)
     return z
 end
 EXP1(::Type{ArbFloat}) = EXP1(ArbFloat{precision(ArbFloat)})
@@ -71,35 +71,35 @@ EXP1(::Type{ArbFloat}) = EXP1(ArbFloat{precision(ArbFloat)})
 
 function EULER(::Type{ArbFloat{P}}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_const_euler), Void, (Ref{ArbFloat{P}}, Int), z, P)
+    ccall(@libarb(arb_const_euler), Cvoid, (Ref{ArbFloat{P}}, Int), z, P)
     return z
 end
 EULER(::Type{ArbFloat}) = EULER(ArbFloat{precision(ArbFloat)})
 
 function CATALAN(::Type{ArbFloat{P}}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_const_catalan), Void, (Ref{ArbFloat{P}}, Int), z, P)
+    ccall(@libarb(arb_const_catalan), Cvoid, (Ref{ArbFloat{P}}, Int), z, P)
     return z
 end
 CATALAN(::Type{ArbFloat}) = CATALAN(ArbFloat{precision(ArbFloat)})
 
 function KINCHIN(::Type{ArbFloat{P}}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_const_kinchin), Void, (Ref{ArbFloat{P}}, Int), z, P)
+    ccall(@libarb(arb_const_kinchin), Cvoid, (Ref{ArbFloat{P}}, Int), z, P)
     return z
 end
 KHINCHIN(::Type{ArbFloat}) = KINCHIN(ArbFloat{precision(ArbFloat)})
 
 function GLAISHER(::Type{ArbFloat{P}}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_const_apery), Void, (Ref{ArbFloat{P}}, Int), z, P)
+    ccall(@libarb(arb_const_apery), Cvoid, (Ref{ArbFloat{P}}, Int), z, P)
     return z
 end
 GLAISHER(::Type{ArbFloat}) = GLAISHER(ArbFloat{precision(ArbFloat)})
 
 function APERY(::Type{ArbFloat{P}}) where {P}
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_const_apery), Void, (Ref{ArbFloat{P}}, Int), z, P)
+    ccall(@libarb(arb_const_apery), Cvoid, (Ref{ArbFloat{P}}, Int), z, P)
     return z
 end
 APERY(::Type{ArbFloat}) = APERY(ArbFloat{precision(ArbFloat)})

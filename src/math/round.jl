@@ -18,7 +18,7 @@ function round(x::ArbFloat{P}, places::Int=integral_digits(P), base::Int=10) whe
     sigbits = base==2 ? places+digits_to_rounded_bits(integral_digits(x)) : digits_to_rounded_bits(places+integral_digits(x))
     sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_set_round), Void,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
+    ccall(@libarb(arb_set_round), Cvoid,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
     return z
 end
 
@@ -31,7 +31,7 @@ function ceiled(x::ArbFloat{P}, places::Int=P, base::Int=2) where {P}
     places = max(1,abs(places))
     sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_ceil), Void,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
+    ccall(@libarb(arb_ceil), Cvoid,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
     return z
 end
 function floored(::Type{T}, x::ArbFloat{P}) where {P,T}
@@ -43,7 +43,7 @@ function floored(x::ArbFloat{P}, places::Int=P, base::Int=2) where {P}
     places = max(1,abs(places))
     sigbits = base==2 ? places : digits_to_rounded_bits(places)
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_floor), Void,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
+    ccall(@libarb(arb_floor), Cvoid,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
     return z
 end
 
@@ -52,7 +52,7 @@ function ceil(x::ArbFloat{P}, places::Int=P, base::Int=2) where {P}
     sigbits = base==2 ? places+digits_to_rounded_bits(integral_digits(x)) : digits_to_rounded_bits(places+integral_digits(x))
     sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_ceil), Void,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
+    ccall(@libarb(arb_ceil), Cvoid,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
     return z
 end
 
@@ -61,7 +61,7 @@ function floor(x::ArbFloat{P}, places::Int=P, base::Int=2) where {P}
     sigbits = base==2 ? places+digits_to_rounded_bits(integral_digits(x)) : digits_to_rounded_bits(places+integral_digits(x))
     sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
-    ccall(@libarb(arb_floor), Void,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
+    ccall(@libarb(arb_floor), Cvoid,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
     return z
 end
 
@@ -71,27 +71,27 @@ function trunc(x::ArbFloat{P}, places::Int=P, base::Int=2) where {P}
     sigbits = max(1, sigbits) # library call chokes on a value of zero
     z = initializer(ArbFloat{P})
     if signbit(x)
-        ccall(@libarb(arb_ceil), Void,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
+        ccall(@libarb(arb_ceil), Cvoid,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
     else
-        ccall(@libarb(arb_floor), Void,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
+        ccall(@libarb(arb_floor), Cvoid,  (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, x, sigbits)
     end
     return z
 end
 
 function round(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=2) where {I <: Integer,P}
-    z = round(x, sig, base)
+    z = round(x, digits=sig, base=base)
     return convert(I, z)
 end
 function ceil(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=2) where {I <: Integer,P}
-    z = ceil(x, sig, base)
+    z = ceil(x, digits=sig, base=base)
     return convert(I, z)
 end
 function floor(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=2) where {I <: Integer,P}
-    z = floor(x, sig, base)
+    z = floor(x, digits=sig, base=base)
     return convert(I, z)
 end
 function trunc(::Type{I}, x::ArbFloat{P}, sig::Int=P, base::Int=2) where {I <: Integer,P}
-    z = trunc(x, sig, base)
+    z = trunc(x, digits=sig, base=base)
     return convert(I, z)
 end
 
