@@ -54,6 +54,8 @@ for (op,cfunc) in ((:sincos, :arb_sin_cos), (:sincospi, :arb_sin_cos_pi), (:sinh
 end
 
 
+atan(a::ArbFloat{P}, b::ArbFloat{P}) where {P} = atan2(a, b)
+
 function atan2(a::ArbFloat{P}, b::ArbFloat{P}) where {P}
     z = initializer(ArbFloat{P})
     ccall(@libarb(arb_atan2), Cvoid, (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Ref{ArbFloat{P}}, Int), z, a, b, P)
