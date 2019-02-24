@@ -23,6 +23,14 @@ POSINF(::Type{T}) where {T <: ArbFloat}  =  POSINF(ArbFloat{precision(ArbFloat)}
 NEGINF(::Type{T}) where {T <: ArbFloat}  =  NEGINF(ArbFloat{precision(ArbFloat)})
 ZERO(::Type{T}) where {T <: ArbFloat}    =  ZERO(ArbFloat{precision(ArbFloat)})
 ONE(::Type{T}) where {T <: ArbFloat}     =  ONE(ArbFloat{precision(ArbFloat)})
+
+INF(::Type{ArbFloat}) where {P}     =  ArbFloat{precision(ArbFloat)}("Inf")
+NAN(::Type{ArbFloat}) where {P}     =  ArbFloat{precision(ArbFloat)}("NaN")
+POSINF(::Type{ArbFloat}) where {P}  =  ArbFloat{precision(ArbFloat)}("Inf")
+NEGINF(::Type{ArbFloat}) where {P}  =  ArbFloat{precision(ArbFloat)}("-Inf")
+ZERO(::Type{ArbFloat}) where {P}    =  ArbFloat{precision(ArbFloat)}(0)
+ONE(::Type{ArbFloat}) where {P}     =  ArbFloat{precision(ArbFloat)}(1)
+
 #=
 TWO{T<:ArbFloat}(::Type{T})     =  TWO(ArbFloat{precision(ArbFloat)})
 QRTRPI{T<:ArbFloat}(::Type{T})  =  QRTRPI(ArbFloat{precision(ArbFloat)})
