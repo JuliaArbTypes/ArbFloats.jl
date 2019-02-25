@@ -7,8 +7,8 @@ af0 = zero(ArbFloat)
 af1 = one(ArbFloat)
 af2 = af1 + af1
 afhalf = af1 / 2
-afNaN = NAN
-afInf = INF
+afNaN = ArbFloats.NAN(ArbFloat{precision(ArbFloat)})
+afInf = ArbFloats.INF(ArbFloat)
 
 @test isnan(afNaN)
 @test isinf(afInf)
