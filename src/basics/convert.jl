@@ -25,6 +25,10 @@ macro ArbFloat(p,x)
     end
 end
 
+
+ArbFloat(x::T) where {T} = convert(ArbFloat, x)
+ArbFloat(x::T, p::P) where {P, T} = convert(ArbFloat{P}, x)
+
 convert(::Type{T}, x::T) where {T <: ArfFloat} = x
 convert(::Type{T}, x::T) where {T <: ArbFloat} = x
 convert(::Type{ArfFloat{P}}, x::ArfFloat{P}) where {P} = x
