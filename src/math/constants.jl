@@ -2,10 +2,10 @@
 
 # special values
 
-INF(::Type{ArbFloat{P}}) where {P}     =  ArbFloat{P}("Inf")
-NAN(::Type{ArbFloat{P}}) where {P}     =  ArbFloat{P}("NaN")
-POSINF(::Type{ArbFloat{P}}) where {P}  =  ArbFloat{P}("Inf")
-NEGINF(::Type{ArbFloat{P}}) where {P}  =  ArbFloat{P}("-Inf")
+INF(::Type{ArbFloat{P}}) where {P}     =  ArbFloat{P}(Inf)
+NAN(::Type{ArbFloat{P}}) where {P}     =  ArbFloat{P}(NaN)
+POSINF(::Type{ArbFloat{P}}) where {P}  =  ArbFloat{P}(Inf)
+NEGINF(::Type{ArbFloat{P}}) where {P}  =  -ArbFloat{P}(Inf)
 ZERO(::Type{ArbFloat{P}}) where {P}    =  ArbFloat{P}(0)
 ONE(::Type{ArbFloat{P}}) where {P}     =  ArbFloat{P}(1)
 #=
@@ -17,19 +17,12 @@ PHI{P}(::Type{ArbFloat{P}})     =  (sqrt(ArbFloat{P}(5)) + ArbFloat{P}(1)) / Arb
 INVPHI{P}(::Type{ArbFloat{P}})  =  (sqrt(ArbFloat{P}(5)) - ArbFloat{P}(1)) / ArbFloat{P}(2)
 =#
 
-INF(::Type{T}) where {T <: ArbFloat}     =  INF(ArbFloat{precision(ArbFloat)})
-NAN(::Type{T}) where {T <: ArbFloat}     =  NAN(ArbFloat{precision(ArbFloat)})
-POSINF(::Type{T}) where {T <: ArbFloat}  =  POSINF(ArbFloat{precision(ArbFloat)})
-NEGINF(::Type{T}) where {T <: ArbFloat}  =  NEGINF(ArbFloat{precision(ArbFloat)})
-ZERO(::Type{T}) where {T <: ArbFloat}    =  ZERO(ArbFloat{precision(ArbFloat)})
-ONE(::Type{T}) where {T <: ArbFloat}     =  ONE(ArbFloat{precision(ArbFloat)})
-
-INF(::Type{ArbFloat}) where {P}     =  ArbFloat{precision(ArbFloat)}("Inf")
-NAN(::Type{ArbFloat}) where {P}     =  ArbFloat{precision(ArbFloat)}("NaN")
-POSINF(::Type{ArbFloat}) where {P}  =  ArbFloat{precision(ArbFloat)}("Inf")
-NEGINF(::Type{ArbFloat}) where {P}  =  ArbFloat{precision(ArbFloat)}("-Inf")
-ZERO(::Type{ArbFloat}) where {P}    =  ArbFloat{precision(ArbFloat)}(0)
-ONE(::Type{ArbFloat}) where {P}     =  ArbFloat{precision(ArbFloat)}(1)
+INF(::Type{T}) where {T <: ArbFloat}     =  ArbFloat{precision(ArbFloat)}(Inf)
+NAN(::Type{T}) where {T <: ArbFloat}     =  ArbFloat{precision(ArbFloat)}(NaN)
+POSINF(::Type{T}) where {T <: ArbFloat}  =  ArbFloat{precision(ArbFloat)}(Inf)
+NEGINF(::Type{T}) where {T <: ArbFloat}  =  -ArbFloat{precision(ArbFloat)}(Inf)
+ZERO(::Type{T}) where {T <: ArbFloat}    =  ArbFloat{precision(ArbFloat)}(0.0)
+ONE(::Type{T}) where {T <: ArbFloat}     =  ArbFloat{precision(ArbFloat)}(1.0)
 
 #=
 TWO{T<:ArbFloat}(::Type{T})     =  TWO(ArbFloat{precision(ArbFloat)})
