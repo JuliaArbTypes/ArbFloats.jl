@@ -16,8 +16,8 @@ end
 const ArbFloatPrecision = [116,]
 
 for T in (:String, :Int32, :Int64, :Float32, :Float64, :BigInt, :BigFloat)
-   @eval ArbFloat(x::$T, p::Int) = ArbFloat{p}(x)
-   @eval ArbFloat(x::$T) = ArbFloat{ArbFloatPrecision[1]}(x)
+   @eval ArbFloat(x::$T, p::Int) = ArbFloat{p}(x, RoundNearest)
+   @eval ArbFloat(x::$T) = ArbFloat{ArbFloatPrecision[1]}(x, RoundNearest)
 end
 
 precision(x::ArbFloat{P}) where {P} = P
