@@ -2,7 +2,7 @@
 ArbFloats.jl
 ============
 
-## THIS PACKAGE HAS BEEN REPLACED BY ArbNumerics.jl
+## This package is unmaintained.  Please use [ArbNumerics.jl](https://github.com/JeffreySarnoff/ArbNumerics.jl).
 
 #### Arb available as an extended precision floating point context.  
 
