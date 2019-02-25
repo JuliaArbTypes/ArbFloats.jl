@@ -2,6 +2,8 @@
 ArbFloats.jl
 ============
 
+## THIS PACKAGE HAS BEEN REPLACED BY ArbNumerics.jl
+
 #### Arb available as an extended precision floating point context.  
 
 Jeffrey Sarnoff © 2016 Sep 15 in New York, USA
