@@ -1,10 +1,7 @@
 
 ArbFloats.jl
-----
+============
 
-## This package is unmaintained.  Please use [ArbNumerics.jl](https://github.com/JeffreySarnoff/ArbNumerics.jl).
-
-----
 
 #### Copyright © 2016 by Jeffrey Sarnoff.  Released under the MIT License.
 

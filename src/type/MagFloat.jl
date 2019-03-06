@@ -11,6 +11,24 @@ type MagFloat
 end
 =#
 
+#=
+mutable struct MagFloat <: AbstractFloat
+    radius_exponentOf2::Int
+    radius_significand::UInt   ## radius is unsigned (nonnegative), by definition
+#=
+    function MagFloat()
+         z = new(zero(Int), zero(UInt64))
+         ccall(@libarb(mag_init), Void, (Ref{MagFloat}, ), z)
+         finalizer(z, c_release_mag)
+         return z
+    end
+=#    
+end
+
+function c_release_mag(x::MagFloat)
+  ccall(@libarb(mag_clear), Cvoid, (Ref{MagFloat}, ), x)
+end
+=#
 
 # define hash so other things work
 const hash_arbmag_lo = (UInt === UInt64) ? 0x29f934c433d9a758 : 0x2578e2ce
@@ -24,24 +42,24 @@ end
 # initialize and zero a variable of type MagFloat
 function zero(::Type{MagFloat})
     z = MagFloat(0,0x0000000000000000)
-    ccall(@libarb(mag_set_ui), Void, (Ref{MagFloat}, UInt64), z, 0x0000000000000000)
+    ccall(@libarb(mag_set_ui), Cvoid, (Ref{MagFloat}, UInt64), z, 0x0000000000000000)
     return z
 end
 #zero(x::MagFloat) = zero(MagFloat)
 function zero(x::MagFloat)
     z = MagFloat(0,0x0000000000000000)
-    ccall(@libarb(mag_set_ui), Void, (Ref{MagFloat}, UInt64), z, 0x0000000000000000)
+    ccall(@libarb(mag_set_ui), Cvoid, (Ref{MagFloat}, UInt64), z, 0x0000000000000000)
     return z
 end
 
 function one(::Type{MagFloat})
     z = MagFloat(0, 0x0000000000000000)
-    ccall(@libarb(mag_set_ui), Void, (Ref{MagFloat}, UInt64), z,  0x0000000000000001)
+    ccall(@libarb(mag_set_ui), Cvoid, (Ref{MagFloat}, UInt64), z,  0x0000000000000001)
     return z
 end
 function one(x::MagFloat)
     z = MagFloat(0, 0x0000000000000000)
-    ccall(@libarb(mag_set_ui), Void, (Ref{MagFloat}, UInt64), z,  0x0000000000000001)
+    ccall(@libarb(mag_set_ui), Cvoid, (Ref{MagFloat}, UInt64), z,  0x0000000000000001)
     return z
 end
 
@@ -64,7 +82,7 @@ for (T,M) in ((:UInt, :ui), (:Int, :si), (:Float64, :d))
   @eval begin
     function convert(::Type{MagFloat}, x::($T))
         z = MagFloat()
-        ccall( :($(QuoteNode(Symbol("mag_set_", $M))), "libarb"), Void, (Ref{$T}, ), z )
+        ccall( :($(QuoteNode(Symbol("mag_set_", $M))), "libarb"), Cvoid, (Ref{$T}, ), z )
         #ccall( ($(QuoteNode(Symbol("mag_set_", M))), "libarb"), Void, (Ref{$T}, ), z )
         return z
     end
@@ -112,12 +130,12 @@ convert(::Type{MagFloat}, x::Float16) = convert(MagFloat, convert(Float64, x))
 if Int == Int64
   function upperbound(::Type{MagFloat}, x::UInt64)
     z = MagFloat()
-    ccall(@libarb(mag_set_ui), Void, (Ref{MagFloat}, Ref{UInt64}), z, x)
+    ccall(@libarb(mag_set_ui), Cvoid, (Ref{MagFloat}, Ref{UInt64}), z, x)
     return z
   end
   function lowerbound(::Type{MagFloat}, x::UInt64)
     z = MagFloat()
-    ccall(@libarb(mag_set_ui_lower), Void, (Ref{MagFloat}, Ref{UInt64}), z, x)
+    ccall(@libarb(mag_set_ui_lower), Cvoid, (Ref{MagFloat}, Ref{UInt64}), z, x)
     return z
   end
   for T in (:UInt128, :UInt32, :UInt16, :UInt8)
@@ -130,12 +148,12 @@ if Int == Int64
 else
   function upperbound(::Type{MagFloat}, x::UInt32)
     z = MagFloat()
-    ccall(@libarb(mag_set_ui), Void, (Ref{MagFloat}, Ref{UInt32}), z, x)
+    ccall(@libarb(mag_set_ui), Cvoid, (Ref{MagFloat}, Ref{UInt32}), z, x)
     return z
   end
   function lowerbound(::Type{MagFloat}, x::UInt32)
     z = MagFloat()
-    ccall(@libarb(mag_set_ui_lower), Void, (Ref{MagFloat}, Ref{UInt32}), z, x)
+    ccall(@libarb(mag_set_ui_lower), Cvoid, (Ref{MagFloat}, Ref{UInt32}), z, x)
     return z
   end
   for T in (:UInt128, :UInt64, :UInt16, :UInt8)
