@@ -1,7 +1,8 @@
-function serialize(io::IO, a::T) where {T <: ArbFloat}
-    serialize(io, a)
+function serialize(ser::AbstractSerializer, a::T) where {T <: ArbFloat}
+    serialize_type(ser, T)
+    write(ser.io, stringall(a))
 end
 
-function deserialize(io::IO, ::Type{T}) where {T <: ArbFloat}
-    deserialize(io)
+function deserialize(ser::AbstractSerializer, ::Type{T}) where {T <: ArbFloat}
+    T( read(ser.io, String) )
 end

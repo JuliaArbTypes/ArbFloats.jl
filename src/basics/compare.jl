@@ -67,10 +67,10 @@ prec(a::T, b::T) where {T <: ArbFloat} = (≺)(a,b)
 # for sorted ordering
 isequal(a::T, b::T) where {T <: ArbFloat} = !(a != b)
 isless(a::T, b::T) where {T <: ArbFloat} = succ(a,b)
-isequal(a::Nothing, b::T) where {T <: ArbFloat} = false
-isequal(a::T, b::Nothing) where {T <: ArbFloat} = false
-isless(a::Nothing, b::T) where {T <: ArbFloat} = true
-isless(a::T, b::Nothing) where {T <: ArbFloat} = true
+isequal(a::Void, b::T) where {T <: ArbFloat} = false
+isequal(a::T, b::Void) where {T <: ArbFloat} = false
+isless(a::Void, b::T) where {T <: ArbFloat} = true
+isless(a::T, b::Void) where {T <: ArbFloat} = true
 
 
 function max(x::T, y::T) where {T <: ArbFloat}

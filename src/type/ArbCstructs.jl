@@ -18,7 +18,7 @@ mutable struct MagFloat <: AbstractFloat
 end
 
 function c_release_mag(x::MagFloat)
-  ccall(@libarb(mag_clear), Cvoid, (Ref{MagFloat}, ), x)
+  ccall(@libarb(mag_clear), Void, (Ref{MagFloat}, ), x)
 end
 
 
@@ -42,7 +42,7 @@ end
 
 
 function c_release_arf(x::ArfFloat{P}) where {P}
-  ccall(@libarb(arf_clear), Cvoid, (Ref{ArfFloat{P}}, ), x)
+  ccall(@libarb(arf_clear), Void, (Ref{ArfFloat{P}}, ), x)
 end
 
     #       P is the precision in bits as a parameter
@@ -67,5 +67,5 @@ mutable struct ArbFloat{P} <: AbstractFloat
 end
 
 function c_release_arb(x::ArbFloat{P}) where {P}
-  ccall(@libarb(arb_clear), Cvoid, (Ref{ArbFloat{P}},), x)
+  ccall(@libarb(arb_clear), Void, (Ref{ArbFloat{P}},), x)
 end

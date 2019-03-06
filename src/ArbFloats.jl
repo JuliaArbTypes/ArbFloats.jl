@@ -1,3 +1,5 @@
+__precompile__(true)
+
 """
 precision(ArbFloat)           # show the current default precision  
 setprecision(ArbFloat, 120)   # change the current default precision  
@@ -92,39 +94,39 @@ export ArbFloat,      # co-matched decimal rounding, n | round(hi,n,10) == round
        force_nonnegative_content, force_positive_content,
        sort_intervals                                         # uses weak total ordering over intervals 
 
-import Base: stdout,
+import Base: STDOUT,
     hash, convert, promote_rule, isa,
-    string, show, parse,
+    string, show, showcompact, showall, parse,
     finalizer, decompose, precision, setprecision,
-    typemin, typemax, floatmin, floatmax,
+    serialize, deserialize,
+    typemin, typemax, realmin, realmax,
     copy, deepcopy,
     size, length,
     zero, one, isinteger,
     ldexp, frexp, modf, eps,
-    isequal, isless, (==),(!=),(<),(<=),(>=),(>),
+    isequal, isless, (==),(!=),(<),(<=),(>=),(>), contains,
     min, max, minmax,
-    typemax, typemin, floatmax, floatmin,
+    typemax, typemin, realmax, realmin,
     float, nextfloat, prevfloat,
     isnan, isinf, isfinite, issubnormal,
     signbit, sign, flipsign, copysign, abs, abs2,
     (+),(-),(*),(/),(\),(%),(^), inv, sqrt, hypot,
+    (.+),(.-),(.*),(./),
     trunc, round, ceil, floor,
     fld, cld, div, mod, rem, divrem, fldmod,
     muladd, fma,
     exp, expm1, log, log1p, log2, log10,
-    sin, cos, tan, csc, sec, cot, asin, acos, atan,
+    sin, cos, tan, csc, sec, cot, asin, acos, atan, atan2,
     sinh, cosh, tanh, csch, sech, coth, asinh, acosh, atanh,
-    sinc, factorial,
+    sinc, gamma, lgamma, factorial,
     in, union, intersect,
     rand, randn, sort,
     BigInt, BigFloat, Rational
 
 import Base.Rounding: rounding_raw, setrounding_raw, rounding, setrounding
 
-using Serialization
-using SpecialFunctions
-
-import SpecialFunctions: gamma, lgamma, digamma, zeta
+#import SpecialFunctions: digamma, zeta
+import Base: digamma, zeta
 
 if isdefined(Base, :iszero)
   import Base:iszero
@@ -134,8 +136,7 @@ end
 
 NotImplemented(info::AbstractString="") = error(string("this is not implemented\n\t",info,"\n"))
 
-include("support/libarb.jl")                 # for precompiled libraries
-#include("support/NemoLibs.jl")                 # for precompiled libraries
+include("support/NemoLibs.jl")                 # for precompiled libraries
 
 using ReadableNumbers
 

@@ -25,19 +25,19 @@ weakcopy(x::ArfFloat{P}) where {P} = WeakRef(x)
 
 function copy(x::ArfFloat{P}) where {P}
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set), Cvoid, (Ref{ArfFloat{P}}, Ref{ArfFloat{P}}), z, x)
+    ccall(@libarb(arf_set), Void, (Ref{ArfFloat{P}}, Ref{ArfFloat{P}}), z, x)
     return z
 end
 
 # initialize and zero a variable of type ArfFloat
 function release(x::ArfFloat{P}) where {P}
-    ccall(@libarb(arf_clear), Cvoid, (Ref{ArfFloat{P}}, ), x)
+    ccall(@libarb(arf_clear), Void, (Ref{ArfFloat{P}}, ), x)
     return nothing
 end
 
 function initializer(::Type{ArfFloat{P}}) where {P}
     z = ArfFloat{P}(zero(Int), zero(UInt64), zero(Int64), zero(Int64))
-    ccall(@libarb(arf_init), Cvoid, (Ref{ArfFloat{P}}, ), z)
+    ccall(@libarb(arf_init), Void, (Ref{ArfFloat{P}}, ), z)
     finalizer(release, z)
     return z
 end
@@ -50,19 +50,19 @@ end
 
 function deepcopy(x::ArfFloat{P}) where {P}
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set), Cvoid, (Ref{ArfFloat{P}}, Ref{ArfFloat{P}}), z, x)
+    ccall(@libarb(arf_set), Void, (Ref{ArfFloat{P}}, Ref{ArfFloat{P}}), z, x)
     return z
 end
 
 function zero(::Type{ArfFloat{P}}) where {P}
     z = initializer( ArbFloat{P} )
-    ccall(@libarb(arf_zero), Cvoid, (Ref{ArfFloat{P}}, ), z)
+    ccall(@libarb(arf_zero), Void, (Ref{ArfFloat{P}}, ), z)
     return z
 end
 
 function one(::Type{ArfFloat{P}}) where {P}
     z = initializer( ArbFloat{P} )
-    ccall(@libarb(arf_one), Cvoid, (Ref{ArfFloat{P}}, ), z)
+    ccall(@libarb(arf_one), Void, (Ref{ArfFloat{P}}, ), z)
     return z
 end
 
@@ -132,7 +132,7 @@ end
 
 function convert(::Type{ArfFloat{P}}, x::BigFloat) where {P}
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set_mpfr), Cvoid, (Ref{ArfFloat{P}}, Ref{BigFloat}), z, x)
+    ccall(@libarb(arf_set_mpfr), Void, (Ref{ArfFloat{P}}, Ref{BigFloat}), z, x)
     z
 end
 convert(::Type{ArfFloat}, x::BigFloat) = convert(ArfFloat{precision(ArfFloat)}, x)
@@ -142,14 +142,14 @@ convert(::Type{ArfFloat{P}}, x::BigInt) where {P} = convert(ArfFloat{P}, convert
 
 function convert(::Type{ArfFloat{P}}, x::Int64) where {P}
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set_si), Cvoid, (Ref{ArfFloat{P}}, Ref{Int64}), z, x)
+    ccall(@libarb(arf_set_si), Void, (Ref{ArfFloat{P}}, Ref{Int64}), z, x)
     z
 end
 convert(::Type{ArfFloat}, x::Int64) = convert(ArfFloat{precision(ArfFloat)}, x)
 
 function convert(::Type{ArfFloat{P}}, x::Float64) where {P}
     z = initializer(ArfFloat{P})
-    ccall(@libarb(arf_set_d), Cvoid, (Ref{ArfFloat{P}}, Ref{Float64}), z, x)
+    ccall(@libarb(arf_set_d), Void, (Ref{ArfFloat{P}}, Ref{Float64}), z, x)
     z
 end
 function convert(::Type{ArfFloat}, x::Float64)

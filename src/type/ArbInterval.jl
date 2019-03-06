@@ -5,7 +5,7 @@ end
 function midpoint_radius(midpt::ArbFloat{P}, radius::ArbFloat{P}) where {P}
     mid = midpoint(midpt)
     rad = midpoint(radius)
-    ccall(@libarb(arb_add_error), Cvoid, (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}), mid, rad)
+    ccall(@libarb(arb_add_error), Void, (Ref{ArbFloat{P}}, Ref{ArbFloat{P}}), mid, rad)
     return mid
 end
 
@@ -66,7 +66,7 @@ union(a::T) where {T <: ArbFloat} = a
 function union(a::T, b::T) where {T <: ArbFloat}
     P = precision(T)
     z = ArbFloat{P}{}
-    ccall(@libarb(arb_union), Cvoid, (Ref{ArbFloat}, Ref{ArbFloat}, Ref{ArbFloat}, Clong), z, a, b, P)
+    ccall(@libarb(arb_union), Void, (Ref{ArbFloat}, Ref{ArbFloat}, Ref{ArbFloat}, Clong), z, a, b, P)
     return z
 end
 function union(a::T, b::T, c::T) where {T <: ArbFloat}
@@ -116,7 +116,7 @@ function intersect(a::T, b::T) where {T <: ArbFloat}
     P = precision(T)
     z = initializer(ArbFloat{P})
     if donotoverlap(a,b)
-        ccall(@libarb(arb_indeterminate), Cvoid, (Ref{ArbFloat},), z)
+        ccall(@libarb(arb_indeterminate), Void, (Ref{ArbFloat},), z)
     else
         alo,ahi = bounds(a)
         blo,bhi = bounds(b)
@@ -141,7 +141,7 @@ end
 function bounded(z::ArbFloat{P}, lo::ArbFloat{P}, hi::ArbFloat{P}) where {P}
     lo2 = convert(ArfFloat{P}, lo)
     hi2 = convert(ArfFloat{P}, hi)
-    ccall(@libarb(arb_set_interval_arf), Cvoid, (Ref{ArbFloat{P}}, Ref{ArfFloat{P}}, Ref{ArfFloat{P}}, Int64), z, lo2, hi2, P%Int64)
+    ccall(@libarb(arb_set_interval_arf), Void, (Ref{ArbFloat{P}}, Ref{ArfFloat{P}}, Ref{ArfFloat{P}}, Int64), z, lo2, hi2, P%Int64)
     return z
 end
 function bounded(lo::T, hi::T) where {T <: ArbFloat}

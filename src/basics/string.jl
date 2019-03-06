@@ -169,7 +169,7 @@ function stringsmall_pm(x::ArbFloat{P}) where P
     sr = try
             string(Float32(radius(x)))
          catch
-            string(round(radius(x), digits=23, base=2))
+            string(round(radius(x),23,2))
          end
 
     return string(sm,"±", sr)
@@ -189,7 +189,7 @@ function stringcompact_pm(x::ArbFloat{P}) where P
     sr = try
             string(Float32(radius(x)))
          catch
-            string(round(radius(x), digits=23, base=2))
+            string(round(radius(x),23,2))
          end
 
     return string(sm,"±", sr)
@@ -208,7 +208,7 @@ function stringmedium_pm(x::ArbFloat{P}) where P
     sr = try
             string(Float64(radius(x)))
          catch
-            string(round(radius(x), digits=58, base=2))
+            string(round(radius(x),58,2))
          end
 
     return string(sm,"±", sr)
@@ -229,7 +229,7 @@ function stringlarge_pm(x::ArbFloat{P}) where P
     sr = try
             string(Float64(radius(x)))
          catch
-            string(round(radius(x), digits=58, base=2))
+            string(round(radius(x),58,2))
          end
 
     return string(sm,"±", sr)
@@ -247,7 +247,7 @@ function stringall_pm(x::ArbFloat{P}) where P
     sr = try
             string(Float64(radius(x)))
          catch
-            string(round(radius(x), digits=58, base=2))
+            string(round(radius(x),58,2))
          end
 
     return string(sm,"±", sr)

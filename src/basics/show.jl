@@ -7,73 +7,73 @@ function show(io::IO, x::T) where {T <: ArbFloat}
     dots = (isfinite(x) && !isexact(x)) ? ".." : ""
     print(io, string(s, dots))
 end
-show(x::T) where {T <: ArbFloat} = show(stdout, x)
+show(x::T) where {T <: ArbFloat} = show(STDOUT, x)
 
 function showsmall(io::IO, x::T) where {T <: ArbFloat}
     s = stringsmall(x)
     print(io, s)
 end
-showsmall(x::T) where {T <: ArbFloat} = showsmall(stdout, x)
+showsmall(x::T) where {T <: ArbFloat} = showsmall(STDOUT, x)
 
 function showsmall_pm(io::IO, x::T) where {T <: ArbFloat}
     s = stringsmall_pm(x)
     print(io, s)
 end
-showsmall_pm(x::T) where {T <: ArbFloat} = showsmall_pm(stdout, x)
+showsmall_pm(x::T) where {T <: ArbFloat} = showsmall_pm(STDOUT, x)
 
 function showcompact(io::IO, x::T) where {T <: ArbFloat}
     s = stringcompact(x)
     print(io, s)
 end
-showcompact(x::T) where {T <: ArbFloat} = showcompact(stdout, x)
+showcompact(x::T) where {T <: ArbFloat} = showcompact(STDOUT, x)
 
 function showcompact_pm(io::IO, x::T) where {T <: ArbFloat}
     s = stringcompact_pm(x)
     print(io, s)
 end
-showcompact_pm(x::T) where {T <: ArbFloat} = showcompact_pm(stdout, x)
+showcompact_pm(x::T) where {T <: ArbFloat} = showcompact_pm(STDOUT, x)
 
 function showmedium(io::IO, x::T) where {T <: ArbFloat}
     s = stringmedium(x)
     print(io, s)
 end
-showmedium(x::T) where {T <: ArbFloat} = showmedium(stdout, x)
+showmedium(x::T) where {T <: ArbFloat} = showmedium(STDOUT, x)
 
 function show_pm(io::IO, x::T) where {T <: ArbFloat}
     s = stringmedium_pm(x)
     print(io, s)
 end
-show_pm(x::T) where {T <: ArbFloat} = show_pm(stdout, x)
+show_pm(x::T) where {T <: ArbFloat} = show_pm(STDOUT, x)
 
 function showlarge(io::IO, x::T) where {T <: ArbFloat}
     s = stringlarge(x)
     print(io, s)
 end
-showlarge(x::T) where {T <: ArbFloat} = showlarge(stdout, x)
+showlarge(x::T) where {T <: ArbFloat} = showlarge(STDOUT, x)
 
 function showlarge_pm(io::IO, x::T) where {T <: ArbFloat}
     s = stringlarge_pm(x)
     print(io, s)
 end
-showlarge_pm(x::T) where {T <: ArbFloat} = showlarge_pm(stdout, x)
+showlarge_pm(x::T) where {T <: ArbFloat} = showlarge_pm(STDOUT, x)
 
 function showall(io::IO, x::T) where {T <: ArbFloat}
     s = stringall(x)
     print(io, s)
 end
-showall(x::T) where {T <: ArbFloat} = showall(stdout, x)
+showall(x::T) where {T <: ArbFloat} = showall(STDOUT, x)
 
 function showall_pm(io::IO, x::T) where {T <: ArbFloat}
     s = stringall_pm(x)
     print(io, s)
 end
-showall_pm(x::T) where {T <: ArbFloat} = showall_pm(stdout, x)
+showall_pm(x::T) where {T <: ArbFloat} = showall_pm(STDOUT, x)
 
 function showallcompact(io::IO, x::T) where {T <: ArbFloat}
     s = stringallcompact(x)
     print(io, s)
 end
-showallcompact(x::T) where {T <: ArbFloat} = showallcompact(stdout, x)
+showallcompact(x::T) where {T <: ArbFloat} = showallcompact(STDOUT, x)
 
 
 function showsmart(io::IO, x::T) where {T <: ArbFloat}
@@ -81,7 +81,7 @@ function showsmart(io::IO, x::T) where {T <: ArbFloat}
     print(io, s)
 end
 # showsmart is not a Base show function, it needs explict version without io parameter
-showsmart(x::T) where {T <: ArbFloat} = showsmart(stdout, x)
+showsmart(x::T) where {T <: ArbFloat} = showsmart(STDOUT, x)
 
 function showmany(io::IO, x::NTuple{N,T}, stringformer::Function) where {T <: ArbFloat,N}
     if N==0
@@ -105,7 +105,7 @@ function showmany(io::IO, x::NTuple{N,T}, stringformer::Function) where {T <: Ar
 end
 
 showmany(x::NTuple{N,T}, stringformer::Function) where {T <: ArbFloat,N} =
-   showmany(stdout,x,stringformer)
+   showmany(STDOUT,x,stringformer)
 
 
 function showmany(io::IO, x::Vector{T}, stringformer::Function) where {T <: ArbFloat}
@@ -132,18 +132,18 @@ function showmany(io::IO, x::Vector{T}, stringformer::Function) where {T <: ArbF
 end
 
 showmany(x::Vector{T}, stringformer::Function) where {T <: ArbFloat} =
-    showmany(stdout,x,stringformer)
+    showmany(STDOUT,x,stringformer)
 
 for (F,S) in [(:showsmall, :stringsmall), (:showcompact, :stringcompact),
               (:show, :stringmedium), (:showlarge, :stringlarge), 
               (:showall, :stringall), (:showsmart, :smartstring)]
   @eval begin
      ($F)(io::IO, x::NTuple{N,ArbFloat{P}}) where {P,N} = showmany(io, x, $S)
-     ($F)(x::NTuple{N,ArbFloat{P}}) where {P,N} = showmany(stdout, x, $S)
+     ($F)(x::NTuple{N,ArbFloat{P}}) where {P,N} = showmany(STDOUT, x, $S)
      ($F)(io::IO, x::Vector{ArbFloat{P}}) where {P} = showmany(io, x, $S)
-     ($F)(x::Vector{ArbFloat{P}}) where {P} = showmany(stdout, x, $S)
+     ($F)(x::Vector{ArbFloat{P}}) where {P} = showmany(STDOUT, x, $S)
      ($F)(io::IO, x::Vararg{ArbFloat{P},N}) where {P,N} = showmany(io, x, $S)
-     ($F)(x::Vararg{ArbFloat{P},N}) where {P,N} = showmany(stdout, x, $S)
+     ($F)(x::Vararg{ArbFloat{P},N}) where {P,N} = showmany(STDOUT, x, $S)
   end
 end
 
@@ -154,10 +154,10 @@ for (F,S) in [(:showsmall_pm, :stringsmall_pm),
               (:showall_pm, :stringall_pm)]
   @eval begin
      ($F)(io::IO, x::NTuple{N,ArbFloat{P}}) where {P,N} = showmany(io, x, $S)
-     ($F)(x::NTuple{N,ArbFloat{P}}) where {P,N} = showmany(stdout, x, $S)
+     ($F)(x::NTuple{N,ArbFloat{P}}) where {P,N} = showmany(STDOUT, x, $S)
      ($F)(io::IO, x::Vector{ArbFloat{P}}) where {P} = showmany(io, x, $S)
-     ($F)(x::Vector{ArbFloat{P}}) where {P} = showmany(stdout, x, $S)
+     ($F)(x::Vector{ArbFloat{P}}) where {P} = showmany(STDOUT, x, $S)
      ($F)(io::IO, x::Vararg{ArbFloat{P},N}) where {P,N} = showmany(io, x, $S)
-     ($F)(x::Vararg{ArbFloat{P},N}) where {P,N} = showmany(stdout, x, $S)
+     ($F)(x::Vararg{ArbFloat{P},N}) where {P,N} = showmany(STDOUT, x, $S)
   end
 end
