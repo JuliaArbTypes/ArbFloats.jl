@@ -5,7 +5,7 @@ uuid = "9689d877-bbb0-593d-8021-de8e3bedf7bf"
 repo = "https://github.com/JuliaArbTypes/ArbFloats.jl.git"
 author = "Jeffrey Sarnoff"
 license = "MIT"
-version = "v0.3.0"
+version = "v0.3.1"
 
 [deps]
 ReadableNumbers = "7774933c-dd73-5de8-a8c3-ca082e6dff1c"
