@@ -3,7 +3,7 @@ ArbFloats.jl
 ============
 
 
-#### Copyright © 2016 by Jeffrey Sarnoff.  Released under the MIT License.
+#### Copyright © 2016-2019 by Jeffrey Sarnoff.  Released under the MIT License.
 
 
 [![Build Status](https://travis-ci.org/JuliaArbTypes/ArbFloats.jl.svg?branch=master)](https://travis-ci.org/JuliaArbTypes/ArbFloats.jl)
@@ -56,9 +56,9 @@ __Version 0.1.14__ released 2016-Dec-23.
 ### Install
 
 ```julia
-Pkg.update()
-Pkg.add("Nemo") # for Win, if Nemo was not already present, follow this with Pkg.build("Nemo")
-Pkg.add("ArbFloats")
+pkg> add ArbFloats
+pkg> build ArbFloats # if you did not see it build
+pkg> precompile
 ```
 If you have not installed Nemo before, you will see compilation notes and maybe warnings.   
 Ignore them.  This is a good time to walk the dog, go for coffee, or play shuffleboard.   
