@@ -188,14 +188,14 @@ if !Sys.iswindows()
     cd(wdir)
   catch
     if ispath(joinpath("$wdir", "flint2"))
-       open(`patch -R --forward -d flint2 -r -`, "r", open("../deps-PIE-ftbfs.patch"))
+      # open(`patch -R --forward -d flint2 -r -`, "r", open("../deps-PIE-ftbfs.patch"))
        cd(joinpath("$wdir", "flint2"))
        run(`git fetch`)
        run(`git checkout $FLINT_VERSION`)
        cd(wdir)
     end
   end
-  open(`patch --forward -d flint2 -r -`, "r", open("../deps-PIE-ftbfs.patch"))
+  # open(`patch --forward -d flint2 -r -`, "r", open("../deps-PIE-ftbfs.patch"))
   println("DONE")
 end
 
