@@ -2,6 +2,7 @@
 ArbFloats.jl
 ============
 
+## [ArbNumerics.jl](https://github.com/JeffreySarnoff/ArbNumerics.jl) is the successor to this package
 
 #### Copyright © 2016-2019 by Jeffrey Sarnoff.  Released under the MIT License.
 
