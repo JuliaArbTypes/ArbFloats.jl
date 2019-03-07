@@ -16,9 +16,6 @@ wdir = joinpath(pkgdir, "deps")
 vdir = joinpath(pkgdir, "local")
 
 
-println("\n\t$(vdir)\n")
-
-
 if Sys.isapple() && !("CC" in keys(ENV))
    ENV["CC"] = "clang"
    ENV["CXX"] = "clang++"
@@ -111,7 +108,7 @@ MPIR_FILE = "mpir-" * MPIR_VERSION * ".tar.bz2"
 
 if !ispath(joinpath(wdir, "mpir-$MPIR_VERSION"))
    println("Downloading MPIR sources ... ")
-   download("http://mpir.org/$MPIR_FILE", joinpath(wdir, MPIR_FILE))
+   download("http://nemocas.org/binaries/$MPIR_FILE", joinpath(wdir, MPIR_FILE))
    println("DONE")
 end
 
@@ -151,7 +148,7 @@ MPFR_FILE = "mpfr-" * MPFR_VERSION * ".tar.bz2"
 
 if !ispath(joinpath(wdir, "mpfr-$MPFR_VERSION"))
    println("Downloading MPFR sources ... ")
-   download("http://ftp.gnu.org/gnu/mpfr/$MPFR_FILE", joinpath(wdir, MPFR_FILE))
+   download("http://ftp.vim.org/ftp/gnu/mpfr/$MPFR_FILE", joinpath(wdir, MPFR_FILE))
 
    println("DONE")
 end
@@ -172,7 +169,7 @@ else
    end
    cd("$wdir/mpfr-$MPFR_VERSION")
    withenv("LD_LIBRARY_PATH"=>"$vdir/lib", "LDFLAGS"=>LDFLAGS) do
-      run(`./configure --prefix=$vdir --with-gmp=$vdir --disable-static --enable-shared`)
+      run(`./configure --prefix=$vdir --with-gmp=$vdir --disable-static --enable-shared`) 
       run(`make -j4`)
       run(`make install`)
    end
@@ -192,12 +189,14 @@ if !Sys.iswindows()
     cd(wdir)
   catch
     if ispath(joinpath("$wdir", "flint2"))
+       open(`patch -R --forward -d flint2 -r -`, "r", open("../deps-PIE-ftbfs.patch"))
        cd(joinpath("$wdir", "flint2"))
        run(`git fetch`)
        run(`git checkout $FLINT_VERSION`)
        cd(wdir)
     end
   end
+  open(`patch --forward -d flint2 -r -`, "r", open("../deps-PIE-ftbfs.patch"))
   println("DONE")
 end
 
@@ -206,19 +205,19 @@ if Sys.iswindows()
    if Int == Int32
       download_dll("http://nemocas.org/binaries/w32-libflint.dll", joinpath(vdir, "lib", "libflint.dll"))
    else
-      download_dll("http://nemocas.org/binaries/w64-libflint.dll", joinpath(vdir, "lib", "libflint.dll"))
+      download_dll("http://nemocas.org/binaries/w64-libflint.dll.$FLINT_VERSION", joinpath(vdir, "lib", "libflint.dll"))
    end
    try
       run(`ln -sf $vdir\\lib\\libflint.dll $vdir\\lib\\libflint-13.dll`)
    catch
-      cp(joinpath(vdir, "lib", "libflint.dll"), joinpath(vdir, "lib", "libflint-13.dll"), force=true)
+      cp(joinpath(vdir, "lib", "libflint.dll"), joinpath(vdir, "lib", "libflint-13.dll"), force = true)
    end
    println("DONE")
 else
    println("Building flint ... ")
    cd(joinpath("$wdir", "flint2"))
    withenv("LD_LIBRARY_PATH"=>"$vdir/lib", "LDFLAGS"=>LDFLAGS) do
-      run(`./configure --prefix=$vdir --disable-static --enable-shared --with-mpir=$vdir --with-mpfr=$vdir`)
+      run(`./configure --prefix=$vdir --disable-static --enable-shared --with-mpir=$vdir --with-mpfr=$vdir`) 
       run(`make -j4`)
       run(`make install`)
    end
@@ -227,7 +226,7 @@ end
 
 cd(wdir)
 
-# INSTALL ARB
+# INSTALL ARB 
 
 if !Sys.iswindows()
   println("Cloning arb ... ")
@@ -238,15 +237,16 @@ if !Sys.iswindows()
     cd(wdir)
   catch
     if ispath(joinpath("$wdir", "arb"))
+      #open(`patch -R --forward -d arb -r -`, "r", open("../deps-PIE-ftbfs.patch"))
       cd(joinpath("$wdir", "arb"))
       run(`git fetch`)
       run(`git checkout $ARB_VERSION`)
       cd(wdir)
     end
   end
+  #open(`patch --forward -d arb -r -`, "r", open("../deps-PIE-ftbfs.patch"))
   println("DONE")
 end
-
 
 cd(wdir)
 
@@ -255,7 +255,7 @@ if Sys.iswindows()
    if Int == Int32
       download_dll("http://nemocas.org/binaries/w32-libarb.dll", joinpath(vdir, "lib", "libarb.dll"))
    else
-      download_dll("http://nemocas.org/binaries/w64-libarb.dll", joinpath(vdir, "lib", "libarb.dll"))
+      download_dll("http://nemocas.org/binaries/w64-libarb.dll.$ARB_VERSION", joinpath(vdir, "lib", "libarb.dll"))
    end
    println("DONE")
 else
